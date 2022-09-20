@@ -95,6 +95,7 @@ export const commandIDs = {
 	runXircuit: 'Xircuit-editor:run-node',
 	debugXircuit: 'Xircuit-editor:debug-node',
 	lockXircuit: 'Xircuit-editor:lock-node',
+	openViewer: 'Xircuit-editor:open-node-viewer',
 	openScript: 'Xircuit-editor:open-node-script',
 	undo: 'Xircuit-editor:undo',
 	redo: 'Xircuit-editor:redo',

@@ -15,6 +15,7 @@ import { CommentDialog } from '../dialog/CommentDialog';
 import React from 'react';
 import { showFormDialog } from '../dialog/FormDialog';
 import { inputDialog } from '../dialog/LiteralInputDialog';
+import {requestAPI} from "../server/handler";
 
 /**
  * Add the commands for node actions.
@@ -44,6 +45,28 @@ export function addNodeActionCommands(
         selectedEntities.map((x) => node = x);
         return node ?? null;
     }
+
+    //Add command to open node's viewer in notebook
+    commands.addCommand(commandIDs.openViewer, {
+        execute: async (args) => {
+            const node = selectedNode();
+            const dataToSend = { "model": "Generic2dOscillator" };
+
+            const response = await requestAPI<any>('components/', {
+				body: JSON.stringify(dataToSend),
+				method: 'POST',
+			});
+
+            // Open node's file name
+            await app.commands.execute(
+                commandIDs.openDocManager,
+                {
+                    path: response["widget"],
+                    factory: 'Notebook',
+                    kernel: { name: 'python3' }
+                });
+        }
+    });
 
     //Add command to open node's script at specific line
     commands.addCommand(commandIDs.openScript, {
