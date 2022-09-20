@@ -14,7 +14,7 @@ from tvb.simulator.simulator import Simulator
 
 from xai_components.base import InArg, OutArg, Component, xai_component
 from xai_components.base_tvb import ComponentWithWidget
-from xai_components.xai_tvb.utils import print_component_summary
+from xai_components.utils import print_component_summary
 
 
 @xai_component

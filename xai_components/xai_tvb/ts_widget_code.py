@@ -12,7 +12,7 @@ from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 
 from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.xai_tvb.utils import print_component_summary
+from xai_components.utils import print_component_summary
 
 
 @xai_component
