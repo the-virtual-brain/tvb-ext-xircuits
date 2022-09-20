@@ -9,7 +9,9 @@ notebook_shim>=0.1
 jinja2>=3.0.3
 y-py>=0.3.0,<0.4.0
 jupyterlab>=3.0.0,<4.0.0
+jupyterlab-widgets==1.1.0
 requests
 gitpython
 pygithub
 tqdm
+tvb-widgets
