@@ -4,6 +4,7 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
+from enum import Enum
 
 TYPE_STR = 'Type'
 GID_STR = 'gid'
