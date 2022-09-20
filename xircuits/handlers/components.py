@@ -143,7 +143,47 @@ class ComponentsRouteHandler(APIHandler):
                 "error_msg" : error_msg}
 
         self.finish(json.dumps(data))
-        
+
+    @tornado.web.authenticated
+    def post(self):
+        input_data = self.get_json_body()
+        model = None
+
+        try:
+            model = input_data["model"]
+        except:
+            pass
+
+        notebook_path = self.generate_phase_plane_notebook(model)
+        data = {"widget": notebook_path}
+
+        self.finish(json.dumps(data))
+
+    def generate_phase_plane_notebook(self, model):
+        import nbformat as nbf
+
+        nb = nbf.v4.new_notebook()
+        text = """\
+        # My first automatic Jupyter Notebook
+        This is an auto-generated notebook."""
+
+        code = """\
+        from tvbwidgets.api import PhasePlaneWidget
+        from tvb.simulator.lab import *
+        w = PhasePlaneWidget(model=models.Generic2dOscillator(),
+                             integrator=integrators.HeunDeterministic());
+        from IPython.core.display_functions import display
+        display(w.get_widget());"""
+
+        nb['cells'] = [nbf.v4.new_markdown_cell(text),
+                       nbf.v4.new_code_cell(code)]
+        fname = os.path.join('xai_components', 'phase_plane_generated.ipynb')
+
+        with open(fname, 'w') as f:
+            nbf.write(nb, f)
+
+        return fname
+
     def get_component_directories(self):
         paths = list(DEFAULT_COMPONENTS_PATHS)
         paths.append(get_config().get("DEV", "BASE_PATH"))
@@ -152,7 +192,7 @@ class ComponentsRouteHandler(APIHandler):
     def extract_components(self, file_path, base_dir, python_path):
         with open(file_path) as f:
             lines = f.readlines()
-        
+
         parse_tree = ast.parse(file_path.read_text(), file_path)
         # Look for top level class definitions that are decorated with "@xai_component"
         is_xai_component = lambda node: isinstance(node, ast.ClassDef) and \
