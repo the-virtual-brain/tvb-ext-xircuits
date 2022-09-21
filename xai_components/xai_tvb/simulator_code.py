@@ -65,18 +65,14 @@ class LinearCouplingComponent(Component):
         print_component_summary(self.linear_coupling.value)
 
 
-class ModelComponent(Component):
-    code = """\
-            from tvbwidgets.api import PhasePlaneWidget
-            from tvb.simulator.lab import *
-            w = PhasePlaneWidget(model=models.Generic2dOscillator(),
-                                 integrator=integrators.HeunDeterministic());
-            from IPython.core.display_functions import display
-            display(w.get_widget());"""
+class ComponentWithWidget(Component):
+    """
+    Used to flag a component that has an associate widget to be displayed in Xircuits UI for interactive setup.
+    """
 
 
 @xai_component
-class Generic2dOscillatorComponent(ModelComponent):
+class Generic2dOscillatorComponent(ComponentWithWidget):
     model: OutArg[Generic2dOscillator]
 
     def __init__(self):

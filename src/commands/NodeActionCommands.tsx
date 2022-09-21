@@ -50,7 +50,15 @@ export function addNodeActionCommands(
     commands.addCommand(commandIDs.openViewer, {
         execute: async (args) => {
             const node = selectedNode();
-            const dataToSend = { "model": "Generic2dOscillator" };
+            if (node.extras["has_widget"] === false) {
+                showDialog({
+                    title: `${node.name} does not have a widget assigned!`,
+                    buttons: [Dialog.warnButton({ label: 'OK' })]
+                })
+                return;
+            }
+
+            const dataToSend = { "component": node.name };
 
             const response = await requestAPI<any>('components/', {
 				body: JSON.stringify(dataToSend),
