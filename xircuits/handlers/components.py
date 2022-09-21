@@ -10,7 +10,9 @@ import tornado
 from jupyter_server.base.handlers import APIHandler
 import platform
 
+from xai_components.xai_tvb.simulator_code import ModelComponent
 from .config import get_config
+from ..nb_generator import NotebookGenerator
 
 DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
@@ -159,29 +161,14 @@ class ComponentsRouteHandler(APIHandler):
         self.finish(json.dumps(data))
 
     def generate_phase_plane_notebook(self, model):
-        import nbformat as nbf
+        nb_generator = NotebookGenerator(DEFAULT_COMPONENTS_PATHS[0])
 
-        nb = nbf.v4.new_notebook()
-        text = """\
-        # My first automatic Jupyter Notebook
-        This is an auto-generated notebook."""
+        text = """# Dynamically generated NB!"""
+        nb_generator.add_markdown_cell(text)
+        nb_generator.add_code_cell(ModelComponent.code)
 
-        code = """\
-        from tvbwidgets.api import PhasePlaneWidget
-        from tvb.simulator.lab import *
-        w = PhasePlaneWidget(model=models.Generic2dOscillator(),
-                             integrator=integrators.HeunDeterministic());
-        from IPython.core.display_functions import display
-        display(w.get_widget());"""
-
-        nb['cells'] = [nbf.v4.new_markdown_cell(text),
-                       nbf.v4.new_code_cell(code)]
-        fname = os.path.join('xai_components', 'phase_plane_generated.ipynb')
-
-        with open(fname, 'w') as f:
-            nbf.write(nb, f)
-
-        return fname
+        path = nb_generator.store('phase_plane_generated.ipynb')
+        return path
 
     def get_component_directories(self):
         paths = list(DEFAULT_COMPONENTS_PATHS)
