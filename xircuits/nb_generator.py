@@ -1,8 +1,17 @@
+# -*- coding: utf-8 -*-
+#
+# "TheVirtualBrain - Widgets" package
+#
+# (c) 2022-2023, TVB Widgets Team
+#
+
+import importlib
 import os
 import nbformat
+from tvb.simulator.integrators import HeunDeterministic
+from tvb.simulator.models.oscillator import Generic2dOscillator
 
-from xai_components.xai_tvb.showcase1 import MontbrioPazoRoxinModelComponent
-from xai_components.xai_tvb.simulator_code import Generic2dOscillatorComponent
+from xai_components.base_tvb import ComponentWithWidget
 
 
 class NotebookGenerator(object):
@@ -38,29 +47,28 @@ class NotebookGenerator(object):
 
 class WidgetCodeGenerator(object):
 
-    # TODO: keep strings here? Or use TVB classes?
     @staticmethod
-    def phase_plane(model='Generic2dOscillator', integrator='HeunDeterministic'):
+    def phase_plane(model=Generic2dOscillator, integrator=HeunDeterministic):
         code = "from tvb.simulator.lab import models, integrators\n" \
                "from tvbwidgets.api import PhasePlaneWidget\n" \
                "from IPython.core.display_functions import display\n" \
                "\n" \
                "w = PhasePlaneWidget(model=models.{0}(), integrator=integrators.{1}());\n" \
                "display(w.get_widget());"
-        return code.format(model, integrator)
+        return code.format(model.__name__, integrator.__name__)
 
     @staticmethod
-    def get_widget_code(component_name):
-        # TODO: how to determine which components use the PPW?
-        tvb_ht_name = component_name
+    def get_widget_code(component_name, component_path):
+        component_class = determine_component_class(component_name, component_path)
 
-        suffixes = ['ModelComponent', 'Component']
-        for suffix in suffixes:
-            if tvb_ht_name.endswith(suffix):
-                tvb_ht_name = component_name[:-len(suffix)]
-
-        if component_name in [Generic2dOscillatorComponent.__name__, MontbrioPazoRoxinModelComponent.__name__]:
-            return WidgetCodeGenerator.phase_plane(tvb_ht_name)
+        if issubclass(component_class, ComponentWithWidget):
+            return WidgetCodeGenerator.phase_plane(component_class().tvb_ht_class)
 
         else:
             return WidgetCodeGenerator.phase_plane()
+
+
+def determine_component_class(component_name, component_path):
+    component_module = importlib.import_module(component_path.replace(os.sep, '.')[:-3])
+    component_class = getattr(component_module, component_name)
+    return component_class
