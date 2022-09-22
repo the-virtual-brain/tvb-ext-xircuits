@@ -490,7 +490,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 						if (portIn) {
 							let label = allPort[port].getOptions()["label"];
 							label = label.replace(/\s+/g, "_");
-							label = label.toLowerCase();
+							// label = label.toLowerCase();
 
 							if (label.startsWith("★")) {
 								const newLabel = label.split("★")[1];
