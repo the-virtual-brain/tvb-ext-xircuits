@@ -5,267 +5,169 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
-import numpy as np
 from tvb.simulator.coupling import Coupling
 from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary
+from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class Linear(Component):
+    from tvb.simulator.coupling import Linear
     a: InArg[list]
     b: InArg[list]
 
-    coupling: OutArg[Coupling]
+    linear: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.a = InArg(None)
-        self.b = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.Linear)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import Linear
+        linear = self.Linear()
 
-        a = self.a.value
-        b = self.b.value
-
-        a_arr = np.array(a)
-        b_arr = np.array(b)
-
-        linear = Linear(a=a_arr, b=b_arr)
-        self.coupling.value = linear
-        print_component_summary(self.coupling.value)
+        set_values(self, linear)
+        self.linear.value = linear
+        print_component_summary(self.linear.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class Scaling(Component):
+    from tvb.simulator.coupling import Scaling
     a: InArg[list]
 
-    coupling: OutArg[Coupling]
+    scaling: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.a = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.Scaling)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import Scaling
+        scaling = self.Scaling()
 
-        a = self.a.value
-        a_arr = np.array(a)
-
-        scaling = Scaling(a=a_arr)
-        self.coupling.value = scaling
-        print_component_summary(self.coupling.value)
+        set_values(self, scaling)
+        self.scaling.value = scaling
+        print_component_summary(self.scaling.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class HyperbolicTangent(Component):
+    from tvb.simulator.coupling import HyperbolicTangent
     a: InArg[list]
     b: InArg[list]
     midpoint: InArg[list]
     sigma: InArg[list]
 
-    coupling: OutArg[Coupling]
+    hyperbolicTangent: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.a = InArg(None)
-        self.b = InArg(None)
-        self.midpoint = InArg(None)
-        self.sigma = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.HyperbolicTangent)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import HyperbolicTangent
+        hyperbolicTangent = self.HyperbolicTangent()
 
-        a = self.a.value
-        b = self.b.value
-        midpoint = self.midpoint.value
-        sigma = self.sigma.value
-
-        a_arr = np.array(a)
-        b_arr = np.array(b)
-        midpoint_arr = np.array(midpoint)
-        sigma_arr = np.array(sigma)
-
-        hyperbolic_tangent = HyperbolicTangent(a=a_arr, b=b_arr, midpoint=midpoint_arr, sigma=sigma_arr)
-        self.coupling.value = hyperbolic_tangent
-        print_component_summary(self.coupling.value)
+        set_values(self, hyperbolicTangent)
+        self.hyperbolicTangent.value = hyperbolicTangent
+        print_component_summary(self.hyperbolicTangent.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class Sigmoidal(Component):
+    from tvb.simulator.coupling import Sigmoidal
     cmin: InArg[list]
     cmax: InArg[list]
     midpoint: InArg[list]
     a: InArg[list]
     sigma: InArg[list]
 
-    coupling: OutArg[Coupling]
+    sigmoidal: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.cmin = InArg(None)
-        self.cmax = InArg(None)
-        self.midpoint = InArg(None)
-        self.a = InArg(None)
-        self.sigma = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.Sigmoidal)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import Sigmoidal
+        sigmoidal = self.Sigmoidal()
 
-        cmin = self.cmin.value
-        cmax = self.cmax.value
-        midpoint = self.midpoint.value
-        a = self.a.value
-        sigma = self.sigma.value
-
-        cmin_arr = np.array(cmin)
-        cmax_arr = np.array(cmax)
-        midpoint_arr = np.array(midpoint)
-        a_arr = np.array(a)
-        sigma_arr = np.array(sigma)
-
-        sigmoidal = Sigmoidal(cmin=cmin_arr, cmax=cmax_arr, midpoint=midpoint_arr, a=a_arr, sigma=sigma_arr)
-        self.coupling.value = sigmoidal
-        print_component_summary(self.coupling.value)
+        set_values(self, sigmoidal)
+        self.sigmoidal.value = sigmoidal
+        print_component_summary(self.sigmoidal.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class SigmoidalJansenRit(Component):
+    from tvb.simulator.coupling import SigmoidalJansenRit
     cmin: InArg[list]
     cmax: InArg[list]
     midpoint: InArg[list]
     r: InArg[list]
     a: InArg[list]
 
-    coupling: OutArg[Coupling]
+    sigmoidalJansenRit: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.cmin = InArg(None)
-        self.cmax = InArg(None)
-        self.midpoint = InArg(None)
-        self.r = InArg(None)
-        self.a = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.SigmoidalJansenRit)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import SigmoidalJansenRit
+        sigmoidalJansenRit = self.SigmoidalJansenRit()
 
-        cmin = self.cmin.value
-        cmax = self.cmax.value
-        midpoint = self.midpoint.value
-        r = self.r.value
-        a = self.a.value
-
-        cmin_arr = np.array(cmin)
-        cmax_arr = np.array(cmax)
-        midpoint_arr = np.array(midpoint)
-        r_arr = np.array(r)
-        a_arr = np.array(a)
-
-        sigmoidal_jansen_rit = SigmoidalJansenRit(cmin=cmin_arr, cmax=cmax_arr, midpoint=midpoint_arr, r=r_arr, a=a_arr)
-        self.coupling.value = sigmoidal_jansen_rit
-        print_component_summary(self.coupling.value)
+        set_values(self, sigmoidalJansenRit)
+        self.sigmoidalJansenRit.value = sigmoidalJansenRit
+        print_component_summary(self.sigmoidalJansenRit.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class PreSigmoidal(Component):
-    h: InArg[list]
-    q: InArg[list]
-    g: InArg[list]
-    p: InArg[list]
+    from tvb.simulator.coupling import PreSigmoidal
+    H: InArg[list]
+    Q: InArg[list]
+    G: InArg[list]
+    P: InArg[list]
     theta: InArg[list]
     dynamic: InArg[bool]
-    global_t: InArg[bool]
+    globalT: InArg[bool]
 
-    coupling: OutArg[Coupling]
+    preSigmoidal: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.h = InArg(None)
-        self.q = InArg(None)
-        self.g = InArg(None)
-        self.p = InArg(None)
-        self.theta = InArg(None)
-        self.dynamic = InArg(None)
-        self.global_t = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.PreSigmoidal)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import PreSigmoidal
+        preSigmoidal = self.PreSigmoidal()
 
-        h = self.h.value
-        q = self.q.value
-        g = self.g.value
-        p = self.p.value
-        theta = self.theta.value
-        dynamic = self.dynamic.value
-        global_t = self.global_t.value
-
-        h_arr = np.array(h)
-        q_arr = np.array(q)
-        g_arr = np.array(g)
-        p_arr = np.array(p)
-        theta_arr = np.array(theta)
-
-        pre_sigmoidal = PreSigmoidal(H=h_arr, Q=q_arr, G=g_arr, P=p_arr, theta=theta_arr,dynamic=dynamic,
-                                     globalT=global_t)
-        self.coupling.value = pre_sigmoidal
-        print_component_summary(self.coupling.value)
+        set_values(self, preSigmoidal)
+        self.preSigmoidal.value = preSigmoidal
+        print_component_summary(self.preSigmoidal.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class Difference(Component):
+    from tvb.simulator.coupling import Difference
     a: InArg[list]
 
-    coupling: OutArg[Coupling]
+    difference: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.a = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.Difference)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import Difference
+        difference = self.Difference()
 
-        a = self.a.value
-        a_arr = np.array(a)
-
-        difference = Difference(a=a_arr)
-        self.coupling.value = difference
-        print_component_summary(self.coupling.value)
+        set_values(self, difference)
+        self.difference.value = difference
+        print_component_summary(self.difference.value)
 
 
 @xai_component(color='rgb(0, 102, 178)')
 class Kuramoto(Component):
+    from tvb.simulator.coupling import Kuramoto
     a: InArg[list]
 
-    coupling: OutArg[Coupling]
+    kuramoto: OutArg[Coupling]
 
     def __init__(self):
-        self.done = False
-        self.a = InArg(None)
-        self.coupling = OutArg(None)
+        set_defaults(self, self.Kuramoto)
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.coupling import Kuramoto
+        kuramoto = self.Kuramoto()
 
-        a = self.a.value
-        a_arr = np.array(a)
+        set_values(self, kuramoto)
+        self.kuramoto.value = kuramoto
+        print_component_summary(self.kuramoto.value)
 
-        kuramoto = Kuramoto(a=a_arr)
-        self.coupling.value = kuramoto
-        print_component_summary(self.coupling.value)
