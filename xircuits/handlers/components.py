@@ -162,21 +162,22 @@ class ComponentsRouteHandler(APIHandler):
 
         try:
             component = input_data["component"]
+            component_path = input_data["path"]
         except KeyError:
             data = {"error_msg": "Could not determine the component from POST params!"}
             self.finish(json.dumps(data))
 
-        notebook_path = self.generate_widget_notebook(component)
+        notebook_path = self.generate_widget_notebook(component, component_path)
         data = {"widget": notebook_path}
 
         self.finish(json.dumps(data))
 
-    def generate_widget_notebook(self, component):
+    def generate_widget_notebook(self, component, component_path):
         nb_generator = NotebookGenerator()
 
         text = f"""# Interactive setup for {component}"""
         nb_generator.add_markdown_cell(text)
-        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component))
+        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_path))
 
         path = nb_generator.store(component)
         return path
