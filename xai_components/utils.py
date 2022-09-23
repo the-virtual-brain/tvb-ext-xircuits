@@ -52,10 +52,10 @@ def set_values(component, tvb_object):
             # if attribute in TVB is of type NArray, the list coming from Xircuits workflow must be converted to
             # numpy.array  to be able to set the value on the TVB object
             if isinstance(attr_value, NArray):
-                # if default for attr is None and was not set by user
+                # if default for attr is None and was not set by user do not attempt to set it
                 if not xircuits_value:
-                    xircuits_value = []
-                dtype = attr_value.dtype.name
+                    continue
+                dtype = attr_value.dtype.name   # needed for NArrays of int type
                 xircuits_value = np.array(object=xircuits_value, dtype=np.dtype(dtype))
             setattr(tvb_object, attr, xircuits_value)
 
