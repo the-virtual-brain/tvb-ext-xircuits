@@ -13,48 +13,48 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class LarterBreakspear(Component):
     from tvb.simulator.models.larter_breakspear import LarterBreakspear
-    gCa: InArg[list]
-    gK: InArg[list]
-    gL: InArg[list]
-    phi: InArg[list]
-    gNa: InArg[list]
-    TK: InArg[list]
-    TCa: InArg[list]
-    TNa: InArg[list]
-    VCa: InArg[list]
-    VK: InArg[list]
-    VL: InArg[list]
-    VNa: InArg[list]
-    d_K: InArg[list]
-    tau_K: InArg[list]
-    d_Na: InArg[list]
-    d_Ca: InArg[list]
-    aei: InArg[list]
-    aie: InArg[list]
-    b: InArg[list]
-    C: InArg[list]
-    ane: InArg[list]
-    ani: InArg[list]
-    aee: InArg[list]
-    Iext: InArg[list]
-    rNMDA: InArg[list]
-    VT: InArg[list]
-    d_V: InArg[list]
-    ZT: InArg[list]
-    d_Z: InArg[list]
-    QV_max: InArg[list]
-    QZ_max: InArg[list]
-    t_scale: InArg[list]
+    gCa: InArg[float]
+    gK: InArg[float]
+    gL: InArg[float]
+    phi: InArg[float]
+    gNa: InArg[float]
+    TK: InArg[float]
+    TCa: InArg[float]
+    TNa: InArg[float]
+    VCa: InArg[float]
+    VK: InArg[float]
+    VL: InArg[float]
+    VNa: InArg[float]
+    d_K: InArg[float]
+    tau_K: InArg[float]
+    d_Na: InArg[float]
+    d_Ca: InArg[float]
+    aei: InArg[float]
+    aie: InArg[float]
+    b: InArg[float]
+    C: InArg[float]
+    ane: InArg[float]
+    ani: InArg[float]
+    aee: InArg[float]
+    Iext: InArg[float]
+    rNMDA: InArg[float]
+    VT: InArg[float]
+    d_V: InArg[float]
+    ZT: InArg[float]
+    d_Z: InArg[float]
+    QV_max: InArg[float]
+    QZ_max: InArg[float]
+    t_scale: InArg[float]
     variables_of_interest: InArg[list]
 
-    larterbreakspear: OutArg[Model]
+    larterBreakspear: OutArg[Model]
 
     def __init__(self):
         set_defaults(self, self.LarterBreakspear)
 
     def execute(self, ctx) -> None:
-        larterbreakspear = self.LarterBreakspear()
+        larterBreakspear = self.LarterBreakspear()
 
-        set_values(self, larterbreakspear)
-        self.larterbreakspear.value = larterbreakspear
-        print_component_summary(self.larterbreakspear.value)
+        set_values(self, larterBreakspear)
+        self.larterBreakspear.value = larterBreakspear
+        print_component_summary(self.larterBreakspear.value)

@@ -14,7 +14,7 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 # @xai_component(color='rgb(101, 179, 46)')
 # class KuramotoT(Component):
 #     from tvb.simulator.models.kuramotoT import KuramotoT
-#     omega: InArg[list]
+#     omega: InArg[float]
 #     variables_of_interest: InArg[list]
 #
 #     kuramotoT: OutArg[Model]
