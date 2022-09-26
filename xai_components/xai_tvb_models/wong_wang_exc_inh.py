@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class ReducedWongWangExcInh(Component):
-    from tvb.simulator.models.wong_wang_exc_inh import ReducedWongWangExcInh
+class ReducedWongWangExcInh(ComponentWithWidget):
     a_e: InArg[float]
     b_e: InArg[float]
     d_e: InArg[float]
@@ -36,11 +36,13 @@ class ReducedWongWangExcInh(Component):
 
     reducedWongWangExcInh: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.ReducedWongWangExcInh)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.wong_wang_exc_inh import ReducedWongWangExcInh
+        return ReducedWongWangExcInh
 
     def execute(self, ctx) -> None:
-        reducedWongWangExcInh = self.ReducedWongWangExcInh()
+        reducedWongWangExcInh = self.tvb_ht_class()
 
         set_values(self, reducedWongWangExcInh)
         self.reducedWongWangExcInh.value = reducedWongWangExcInh
@@ -48,8 +50,7 @@ class ReducedWongWangExcInh(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class DecoBalancedExcInh(Component):
-    from tvb.simulator.models.wong_wang_exc_inh import DecoBalancedExcInh
+class DecoBalancedExcInh(ComponentWithWidget):
     M_i: InArg[float]
     a_e: InArg[float]
     b_e: InArg[float]
@@ -74,13 +75,14 @@ class DecoBalancedExcInh(Component):
 
     decoBalancedExcInh: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.DecoBalancedExcInh)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.wong_wang_exc_inh import DecoBalancedExcInh
+        return DecoBalancedExcInh
 
     def execute(self, ctx) -> None:
-        decoBalancedExcInh = self.DecoBalancedExcInh()
+        decoBalancedExcInh = self.tvb_ht_class()
 
         set_values(self, decoBalancedExcInh)
         self.decoBalancedExcInh.value = decoBalancedExcInh
         print_component_summary(self.decoBalancedExcInh.value)
-

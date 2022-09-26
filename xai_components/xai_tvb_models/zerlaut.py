@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class ZerlautAdaptationFirstOrder(Component):
-    from tvb.simulator.models.zerlaut import ZerlautAdaptationFirstOrder
+class ZerlautAdaptationFirstOrder(ComponentWithWidget):
     g_L: InArg[float]
     E_L_e: InArg[float]
     E_L_i: InArg[float]
@@ -45,11 +45,13 @@ class ZerlautAdaptationFirstOrder(Component):
 
     zerlautAdaptationFirstOrder: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.ZerlautAdaptationFirstOrder)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.zerlaut import ZerlautAdaptationFirstOrder
+        return ZerlautAdaptationFirstOrder
 
     def execute(self, ctx) -> None:
-        zerlautAdaptationFirstOrder = self.ZerlautAdaptationFirstOrder()
+        zerlautAdaptationFirstOrder = self.tvb_ht_class()
 
         set_values(self, zerlautAdaptationFirstOrder)
         self.zerlautAdaptationFirstOrder.value = zerlautAdaptationFirstOrder
@@ -57,8 +59,7 @@ class ZerlautAdaptationFirstOrder(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class ZerlautAdaptationSecondOrder(Component):
-    from tvb.simulator.models.zerlaut import ZerlautAdaptationSecondOrder
+class ZerlautAdaptationSecondOrder(ComponentWithWidget):
     g_L: InArg[float]
     E_L_e: InArg[float]
     E_L_i: InArg[float]
@@ -91,13 +92,14 @@ class ZerlautAdaptationSecondOrder(Component):
 
     zerlautAdaptationSecondOrder: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.ZerlautAdaptationSecondOrder)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.zerlaut import ZerlautAdaptationSecondOrder
+        return ZerlautAdaptationSecondOrder
 
     def execute(self, ctx) -> None:
-        zerlautAdaptationSecondOrder = self.ZerlautAdaptationSecondOrder()
+        zerlautAdaptationSecondOrder = self.tvb_ht_class()
 
         set_values(self, zerlautAdaptationSecondOrder)
         self.zerlautAdaptationSecondOrder.value = zerlautAdaptationSecondOrder
         print_component_summary(self.zerlautAdaptationSecondOrder.value)
-

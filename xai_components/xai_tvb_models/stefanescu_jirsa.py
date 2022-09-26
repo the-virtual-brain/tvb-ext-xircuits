@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class ReducedSetFitzHughNagumo(Component):
-    from tvb.simulator.models.stefanescu_jirsa import ReducedSetFitzHughNagumo
+class ReducedSetFitzHughNagumo(ComponentWithWidget):
     tau: InArg[float]
     a: InArg[float]
     b: InArg[float]
@@ -25,11 +25,13 @@ class ReducedSetFitzHughNagumo(Component):
 
     reducedSetFitzHughNagumo: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.ReducedSetFitzHughNagumo)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.stefanescu_jirsa import ReducedSetFitzHughNagumo
+        return ReducedSetFitzHughNagumo
 
     def execute(self, ctx) -> None:
-        reducedSetFitzHughNagumo = self.ReducedSetFitzHughNagumo()
+        reducedSetFitzHughNagumo = self.tvb_ht_class()
 
         set_values(self, reducedSetFitzHughNagumo)
         self.reducedSetFitzHughNagumo.value = reducedSetFitzHughNagumo
@@ -37,8 +39,7 @@ class ReducedSetFitzHughNagumo(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class ReducedSetHindmarshRose(Component):
-    from tvb.simulator.models.stefanescu_jirsa import ReducedSetHindmarshRose
+class ReducedSetHindmarshRose(ComponentWithWidget):
     r: InArg[float]
     a: InArg[float]
     b: InArg[float]
@@ -55,11 +56,13 @@ class ReducedSetHindmarshRose(Component):
 
     reducedSetHindmarshRose: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.ReducedSetHindmarshRose)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.stefanescu_jirsa import ReducedSetHindmarshRose
+        return ReducedSetHindmarshRose
 
     def execute(self, ctx) -> None:
-        reducedSetHindmarshRose = self.ReducedSetHindmarshRose()
+        reducedSetHindmarshRose = self.tvb_ht_class()
 
         set_values(self, reducedSetHindmarshRose)
         self.reducedSetHindmarshRose.value = reducedSetHindmarshRose
