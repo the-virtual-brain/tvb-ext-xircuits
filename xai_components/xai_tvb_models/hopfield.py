@@ -13,9 +13,9 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class Hopfield(Component):
     from tvb.simulator.models.hopfield import Hopfield
-    taux: InArg[list]
-    tauT: InArg[list]
-    dynamic: InArg[list]
+    taux: InArg[float]
+    tauT: InArg[float]
+    dynamic: InArg[int]
     variables_of_interest: InArg[list]
 
     hopfield: OutArg[Model]

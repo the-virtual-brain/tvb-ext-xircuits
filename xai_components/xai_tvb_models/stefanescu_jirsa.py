@@ -13,14 +13,14 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedSetFitzHughNagumo(Component):
     from tvb.simulator.models.stefanescu_jirsa import ReducedSetFitzHughNagumo
-    tau: InArg[list]
-    a: InArg[list]
-    b: InArg[list]
-    K11: InArg[list]
-    K12: InArg[list]
-    K21: InArg[list]
-    sigma: InArg[list]
-    mu: InArg[list]
+    tau: InArg[float]
+    a: InArg[float]
+    b: InArg[float]
+    K11: InArg[float]
+    K12: InArg[float]
+    K21: InArg[float]
+    sigma: InArg[float]
+    mu: InArg[float]
     variables_of_interest: InArg[list]
 
     reducedSetFitzHughNagumo: OutArg[Model]
@@ -39,18 +39,18 @@ class ReducedSetFitzHughNagumo(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedSetHindmarshRose(Component):
     from tvb.simulator.models.stefanescu_jirsa import ReducedSetHindmarshRose
-    r: InArg[list]
-    a: InArg[list]
-    b: InArg[list]
-    c: InArg[list]
-    d: InArg[list]
-    s: InArg[list]
-    xo: InArg[list]
-    K11: InArg[list]
-    K12: InArg[list]
-    K21: InArg[list]
-    sigma: InArg[list]
-    mu: InArg[list]
+    r: InArg[float]
+    a: InArg[float]
+    b: InArg[float]
+    c: InArg[float]
+    d: InArg[float]
+    s: InArg[float]
+    xo: InArg[float]
+    K11: InArg[float]
+    K12: InArg[float]
+    K21: InArg[float]
+    sigma: InArg[float]
+    mu: InArg[float]
     variables_of_interest: InArg[list]
 
     reducedSetHindmarshRose: OutArg[Model]

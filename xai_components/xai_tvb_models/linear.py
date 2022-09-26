@@ -11,9 +11,9 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class Linear(Component):
+class LinearModel(Component):
     from tvb.simulator.models.linear import Linear
-    gamma: InArg[list]
+    gamma: InArg[float]
     variables_of_interest: InArg[list]
     parameter_names: InArg[list]
 

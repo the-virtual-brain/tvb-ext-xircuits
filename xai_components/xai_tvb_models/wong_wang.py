@@ -13,15 +13,15 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedWongWang(Component):
     from tvb.simulator.models.wong_wang import ReducedWongWang
-    a: InArg[list]
-    b: InArg[list]
-    d: InArg[list]
-    gamma: InArg[list]
-    tau_s: InArg[list]
-    w: InArg[list]
-    J_N: InArg[list]
-    I_o: InArg[list]
-    sigma_noise: InArg[list]
+    a: InArg[float]
+    b: InArg[float]
+    d: InArg[float]
+    gamma: InArg[float]
+    tau_s: InArg[float]
+    w: InArg[float]
+    J_N: InArg[float]
+    I_o: InArg[float]
+    sigma_noise: InArg[float]
     variables_of_interest: InArg[list]
 
     reducedWongWang: OutArg[Model]
