@@ -12,14 +12,14 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class MontbrioPazoRoxin(Component):
     from tvb.simulator.models.infinite_theta import MontbrioPazoRoxin
-    tau: InArg[list]
-    I: InArg[list]
-    Delta: InArg[list]
-    J: InArg[list]
-    eta: InArg[list]
-    Gamma: InArg[list]
-    cr: InArg[list]
-    cv: InArg[list]
+    tau: InArg[float]
+    I: InArg[float]
+    Delta: InArg[float]
+    J: InArg[float]
+    eta: InArg[float]
+    Gamma: InArg[float]
+    cr: InArg[float]
+    cv: InArg[float]
     variables_of_interest: InArg[list]
     parameter_names: InArg[list]
 
@@ -39,11 +39,11 @@ class MontbrioPazoRoxin(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class CoombesByrne(Component):
     from tvb.simulator.models.infinite_theta import CoombesByrne
-    Delta: InArg[list]
-    alpha: InArg[list]
-    v_syn: InArg[list]
-    k: InArg[list]
-    eta: InArg[list]
+    Delta: InArg[float]
+    alpha: InArg[float]
+    v_syn: InArg[float]
+    k: InArg[float]
+    eta: InArg[float]
     variables_of_interest: InArg[list]
 
     coombesByrne: OutArg[Model]
@@ -62,10 +62,10 @@ class CoombesByrne(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class CoombesByrne2D(Component):
     from tvb.simulator.models.infinite_theta import CoombesByrne2D
-    Delta: InArg[list]
-    v_syn: InArg[list]
-    k: InArg[list]
-    eta: InArg[list]
+    Delta: InArg[float]
+    v_syn: InArg[float]
+    k: InArg[float]
+    eta: InArg[float]
     variables_of_interest: InArg[list]
 
     coombesByrne2D: OutArg[Model]
@@ -84,15 +84,15 @@ class CoombesByrne2D(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class GastSchmidtKnosche_SD(Component):
     from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SD
-    tau: InArg[list]
-    tau_A: InArg[list]
-    alpha: InArg[list]
-    I: InArg[list]
-    Delta: InArg[list]
-    J: InArg[list]
-    eta: InArg[list]
-    cr: InArg[list]
-    cv: InArg[list]
+    tau: InArg[float]
+    tau_A: InArg[float]
+    alpha: InArg[float]
+    I: InArg[float]
+    Delta: InArg[float]
+    J: InArg[float]
+    eta: InArg[float]
+    cr: InArg[float]
+    cv: InArg[float]
     variables_of_interest: InArg[list]
 
     gastSchmidtKnosche_SD: OutArg[Model]
@@ -111,15 +111,15 @@ class GastSchmidtKnosche_SD(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class GastSchmidtKnosche_SF(Component):
     from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SF
-    tau: InArg[list]
-    tau_A: InArg[list]
-    alpha: InArg[list]
-    I: InArg[list]
-    Delta: InArg[list]
-    J: InArg[list]
-    eta: InArg[list]
-    cr: InArg[list]
-    cv: InArg[list]
+    tau: InArg[float]
+    tau_A: InArg[float]
+    alpha: InArg[float]
+    I: InArg[float]
+    Delta: InArg[float]
+    J: InArg[float]
+    eta: InArg[float]
+    cr: InArg[float]
+    cv: InArg[float]
     variables_of_interest: InArg[list]
 
     gastSchmidtKnosche_SF: OutArg[Model]
@@ -138,20 +138,20 @@ class GastSchmidtKnosche_SF(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class DumontGutkin(Component):
     from tvb.simulator.models.infinite_theta import DumontGutkin
-    I_e: InArg[list]
-    Delta_e: InArg[list]
-    eta_e: InArg[list]
-    tau_e: InArg[list]
-    I_i: InArg[list]
-    Delta_i: InArg[list]
-    eta_i: InArg[list]
-    tau_i: InArg[list]
-    tau_s: InArg[list]
-    J_ee: InArg[list]
-    J_ei: InArg[list]
-    J_ie: InArg[list]
-    J_ii: InArg[list]
-    Gamma: InArg[list]
+    I_e: InArg[float]
+    Delta_e: InArg[float]
+    eta_e: InArg[float]
+    tau_e: InArg[float]
+    I_i: InArg[float]
+    Delta_i: InArg[float]
+    eta_i: InArg[float]
+    tau_i: InArg[float]
+    tau_s: InArg[float]
+    J_ee: InArg[float]
+    J_ei: InArg[float]
+    J_ie: InArg[float]
+    J_ii: InArg[float]
+    Gamma: InArg[float]
     variables_of_interest: InArg[list]
 
     dumontGutkin: OutArg[Model]

@@ -11,10 +11,10 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class Linear(Component):
+class LinearCoupling(Component):
     from tvb.simulator.coupling import Linear
-    a: InArg[list]
-    b: InArg[list]
+    a: InArg[float]
+    b: InArg[float]
 
     linear: OutArg[Coupling]
 
@@ -32,7 +32,7 @@ class Linear(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class Scaling(Component):
     from tvb.simulator.coupling import Scaling
-    a: InArg[list]
+    a: InArg[float]
 
     scaling: OutArg[Coupling]
 
@@ -50,10 +50,10 @@ class Scaling(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class HyperbolicTangent(Component):
     from tvb.simulator.coupling import HyperbolicTangent
-    a: InArg[list]
-    b: InArg[list]
-    midpoint: InArg[list]
-    sigma: InArg[list]
+    a: InArg[float]
+    b: InArg[float]
+    midpoint: InArg[float]
+    sigma: InArg[float]
 
     hyperbolicTangent: OutArg[Coupling]
 
@@ -71,11 +71,11 @@ class HyperbolicTangent(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class Sigmoidal(Component):
     from tvb.simulator.coupling import Sigmoidal
-    cmin: InArg[list]
-    cmax: InArg[list]
-    midpoint: InArg[list]
-    a: InArg[list]
-    sigma: InArg[list]
+    cmin: InArg[float]
+    cmax: InArg[float]
+    midpoint: InArg[float]
+    a: InArg[float]
+    sigma: InArg[float]
 
     sigmoidal: OutArg[Coupling]
 
@@ -93,11 +93,11 @@ class Sigmoidal(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class SigmoidalJansenRit(Component):
     from tvb.simulator.coupling import SigmoidalJansenRit
-    cmin: InArg[list]
-    cmax: InArg[list]
-    midpoint: InArg[list]
-    r: InArg[list]
-    a: InArg[list]
+    cmin: InArg[float]
+    cmax: InArg[float]
+    midpoint: InArg[float]
+    r: InArg[float]
+    a: InArg[float]
 
     sigmoidalJansenRit: OutArg[Coupling]
 
@@ -115,11 +115,11 @@ class SigmoidalJansenRit(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class PreSigmoidal(Component):
     from tvb.simulator.coupling import PreSigmoidal
-    H: InArg[list]
-    Q: InArg[list]
-    G: InArg[list]
-    P: InArg[list]
-    theta: InArg[list]
+    H: InArg[float]
+    Q: InArg[float]
+    G: InArg[float]
+    P: InArg[float]
+    theta: InArg[float]
     dynamic: InArg[bool]
     globalT: InArg[bool]
 
@@ -139,7 +139,7 @@ class PreSigmoidal(Component):
 @xai_component(color='rgb(0, 102, 178)')
 class Difference(Component):
     from tvb.simulator.coupling import Difference
-    a: InArg[list]
+    a: InArg[float]
 
     difference: OutArg[Coupling]
 
@@ -155,9 +155,9 @@ class Difference(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class Kuramoto(Component):
+class KuramotoCoupling(Component):
     from tvb.simulator.coupling import Kuramoto
-    a: InArg[list]
+    a: InArg[float]
 
     kuramoto: OutArg[Coupling]
 

@@ -53,9 +53,10 @@ def set_values(component, tvb_object):
             # numpy.array  to be able to set the value on the TVB object
             if isinstance(attr_value, NArray):
                 # if default for attr is None and was not set by user do not attempt to set it
-                if not xircuits_value:
+                if not xircuits_value.any():    # use any to also test arrays with multiple elements, otherwise error
                     continue
                 dtype = attr_value.dtype.name   # needed for NArrays of int type
+                xircuits_value = [xircuits_value]   # need to convert it to list first
                 xircuits_value = np.array(object=xircuits_value, dtype=np.dtype(dtype))
             setattr(tvb_object, attr, xircuits_value)
 

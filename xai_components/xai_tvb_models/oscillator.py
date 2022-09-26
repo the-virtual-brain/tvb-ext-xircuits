@@ -13,37 +13,37 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 @xai_component(color='rgb(101, 179, 46)')
 class Generic2dOscillator(Component):
     from tvb.simulator.models.oscillator import Generic2dOscillator
-    tau: InArg[list]
-    I: InArg[list]
-    a: InArg[list]
-    b: InArg[list]
-    c: InArg[list]
-    d: InArg[list]
-    e: InArg[list]
-    f: InArg[list]
-    g: InArg[list]
-    alpha: InArg[list]
-    beta: InArg[list]
-    gamma: InArg[list]
+    tau: InArg[float]
+    I: InArg[float]
+    a: InArg[float]
+    b: InArg[float]
+    c: InArg[float]
+    d: InArg[float]
+    e: InArg[float]
+    f: InArg[float]
+    g: InArg[float]
+    alpha: InArg[float]
+    beta: InArg[float]
+    gamma: InArg[float]
     variables_of_interest: InArg[list]
 
-    generic2doscillator: OutArg[Model]
+    generic2dOscillator: OutArg[Model]
 
     def __init__(self):
         set_defaults(self, self.Generic2dOscillator)
 
     def execute(self, ctx) -> None:
-        generic2doscillator = self.Generic2dOscillator()
+        generic2dOscillator = self.Generic2dOscillator()
 
-        set_values(self, generic2doscillator)
-        self.generic2doscillator.value = generic2doscillator
-        print_component_summary(self.generic2doscillator.value)
+        set_values(self, generic2dOscillator)
+        self.generic2dOscillator.value = generic2dOscillator
+        print_component_summary(self.generic2dOscillator.value)
 
 
 @xai_component(color='rgb(101, 179, 46)')
 class Kuramoto(Component):
     from tvb.simulator.models.oscillator import Kuramoto
-    omega: InArg[list]
+    omega: InArg[float]
     variables_of_interest: InArg[list]
 
     kuramoto: OutArg[Model]
@@ -62,18 +62,18 @@ class Kuramoto(Component):
 @xai_component(color='rgb(101, 179, 46)')
 class SupHopf(Component):
     from tvb.simulator.models.oscillator import SupHopf
-    a: InArg[list]
-    omega: InArg[list]
+    a: InArg[float]
+    omega: InArg[float]
     variables_of_interest: InArg[list]
 
-    suphopf: OutArg[Model]
+    supHopf: OutArg[Model]
 
     def __init__(self):
         set_defaults(self, self.SupHopf)
 
     def execute(self, ctx) -> None:
-        suphopf = self.SupHopf()
+        supHopf = self.SupHopf()
 
-        set_values(self, suphopf)
-        self.suphopf.value = suphopf
-        print_component_summary(self.suphopf.value)
+        set_values(self, supHopf)
+        self.supHopf.value = supHopf
+        print_component_summary(self.supHopf.value)
