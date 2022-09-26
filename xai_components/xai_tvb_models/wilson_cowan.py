@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class WilsonCowan(Component):
-    from tvb.simulator.models.wilson_cowan import WilsonCowan
+class WilsonCowan(ComponentWithWidget):
     c_ee: InArg[float]
     c_ei: InArg[float]
     c_ie: InArg[float]
@@ -40,11 +40,13 @@ class WilsonCowan(Component):
 
     wilsonCowan: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.WilsonCowan)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.wilson_cowan import WilsonCowan
+        return WilsonCowan
 
     def execute(self, ctx) -> None:
-        wilsonCowan = self.WilsonCowan()
+        wilsonCowan = self.tvb_ht_class()
 
         set_values(self, wilsonCowan)
         self.wilsonCowan.value = wilsonCowan
