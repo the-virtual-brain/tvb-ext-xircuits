@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class Generic2dOscillator(Component):
-    from tvb.simulator.models.oscillator import Generic2dOscillator
+class Generic2dOscillator(ComponentWithWidget):
     tau: InArg[float]
     I: InArg[float]
     a: InArg[float]
@@ -29,11 +29,13 @@ class Generic2dOscillator(Component):
 
     generic2dOscillator: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.Generic2dOscillator)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.oscillator import Generic2dOscillator
+        return Generic2dOscillator
 
     def execute(self, ctx) -> None:
-        generic2dOscillator = self.Generic2dOscillator()
+        generic2dOscillator = self.tvb_ht_class()
 
         set_values(self, generic2dOscillator)
         self.generic2dOscillator.value = generic2dOscillator
@@ -41,18 +43,19 @@ class Generic2dOscillator(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class Kuramoto(Component):
-    from tvb.simulator.models.oscillator import Kuramoto
+class Kuramoto(ComponentWithWidget):
     omega: InArg[float]
     variables_of_interest: InArg[list]
 
     kuramoto: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.Kuramoto)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.oscillator import Kuramoto
+        return Kuramoto
 
     def execute(self, ctx) -> None:
-        kuramoto = self.Kuramoto()
+        kuramoto = self.tvb_ht_class()
 
         set_values(self, kuramoto)
         self.kuramoto.value = kuramoto
@@ -60,19 +63,20 @@ class Kuramoto(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class SupHopf(Component):
-    from tvb.simulator.models.oscillator import SupHopf
+class SupHopf(ComponentWithWidget):
     a: InArg[float]
     omega: InArg[float]
     variables_of_interest: InArg[list]
 
     supHopf: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.SupHopf)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.oscillator import SupHopf
+        return SupHopf
 
     def execute(self, ctx) -> None:
-        supHopf = self.SupHopf()
+        supHopf = self.tvb_ht_class()
 
         set_values(self, supHopf)
         self.supHopf.value = supHopf
