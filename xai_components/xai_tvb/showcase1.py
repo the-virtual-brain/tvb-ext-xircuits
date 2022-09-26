@@ -19,11 +19,12 @@ from tvb.simulator.models.base import Model
 from tvb.simulator.noise import Noise
 from tvb.simulator.simulator import Simulator
 from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
 from xai_components.xai_tvb.utils import print_component_summary
 
 
 @xai_component
-class MontbrioPazoRoxinModelComponent(Component):
+class MontbrioPazoRoxinModelComponent(ComponentWithWidget):
     eta: InArg[float]
     j: InArg[float]
     delta: InArg[float]
@@ -39,11 +40,13 @@ class MontbrioPazoRoxinModelComponent(Component):
         self.tau = InArg(None)
         self.model = OutArg(None)
 
-    def execute(self, ctx) -> None:
-        # imports
+    @property
+    def tvb_ht_class(self):
         from tvb.simulator.models.infinite_theta import MontbrioPazoRoxin
+        return MontbrioPazoRoxin
 
-        model = MontbrioPazoRoxin(
+    def execute(self, ctx) -> None:
+        model = self.tvb_ht_class(
             eta=np.r_[self.eta.value],
             J=np.r_[self.j.value],
             Delta=np.r_[self.delta.value],

@@ -11,6 +11,8 @@ from jupyter_server.base.handlers import APIHandler
 import platform
 
 from .config import get_config
+from xai_components.xai_tvb.simulator_code import ComponentWithWidget
+from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
 
 DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
@@ -66,12 +68,14 @@ COLOR_PALETTE = [
 GROUP_GENERAL = "GENERAL"
 GROUP_ADVANCED = "ADVANCED"
 
+
 def remove_prefix(input_str, prefix):
     prefix_len = len(prefix)
     if input_str[0:prefix_len] == prefix:
         return input_str[prefix_len:]
     else:
         return input_str
+
 
 def read_orig_code(node: ast.AST, lines):
     line_from = node.lineno - 1
@@ -88,6 +92,13 @@ def read_orig_code(node: ast.AST, lines):
         between_lines = lines[(line_from+1):line_to]
         end_line = lines[line_to][col_to]
         return "\n".join(chain([start_line], between_lines, [end_line]))
+
+
+def component_has_widget_assigned(node):
+    if any(base_class.id == ComponentWithWidget.__name__ for base_class in node.bases):
+        return True
+
+    return False
 
 
 class ComponentsRouteHandler(APIHandler):
@@ -139,10 +150,37 @@ class ComponentsRouteHandler(APIHandler):
                 c["color"] = COLOR_PALETTE[idx % len(COLOR_PALETTE)]
 
         data = {"components": components,
-                "error_msg" : error_msg}
+                "error_msg": error_msg}
 
         self.finish(json.dumps(data))
-        
+
+    @tornado.web.authenticated
+    def post(self):
+        input_data = self.get_json_body()
+        component = None
+
+        try:
+            component = input_data["component"]
+            component_path = input_data["path"]
+        except KeyError:
+            data = {"error_msg": "Could not determine the component from POST params!"}
+            self.finish(json.dumps(data))
+
+        notebook_path = self.generate_widget_notebook(component, component_path)
+        data = {"widget": notebook_path}
+
+        self.finish(json.dumps(data))
+
+    def generate_widget_notebook(self, component, component_path):
+        nb_generator = NotebookGenerator()
+
+        text = f"""# Interactive setup for {component}"""
+        nb_generator.add_markdown_cell(text)
+        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_path))
+
+        path = nb_generator.store(component)
+        return path
+
     def get_component_directories(self):
         paths = list(DEFAULT_COMPONENTS_PATHS)
         paths.append(get_config().get("DEV", "BASE_PATH"))
@@ -151,7 +189,7 @@ class ComponentsRouteHandler(APIHandler):
     def extract_components(self, file_path, base_dir, python_path):
         with open(file_path) as f:
             lines = f.readlines()
-        
+
         parse_tree = ast.parse(file_path.read_text(), file_path)
         # Look for top level class definitions that are decorated with "@xai_component"
         is_xai_component = lambda node: isinstance(node, ast.ClassDef) and \
@@ -175,7 +213,7 @@ class ComponentsRouteHandler(APIHandler):
         is_arg = lambda n: isinstance(n, ast.AnnAssign) and \
                                            isinstance(n.annotation, ast.Subscript) and \
                                            n.annotation.value.id in ('InArg', 'InCompArg', 'OutArg')
-        
+
         python_version = platform.python_version_tuple()
         if int(python_version[1]) == 8:
             variables = [
@@ -205,6 +243,8 @@ class ComponentsRouteHandler(APIHandler):
             }
         ]
 
+        has_widget = component_has_widget_assigned(node)
+
         output = {
             "class": name,
             "package_name": ("xai_components." if python_path is None else "") + file_path.as_posix().replace("/", ".")[:-3],
@@ -217,7 +257,8 @@ class ComponentsRouteHandler(APIHandler):
             "type": "debug",
             "variables": variables,
             "docstring": docstring,
-            "lineno" : lineno
+            "lineno": lineno,
+            "has_widget": has_widget
         }
         output.update(keywords)
 

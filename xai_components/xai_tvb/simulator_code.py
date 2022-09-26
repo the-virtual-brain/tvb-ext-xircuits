@@ -13,6 +13,7 @@ from tvb.simulator.models.oscillator import Generic2dOscillator
 from tvb.simulator.simulator import Simulator
 
 from xai_components.base import InArg, OutArg, Component, xai_component
+from xai_components.base_tvb import ComponentWithWidget
 from xai_components.xai_tvb.utils import print_component_summary
 
 
@@ -66,7 +67,7 @@ class LinearCouplingComponent(Component):
 
 
 @xai_component
-class Generic2dOscillatorComponent(Component):
+class Generic2dOscillatorComponent(ComponentWithWidget):
     model: OutArg[Generic2dOscillator]
 
     def __init__(self):
@@ -74,11 +75,13 @@ class Generic2dOscillatorComponent(Component):
 
         self.model = OutArg(None)
 
-    def execute(self, ctx) -> None:
-        # imports
+    @property
+    def tvb_ht_class(self):
         from tvb.simulator.lab import models
+        return models.Generic2dOscillator
 
-        model = models.Generic2dOscillator()
+    def execute(self, ctx) -> None:
+        model = self.tvb_ht_class()
         self.model.value = model
         print_component_summary(self.model.value)
 
