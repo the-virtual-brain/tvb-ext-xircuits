@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class LarterBreakspear(Component):
-    from tvb.simulator.models.larter_breakspear import LarterBreakspear
+class LarterBreakspear(ComponentWithWidget):
     gCa: InArg[float]
     gK: InArg[float]
     gL: InArg[float]
@@ -49,11 +49,13 @@ class LarterBreakspear(Component):
 
     larterBreakspear: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.LarterBreakspear)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.larter_breakspear import LarterBreakspear
+        return LarterBreakspear
 
     def execute(self, ctx) -> None:
-        larterBreakspear = self.LarterBreakspear()
+        larterBreakspear = self.tvb_ht_class()
 
         set_values(self, larterBreakspear)
         self.larterBreakspear.value = larterBreakspear

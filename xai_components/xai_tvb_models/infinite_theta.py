@@ -5,13 +5,13 @@
 # (c) 2022-2023, TVB Widgets Team
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class MontbrioPazoRoxin(Component):
-    from tvb.simulator.models.infinite_theta import MontbrioPazoRoxin
+class MontbrioPazoRoxin(ComponentWithWidget):
     tau: InArg[float]
     I: InArg[float]
     Delta: InArg[float]
@@ -25,11 +25,13 @@ class MontbrioPazoRoxin(Component):
 
     montbrioPazoRoxin: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.MontbrioPazoRoxin)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import MontbrioPazoRoxin
+        return MontbrioPazoRoxin
 
     def execute(self, ctx) -> None:
-        montbrioPazoRoxin = self.MontbrioPazoRoxin()
+        montbrioPazoRoxin = self.tvb_ht_class()
 
         set_values(self, montbrioPazoRoxin)
         self.montbrioPazoRoxin.value = montbrioPazoRoxin
@@ -37,8 +39,7 @@ class MontbrioPazoRoxin(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class CoombesByrne(Component):
-    from tvb.simulator.models.infinite_theta import CoombesByrne
+class CoombesByrne(ComponentWithWidget):
     Delta: InArg[float]
     alpha: InArg[float]
     v_syn: InArg[float]
@@ -48,11 +49,13 @@ class CoombesByrne(Component):
 
     coombesByrne: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.CoombesByrne)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import CoombesByrne
+        return CoombesByrne
 
     def execute(self, ctx) -> None:
-        coombesByrne = self.CoombesByrne()
+        coombesByrne = self.tvb_ht_class()
 
         set_values(self, coombesByrne)
         self.coombesByrne.value = coombesByrne
@@ -60,8 +63,7 @@ class CoombesByrne(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class CoombesByrne2D(Component):
-    from tvb.simulator.models.infinite_theta import CoombesByrne2D
+class CoombesByrne2D(ComponentWithWidget):
     Delta: InArg[float]
     v_syn: InArg[float]
     k: InArg[float]
@@ -70,11 +72,13 @@ class CoombesByrne2D(Component):
 
     coombesByrne2D: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.CoombesByrne2D)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import CoombesByrne2D
+        return CoombesByrne2D
 
     def execute(self, ctx) -> None:
-        coombesByrne2D = self.CoombesByrne2D()
+        coombesByrne2D = self.tvb_ht_class()
 
         set_values(self, coombesByrne2D)
         self.coombesByrne2D.value = coombesByrne2D
@@ -82,8 +86,7 @@ class CoombesByrne2D(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class GastSchmidtKnosche_SD(Component):
-    from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SD
+class GastSchmidtKnosche_SD(ComponentWithWidget):
     tau: InArg[float]
     tau_A: InArg[float]
     alpha: InArg[float]
@@ -97,11 +100,13 @@ class GastSchmidtKnosche_SD(Component):
 
     gastSchmidtKnosche_SD: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.GastSchmidtKnosche_SD)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SD
+        return GastSchmidtKnosche_SD
 
     def execute(self, ctx) -> None:
-        gastSchmidtKnosche_SD = self.GastSchmidtKnosche_SD()
+        gastSchmidtKnosche_SD = self.tvb_ht_class()
 
         set_values(self, gastSchmidtKnosche_SD)
         self.gastSchmidtKnosche_SD.value = gastSchmidtKnosche_SD
@@ -109,8 +114,7 @@ class GastSchmidtKnosche_SD(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class GastSchmidtKnosche_SF(Component):
-    from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SF
+class GastSchmidtKnosche_SF(ComponentWithWidget):
     tau: InArg[float]
     tau_A: InArg[float]
     alpha: InArg[float]
@@ -124,11 +128,13 @@ class GastSchmidtKnosche_SF(Component):
 
     gastSchmidtKnosche_SF: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.GastSchmidtKnosche_SF)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import GastSchmidtKnosche_SF
+        return GastSchmidtKnosche_SF
 
     def execute(self, ctx) -> None:
-        gastSchmidtKnosche_SF = self.GastSchmidtKnosche_SF()
+        gastSchmidtKnosche_SF = self.tvb_ht_class()
 
         set_values(self, gastSchmidtKnosche_SF)
         self.gastSchmidtKnosche_SF.value = gastSchmidtKnosche_SF
@@ -136,8 +142,7 @@ class GastSchmidtKnosche_SF(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class DumontGutkin(Component):
-    from tvb.simulator.models.infinite_theta import DumontGutkin
+class DumontGutkin(ComponentWithWidget):
     I_e: InArg[float]
     Delta_e: InArg[float]
     eta_e: InArg[float]
@@ -156,11 +161,13 @@ class DumontGutkin(Component):
 
     dumontGutkin: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.DumontGutkin)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.infinite_theta import DumontGutkin
+        return DumontGutkin
 
     def execute(self, ctx) -> None:
-        dumontGutkin = self.DumontGutkin()
+        dumontGutkin = self.tvb_ht_class()
 
         set_values(self, dumontGutkin)
         self.dumontGutkin.value = dumontGutkin
