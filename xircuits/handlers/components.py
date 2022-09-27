@@ -10,8 +10,8 @@ import tornado
 from jupyter_server.base.handlers import APIHandler
 import platform
 
+from xai_components.base_tvb import ComponentWithWidget
 from .config import get_config
-from xai_components.xai_tvb.simulator_code import ComponentWithWidget
 from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
 
 DEFAULT_COMPONENTS_PATHS = [
