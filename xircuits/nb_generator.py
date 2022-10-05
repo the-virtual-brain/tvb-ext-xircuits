@@ -102,7 +102,9 @@ class WidgetCodeGenerator(object):
 
     @staticmethod
     def phase_plane(model=Generic2dOscillator, integrator=HeunDeterministic, export_filename=None):
-        code = "from tvb.simulator.lab import models, integrators\n" \
+        code = "%matplotlib widget\n" \
+               "\n" \
+               "from tvb.simulator.lab import models, integrators\n" \
                "from tvbwidgets.api import PhasePlaneWidget\n" \
                "from IPython.core.display_functions import display\n" \
                "\n" \
