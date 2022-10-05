@@ -77,7 +77,6 @@ export class XPipePanel extends ReactWidget {
       // Just to enable back the loses focus event
       this.node.addEventListener('blur', this, true);
     } else if (event.type === 'blur') {
-      this.node.addEventListener('focus', this, true);
       // Unselect any selected nodes when the editor loses focus
       const deactivate = x => x.setSelected(false);
       const model = this.xircuitsApp.getDiagramEngine().getModel();
@@ -88,7 +87,6 @@ export class XPipePanel extends ReactWidget {
       this.node.removeEventListener('blur', this, true);
     } else if (event.type === 'focus') {
       this.focusHandler();
-      this.node.removeEventListener('focus', this, true);
     }
   }
 
