@@ -126,14 +126,23 @@ export class XPipePanel extends ReactWidget {
   }
 
   private updateModelComponentParameters(modelNode: NodeModel, modelParams) {
+    const position_x = modelNode.getX() - 150;
+    const position_y = modelNode.getY();
+    let position_y_offset = -50;
     Object.values(modelParams).map(param => {
       const param_type = param['type'];
       const component_param_name = 'parameter-' + param_type + '-' + param['name'];
 
       const targetPort = modelNode.getPorts()[component_param_name];
       this.removeLiteralNodesForPort(targetPort);
+      position_y_offset += 50;
 
-      const sourcePort = this.createLiteralNodeForParam(param_type, param['value']);
+      const sourcePort = this.createLiteralNodeForParam(
+        param_type,
+        param['value'],
+        position_x,
+        position_y + position_y_offset
+      );
       this.addNewLink(sourcePort, targetPort);
     });
   }
@@ -152,7 +161,7 @@ export class XPipePanel extends ReactWidget {
     }
   }
 
-  private createLiteralNodeForParam(type, value) {
+  private createLiteralNodeForParam(type, value, position_x, position_y) {
     const out_port_name = 'out-0';
 
     const node = new CustomNodeModel({
@@ -161,6 +170,7 @@ export class XPipePanel extends ReactWidget {
     });
 
     node.addOutPortEnhance(value, out_port_name);
+    node.setPosition(position_x, position_y);
     this.getDiagramModel().addNode(node);
     return node.getPorts()[out_port_name];
   }
