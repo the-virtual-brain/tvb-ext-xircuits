@@ -12,7 +12,7 @@ import platform
 
 from xai_components.base_tvb import ComponentWithWidget
 from .config import get_config
-from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
+from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator, ModelConfigLoader
 
 DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
@@ -101,6 +101,23 @@ def component_has_widget_assigned(node):
     return False
 
 
+class EditXircuitsFile(APIHandler):
+    @tornado.web.authenticated
+    def get(self):
+        model_config_loader = ModelConfigLoader()
+        result = model_config_loader.load_configs()
+
+        if result is False:
+            data = {"models_exist": False}
+
+        else:
+            data = {"models_exist": True,
+                    "models": result
+                    }
+
+        self.finish(json.dumps(data))
+
+
 class ComponentsRouteHandler(APIHandler):
     @tornado.web.authenticated
     def get(self):
@@ -161,22 +178,23 @@ class ComponentsRouteHandler(APIHandler):
 
         try:
             component = input_data["component"]
+            component_id = input_data["component_id"]
             component_path = input_data["path"]
         except KeyError:
             data = {"error_msg": "Could not determine the component from POST params!"}
             self.finish(json.dumps(data))
 
-        notebook_path = self.generate_widget_notebook(component, component_path)
+        notebook_path = self.generate_widget_notebook(component, component_id, component_path)
         data = {"widget": notebook_path}
 
         self.finish(json.dumps(data))
 
-    def generate_widget_notebook(self, component, component_path):
+    def generate_widget_notebook(self, component, component_id, component_path):
         nb_generator = NotebookGenerator()
 
         text = f"""# Interactive setup for {component}"""
         nb_generator.add_markdown_cell(text)
-        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_path))
+        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_id, component_path))
 
         path = nb_generator.store(component)
         return path
