@@ -58,7 +58,7 @@ export function addNodeActionCommands(
                 return;
             }
 
-            const dataToSend = { "component": node.name, "path":  node.extras.path };
+            const dataToSend = { "component": node.name, "path":  node.extras.path, "component_id": node.options.id };
 
             const response = await requestAPI<any>('components/', {
 				body: JSON.stringify(dataToSend),
