@@ -25,7 +25,7 @@ class ModelConfigLoader(object):
         if all_model_config_files is False:
             return False
 
-        json_result = {}
+        json_result = dict()
         for filename in all_model_config_files:
             json_entry = self._read_model_config_file(filename)
             json_result.update(json_entry)
@@ -48,14 +48,21 @@ class ModelConfigLoader(object):
     def _read_model_config_file(self, filename):
         # TODO: better processing of filename
         model_id = filename[len(MODEL_CONFIG_FILE_PREFIX) + 1:].split('.')[0]
-        # TODO: read contents of file (JSON or PY? both?)
+
+        model_params_json = dict()
+        with open(os.path.join(NOTEBOOKS_DIR, filename)) as f:
+            model_config_json = json.load(f)
+            for param_name, param_val in list(model_config_json.values())[0].items():
+                if param_name == 'model':
+                    continue
+                param_entry = {
+                    param_name: {'name': param_name, 'value': param_val[0], 'type': type(param_val[0]).__name__}}
+                model_params_json.update(param_entry)
+
         return {
             "model": {
                 "id": model_id,
-                "params": {
-                    "tau": {"name": "tau", "value": "3.97", "type": "float"},
-                    "J": {"name": "J", "value": "4.01", "type": "float"}
-                }
+                "params": model_params_json
             }
         }
 
