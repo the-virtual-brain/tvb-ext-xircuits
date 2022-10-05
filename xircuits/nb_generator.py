@@ -6,6 +6,7 @@
 #
 
 import importlib
+import json
 import os
 import nbformat
 from tvb.simulator.integrators import HeunDeterministic
@@ -79,7 +80,7 @@ class NotebookGenerator(object):
         self.notebook = nbformat.v4.new_notebook()
 
     def add_code_cell(self, code):
-        self._add_cell(nbformat.v4.new_code_cell(code))
+        self._add_cell(nbformat.v4.new_code_cell(code, metadata={'editable': False, 'deletable': False}))
 
     def add_markdown_cell(self, text):
         self._add_cell(nbformat.v4.new_markdown_cell(text))
