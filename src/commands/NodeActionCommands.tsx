@@ -58,7 +58,8 @@ export function addNodeActionCommands(
                 return;
             }
 
-            const dataToSend = { "component": node.name, "path":  node.extras.path, "component_id": node.options.id };
+            const dataToSend = { 'component': node.name, 'path':  node.extras.path,
+                'component_id': node.options.id, 'xircuits_id': node.parent.parent.options.id };
 
             const response = await requestAPI<any>('components/', {
 				body: JSON.stringify(dataToSend),
@@ -424,7 +425,7 @@ export function addNodeActionCommands(
     commands.addCommand(commandIDs.addCommentNode, {
         execute: async (args) => {
             const widget = tracker.currentWidget?.content as XPipePanel;
-            
+
             const dialogOptions: Partial<Dialog.IOptions<any>> = {
                 body: formDialogWidget(
                         <CommentDialog commentInput={""}/>
@@ -568,7 +569,7 @@ export function addNodeActionCommands(
             const literalType = selected_node["name"].split(" ")[1];
             let isStoreDataType: boolean = false;
             let isTextareaInput: string = "";
-            
+
             switch(literalType){
                 case "String":
                     isTextareaInput = 'textarea';
