@@ -122,6 +122,8 @@ class WidgetCodeGenerator(object):
                "\n" \
                "w = PhasePlaneWidget(model=models.{0}(), integrator=integrators.{1}());\n" \
                "w.export_filename = '{2}' \n" \
+               "w.disable_model_dropdown = True \n" \
+               "w.disable_export_dropdown = True \n" \
                "display(w.get_widget());"
         return code.format(model.__name__, integrator.__name__, export_filename)
 
