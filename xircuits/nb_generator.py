@@ -20,6 +20,9 @@ MODEL_CONFIG_FILE_PREFIX = 'model'
 
 class ModelConfigLoader(object):
 
+    def __init__(self, xircuits_id):
+        self.model_configs_folder = os.path.join(NOTEBOOKS_DIR, xircuits_id)
+
     def load_configs(self):
         all_model_config_files = self._find_model_config_files()
 
@@ -35,10 +38,10 @@ class ModelConfigLoader(object):
         return json_result
 
     def _find_model_config_files(self):
-        if not os.path.exists(NOTEBOOKS_DIR):
+        if not os.path.exists(self.model_configs_folder):
             return False
 
-        all_files = os.listdir(NOTEBOOKS_DIR)
+        all_files = os.listdir(self.model_configs_folder)
         all_model_config_files = [file for file in all_files if file.startswith(MODEL_CONFIG_FILE_PREFIX)]
 
         if len(all_model_config_files) == 0:
@@ -50,25 +53,29 @@ class ModelConfigLoader(object):
         # TODO: better processing of filename
         model_id = filename[len(MODEL_CONFIG_FILE_PREFIX) + 1:].split('.')[0]
 
+        model_name = 'model'
         model_params_json = dict()
-        with open(os.path.join(NOTEBOOKS_DIR, filename)) as f:
+        with open(os.path.join(self.model_configs_folder, filename)) as f:
             model_config_json = json.load(f)
             for param_name, param_val in list(model_config_json.values())[0].items():
                 if param_name == 'model':
+                    model_name = param_val
                     continue
                 param_entry = {
                     param_name: {'name': param_name, 'value': param_val[0], 'type': type(param_val[0]).__name__}}
                 model_params_json.update(param_entry)
 
         return {
-            "model": {
+            model_name: {
                 "id": model_id,
                 "params": model_params_json
             }
         }
 
     def _remove_file(self, filename):
-        os.remove(os.path.join(NOTEBOOKS_DIR, filename))
+        os.remove(os.path.join(self.model_configs_folder, filename))
+        if len(os.listdir(self.model_configs_folder)) == 0:
+            os.rmdir(self.model_configs_folder)
 
 
 class NotebookGenerator(object):
@@ -88,14 +95,19 @@ class NotebookGenerator(object):
     def _add_cell(self, cell):
         self.notebook['cells'].append(cell)
 
-    def store(self, component):
+    def store(self, component, xircuits_id):
         file_name = f'{component}_widget.ipynb'
-        path = os.path.join(NOTEBOOKS_DIR, file_name)
+
+        notebook_dir = os.path.join(NOTEBOOKS_DIR, xircuits_id)
+        if not os.path.exists(notebook_dir):
+            os.mkdir(notebook_dir)
+
+        path = os.path.join(notebook_dir, file_name)
 
         with open(path, 'w') as f:
             nbformat.write(self.notebook, f)
 
-        return os.path.join(os.path.basename(os.path.dirname(path)), file_name)
+        return os.path.join(notebook_dir, file_name)
 
 
 class WidgetCodeGenerator(object):
