@@ -34,7 +34,7 @@ def setup_handlers(web_app, url_path):
             CompileXircuitsFileRouteHandler
         ),
         (
-            url_path_join(base_url, url_path, "components/edit"),
+            url_path_join(base_url, url_path, "components_edit/"),
             EditXircuitsFile
         )
 
