@@ -109,15 +109,17 @@ export class XPipePanel extends ReactWidget {
   }
 
   private async focusHandler() {
-    const response = await requestAPI<any>('components/edit/', {
+    const modelDiagram = this.xircuitsApp.getDiagramEngine().getModel();
+    const dataToSend = { 'xircuits_id': modelDiagram.getOptions().id };
+
+    const response = await requestAPI<any>('components_edit/', {
+      body: JSON.stringify(dataToSend),
       method: 'POST'
     });
 
     if (!response['models_exist']) {
       return;
     }
-
-    const modelDiagram = this.xircuitsApp.getDiagramEngine().getModel();
 
     Object.values(response['models']).map((modelConfig, idx) => {
       const tvbModelNode = modelDiagram.getNode(modelConfig['id']);
