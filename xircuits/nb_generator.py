@@ -136,7 +136,7 @@ class WidgetCodeGenerator(object):
                                                    export_filename=f"{MODEL_CONFIG_FILE_PREFIX}_{component_id}")
 
         else:
-            return WidgetCodeGenerator.phase_plane()
+            return None
 
 
 def determine_component_class(component_name, component_path):
