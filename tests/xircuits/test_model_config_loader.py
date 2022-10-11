@@ -90,19 +90,25 @@ def test_model_config_loader_multiple_files():
     result = model_config_loader.load_configs()
     assert type(result) is dict
     assert len(result) == 2
-    result_id1 = list(result.values())[1]['id']
-    assert result_id1 == dummy_model_id1
-    result_params_a = list(result.values())[1]['params']['a']
-    assert result_params_a['name'] == 'a'
-    assert result_params_a['value'] == SUP_HOPF_DEFAULT_PARAMS['a'][0]
-    assert result_params_a['type'] == 'float'
-    result_id2 = list(result.values())[0]['id']
-    assert result_id2 == dummy_model_id2
-    result_params_a = list(result.values())[0]['params']['a']
-    assert result_params_a['name'] == 'a'
-    assert result_params_a['value'] == SUP_HOPF_DEFAULT_PARAMS2['a'][0]
-    assert result_params_a['type'] == 'float'
     assert len(os.listdir(TEMP_DIR)) == 0
+
+    def asserts(result_id, dummy_model_id, result_params, default_params):
+        assert result_id == dummy_model_id
+        assert result_params['a']['name'] == 'a'
+        assert result_params['a']['value'] == default_params['a'][0]
+        assert result_params['a']['type'] == 'float'
+
+    result_id1 = list(result.values())[0]['id']
+    result_params1 = list(result.values())[0]['params']
+    result_id2 = list(result.values())[1]['id']
+    result_params2 = list(result.values())[1]['params']
+
+    if result_id1 == dummy_model_id1:
+        asserts(result_id1, dummy_model_id1, result_params1, SUP_HOPF_DEFAULT_PARAMS)
+        asserts(result_id2, dummy_model_id2, result_params2, SUP_HOPF_DEFAULT_PARAMS2)
+    else:
+        asserts(result_id1, dummy_model_id2, result_params1, SUP_HOPF_DEFAULT_PARAMS2)
+        asserts(result_id2, dummy_model_id1, result_params2, SUP_HOPF_DEFAULT_PARAMS)
 
 
 def teardown_function():

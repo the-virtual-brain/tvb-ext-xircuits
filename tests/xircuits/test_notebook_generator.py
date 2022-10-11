@@ -1,12 +1,16 @@
 import os.path
 import shutil
 
-from xircuits.nb_generator import NOTEBOOKS_DIR, NotebookGenerator, WidgetCodeGenerator
+from xircuits import nb_generator
+from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
+
+TEMP_DIR = "temp_test_dir"
+nb_generator.NOTEBOOKS_DIR = TEMP_DIR
 
 
 def test_notebook_generator():
     notebook_generator = NotebookGenerator()
-    assert os.path.exists(NOTEBOOKS_DIR)
+    assert os.path.exists(nb_generator.NOTEBOOKS_DIR)
     assert notebook_generator.notebook is not None
     assert len(notebook_generator.notebook['cells']) == 0
 
@@ -16,7 +20,7 @@ def test_notebook_generator():
     notebook_generator.add_markdown_cell("Hello world")
     assert len(notebook_generator.notebook['cells']) == 2
 
-    assert len(os.listdir(NOTEBOOKS_DIR)) == 0
+    assert len(os.listdir(nb_generator.NOTEBOOKS_DIR)) == 0
     notebook_path = notebook_generator.store('model', 'xircuits_id')
     assert os.path.exists(notebook_path)
 
@@ -33,5 +37,6 @@ def test_widget_code_generator():
     assert "w.export_filename = 'model_model_id'" in code
 
 
-def teardown_module():
-    shutil.rmtree(NOTEBOOKS_DIR)
+def teardown_function():
+    if os.path.exists(nb_generator.NOTEBOOKS_DIR):
+        shutil.rmtree(nb_generator.NOTEBOOKS_DIR)
