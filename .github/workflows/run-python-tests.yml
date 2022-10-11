@@ -21,12 +21,14 @@ jobs:
         fetch-depth: 0
     - name: Install dependencies
       run: |
-        python -m pip install -U pytest pytest-cov nbformat tvb-library
-
+        python -m pip install -r requirements.txt
+        python -m pip install -U pytest pytest-cov
+    - name: Build Extension in Dev Mode
+      run: |
+        pip install -e .
     - name: Run tests
       run: |
         pytest tests -r ap
-
     - name: Compute coverage
       run: |
         pytest -v  --cov --cov-report=xml
