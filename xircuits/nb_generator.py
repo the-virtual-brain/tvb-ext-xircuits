@@ -140,6 +140,6 @@ class WidgetCodeGenerator(object):
 
 
 def determine_component_class(component_name, component_path):
-    component_module = importlib.import_module(component_path.replace(os.sep, '.')[:-3])
+    component_module = importlib.import_module(component_path.replace('/', '.')[:-3])
     component_class = getattr(component_module, component_name)
     return component_class
