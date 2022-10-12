@@ -55,10 +55,16 @@ def set_values(component, tvb_object):
                 # if default for attr is None and was not set by user do not attempt to set it
                 if not xircuits_value:  # use any to also test arrays with multiple elements, otherwise error
                     continue
+
                 dtype = attr_value.dtype.name  # needed for NArrays of int type
                 xircuits_value = [xircuits_value]  # need to convert it to list first
                 xircuits_value = np.array(object=xircuits_value, dtype=np.dtype(dtype))
-                xircuits_value = xircuits_value.squeeze()  # squeeze result so it can be used in TVB computations
+
+                # after converting to np.ndarryay, the resulting shape might be (1,1),
+                # which cannot be used in TVB computations, so a reshaping is needed
+                if xircuits_value.shape == (1, 1):
+                    xircuits_value = xircuits_value.reshape((1,))
+                # xircuits_value = xircuits_value.squeeze()  # squeeze result so it can be used in TVB computations
             setattr(tvb_object, attr, xircuits_value)
 
 
