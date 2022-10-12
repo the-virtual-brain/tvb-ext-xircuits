@@ -53,9 +53,9 @@ class Simulator(Component):
         # run simulation
         backend = self.backend.value
         if isinstance(backend, NbMPRBackend):
-            (time, data), = backend.run_sim(simulator, simulation_length=simulator.simulation_length)
+            time, data = backend.run_sim(simulator, simulation_length=simulator.simulation_length)[0]
         else:
-            (time, data), = simulator.run()
+            time, data = simulator.run()[0]
 
         # create TS
         tsr = time_series.TimeSeriesRegion(

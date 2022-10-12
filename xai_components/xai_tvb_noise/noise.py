@@ -17,7 +17,7 @@ class Additive(Component):
     ntau: InArg[float]
     noise_seed: InArg[int]
     random_stream: InArg[RandomState]
-    nsig: InArg[list]
+    nsig: InArg[float]
 
     additive: OutArg[Noise]
 
