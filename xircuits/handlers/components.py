@@ -202,7 +202,11 @@ class ComponentsRouteHandler(APIHandler):
     def generate_widget_notebook(self, component, component_id, component_path, xircuits_id):
         nb_generator = NotebookGenerator()
 
-        text = f"""# Interactive setup for {component}"""
+        text = f"""# Interactive setup for {component} model"""
+        nb_generator.add_markdown_cell(text)
+        text = f"#### Run the cell below in order to display the Phase Plane\n" \
+               f"#### Export the model configuration to add it in the Xircuits diagram\n" \
+               f"*Some select fields in the Phase Plane are meant to be disabled in this context"
         nb_generator.add_markdown_cell(text)
         nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_id, component_path))
 
