@@ -4,7 +4,6 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
-from tvb.datatypes.time_series import TimeSeries
 from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
@@ -32,7 +31,7 @@ class Simulator(Component):
     simulation_length: InArg[float]
     backend: InArg[MakoUtilMix]
 
-    time_series: OutArg[TimeSeries]
+    time_series_list: OutArg[list]
 
     def __init__(self):
         set_defaults(self, self.Simulator)
@@ -42,7 +41,6 @@ class Simulator(Component):
     def execute(self, ctx) -> None:
         # imports
         from tvb.simulator.backend.nb_mpr import NbMPRBackend
-        from tvb.datatypes import time_series
 
         simulator = self.Simulator()
         set_values(self, simulator)
@@ -53,17 +51,21 @@ class Simulator(Component):
         # run simulation
         backend = self.backend.value
         if isinstance(backend, NbMPRBackend):
-            time, data = backend.run_sim(simulator, simulation_length=simulator.simulation_length)[0]
+            result = backend.run_sim(simulator, simulation_length=simulator.simulation_length)
         else:
-            time, data = simulator.run()[0]
+            result = simulator.run()
 
         # create TS
-        tsr = time_series.TimeSeriesRegion(
-            data=data,
-            time=time,
-            connectivity=simulator.connectivity,
-            sample_period=simulator.monitors[0].period / 1e3,
-            sample_period_unit='s')
-        tsr.configure()
-        print_component_summary(tsr)
+        ts_list = []
+        for i in range(len(simulator.monitors)):
+            monitor = simulator.monitors[i]
+            time, data = result[i]
+            ts = monitor.create_time_series(connectivity=simulator.connectivity)
+            ts.data = data
+            ts.time = time
+            ts.configure()
+            ts_list.append(ts)
+
+        for ts in ts_list:
+            print_component_summary(ts)
 
