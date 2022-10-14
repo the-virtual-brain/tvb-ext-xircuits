@@ -53,10 +53,10 @@ def set_values(component, tvb_object):
             # numpy.array  to be able to set the value on the TVB object
             if isinstance(attr_value, NArray):
                 # if default for attr is None and was not set by user do not attempt to set it
-                if not xircuits_value.any():    # use any to also test arrays with multiple elements, otherwise error
+                if not xircuits_value:  # use any to also test arrays with multiple elements, otherwise error
                     continue
-                dtype = attr_value.dtype.name   # needed for NArrays of int type
-                xircuits_value = [xircuits_value]   # need to convert it to list first
+                dtype = attr_value.dtype.name  # needed for NArrays of int type
+                xircuits_value = [xircuits_value]  # need to convert it to list first
                 xircuits_value = np.array(object=xircuits_value, dtype=np.dtype(dtype))
             setattr(tvb_object, attr, xircuits_value)
 
@@ -64,16 +64,18 @@ def set_values(component, tvb_object):
 def print_component_summary(traited_obj):
     print('== COMPONENT SUMMARY ==')
     summary = traited_obj.summary_info()
+    print("{")
 
     # this if is needed because Connectivity doesn't add its type in its summary_info() method
     if TYPE_STR not in summary.keys():
         cls = type(traited_obj)
-        print(f'{TYPE_STR}: {cls.__name__}')
+        print(f'"{TYPE_STR}": "{cls.__name__}",')
 
     for attr_name, attr in summary.items():
-        print(f'{attr_name}: {attr}')
+        print(f'"{attr_name}": "{attr}",')
 
     # this if is needed because Connectivity doesn't add its gid in its summary_info() method
     if GID_STR not in summary.keys():
         gid_value = repr(traited_obj.gid)
-        print(f'{GID_STR}: {gid_value}')
+        print(f'"{GID_STR}": "{gid_value}"')
+    print("}")

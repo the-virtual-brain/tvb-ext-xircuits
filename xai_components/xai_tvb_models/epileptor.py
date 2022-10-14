@@ -6,13 +6,13 @@
 #
 
 from tvb.simulator.models.base import Model
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import ComponentWithWidget
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class Epileptor(Component):
-    from tvb.simulator.models.epileptor import Epileptor
+class Epileptor(ComponentWithWidget):
     a: InArg[float]
     b: InArg[float]
     c: InArg[float]
@@ -35,11 +35,13 @@ class Epileptor(Component):
 
     epileptor: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.Epileptor)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.epileptor import Epileptor
+        return Epileptor
 
     def execute(self, ctx) -> None:
-        epileptor = self.Epileptor()
+        epileptor = self.tvb_ht_class()
 
         set_values(self, epileptor)
         self.epileptor.value = epileptor
@@ -47,8 +49,7 @@ class Epileptor(Component):
 
 
 @xai_component(color='rgb(101, 179, 46)')
-class Epileptor2D(Component):
-    from tvb.simulator.models.epileptor import Epileptor2D
+class Epileptor2D(ComponentWithWidget):
     a: InArg[float]
     b: InArg[float]
     c: InArg[float]
@@ -65,11 +66,13 @@ class Epileptor2D(Component):
 
     epileptor2D: OutArg[Model]
 
-    def __init__(self):
-        set_defaults(self, self.Epileptor2D)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.models.epileptor import Epileptor2D
+        return Epileptor2D
 
     def execute(self, ctx) -> None:
-        epileptor2D = self.Epileptor2D()
+        epileptor2D = self.tvb_ht_class()
 
         set_values(self, epileptor2D)
         self.epileptor2D.value = epileptor2D

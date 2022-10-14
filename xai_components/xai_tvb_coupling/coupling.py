@@ -6,23 +6,25 @@
 #
 
 from tvb.simulator.coupling import Coupling
-from xai_components.base import xai_component, Component, InArg, OutArg
-from xai_components.utils import print_component_summary, set_defaults, set_values
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import TVBComponent
+from xai_components.utils import print_component_summary, set_values
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class LinearCoupling(Component):
-    from tvb.simulator.coupling import Linear
+class LinearCoupling(TVBComponent):
     a: InArg[float]
     b: InArg[float]
 
     linear: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.Linear)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import Linear
+        return Linear
 
     def execute(self, ctx) -> None:
-        linear = self.Linear()
+        linear = self.tvb_ht_class()
 
         set_values(self, linear)
         self.linear.value = linear
@@ -30,17 +32,18 @@ class LinearCoupling(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class Scaling(Component):
-    from tvb.simulator.coupling import Scaling
+class Scaling(TVBComponent):
     a: InArg[float]
 
     scaling: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.Scaling)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import Scaling
+        return Scaling
 
     def execute(self, ctx) -> None:
-        scaling = self.Scaling()
+        scaling = self.tvb_ht_class()
 
         set_values(self, scaling)
         self.scaling.value = scaling
@@ -48,8 +51,7 @@ class Scaling(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class HyperbolicTangent(Component):
-    from tvb.simulator.coupling import HyperbolicTangent
+class HyperbolicTangent(TVBComponent):
     a: InArg[float]
     b: InArg[float]
     midpoint: InArg[float]
@@ -57,11 +59,13 @@ class HyperbolicTangent(Component):
 
     hyperbolicTangent: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.HyperbolicTangent)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import HyperbolicTangent
+        return HyperbolicTangent
 
     def execute(self, ctx) -> None:
-        hyperbolicTangent = self.HyperbolicTangent()
+        hyperbolicTangent = self.tvb_ht_class()
 
         set_values(self, hyperbolicTangent)
         self.hyperbolicTangent.value = hyperbolicTangent
@@ -69,8 +73,7 @@ class HyperbolicTangent(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class Sigmoidal(Component):
-    from tvb.simulator.coupling import Sigmoidal
+class Sigmoidal(TVBComponent):
     cmin: InArg[float]
     cmax: InArg[float]
     midpoint: InArg[float]
@@ -79,11 +82,13 @@ class Sigmoidal(Component):
 
     sigmoidal: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.Sigmoidal)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import Sigmoidal
+        return Sigmoidal
 
     def execute(self, ctx) -> None:
-        sigmoidal = self.Sigmoidal()
+        sigmoidal = self.tvb_ht_class()
 
         set_values(self, sigmoidal)
         self.sigmoidal.value = sigmoidal
@@ -91,8 +96,7 @@ class Sigmoidal(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class SigmoidalJansenRit(Component):
-    from tvb.simulator.coupling import SigmoidalJansenRit
+class SigmoidalJansenRit(TVBComponent):
     cmin: InArg[float]
     cmax: InArg[float]
     midpoint: InArg[float]
@@ -101,11 +105,13 @@ class SigmoidalJansenRit(Component):
 
     sigmoidalJansenRit: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.SigmoidalJansenRit)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import SigmoidalJansenRit
+        return SigmoidalJansenRit
 
     def execute(self, ctx) -> None:
-        sigmoidalJansenRit = self.SigmoidalJansenRit()
+        sigmoidalJansenRit = self.tvb_ht_class()
 
         set_values(self, sigmoidalJansenRit)
         self.sigmoidalJansenRit.value = sigmoidalJansenRit
@@ -113,8 +119,7 @@ class SigmoidalJansenRit(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class PreSigmoidal(Component):
-    from tvb.simulator.coupling import PreSigmoidal
+class PreSigmoidal(TVBComponent):
     H: InArg[float]
     Q: InArg[float]
     G: InArg[float]
@@ -125,11 +130,13 @@ class PreSigmoidal(Component):
 
     preSigmoidal: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.PreSigmoidal)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import PreSigmoidal
+        return PreSigmoidal
 
     def execute(self, ctx) -> None:
-        preSigmoidal = self.PreSigmoidal()
+        preSigmoidal = self.tvb_ht_class()
 
         set_values(self, preSigmoidal)
         self.preSigmoidal.value = preSigmoidal
@@ -137,17 +144,18 @@ class PreSigmoidal(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class Difference(Component):
-    from tvb.simulator.coupling import Difference
+class Difference(TVBComponent):
     a: InArg[float]
 
     difference: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.Difference)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import Difference
+        return Difference
 
     def execute(self, ctx) -> None:
-        difference = self.Difference()
+        difference = self.tvb_ht_class()
 
         set_values(self, difference)
         self.difference.value = difference
@@ -155,19 +163,19 @@ class Difference(Component):
 
 
 @xai_component(color='rgb(0, 102, 178)')
-class KuramotoCoupling(Component):
-    from tvb.simulator.coupling import Kuramoto
+class KuramotoCoupling(TVBComponent):
     a: InArg[float]
 
     kuramoto: OutArg[Coupling]
 
-    def __init__(self):
-        set_defaults(self, self.Kuramoto)
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.coupling import Kuramoto
+        return Kuramoto
 
     def execute(self, ctx) -> None:
-        kuramoto = self.Kuramoto()
+        kuramoto = self.tvb_ht_class()
 
         set_values(self, kuramoto)
         self.kuramoto.value = kuramoto
         print_component_summary(self.kuramoto.value)
-
