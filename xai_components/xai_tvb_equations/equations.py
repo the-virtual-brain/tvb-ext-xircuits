@@ -12,6 +12,24 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 
 
 @xai_component(color='rgb(253, 225, 0)')
+class DiscreteEquation(Component):
+    from tvb.datatypes.equations import DiscreteEquation
+    parameters: InArg[dict]
+
+    discreteEquation: OutArg[Equation]
+
+    def __init__(self):
+        set_defaults(self, self.DiscreteEquation)
+
+    def execute(self, ctx) -> None:
+        discreteEquation = self.DiscreteEquation()
+
+        set_values(self, discreteEquation)
+        self.discreteEquation.value = discreteEquation
+        print_component_summary(self.discreteEquation.value)
+
+
+@xai_component(color='rgb(253, 225, 0)')
 class LinearEquation(Component):
     from tvb.datatypes.equations import Linear
     parameters: InArg[dict]
