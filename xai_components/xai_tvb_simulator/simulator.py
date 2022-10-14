@@ -4,7 +4,7 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
-
+from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
 from tvb.datatypes.patterns import SpatioTemporalPattern
@@ -29,16 +29,43 @@ class Simulator(Component):
     initial_conditions: InArg[list]
     monitors: InArg[list]
     simulation_length: InArg[float]
+    backend: InArg[MakoUtilMix]
 
-    simulator: OutArg[Simulator]
+    time_series_list: OutArg[list]
 
     def __init__(self):
         set_defaults(self, self.Simulator)
+        self.backend = InArg(None)
+        self.time_series = OutArg(None)
 
     def execute(self, ctx) -> None:
+        # imports
+        from tvb.simulator.backend.nb_mpr import NbMPRBackend
+
         simulator = self.Simulator()
         set_values(self, simulator)
         simulator.configure()
 
-        self.simulator.value = simulator
-        print_component_summary(self.simulator.value)
+        print_component_summary(simulator)
+
+        # run simulation
+        backend = self.backend.value
+        if isinstance(backend, NbMPRBackend):
+            result = backend.run_sim(simulator, simulation_length=simulator.simulation_length)
+        else:
+            result = simulator.run()
+
+        # create TS
+        ts_list = []
+        for i in range(len(simulator.monitors)):
+            monitor = simulator.monitors[i]
+            time, data = result[i]
+            ts = monitor.create_time_series(connectivity=simulator.connectivity)
+            ts.data = data
+            ts.time = time
+            ts.configure()
+            ts_list.append(ts)
+
+        for ts in ts_list:
+            print_component_summary(ts)
+
