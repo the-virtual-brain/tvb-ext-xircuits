@@ -1,15 +1,15 @@
 {
-  "name": "xircuits",
-  "version": "1.6.0",
+  "name": "tvb-ext-xircuits",
+  "version": "0.1a1",
   "description": "A JupyterLab extension for rendering and editing xircuit files.",
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/XpressAI/xircuits",
+  "homepage": "https://github.com/the-virtual-brain/tvb-ext-xircuits",
   "bugs": {
-    "url": "https://github.com/XpressAI/xircuits/issues"
+    "url": "https://req.thevirtualbrain.org"
   },
   "license": "BSD-3-Clause",
   "author": {
@@ -26,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/XpressAI/xircuits.git"
+    "url": "https://github.com/the-virtual-brain/tvb-ext-xircuits"
   },
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:labextension:dev",
