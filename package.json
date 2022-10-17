@@ -1,7 +1,7 @@
 {
   "name": "tvb-ext-xircuits",
   "version": "0.1a1",
-  "description": "A JupyterLab extension for rendering and editing xircuit files.",
+  "description": "This is a jupyterlab extension built as a prototype for building TVB workflows in a visual and interactive manner. It extends the already existent [Xircuits](https://xircuits.io/) jupyterlab extension by adding TVB components and new features on top.",
   "keywords": [
     "jupyter",
     "jupyterlab",
