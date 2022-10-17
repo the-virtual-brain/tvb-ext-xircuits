@@ -13,9 +13,9 @@ import os
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
-name = "xircuits"
+name = "tvb-ext-xircuits"
 
-lab_path = (HERE / name.replace("-", "_") / "labextension")
+lab_path = (HERE / "xircuits" / "labextension")
 
 # Representative files that should exist after a successful build
 ensured_targets = [

@@ -14,4 +14,4 @@ requests
 gitpython
 pygithub
 tqdm
-tvb-widgets
+tvb-widgets>=1.0
