@@ -143,3 +143,5 @@ tsconfig.tsbuildinfo
 
 # .py files compiled by Xircuits
 examples/*.py
+
+/.idea/
