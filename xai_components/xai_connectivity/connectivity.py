@@ -5,8 +5,11 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import os
+from siibra.retrieval import SiibraHttpRequestError
 from tvb.adapters.creators import siibra_base as sb
 from tvb.datatypes.connectivity import Connectivity
+from tvbwidgets.core.auth import get_current_token
 from xai_components.base import InArg, OutArg, Component, xai_component
 from xai_components.utils import print_component_summary
 
@@ -57,12 +60,23 @@ class ConnectivityFromSiibra(Component):
         parcellation = self.parcellation.value
         subject_id = self.subject_id.value
 
-        sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation,
+        token = get_current_token()
+        os.environ['HBP_AUTH_TOKEN'] = token
+
+        try:
+            sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation,
                                                    subject_ids=subject_id,
                                                    compute_fc=False)
 
-        self.connectivity.value = sc_dict[subject_id]
-        print_component_summary(self.connectivity.value)
+            self.connectivity.value = sc_dict[subject_id]
+            print_component_summary(self.connectivity.value)
 
-        plt.imshow(self.connectivity.value.weights, interpolation='none')
-        plt.show()
+            plt.imshow(self.connectivity.value.weights, interpolation='none')
+            plt.show()
+        except SiibraHttpRequestError as e:
+            if e.response.status_code in [401, 403]:
+                raise ConnectionError('Invalid EBRAINS authentication token. Please provide a new one as environment '
+                                      'variable HBP_AUTH_TOKEN.')
+            else:
+                raise ConnectionError('We could not complete the operation. '
+                                      'Please check the logs and contact the development team from TVB, siibra or EBRAINS KG.')
