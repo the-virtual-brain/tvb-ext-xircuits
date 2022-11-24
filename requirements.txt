@@ -14,5 +14,7 @@ nbformat
 requests
 gitpython
 pygithub
+siibra
 tqdm
 tvb-widgets>=1.0
+tvb-framework
