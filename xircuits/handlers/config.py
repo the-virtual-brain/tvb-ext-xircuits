@@ -40,8 +40,7 @@ class RunConfigRouteHandler(APIHandler):
                             "run_type" : run_type_name,
                             "run_config_name": run_cfg["name"],
                             "command" : run_cfg["command"],
-                            "msg" : run_cfg["msg"],
-                            "url" : run_cfg["url"]
+                            "msg" : run_cfg["msg"]
                         })
                 run_types.append({"run_type": run_type_name})
         except Exception:

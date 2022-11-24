@@ -1,6 +1,6 @@
 {
   "name": "tvb-ext-xircuits",
-  "version": "0.1a2",
+  "version": "0.1.0",
   "description": "Jupyterlab extension for building TVB workflows in a visual and interactive manner",
   "keywords": [
     "jupyter",

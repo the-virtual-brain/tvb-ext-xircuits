@@ -60,13 +60,13 @@ def launch_job(client, workflow_file_name, workflow_file_path):
     # create dummy job
     # job_description = {'Executable': 'date'}
     job_description = {
-        "Executable": f"python3 {workflow_file_name}"
-        # "Executable": f"python3 test1.py"
+        # "Executable": f"python3 {workflow_file_name}"
+        "Executable": f"python3 test1.py"
     }
 
     # submit job
-    job = client.new_job(job_description, inputs=[workflow_file_path])
-    # job = client.new_job(job_description, inputs=['C:\\Work\\TVB\\tvb-ext-xircuits\\xai_workflows\\test1.py'])
+    # job = client.new_job(job_description, inputs=[workflow_file_path])
+    job = client.new_job(job_description, inputs=['/Users/pipeline/WORK/TVB_GIT/tvb-ext-xircuits/xai_workflows/test1.py'])
     print(job)
 
 
