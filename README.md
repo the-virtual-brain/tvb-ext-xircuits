@@ -35,6 +35,12 @@ For dev mode setup there are 2 alternatives:
     jupyter server extension enable xircuits  # Enable the server extension
     xircuits
     ```
+    
+To rebuild the extension after making changes to it:
+
+    jlpm build  # Rebuild Typescript source after making changes
+    jupyter lab build   # Rebuild extension after making any changes
+
 
 ##  Acknowledgments
 This project has received funding from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3).
