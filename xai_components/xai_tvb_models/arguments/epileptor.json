@@ -1,0 +1,24 @@
+{
+  "description" : "json epileptor description",
+  "arguments" : {
+    "a" : "a desc",
+    "b" : "b desc",
+    "c" : "c desc",
+    "d" : "d desc",
+    "r" : "r desc",
+    "s" : "s desc",
+    "x0" : "x0 desc",
+    "Iext" : "Iext desc",
+    "slope" : "slope desc",
+    "Iext2" : "Iext2 desc",
+    "tau" : "tau desc",
+    "aa" : "aa desc",
+    "bb" : "bb desc",
+    "Kvf" : "Kvf desc",
+    "Kf" : "Kf desc",
+    "tt" : "tt desc",
+    "modification" : "modification desc",
+    "variables_of_interest" : "variables_of_interest desc",
+    "epileptor": "epileptor desc"
+  }
+}
