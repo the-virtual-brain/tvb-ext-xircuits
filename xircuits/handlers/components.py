@@ -267,12 +267,21 @@ class ComponentsRouteHandler(APIHandler):
             ]
 
         docstring = ast.get_docstring(node)
+
         lineno = [
             {
                 "lineno": node.lineno,
                 "end_lineno": node.end_lineno
             }
         ]
+
+
+        description = {}
+        path = os.path.join("xai_components", os.path.dirname(file_path), "arguments", str(node.name).lower() + ".json")
+        if os.path.isfile(path):
+            with open(path) as file:
+                description = json.load(file)
+
 
         has_widget = component_has_widget_assigned(node)
 
@@ -287,10 +296,13 @@ class ComponentsRouteHandler(APIHandler):
             "category": category,
             "type": "debug",
             "variables": variables,
+            "json_description": description,
             "docstring": docstring,
             "lineno": lineno,
             "has_widget": has_widget
         }
+
+
         output.update(keywords)
 
         return output

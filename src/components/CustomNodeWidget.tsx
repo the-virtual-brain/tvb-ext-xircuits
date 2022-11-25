@@ -102,9 +102,7 @@ export interface DefaultNodeProps {
  */
 export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
 
-    generatePort = (port) => {
-        return <CustomPortLabel engine={this.props.engine} port={port} key={port.getID()} node={this.props.node} />;
-    };
+
     element:Object;
     state = {
 
@@ -127,7 +125,46 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
             original: 'https://picsum.photos/id/1019/1000/600/',
             thumbnail: 'https://picsum.photos/id/1019/250/150/'
         },
-       ]
+       ],
+        showParamDescriptionList: new Array(this.props.node.getInPorts().length + this.props.node.getOutPorts().length).fill(false)
+    };
+
+    /**
+     * creates a particular function for each component so that it can set only it's state
+     * @param id
+     */
+    setShowParamDescription = (id : number) => {
+        const _setShowParamDescription = (newShowDescription : boolean) => {
+            this.setState({
+                showParamDescriptionList: this.state.showParamDescriptionList.map((value, index) => (
+                        id === index ? newShowDescription : false
+                    )
+                )
+            })
+        }
+        return _setShowParamDescription;
+    }
+
+    generatePort = (port, index) => {
+        const argumentDescriptions = this.props.node['extras']['argumentDescriptions'];
+
+        const description = argumentDescriptions && (port.getOptions().label in argumentDescriptions) ? argumentDescriptions[port.getOptions().label] : "";
+
+        const isOutPort = port.getOptions().name.includes('parameter-out');
+
+        index = isOutPort ? index + this.props.node.getInPorts().length: index;
+
+        return (
+            <CustomPortLabel
+                engine={this.props.engine}
+                port={port}
+                key={port.getID()}
+                node={this.props.node}
+                showDescription={this.state.showParamDescriptionList[index]}
+                setShowDescription={this.setShowParamDescription(index)}
+                description={description}
+            />
+        );
     };
 
     showTooltip() {
@@ -295,7 +332,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                 />
                             </label>
                         </S.Title>
-                        <S.Ports>
+                        <S.Ports>{/*aici se pun intrarile*/}
                             <S.PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</S.PortsContainer>
                             <S.PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</S.PortsContainer>
                         </S.Ports>

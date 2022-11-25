@@ -13,6 +13,9 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class Epileptor(ComponentWithWidget):
+    """
+    this is an Epileptor
+    """
     a: InArg[float]
     b: InArg[float]
     c: InArg[float]
