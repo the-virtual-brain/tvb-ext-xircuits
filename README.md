@@ -43,4 +43,11 @@ To rebuild the extension after making changes to it:
 
 
 ##  Acknowledgments
+
+Copyright (c) 2022 to Xircuits Team See: https://github.com/XpressAI/xircuits
+
+Copyright (c) 2022 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
+
+This extension is build on top of the Xircuits https://xircuits.io Jupyter extension, and it ads custom features, tailored for EBRAINS env.
+
 This project has received funding from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3).
