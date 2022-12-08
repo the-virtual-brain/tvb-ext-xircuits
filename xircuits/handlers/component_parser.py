@@ -1,5 +1,7 @@
 import json
 
+from tvb.basic.neotraits.api import HasTraits
+
 
 def get_class(kls):
     parts = kls.split('.')
@@ -18,10 +20,15 @@ def object_parse(object):
         "arguments": {}
     }
 
-    for attr_name in tvb_object.declarative_attrs:
-        doc = getattr(tvb_object, attr_name).doc
-        if doc != "":
-            output_dict['arguments'][attr_name] = doc
+
+    try:
+        if issubclass(tvb_object, HasTraits):
+            for attr_name in tvb_object.declarative_attrs:
+                doc = getattr(tvb_object, attr_name).doc
+                if doc != "":
+                    output_dict['arguments'][attr_name] = doc
+    except TypeError:
+        print(str(tvb_object) + "     " + str(type(tvb_object)))
 
     return output_dict
 

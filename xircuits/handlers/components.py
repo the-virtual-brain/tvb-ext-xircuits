@@ -177,16 +177,20 @@ class ComponentsRouteHandler(APIHandler):
 
         # iterate through all the components and create the specific description json file for each one
         for d in components:
-            if "class" in d and "xai_tvb_models" in d["package_name"]:
+            if "class" in d:
                 output_folder_path = os.path.join(*d["package_name"].split(".")[:-1], "arguments")
                 output_file_path = os.path.join(output_folder_path, d["class"].lower() + ".json")
-                if not os.path.isdir(output_folder_path):
-                    os.mkdir(output_folder_path)
+                try:
+                    if not os.path.isdir(output_folder_path):
+                        os.mkdir(output_folder_path)
                     class_path = ".".join([d["package_name"], d["class"]])
                     save_json_description(class_path, output_file_path)
-                elif not os.path.isfile(output_file_path):
-                    class_path = ".".join([d["package_name"], d["class"]])
-                    save_json_description(class_path, output_file_path)
+                    # elif not os.path.isfile(output_file_path):
+                    #     class_path = ".".join([d["package_name"], d["class"]])
+                    #     save_json_description(class_path, output_file_path)
+                except NotImplementedError:
+                    print(f"Documentation has been ignored for this component {d['class']}")
+                    pass
 
 
         # Set up component colors according to palette
