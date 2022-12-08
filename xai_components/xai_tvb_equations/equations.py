@@ -7,22 +7,27 @@
 
 from tvb.datatypes.equations import Equation
 
-from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class DiscreteEquation(Component):
-    from tvb.datatypes.equations import DiscreteEquation
+class DiscreteEquation(TVBComponent):
     parameters: InArg[dict]
 
     discreteEquation: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.DiscreteEquation)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import DiscreteEquation
+        return DiscreteEquation
 
     def execute(self, ctx) -> None:
-        discreteEquation = self.DiscreteEquation()
+        discreteEquation = self.tvb_ht_class()
 
         set_values(self, discreteEquation)
         self.discreteEquation.value = discreteEquation
@@ -30,17 +35,21 @@ class DiscreteEquation(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class LinearEquation(Component):
-    from tvb.datatypes.equations import Linear
+class LinearEquation(TVBComponent):
     parameters: InArg[dict]
 
     linear: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Linear)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Linear
+        return Linear
 
     def execute(self, ctx) -> None:
-        linear = self.Linear()
+        linear = self.tvb_ht_class()
 
         set_values(self, linear)
         self.linear.value = linear
@@ -48,17 +57,21 @@ class LinearEquation(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Gaussian(Component):
-    from tvb.datatypes.equations import Gaussian
+class Gaussian(TVBComponent):
     parameters: InArg[dict]
 
     gaussian: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Gaussian)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Gaussian
+        return Gaussian
 
     def execute(self, ctx) -> None:
-        gaussian = self.Gaussian()
+        gaussian = self.tvb_ht_class()
 
         set_values(self, gaussian)
         self.gaussian.value = gaussian
@@ -66,17 +79,21 @@ class Gaussian(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class DoubleGaussian(Component):
-    from tvb.datatypes.equations import DoubleGaussian
+class DoubleGaussian(TVBComponent):
     parameters: InArg[dict]
 
     doubleGaussian: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.DoubleGaussian)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import DoubleGaussian
+        return DoubleGaussian
 
     def execute(self, ctx) -> None:
-        doubleGaussian = self.DoubleGaussian()
+        doubleGaussian = self.tvb_ht_class()
 
         set_values(self, doubleGaussian)
         self.doubleGaussian.value = doubleGaussian
@@ -84,17 +101,21 @@ class DoubleGaussian(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Sigmoid(Component):
-    from tvb.datatypes.equations import Sigmoid
+class Sigmoid(TVBComponent):
     parameters: InArg[dict]
 
     sigmoid: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Sigmoid)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Sigmoid
+        return Sigmoid
 
     def execute(self, ctx) -> None:
-        sigmoid = self.Sigmoid()
+        sigmoid = self.tvb_ht_class()
 
         set_values(self, sigmoid)
         self.sigmoid.value = sigmoid
@@ -102,17 +123,21 @@ class Sigmoid(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class GeneralizedSigmoid(Component):
-    from tvb.datatypes.equations import GeneralizedSigmoid
+class GeneralizedSigmoid(TVBComponent):
     parameters: InArg[dict]
 
     generalizedSigmoid: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.GeneralizedSigmoid)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import GeneralizedSigmoid
+        return GeneralizedSigmoid
 
     def execute(self, ctx) -> None:
-        generalizedSigmoid = self.GeneralizedSigmoid()
+        generalizedSigmoid = self.tvb_ht_class()
 
         set_values(self, generalizedSigmoid)
         self.generalizedSigmoid.value = generalizedSigmoid
@@ -120,17 +145,21 @@ class GeneralizedSigmoid(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Sinusoid(Component):
-    from tvb.datatypes.equations import Sinusoid
+class Sinusoid(TVBComponent):
     parameters: InArg[dict]
 
     sinusoid: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Sinusoid)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Sinusoid
+        return Sinusoid
 
     def execute(self, ctx) -> None:
-        sinusoid = self.Sinusoid()
+        sinusoid = self.tvb_ht_class()
 
         set_values(self, sinusoid)
         self.sinusoid.value = sinusoid
@@ -138,17 +167,21 @@ class Sinusoid(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Cosine(Component):
-    from tvb.datatypes.equations import Cosine
+class Cosine(TVBComponent):
     parameters: InArg[dict]
 
     cosine: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Cosine)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Cosine
+        return Cosine
 
     def execute(self, ctx) -> None:
-        cosine = self.Cosine()
+        cosine = self.tvb_ht_class()
 
         set_values(self, cosine)
         self.cosine.value = cosine
@@ -156,17 +189,21 @@ class Cosine(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Alpha(Component):
-    from tvb.datatypes.equations import Alpha
+class Alpha(TVBComponent):
     parameters: InArg[dict]
 
     alpha: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Alpha)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Alpha
+        return Alpha
 
     def execute(self, ctx) -> None:
-        alpha = self.Alpha()
+        alpha = self.tvb_ht_class()
 
         set_values(self, alpha)
         self.alpha.value = alpha
@@ -174,17 +211,22 @@ class Alpha(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class PulseTrain(Component):
-    from tvb.datatypes.equations import PulseTrain
+class PulseTrain(TVBComponent):
     parameters: InArg[dict]
 
     pulseTrain: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.PulseTrain)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import PulseTrain
+        return PulseTrain
+
 
     def execute(self, ctx) -> None:
-        pulseTrain = self.PulseTrain()
+        pulseTrain = self.tvb_ht_class()
 
         set_values(self, pulseTrain)
         self.pulseTrain.value = pulseTrain
@@ -192,17 +234,21 @@ class PulseTrain(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Gamma(Component):
-    from tvb.datatypes.equations import Gamma
+class Gamma(TVBComponent):
     parameters: InArg[dict]
 
     gamma: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.Gamma)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import Gamma
+        return Gamma
 
     def execute(self, ctx) -> None:
-        gamma = self.Gamma()
+        gamma = self.tvb_ht_class()
 
         set_values(self, gamma)
         self.gamma.value = gamma
@@ -210,17 +256,22 @@ class Gamma(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class DoubleExponential(Component):
-    from tvb.datatypes.equations import DoubleExponential
+class DoubleExponential(TVBComponent):
     parameters: InArg[dict]
 
     doubleExponential: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.DoubleExponential)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import DoubleExponential
+        return DoubleExponential
+
 
     def execute(self, ctx) -> None:
-        doubleExponential = self.DoubleExponential()
+        doubleExponential = self.tvb_ht_class()
 
         set_values(self, doubleExponential)
         self.doubleExponential.value = doubleExponential
@@ -228,17 +279,21 @@ class DoubleExponential(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class FirstOrderVolterra(Component):
-    from tvb.datatypes.equations import FirstOrderVolterra
+class FirstOrderVolterra(TVBComponent):
     parameters: InArg[dict]
 
     firstOrderVolterra: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.FirstOrderVolterra)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import FirstOrderVolterra
+        return FirstOrderVolterra
 
     def execute(self, ctx) -> None:
-        firstOrderVolterra = self.FirstOrderVolterra()
+        firstOrderVolterra = self.tvb_ht_class()
 
         set_values(self, firstOrderVolterra)
         self.firstOrderVolterra.value = firstOrderVolterra
@@ -246,17 +301,21 @@ class FirstOrderVolterra(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class MixtureOfGammas(Component):
-    from tvb.datatypes.equations import MixtureOfGammas
+class MixtureOfGammas(TVBComponent):
     parameters: InArg[dict]
 
     mixtureOfGammas: OutArg[Equation]
 
     def __init__(self):
-        set_defaults(self, self.MixtureOfGammas)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.datatypes.equations import MixtureOfGammas
+        return MixtureOfGammas
 
     def execute(self, ctx) -> None:
-        mixtureOfGammas = self.MixtureOfGammas()
+        mixtureOfGammas = self.tvb_ht_class()
 
         set_values(self, mixtureOfGammas)
         self.mixtureOfGammas.value = mixtureOfGammas
