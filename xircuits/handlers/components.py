@@ -13,6 +13,7 @@ import platform
 from xai_components.base_tvb import ComponentWithWidget
 from .config import get_config
 from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator, ModelConfigLoader
+from xircuits.handlers.component_parser import save_json_description
 
 DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
@@ -128,6 +129,9 @@ class EditXircuitsFile(APIHandler):
 
 
 class ComponentsRouteHandler(APIHandler):
+
+
+
     @tornado.web.authenticated
     def get(self):
         components = []
@@ -170,6 +174,20 @@ class ComponentsRouteHandler(APIHandler):
 
 
         components = list({(c["header"], c["task"]): c for c in components}.values())
+
+        # iterate through all the components and create the specific description json file for each one
+        for d in components:
+            if "class" in d and "xai_tvb_models" in d["package_name"]:
+                output_folder_path = os.path.join(*d["package_name"].split(".")[:-1], "arguments")
+                output_file_path = os.path.join(output_folder_path, d["class"].lower() + ".json")
+                if not os.path.isdir(output_folder_path):
+                    os.mkdir(output_folder_path)
+                    class_path = ".".join([d["package_name"], d["class"]])
+                    save_json_description(class_path, output_file_path)
+                elif not os.path.isfile(output_file_path):
+                    class_path = ".".join([d["package_name"], d["class"]])
+                    save_json_description(class_path, output_file_path)
+
 
         # Set up component colors according to palette
         for idx, c in enumerate(components):

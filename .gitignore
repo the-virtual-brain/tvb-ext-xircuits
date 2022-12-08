@@ -145,3 +145,5 @@ tsconfig.tsbuildinfo
 examples/*.py
 
 /.idea/
+
+xai_components/*/arguments
