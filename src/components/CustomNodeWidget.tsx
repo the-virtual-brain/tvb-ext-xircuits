@@ -102,6 +102,7 @@ export interface DefaultNodeProps {
  */
 export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
 
+    portsNo = this.props.node.getInPorts().length + this.props.node.getOutPorts().length;
 
     element:Object;
     state = {
@@ -126,7 +127,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
             thumbnail: 'https://picsum.photos/id/1019/250/150/'
         },
        ],
-        showParamDescriptionList: new Array(this.props.node.getInPorts().length + this.props.node.getOutPorts().length).fill(false)
+        showParamDescriptionList: new Array(this.portsNo).fill(false),
     };
 
     /**
@@ -139,10 +140,16 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                 showParamDescriptionList: this.state.showParamDescriptionList.map((value, index) => (
                         id === index ? newShowDescription : false
                     )
-                )
+                ),
+                showDescription: false
             })
         }
         return _setShowParamDescription;
+    }
+
+    setDescriptionStr = async (descriptionStr : string) => {
+        await this.setState({descriptionStr : descriptionStr});
+        ReactTooltip.show(this.element as Element);
     }
 
     generatePort = (port, index) => {
@@ -162,6 +169,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                 node={this.props.node}
                 showDescription={this.state.showParamDescriptionList[index]}
                 setShowDescription={this.setShowParamDescription(index)}
+                setDescriptionStr = {this.setDescriptionStr}
                 description={description}
             />
         );
@@ -244,6 +252,9 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
      */
     async handleDescription() {
         await this.setState({ showDescription: !this.state.showDescription });
+        this.setState({
+            showParamDescriptionList: new Array(this.portsNo).fill(false)
+        })
         this.getDescriptionStr();
         ReactTooltip.show(this.element as Element);
     }
@@ -332,19 +343,17 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                 />
                             </label>
                         </S.Title>
-                        <S.Ports>{/*aici se pun intrarile*/}
+                        <S.Ports>
                             <S.PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</S.PortsContainer>
                             <S.PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</S.PortsContainer>
                         </S.Ports>
                     </S.Node>
                     {/** Description Tooltip */}
-                    {this.state.showDescription && <ReactTooltip
+                    {(this.state.showDescription || this.state.showParamDescriptionList.reduce((prev, cur) => prev || cur, false)) && <ReactTooltip
                         id={this.props.node.getOptions().id}
                         className='description-tooltip'
                         arrowColor='rgb(255, 255, 255)'
                         clickable
-                        afterShow={() => { this.setState({ showDescription: true }) }}
-                        afterHide={() => { this.setState({ showDescription: false }) }}
                         delayHide={60000}
                         delayUpdate={5000}
                         getContent={() =>
@@ -354,7 +363,11 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                     className="close"
                                     data-dismiss="modal"
                                     aria-label="Close"
-                                    onClick={() => { this.setState({ showDescription: false }); }}>
+                                    onClick={() => { this.setState({
+                                        showDescription: false,
+                                        showParamDescriptionList: new Array(this.portsNo).fill(false)
+                                    }); }}
+                                >
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 <S.DescriptionName color={this.props.node.getOptions().color}>{this.props.node.getOptions()["name"]}</S.DescriptionName>
