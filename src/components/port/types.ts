@@ -5,6 +5,7 @@ export type WithToggleProps = {
     children: ReactElement[] | ReactElement | string;
     showDescription: boolean;
     setShowDescription: any;
+	setDescriptionStr: (param: string) => void;
     description: string;
 }
 

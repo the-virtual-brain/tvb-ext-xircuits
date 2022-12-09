@@ -1,12 +1,17 @@
 import * as React from "react";
 import Toggle from 'react-toggle'
-import {useRef} from "react";
+import {useCallback, useRef} from "react";
 import {WithToggleProps} from "./types";
 import ToolTip from 'react-portal-tooltip';
 
 
 export default function WithToggle(props: WithToggleProps){
 	const ref = useRef(null);
+
+	const changeHandler = useCallback(() => {
+		props.setShowDescription(!props.showDescription)
+		props.setDescriptionStr(props.description)
+	}, [props.description, props.showDescription])
 
 	return (
 		<div ref ={ref} className="alignToggle">
@@ -18,16 +23,16 @@ export default function WithToggle(props: WithToggleProps){
 								className='description'
 								name='Description'
 								checked={props.showDescription}
-								onChange={() => props.setShowDescription(!props.showDescription)}
+								onChange={changeHandler}
 							/>
 					}
-					<span>
+					<span style={{display: "inline-block", paddingLeft: "0.3rem"}}>
 						{props.children}
 					</span>
 				</>
 				:
 				<>
-					<span>
+					<span style={{display: "inline-block", paddingRight: "0.3rem"}}>
 						{props.children}
 					</span>
 					{
@@ -36,16 +41,10 @@ export default function WithToggle(props: WithToggleProps){
 								className='description'
 								name='Description'
 								checked={props.showDescription}
-								onChange={() => props.setShowDescription(!props.showDescription)}
+								onChange={changeHandler}
 							/>
 					}
 				</>
-			}
-
-			{props.showDescription &&
-				<ToolTip active={props.showDescription} position="left" arrow="center" parent={ref.current}>
-					<div>{props.description}</div>
-				</ToolTip>
 			}
 		</div>
 	)
