@@ -2,15 +2,14 @@ import * as React from "react";
 import Toggle from 'react-toggle'
 import {useCallback, useRef} from "react";
 import {WithToggleProps} from "./types";
-import ToolTip from 'react-portal-tooltip';
 
 
 export default function WithToggle(props: WithToggleProps){
 	const ref = useRef(null);
 
-	const changeHandler = useCallback(() => {
-		props.setShowDescription(!props.showDescription)
-		props.setDescriptionStr(props.description)
+	const changeHandler = useCallback(async () => {
+		await props.setShowDescription(!props.showDescription)
+		await props.setDescriptionStr(props.description)
 	}, [props.description, props.showDescription])
 
 	return (

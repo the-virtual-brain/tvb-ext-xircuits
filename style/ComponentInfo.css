@@ -8,8 +8,9 @@
 
 .description-container{
     width: 450px;
-    height: 250px;
+    max-height: 250px;
     overflow: auto;
+    display: inline-block;
 }
 
 .description-title{
