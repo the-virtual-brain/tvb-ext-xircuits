@@ -104,6 +104,8 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
 
     portsNo = this.props.node.getInPorts().length + this.props.node.getOutPorts().length;
 
+    tooltipDescriptionRef = React.createRef<HTMLDivElement>();
+
     element:Object;
     state = {
 
@@ -128,6 +130,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         },
        ],
         showParamDescriptionList: new Array(this.portsNo).fill(false),
+        paramName: ""
     };
 
     /**
@@ -147,9 +150,15 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         return _setShowParamDescription;
     }
 
-    setDescriptionStr = async (descriptionStr : string) => {
-        await this.setState({descriptionStr : descriptionStr});
-        ReactTooltip.show(this.element as Element);
+    setDescriptionStr = (paramName: string) => {
+        const _setDescriptionStr = async (descriptionStr : string) => {
+            await this.setState({
+                descriptionStr : descriptionStr,
+                paramName: paramName
+            });
+            ReactTooltip.show(this.element as Element);
+        }
+        return _setDescriptionStr;
     }
 
     generatePort = (port, index) => {
@@ -251,11 +260,12 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
      * Show/Hide Component's Description Tooltip
      */
     async handleDescription() {
-        await this.setState({ showDescription: !this.state.showDescription });
-        this.setState({
-            showParamDescriptionList: new Array(this.portsNo).fill(false)
-        })
-        this.getDescriptionStr();
+        await this.setState({
+            showDescription: !this.state.showDescription,
+            showParamDescriptionList: new Array(this.portsNo).fill(false),
+            paramName: ""
+        });
+        await this.getDescriptionStr();
         ReactTooltip.show(this.element as Element);
     }
 
@@ -282,7 +292,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         delete this.props.node.getOptions().extras["tip"];
         this.props.node.getOptions().extras["borderColor"]="rgb(0,192,255)";
     }
-    
+
     render() {
         if (this.props.node['extras']['type'] == 'comment') {
             return (
@@ -355,9 +365,9 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                         arrowColor='rgb(255, 255, 255)'
                         clickable
                         delayHide={60000}
-                        delayUpdate={5000}
+                        delayUpdate={0}
                         getContent={() =>
-                            <div data-no-drag style={{ cursor: 'default' }}>
+                            <div data-no-drag style={{ cursor: 'default' }} ref={this.tooltipDescriptionRef}>
                                 <button
                                     type="button"
                                     className="close"
@@ -370,7 +380,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                 >
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                <S.DescriptionName color={this.props.node.getOptions().color}>{this.props.node.getOptions()["name"]}</S.DescriptionName>
+                                <S.DescriptionName color={this.props.node.getOptions().color}>{this.props.node.getOptions()["name"] + " " + this.state.paramName}</S.DescriptionName>
                                 <p className='description-title'>Description:</p>
                                 <div 
                                     onWheel={(e) => e.stopPropagation()}
@@ -381,9 +391,11 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                         overridePosition={(
                             { left, top },
                             currentEvent, currentTarget, node, refNode) => {
+
                             const currentNode = this.props.node;
                             const nodeDimension = { x: currentNode.width, y: currentNode.height };
                             const nodePosition = { x: currentNode.getX(), y: currentNode.getY() };
+
                             let newPositionX = nodePosition.x;
                             let newPositionY = nodePosition.y;
                             let offset = 0;
@@ -396,7 +408,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
 
                             if (refNode == 'top') {
                                 newPositionX = newPositionX - 208 + offset + (nodeDimension.x / 2);
-                                newPositionY = newPositionY - 220;
+                                newPositionY = newPositionY + 66 - this.tooltipDescriptionRef.current.clientHeight;
                             }
                             else if (refNode == 'bottom') {
                                 newPositionX = newPositionX - 208 + offset + (nodeDimension.x / 2);
