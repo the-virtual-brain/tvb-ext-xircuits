@@ -11,7 +11,7 @@ export interface CustomPortLabelProps {
 	node: DefaultNodeModel;
 	showDescription: boolean;
 	setShowDescription: any;
-	setDescriptionStr: (param: string) => void;
+	setDescriptionStr: (string: any) => any;
 	description : string;
 }
 
@@ -133,7 +133,7 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 					showDescription={this.props.showDescription}
 					setShowDescription={this.props.setShowDescription}
 					description={this.props.description}
-					setDescriptionStr={this.props.setDescriptionStr}
+					setDescriptionStr={this.props.setDescriptionStr(this.props.port.getOptions().label)}
 				>
 					{this.props.port.getOptions().label}
 				</WithToggle>
