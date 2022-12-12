@@ -1,0 +1,31 @@
+FROM thevirtualbrain/tvb-run:latest
+
+ARG ENV_BIN=/opt/conda/envs/tvb-run/bin
+ARG PIP=$ENV_BIN/pip
+
+USER root
+RUN cd tvb-root; \
+    cd tvb_bin; \
+    $PIP install -e .
+
+RUN $PIP install tvb-library==2.6
+# RUN $PIP install tvb-ext-xircuits
+
+WORKDIR /home
+RUN git clone --branch dev_demo --depth 1 https://github.com/the-virtual-brain/tvb-ext-xircuits.git
+ARG LAST_SHA=LATEST
+
+ARG JUPYTER=$ENV_BIN/jupyter
+
+RUN cd tvb-ext-xircuits; \
+    git pull; \
+    $PIP install -e .
+
+#    $JUPYTER labextension develop . --overwrite; \
+#    $JUPYTER server extension enable xircuits
+#    $ENV_BIN/jlpm build; \
+#    $JUPYTER lab build
+
+#USER 1001
+# source activate tvb-run
+# jupyter lab --ip 0.0.0.0 --no-browser --allow-root
