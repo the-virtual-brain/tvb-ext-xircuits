@@ -22,15 +22,21 @@ class ConnectivityFromFile(Component):
 
     def __init__(self):
         self.done = False
-        self.file_name = InArg('connectivity_76.zip')
+        self.file_path = InArg(None)
         self.connectivity = OutArg(None)
 
     def execute(self, ctx) -> None:
         # imports
         from matplotlib import pyplot as plt
-        from tvb.simulator.lab import connectivity
+        from tvb.datatypes.connectivity import Connectivity
 
-        self.connectivity.value = connectivity.Connectivity.from_file(self.file_path.value)
+        file_path = self.file_path.value
+        if not file_path:
+            file_path = 'connectivity_76.zip'  # default from tvb_data
+        connectivity = Connectivity.from_file(file_path)
+        connectivity.configure()
+
+        self.connectivity.value = connectivity
         print_component_summary(self.connectivity.value)
 
         plt.imshow(self.connectivity.value.weights, interpolation='none')
@@ -65,10 +71,12 @@ class ConnectivityFromSiibra(Component):
 
         try:
             sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation,
-                                                   subject_ids=subject_id,
-                                                   compute_fc=False)
+                                                       subject_ids=subject_id,
+                                                       compute_fc=False)
+            connectivity = sc_dict[subject_id]
+            connectivity.configure()
 
-            self.connectivity.value = sc_dict[subject_id]
+            self.connectivity.value = connectivity
             print_component_summary(self.connectivity.value)
 
             plt.imshow(self.connectivity.value.weights, interpolation='none')
