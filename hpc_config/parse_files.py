@@ -34,6 +34,7 @@ def get_files_to_upload(xircuits_file_path):
     :param xircuits_file_path: path to the compiled xircuits workflow file
     :return: list containing the files that need to be uploaded to the HPC
     """
+    print("Gathering input files...", flush=True)
     files_to_upload = []  # will contain the paths of all files that need to be uploaded
     new_file = []   # will contain the xircuits .py file, but keeping only the file names, not their whole relative path
     with open(xircuits_file_path) as f:
