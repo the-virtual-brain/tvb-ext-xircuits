@@ -34,7 +34,7 @@ def get_unicore_client():
 
     # set ebrains token
     token = ''
-    site = 'JUSUF'
+    site = 'JUDAC'
     print(f'Authenticating to {site}...')
 
     # get available sites and create client for the site
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     client = get_unicore_client()
     if client:
         print("Executing job...", flush=True)
-        files_to_upload = get_files_to_upload()
+        files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
         launch_job(client=client, workflow_file_name=workflow_name, workflow_file_path=workflow_path,
                    files_to_upload=files_to_upload)
     print('Job was launched. Monitor it using pyunicore', flush=True)
