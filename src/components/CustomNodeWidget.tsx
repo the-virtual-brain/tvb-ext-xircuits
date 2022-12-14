@@ -18,6 +18,7 @@ import { showFormDialog } from '../dialog/FormDialog';
 import { CommentDialog } from '../dialog/CommentDialog';
 import ReactTooltip from 'react-tooltip';
 import { marked } from 'marked';
+import {MathJax, MathJaxContext} from "better-react-mathjax";
 
 var S;
 (function (S) {
@@ -326,7 +327,20 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         }
         else if (this.props.node.getOptions()["name"] !== 'Start' && this.props.node.getOptions()["name"] !== 'Finish') {
             return (
-                <>
+                <MathJaxContext  config={{
+                    tex2jax: {
+                        inlineMath: [['$','$'], ['\\(','\\)'], [":math:`", "`"], [":math: `", "`"]],
+                        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                        processEscapes: true
+                    },
+                    "HTML-CSS": {
+                        styles : {
+                            ".MathJax_Display": {
+                                "text-align": "left !important"
+                            }
+                        }
+                    }
+                }}>
                     <S.Node
                         onMouseEnter={this.showTooltip.bind(this)}
                         onMouseLeave={this.hideTooltip.bind(this)}
@@ -382,10 +396,16 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                 </button>
                                 <S.DescriptionName color={this.props.node.getOptions().color}>{this.props.node.getOptions()["name"] + " " + this.state.paramName}</S.DescriptionName>
                                 <p className='description-title'>Description:</p>
-                                <div 
+                                <div
                                     onWheel={(e) => e.stopPropagation()}
                                     className='description-container'>
-                                    <div className='markdown-body' dangerouslySetInnerHTML={this.renderText(this.state.descriptionStr)} />
+                                    <div className='markdown-body'>
+                                        {(()=>{
+                                            console.log(this.state.descriptionStr)
+                                            console.log("99")
+                                        })()}
+                                        <MathJax> {this.state.descriptionStr} </MathJax>
+                                    </div>
                                 </div>
                             </div>}
                         overridePosition={(
@@ -478,7 +498,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                             }}
                         />
                         : null}
-                </>
+                </MathJaxContext>
             );
         }
         else if(this.props.node.getOptions().extras["imageGalleryItems"] != undefined){
