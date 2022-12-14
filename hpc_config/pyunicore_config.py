@@ -2,6 +2,8 @@ import os
 import sys
 import pyunicore.client as unicore_client
 from pyunicore.credentials import AuthenticationFailedException
+from tvbwidgets.core.auth import get_current_token
+
 from hpc_config.parse_files import get_files_to_upload
 
 
@@ -30,7 +32,7 @@ def get_unicore_client():
     """
 
     # set ebrains token
-    token = ''
+    token = get_current_token()
     site = 'JUDAC'
     print(f'Authenticating to {site}...')
 
@@ -64,12 +66,10 @@ def launch_job(client, workflow_file_name, workflow_file_path, files_to_upload):
     # create job
     job_description = {
         "Executable": f"python3 {workflow_file_name}"
-        # "Executable": f"python3 test1.py"
     }
 
     # submit job
     job = client.new_job(job_description, inputs=inputs)
-    # job = client.new_job(job_description, inputs=['C:\\Work\\TVB\\tvb-ext-xircuits\\xai_workflows\\test1.py'])
     print(job)
 
 
