@@ -2,7 +2,7 @@ import os
 import sys
 import pyunicore.client as unicore_client
 from pyunicore.credentials import AuthenticationFailedException
-from xai_workflows.parse_files import get_files_to_upload
+from hpc_config.parse_files import get_files_to_upload
 
 
 def get_xircuits_file():
@@ -28,9 +28,6 @@ def get_unicore_client():
     """
     :return: pyunicore client to access EBRAINS sites
     """
-
-    # check correct verion for pyunicore
-    # print(f'pyunicore version: {pyunicore.__version__}')
 
     # set ebrains token
     token = ''
