@@ -12,7 +12,7 @@ class PyunicoreSubmitter(object):
     env_dir = 'tvb_xircuits'
     modules = 'cray-python'
 
-    def __init__(self, site, project='ich012'):
+    def __init__(self, site, project):
         self.site = site
         self.project = project
 
@@ -82,13 +82,13 @@ def get_xircuits_file():
     :return: the file name and the absolute path for the compiled workflow file
     """
     # check that compiled .xircuits file is correctly passed as argument
-    file_arg = sys.argv[-1]
+    file_arg = sys.argv[1]
     print(f'Identified the executable file: {file_arg}', flush=True)
 
     if os.path.exists(file_arg):
         full_path = os.path.abspath(file_arg)
     else:
-        print("Cannot find " + file_arg)
+        print(f"Cannot find the executable file: {file_arg}", flush=True)
         full_path = None
 
     filename = os.path.basename(file_arg)
@@ -116,7 +116,8 @@ if __name__ == '__main__':
     workflow_name, workflow_path = get_xircuits_file()
     print("Preparing job...", flush=True)
     files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
-    launch_job(site='DAINT-CSCS', project='', workflow_file_name=workflow_name, workflow_file_path=workflow_path,
+    site_arg = sys.argv[2]
+    launch_job(site=site_arg, project='', workflow_file_name=workflow_name, workflow_file_path=workflow_path,
                files_to_upload=files_to_upload)
     print('Job was launched. Monitor it using pyunicore', flush=True)
 
