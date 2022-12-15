@@ -19,6 +19,7 @@ import { CommentDialog } from '../dialog/CommentDialog';
 import ReactTooltip from 'react-tooltip';
 import { marked } from 'marked';
 import {MathJax, MathJaxContext} from "better-react-mathjax";
+import ReactMarkdown from "react-markdown";
 
 var S;
 (function (S) {
@@ -327,20 +328,25 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         }
         else if (this.props.node.getOptions()["name"] !== 'Start' && this.props.node.getOptions()["name"] !== 'Finish') {
             return (
-                <MathJaxContext  config={{
-                    tex2jax: {
-                        inlineMath: [['$','$'], ['\\(','\\)'], [":math:`", "`"], [":math: `", "`"]],
-                        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                        processEscapes: true
-                    },
-                    "HTML-CSS": {
-                        styles : {
-                            ".MathJax_Display": {
-                                "text-align": "left !important"
+                <MathJaxContext
+                    version={2}
+                    config={{
+                        jax: ["input/TeX", "output/HTML-CSS"],
+                        tex2jax: {
+                            inlineMath: [['$','$'], ['\\(','\\)'], [":math:`", "`"], [":math: `", "`"]],
+                            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                            processEscapes: true
+                        },
+                        "HTML-CSS": {
+                            styles : {
+                                ".MathJax_Display": {
+                                    "text-align": "left !important"
+                                }
                             }
                         }
-                    }
-                }}>
+                    }}
+                    onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
+                >
                     <S.Node
                         onMouseEnter={this.showTooltip.bind(this)}
                         onMouseLeave={this.hideTooltip.bind(this)}
@@ -402,9 +408,10 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                     <div className='markdown-body'>
                                         {(()=>{
                                             console.log(this.state.descriptionStr)
-                                            console.log("99")
+                                            console.log("66")
                                         })()}
                                         <MathJax> {this.state.descriptionStr} </MathJax>
+
                                     </div>
                                 </div>
                             </div>}
