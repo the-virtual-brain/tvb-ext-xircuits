@@ -62,7 +62,7 @@ def object_parse(object):
     tvb_object = object.tvb_ht_class
 
     output_dict = {
-        "description": tvb_object.__doc__,
+        "description": _format_doc(tvb_object.__doc__) if tvb_object.__doc__ else "",
         "arguments": {}
     }
 
@@ -72,7 +72,7 @@ def object_parse(object):
             for attr_name in tvb_object.declarative_attrs:
                 doc = getattr(tvb_object, attr_name).doc
                 if doc != "":
-                    output_dict['arguments'][attr_name] = _format_doc(doc)
+                    output_dict['arguments'][attr_name] = _format_doc(doc) if doc else ""
     except TypeError:
         print(str(tvb_object) + "     " + str(type(tvb_object)))
 
