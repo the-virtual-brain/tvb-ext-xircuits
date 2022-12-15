@@ -117,27 +117,6 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       }),
       name: widget => widget.context.path
     });
-    
-    // Find the MainLogo widget in the shell and replace it with the Xircuits Logo
-    const widgets = app.shell.widgets('top');
-    let widget = widgets.next();
-
-    while (widget !== undefined) {
-      if (widget.id === 'jp-MainLogo') {
-        xircuitsIcon.element({
-          container: widget.node,
-          justify: 'center',
-          height: 'auto',
-          width: '25px'
-        });
-        break;
-      }
-
-      widget = widgets.next();
-    }
-
-    // Change the favicon
-    changeFavicon(xircuitsFaviconLink);
 
     // Creating the sidebar widget for the xai components
     const sidebarWidget = ReactWidget.create(<Sidebar lab={app} factory={widgetFactory}/>);
