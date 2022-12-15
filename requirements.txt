@@ -13,6 +13,7 @@ nbformat
 requests
 gitpython
 pygithub
+pyunicore
 siibra
 tqdm
 tvb-widgets>=1.0
