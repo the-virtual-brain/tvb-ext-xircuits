@@ -2,6 +2,7 @@ import os
 import sys
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
+from pyunicore.helpers.jobs import Status as unicore_status
 from pyunicore.credentials import AuthenticationFailedException
 from tvbwidgets.core.auth import get_current_token
 
@@ -13,7 +14,7 @@ class PyunicoreSubmitter(object):
     storage_name = 'HOME'
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    modules = 'cray-python'
+    modules = {'DAINT-CSCS': 'cray-python', 'JUSUF': 'Python'}
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
@@ -28,7 +29,7 @@ class PyunicoreSubmitter(object):
 
     @property
     def _module_load_command(self):
-        return f'module load {self.modules}'
+        return f'module load {self.modules.get(self.site, "")}'
 
     @property
     def _create_env_command(self):
@@ -103,6 +104,10 @@ class PyunicoreSubmitter(object):
 
     def submit_job(self, executable, inputs):
         client = self.connect_client()
+        if client is None:
+            print(f"Could not connect to {self.site}, stopping execution.")
+            return
+
         home_storage = self._search_for_home_dir(client)
         if home_storage is None:
             print(f"Could not find a {self.storage_name} storage on {self.site}, stopping execution.")
@@ -122,6 +127,9 @@ class PyunicoreSubmitter(object):
             print(f"Job is running at {self.site}: {job.working_dir.properties['mountPoint']}. It can be monitored "
                   f"with tvb-ext-unicore", flush=True)
             job.poll()
+            if job.properties['status'] == unicore_status.FAILED:
+                print(f"Encountered an error during environment setup, stopping execution.")
+                return
 
         print("Executing workflow...", flush=True)
         job_description = {
