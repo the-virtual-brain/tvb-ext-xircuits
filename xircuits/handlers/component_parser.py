@@ -3,8 +3,9 @@ from rst2html import rst2html
 import json
 def doc_to_html(doc):
     html, _ = rst2html(doc, report_level=5)
-    return html
-
+    github_imgs_url = r'https://raw.githubusercontent.com/the-virtual-brain/tvb-root/master/tvb_documentation/sim_doc/'
+    return html.replace(r'<object data="', r'<img width="500" height="500" src="' + github_imgs_url)\
+        .replace(r'</object>', r'</img>')
 def get_class(kls):
     parts = kls.split('.')
     module = ".".join(parts[:-1])
