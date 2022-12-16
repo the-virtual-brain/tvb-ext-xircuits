@@ -1,6 +1,5 @@
 from tvb.datatypes.surfaces import Surface
-import scipy.sparse
-from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base import xai_component, InArg, OutArg, InCompArg
 from xai_components.base_tvb import TVBComponent
 from xai_components.utils import set_values, print_component_summary, set_defaults
 
@@ -8,20 +7,9 @@ from xai_components.utils import set_values, print_component_summary, set_defaul
 @xai_component(color='rgb(0, 116, 92)')
 class WhiteMatterSurface(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     whiteMatterSurface: OutArg[Surface]
 
@@ -49,20 +37,9 @@ class WhiteMatterSurface(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class CorticalSurface(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     corticalSurface: OutArg[Surface]
 
@@ -90,20 +67,9 @@ class CorticalSurface(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class SkinAir(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     skinAir: OutArg[Surface]
 
@@ -131,20 +97,9 @@ class SkinAir(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class BrainSkull(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     brainSkull: OutArg[Surface]
 
@@ -172,20 +127,9 @@ class BrainSkull(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class SkullSkin(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     skullSkin: OutArg[Surface]
 
@@ -213,20 +157,9 @@ class SkullSkin(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class EEGCap(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     eEGCap: OutArg[Surface]
 
@@ -254,20 +187,9 @@ class EEGCap(TVBComponent):
 @xai_component(color='rgb(0, 116, 92)')
 class FaceSurface(TVBComponent):
     file_path: InArg[str]
-    vertices: InArg[list]
-    triangles: InArg[list]
-    vertex_normals: InArg[list]
     triangle_normals: InArg[list]
-    geodesic_distance_matrix: InArg[scipy.sparse.csc_matrix]
-    number_of_vertices: InArg[int]
-    number_of_triangles: InArg[int]
-    edge_mean_length: InArg[float]
-    edge_min_length: InArg[float]
-    edge_max_length: InArg[float]
     hemisphere_mask: InArg[list]
-    zero_based_triangles: InArg[bool]
-    bi_hemispheric: InArg[bool]
-    valid_for_simulations: InArg[bool]
+    zero_based_triangles: InCompArg[bool]
 
     faceSurface: OutArg[Surface]
 

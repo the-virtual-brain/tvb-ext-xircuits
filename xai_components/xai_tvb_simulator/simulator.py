@@ -12,14 +12,14 @@ from tvb.simulator.coupling import Coupling
 from tvb.simulator.integrators import Integrator
 from tvb.simulator.models.base import Model
 
-from xai_components.base import InArg, OutArg, Component, xai_component
+from xai_components.base import InArg, OutArg, Component, xai_component, InCompArg
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(220, 5, 45)')
 class Simulator(Component):
     from tvb.simulator.simulator import Simulator
-    connectivity: InArg[Connectivity]
+    connectivity: InCompArg[Connectivity]
     conduction_speed: InArg[float]
     coupling: InArg[Coupling]
     surface: InArg[Cortex]
