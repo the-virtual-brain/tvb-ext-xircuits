@@ -8,11 +8,8 @@ from xai_components.utils import set_values, print_component_summary, set_defaul
 @xai_component(color='rgb(0, 116, 149)')
 class SensorsEEG(TVBComponent):
     file_path: InArg[str]
-    labels: InArg[list]
-    locations: InArg[list]
     has_orientation: InArg[bool]
     orientations: InArg[list]
-    number_of_sensors: InArg[int]
     usable: InArg[list]
 
     sensorsEEG: OutArg[Sensors]
@@ -41,11 +38,6 @@ class SensorsEEG(TVBComponent):
 @xai_component(color='rgb(0, 116, 149)')
 class SensorsMEG(TVBComponent):
     file_path: InArg[str]
-    labels: InArg[list]
-    locations: InArg[list]
-    has_orientation: InArg[bool]
-    orientations: InArg[list]
-    number_of_sensors: InArg[int]
     usable: InArg[list]
 
     sensorsMEG: OutArg[Sensors]
@@ -74,11 +66,8 @@ class SensorsMEG(TVBComponent):
 @xai_component(color='rgb(0, 116, 149)')
 class SensorsInternal(TVBComponent):
     file_path: InArg[str]
-    labels: InArg[list]
-    locations: InArg[list]
     has_orientation: InArg[bool]
     orientations: InArg[list]
-    number_of_sensors: InArg[int]
     usable: InArg[list]
 
     sensorsInternal: OutArg[Sensors]
