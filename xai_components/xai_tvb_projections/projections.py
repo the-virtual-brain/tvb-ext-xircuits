@@ -1,7 +1,7 @@
 from tvb.datatypes.projections import ProjectionMatrix
 from tvb.datatypes.sensors import Sensors
 from tvb.datatypes.surfaces import Surface
-from xai_components.base import xai_component, InArg, OutArg, Component
+from xai_components.base import xai_component, InArg, OutArg, Component, InCompArg
 from xai_components.utils import print_component_summary
 
 
@@ -9,9 +9,8 @@ from xai_components.utils import print_component_summary
 class ProjectionSurfaceEEG(Component):
     from tvb.datatypes.projections import ProjectionSurfaceEEG
     file_path: InArg[str]
-    sources: InArg[Surface]
-    sensors: InArg[Sensors]
-    projection_data: InArg[list]
+    sources: InCompArg[Surface]
+    sensors: InCompArg[Sensors]
 
     projectionSurfaceEEG: OutArg[ProjectionMatrix]
 
@@ -24,9 +23,8 @@ class ProjectionSurfaceEEG(Component):
         self.done = False
 
         self.file_path = InArg(None)
-        self.sources = InArg(None)
-        self.sensors = InArg(None)
-        self.projection_data = InArg(None)
+        self.sources = InCompArg(None)
+        self.sensors = InCompArg(None)
         self.projectionSurfaceEEG = OutArg(None)
 
     def execute(self, ctx) -> None:
@@ -37,7 +35,6 @@ class ProjectionSurfaceEEG(Component):
 
         projectionSurfaceEEG.sources = self.sources.value
         projectionSurfaceEEG.sensors = self.sensors.value
-        projectionSurfaceEEG.projection_data = self.projection_data.value
         projectionSurfaceEEG.configure()
 
         self.projectionSurfaceEEG.value = projectionSurfaceEEG
@@ -47,9 +44,8 @@ class ProjectionSurfaceEEG(Component):
 @xai_component(color='rgb(67, 47, 106)')
 class ProjectionSurfaceMEG(Component):
     file_path: InArg[str]
-    sources: InArg[Surface]
-    sensors: InArg[Sensors]
-    projection_data: InArg[list]
+    sources: InCompArg[Surface]
+    sensors: InCompArg[Sensors]
 
     projectionSurfaceMEG: OutArg[ProjectionMatrix]
 
@@ -62,9 +58,8 @@ class ProjectionSurfaceMEG(Component):
         self.done = False
 
         self.file_path = InArg(None)
-        self.sources = InArg(None)
-        self.sensors = InArg(None)
-        self.projection_data = InArg(None)
+        self.sources = InCompArg(None)
+        self.sensors = InCompArg(None)
         self.projectionSurfaceMEG = OutArg(None)
 
     def execute(self, ctx) -> None:
@@ -75,7 +70,6 @@ class ProjectionSurfaceMEG(Component):
 
         projectionSurfaceMEG.sources = self.sources.value
         projectionSurfaceMEG.sensors = self.sensors.value
-        projectionSurfaceMEG.projection_data = self.projection_data.value
         projectionSurfaceMEG.configure()
 
         self.projectionSurfaceMEG.value = projectionSurfaceMEG
@@ -85,9 +79,8 @@ class ProjectionSurfaceMEG(Component):
 @xai_component(color='rgb(67, 47, 106)')
 class ProjectionSurfaceSEEG(Component):
     file_path: InArg[str]
-    sources: InArg[Surface]
-    sensors: InArg[Sensors]
-    projection_data: InArg[list]
+    sources: InCompArg[Surface]
+    sensors: InCompArg[Sensors]
 
     projectionSurfaceSEEG: OutArg[ProjectionMatrix]
 
@@ -100,9 +93,8 @@ class ProjectionSurfaceSEEG(Component):
         self.done = False
 
         self.file_path = InArg(None)
-        self.sources = InArg(None)
-        self.sensors = InArg(None)
-        self.projection_data = InArg(None)
+        self.sources = InCompArg(None)
+        self.sensors = InCompArg(None)
         self.projectionSurfaceSEEG = OutArg(None)
 
     def execute(self, ctx) -> None:
@@ -113,7 +105,6 @@ class ProjectionSurfaceSEEG(Component):
 
         projectionSurfaceSEEG.sources = self.sources.value
         projectionSurfaceSEEG.sensors = self.sensors.value
-        projectionSurfaceSEEG.projection_data = self.projection_data.value
         projectionSurfaceSEEG.configure()
 
         self.projectionSurfaceSEEG.value = projectionSurfaceSEEG
