@@ -11,7 +11,7 @@ from tvb.datatypes.region_mapping import RegionMapping
 from tvb.datatypes.sensors import SensorsEEG, SensorsInternal, SensorsMEG
 from tvb.simulator.noise import Noise
 
-from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base import xai_component, Component, InArg, OutArg, InCompArg
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
@@ -209,9 +209,9 @@ class EEG(Component):
     variables_of_interest: InArg[list]
     region_mapping: InArg[RegionMapping]
     obsnoise: InArg[Noise]
-    projection: InArg[ProjectionSurfaceEEG]
+    projection: InCompArg[ProjectionSurfaceEEG]
     reference: InArg[str]
-    sensors: InArg[SensorsEEG]
+    sensors: InCompArg[SensorsEEG]
     sigma: InArg[float]
 
     eEG: OutArg[list]
@@ -238,8 +238,8 @@ class MEG(Component):
     variables_of_interest: InArg[list]
     region_mapping: InArg[RegionMapping]
     obsnoise: InArg[Noise]
-    projection: InArg[ProjectionSurfaceMEG]
-    sensors: InArg[SensorsMEG]
+    projection: InCompArg[ProjectionSurfaceMEG]
+    sensors: InCompArg[SensorsMEG]
 
     mEG: OutArg[list]
 
@@ -265,9 +265,9 @@ class iEEG(Component):
     variables_of_interest: InArg[list]
     region_mapping: InArg[RegionMapping]
     obsnoise: InArg[Noise]
-    projection: InArg[ProjectionSurfaceSEEG]
+    projection: InCompArg[ProjectionSurfaceSEEG]
     sigma: InArg[float]
-    sensors: InArg[SensorsInternal]
+    sensors: InCompArg[SensorsInternal]
 
     iEEG: OutArg[list]
 
