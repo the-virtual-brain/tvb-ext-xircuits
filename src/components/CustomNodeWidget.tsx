@@ -405,10 +405,6 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                     onWheel={(e) => e.stopPropagation()}
                                     className='description-container'>
                                     <div className='markdown-body'>
-                                        {(()=>{
-                                            console.log(this.state.descriptionStr)
-                                            console.log("3")
-                                        })()}
                                         <MathJax dangerouslySetInnerHTML={{__html : this.state.descriptionStr}}/>
                                     </div>
                                 </div>
