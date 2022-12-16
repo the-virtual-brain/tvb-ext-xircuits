@@ -19,7 +19,6 @@ import { CommentDialog } from '../dialog/CommentDialog';
 import ReactTooltip from 'react-tooltip';
 import { marked } from 'marked';
 import {MathJax, MathJaxContext} from "better-react-mathjax";
-import ReactMarkdown from "react-markdown";
 
 var S;
 (function (S) {
@@ -408,10 +407,9 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                     <div className='markdown-body'>
                                         {(()=>{
                                             console.log(this.state.descriptionStr)
-                                            console.log("66")
+                                            console.log("3")
                                         })()}
-                                        <MathJax> {this.state.descriptionStr} </MathJax>
-
+                                        <MathJax dangerouslySetInnerHTML={{__html : this.state.descriptionStr}}/>
                                     </div>
                                 </div>
                             </div>}
