@@ -165,7 +165,11 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
     generatePort = (port, index) => {
         const argumentDescriptions = this.props.node['extras']['argumentDescriptions'];
 
-        const description = argumentDescriptions && (port.getOptions().label in argumentDescriptions) ? argumentDescriptions[port.getOptions().label] : "";
+        // remove the ☆ from the beginning of the label
+        console.log(port.getOptions().label[0])
+		const name = port.getOptions().label[0] === "★" ? port.getOptions().label.slice(1) : port.getOptions().label;
+
+        const description = argumentDescriptions && (name in argumentDescriptions) ? argumentDescriptions[name] : "";
 
         const isOutPort = port.getOptions().name.includes('parameter-out');
 
