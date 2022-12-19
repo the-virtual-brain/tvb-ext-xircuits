@@ -183,11 +183,9 @@ class ComponentsRouteHandler(APIHandler):
                 try:
                     if not os.path.isdir(output_folder_path):
                         os.mkdir(output_folder_path)
-                    class_path = ".".join([d["package_name"], d["class"]])
-                    save_json_description(class_path, output_file_path)
-                    # elif not os.path.isfile(output_file_path):
-                    #     class_path = ".".join([d["package_name"], d["class"]])
-                    #     save_json_description(class_path, output_file_path)
+                    if not os.path.isfile(output_file_path):
+                        class_path = ".".join([d["package_name"], d["class"]])
+                        save_json_description(class_path, output_file_path)
                 except NotImplementedError:
                     print(f"Documentation has been ignored for this component {d['class']}")
                     pass
