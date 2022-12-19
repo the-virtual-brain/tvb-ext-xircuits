@@ -3,26 +3,6 @@
 | Distributed under the terms of the Modified BSD License.
 |----------------------------------------------------------------------------*/
 
-/* Refresh Icon */
-#main-logo{
-  background-image: url(../style/icons/xpress-loading.gif); 
-  z-index: 10;
-  position: absolute;
-  overflow: hidden;
-  background-size: 8%;
-  background-repeat: no-repeat;
-  background-position: center 50%;
-
-}
-
-.orbit{
-  visibility: hidden;
-}
-
-#main-logo > svg{
-  visibility: hidden;
-}
-
 .jp-DebuggerWidget {
   color: var(--jp-ui-font-color1);
   background: var(--jp-layout-color1);

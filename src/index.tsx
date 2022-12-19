@@ -25,7 +25,7 @@ import { DocumentWidget } from '@jupyterlab/docregistry';
 import { runIcon, saveIcon } from '@jupyterlab/ui-components';
 import { addNodeActionCommands } from './commands/NodeActionCommands';
 import { Token } from '@lumino/coreutils';
-import { xircuitsIcon, debuggerIcon, componentLibIcon, changeFavicon, xircuitsFaviconLink } from './ui-components/icons';
+import { xircuitsIcon, debuggerIcon, componentLibIcon } from './ui-components/icons';
 import { startRunOutputStr } from './kernel/RunOutput';
 
 
