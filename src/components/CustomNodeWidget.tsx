@@ -166,7 +166,6 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         const argumentDescriptions = this.props.node['extras']['argumentDescriptions'];
 
         // remove the ☆ from the beginning of the label
-        console.log(port.getOptions().label[0])
 		const name = port.getOptions().label[0] === "★" ? port.getOptions().label.slice(1) : port.getOptions().label;
 
         const description = argumentDescriptions && (name in argumentDescriptions) ? argumentDescriptions[name] : "";
