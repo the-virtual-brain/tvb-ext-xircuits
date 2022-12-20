@@ -4,7 +4,6 @@ import tornado
 from jupyter_server.base.handlers import APIHandler
 from .component_parser import ComponentsParser
 from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator, ModelConfigLoader
-from xircuits.handlers.json_parser import save_json_description
 
 class EditXircuitsFile(APIHandler):
     @tornado.web.authenticated

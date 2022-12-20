@@ -18,3 +18,4 @@ pyunicore
 siibra
 tqdm
 tvb-widgets>=1.0
+tvb-framework
