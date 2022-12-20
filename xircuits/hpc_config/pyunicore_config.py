@@ -18,6 +18,8 @@ class PyunicoreSubmitter(object):
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
+    JOB_TYPE_KEY = 'Job type'
+    INTERACTIVE_KEY = 'interactive'
 
     def __init__(self, site, project):
         self.site = site
@@ -122,7 +124,8 @@ class PyunicoreSubmitter(object):
             job_description = {
                 self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._create_env_command} && "
                                      f"{self._activate_command} && {self._install_dependencies_command}",
-                self.PROJECT_KEY: self.project}
+                self.PROJECT_KEY: self.project,
+                self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
             job = client.new_job(job_description, inputs=[])
             print(f"Job is running at {self.site}: {job.working_dir.properties['mountPoint']}. It can be monitored "
                   f"with tvb-ext-unicore", flush=True)
@@ -130,6 +133,7 @@ class PyunicoreSubmitter(object):
             if job.properties['status'] == unicore_status.FAILED:
                 print(f"Encountered an error during environment setup, stopping execution.")
                 return
+            print(f"Successfully finished the environment setup.")
 
         print("Executing workflow...", flush=True)
         job_description = {
