@@ -28,11 +28,16 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pip install allensdk
         pip install -r requirements.txt
 
     - name: Build Extension in Dev Mode
       run: |
         pip install -e .
+
+    - name: Generate description files
+      run: |
+        python generate_description_files.py
 
     - name: Build Wheel
       run: |
