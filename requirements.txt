@@ -12,6 +12,7 @@ jupyterlab>=3.0.0,<4.0.0
 jupyterlab-widgets==1.1.0
 nbformat
 requests
+rst2html
 gitpython
 pygithub
 pyunicore
