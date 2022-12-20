@@ -11,11 +11,12 @@ from tvb.adapters.creators import siibra_base as sb
 from tvb.datatypes.connectivity import Connectivity
 from tvbwidgets.core.auth import get_current_token
 from xai_components.base import InArg, OutArg, Component, xai_component
+from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary
 
 
 @xai_component(color='rgb(85, 37, 130)')
-class ConnectivityFromFile(Component):
+class ConnectivityFromFile(TVBComponent):
     file_path: InArg[str]
 
     connectivity: OutArg[Connectivity]
