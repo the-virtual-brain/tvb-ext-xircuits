@@ -36,24 +36,6 @@ class ComponentsRouteHandler(APIHandler):
 
     component_parser = ComponentsParser()
 
-    def generate_doc_files(self):
-        components = self.component_parser.get_components()
-
-        # iterate through all the components and create the specific description json file for each one
-        for d in components:
-            if "class" in d:
-                output_folder_path = os.path.join(*d["package_name"].split(".")[:-1], "arguments")
-                output_file_path = os.path.join(output_folder_path, d["class"].lower() + ".json")
-                try:
-                    if not os.path.isdir(output_folder_path):
-                        os.mkdir(output_folder_path)
-                    if not os.path.isfile(output_file_path):
-                        class_path = ".".join([d["package_name"], d["class"]])
-                        save_json_description(class_path, output_file_path)
-                except NotImplementedError:
-                    print(f"Documentation has been ignored for this component {d['class']}")
-                    pass
-
     @tornado.web.authenticated
     def get(self):
         self.finish(self.component_parser.get())
