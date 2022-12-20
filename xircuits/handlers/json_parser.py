@@ -20,7 +20,10 @@ def get_class(kls):
 
 
 def object_parse(object):
+
     tvb_object = object.tvb_ht_class
+
+
     output_dict = {
         "description": doc_to_html(tvb_object.__doc__) if tvb_object.__doc__ else "",
         "arguments": {}
