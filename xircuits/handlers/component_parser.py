@@ -157,7 +157,7 @@ class ComponentsParser:
                         os.mkdir(output_folder_path)
                     class_path = ".".join([d["package_name"], d["class"]])
                     save_json_description(class_path, output_file_path)
-                except NotImplementedError:
+                except (NotImplementedError, AttributeError):
                     print(f"Documentation has been ignored for this component {d['class']}")
 
     def get(self):
