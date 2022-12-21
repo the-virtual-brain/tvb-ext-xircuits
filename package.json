@@ -1,6 +1,6 @@
 {
   "name": "tvb-ext-xircuits",
-  "version": "0.1a2",
+  "version": "0.1.0",
   "description": "Jupyterlab extension for building TVB workflows in a visual and interactive manner",
   "keywords": [
     "jupyter",
@@ -64,6 +64,7 @@
     "@projectstorm/react-diagrams": "^6.6.1",
     "@projectstorm/react-diagrams-defaults": "^6.6.1",
     "@projectstorm/react-diagrams-routing": "^6.6.1",
+    "better-react-mathjax": "^2.0.2",
     "dagre": "^0.8.5",
     "krc-pagination": "^1.0.1",
     "marked": "^4.0.18",
@@ -80,7 +81,8 @@
     "react-switch": "^6.0.0",
     "react-textarea-autosize": "^8.3.3",
     "react-toggle": "^4.1.2",
-    "react-tooltip": "^4.2.21"
+    "react-tooltip": "^4.2.21",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

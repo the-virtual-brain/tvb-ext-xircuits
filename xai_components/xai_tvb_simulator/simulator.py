@@ -12,13 +12,13 @@ from tvb.simulator.coupling import Coupling
 from tvb.simulator.integrators import Integrator
 from tvb.simulator.models.base import Model
 
-from xai_components.base import InArg, OutArg, Component, xai_component, InCompArg
+from xai_components.base import InArg, OutArg, xai_component, InCompArg
+from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(220, 5, 45)')
-class Simulator(Component):
-    from tvb.simulator.simulator import Simulator
+class Simulator(TVBComponent):
     connectivity: InCompArg[Connectivity]
     conduction_speed: InArg[float]
     coupling: InArg[Coupling]
@@ -34,15 +34,20 @@ class Simulator(Component):
     time_series_list: OutArg[list]
 
     def __init__(self):
-        set_defaults(self, self.Simulator)
+        set_defaults(self, self.tvb_ht_class)
         self.backend = InArg(None)
         self.time_series = OutArg(None)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.simulator import Simulator
+        return Simulator
 
     def execute(self, ctx) -> None:
         # imports
         from tvb.simulator.backend.nb_mpr import NbMPRBackend
 
-        simulator = self.Simulator()
+        simulator = self.tvb_ht_class()
         set_values(self, simulator)
         simulator.configure()
 

@@ -8,13 +8,13 @@
 from tvb.simulator.integrators import Integrator
 from tvb.simulator.noise import Noise
 
-from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class HeunDeterministic(Component):
-    from tvb.simulator.integrators import HeunDeterministic
+class HeunDeterministic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -23,11 +23,17 @@ class HeunDeterministic(Component):
 
     heunDeterministic: OutArg[Integrator]
 
+
     def __init__(self):
-        set_defaults(self, self.HeunDeterministic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import HeunDeterministic
+        return HeunDeterministic
 
     def execute(self, ctx) -> None:
-        heunDeterministic = self.HeunDeterministic()
+        heunDeterministic = self.tvb_ht_class()
 
         set_values(self, heunDeterministic)
         self.heunDeterministic.value = heunDeterministic
@@ -35,8 +41,7 @@ class HeunDeterministic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class HeunStochastic(Component):
-    from tvb.simulator.integrators import HeunStochastic
+class HeunStochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -47,10 +52,15 @@ class HeunStochastic(Component):
     heunStochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.HeunStochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import HeunStochastic
+        return HeunStochastic
 
     def execute(self, ctx) -> None:
-        heunStochastic = self.HeunStochastic()
+        heunStochastic = self.tvb_ht_class()
 
         set_values(self, heunStochastic)
         self.heunStochastic.value = heunStochastic
@@ -58,8 +68,7 @@ class HeunStochastic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class EulerDeterministic(Component):
-    from tvb.simulator.integrators import EulerDeterministic
+class EulerDeterministic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -69,10 +78,15 @@ class EulerDeterministic(Component):
     eulerDeterministic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.EulerDeterministic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import EulerDeterministic
+        return EulerDeterministic
 
     def execute(self, ctx) -> None:
-        eulerDeterministic = self.EulerDeterministic()
+        eulerDeterministic = self.tvb_ht_class()
 
         set_values(self, eulerDeterministic)
         self.eulerDeterministic.value = eulerDeterministic
@@ -80,8 +94,7 @@ class EulerDeterministic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class EulerStochastic(Component):
-    from tvb.simulator.integrators import EulerStochastic
+class EulerStochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -92,10 +105,15 @@ class EulerStochastic(Component):
     eulerStochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.EulerStochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import EulerStochastic
+        return EulerStochastic
 
     def execute(self, ctx) -> None:
-        eulerStochastic = self.EulerStochastic()
+        eulerStochastic = self.tvb_ht_class()
 
         set_values(self, eulerStochastic)
         self.eulerStochastic.value = eulerStochastic
@@ -103,8 +121,7 @@ class EulerStochastic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class RungeKutta4thOrderDeterministic(Component):
-    from tvb.simulator.integrators import RungeKutta4thOrderDeterministic
+class RungeKutta4thOrderDeterministic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -114,10 +131,16 @@ class RungeKutta4thOrderDeterministic(Component):
     rungeKutta4thOrderDeterministic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.RungeKutta4thOrderDeterministic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import RungeKutta4thOrderDeterministic
+        return RungeKutta4thOrderDeterministic
+
 
     def execute(self, ctx) -> None:
-        rungeKutta4thOrderDeterministic = self.RungeKutta4thOrderDeterministic()
+        rungeKutta4thOrderDeterministic = self.tvb_ht_class()
 
         set_values(self, rungeKutta4thOrderDeterministic)
         self.rungeKutta4thOrderDeterministic.value = rungeKutta4thOrderDeterministic
@@ -125,8 +148,7 @@ class RungeKutta4thOrderDeterministic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Identity(Component):
-    from tvb.simulator.integrators import Identity
+class Identity(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -136,10 +158,15 @@ class Identity(Component):
     identity: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.Identity)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import Identity
+        return Identity
 
     def execute(self, ctx) -> None:
-        identity = self.Identity()
+        identity = self.tvb_ht_class()
 
         set_values(self, identity)
         self.identity.value = identity
@@ -147,8 +174,7 @@ class Identity(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class IdentityStochastic(Component):
-    from tvb.simulator.integrators import IdentityStochastic
+class IdentityStochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -159,10 +185,15 @@ class IdentityStochastic(Component):
     identityStochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.IdentityStochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import IdentityStochastic
+        return IdentityStochastic
 
     def execute(self, ctx) -> None:
-        identityStochastic = self.IdentityStochastic()
+        identityStochastic = self.tvb_ht_class()
 
         set_values(self, identityStochastic)
         self.identityStochastic.value = identityStochastic
@@ -170,8 +201,7 @@ class IdentityStochastic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class VODE(Component):
-    from tvb.simulator.integrators import VODE
+class VODE(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -181,10 +211,15 @@ class VODE(Component):
     vODE: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.VODE)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import VODE
+        return VODE
 
     def execute(self, ctx) -> None:
-        vODE = self.VODE()
+        vODE = self.tvb_ht_class()
 
         set_values(self, vODE)
         self.vODE.value = vODE
@@ -192,8 +227,7 @@ class VODE(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class VODEStochastic(Component):
-    from tvb.simulator.integrators import VODEStochastic
+class VODEStochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -204,10 +238,15 @@ class VODEStochastic(Component):
     vODEStochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.VODEStochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import VODEStochastic
+        return VODEStochastic
 
     def execute(self, ctx) -> None:
-        vODEStochastic = self.VODEStochastic()
+        vODEStochastic = self.tvb_ht_class()
 
         set_values(self, vODEStochastic)
         self.vODEStochastic.value = vODEStochastic
@@ -215,8 +254,7 @@ class VODEStochastic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Dopri5(Component):
-    from tvb.simulator.integrators import Dopri5
+class Dopri5(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -226,10 +264,15 @@ class Dopri5(Component):
     dopri5: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.Dopri5)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import Dopri5
+        return Dopri5
 
     def execute(self, ctx) -> None:
-        dopri5 = self.Dopri5()
+        dopri5 = self.tvb_ht_class()
 
         set_values(self, dopri5)
         self.dopri5.value = dopri5
@@ -237,8 +280,7 @@ class Dopri5(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Dopri5Stochastic(Component):
-    from tvb.simulator.integrators import Dopri5Stochastic
+class Dopri5Stochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -249,10 +291,15 @@ class Dopri5Stochastic(Component):
     dopri5Stochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.Dopri5Stochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import Dopri5Stochastic
+        return Dopri5Stochastic
 
     def execute(self, ctx) -> None:
-        dopri5Stochastic = self.Dopri5Stochastic()
+        dopri5Stochastic = self.tvb_ht_class()
 
         set_values(self, dopri5Stochastic)
         self.dopri5Stochastic.value = dopri5Stochastic
@@ -260,8 +307,7 @@ class Dopri5Stochastic(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Dop853(Component):
-    from tvb.simulator.integrators import Dop853
+class Dop853(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -271,10 +317,15 @@ class Dop853(Component):
     dop853: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.Dop853)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import Dop853
+        return Dop853
 
     def execute(self, ctx) -> None:
-        dop853 = self.Dop853()
+        dop853 = self.tvb_ht_class()
 
         set_values(self, dop853)
         self.dop853.value = dop853
@@ -282,8 +333,7 @@ class Dop853(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Dop853Stochastic(Component):
-    from tvb.simulator.integrators import Dop853Stochastic
+class Dop853Stochastic(TVBComponent):
     dt: InArg[float]
     bounded_state_variable_indices: InArg[list]
     state_variable_boundaries: InArg[list]
@@ -294,10 +344,15 @@ class Dop853Stochastic(Component):
     dop853Stochastic: OutArg[Integrator]
 
     def __init__(self):
-        set_defaults(self, self.Dop853Stochastic)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.integrators import Dop853Stochastic
+        return Dop853Stochastic
 
     def execute(self, ctx) -> None:
-        dop853Stochastic = self.Dop853Stochastic()
+        dop853Stochastic = self.tvb_ht_class()
 
         set_values(self, dop853Stochastic)
         self.dop853Stochastic.value = dop853Stochastic

@@ -138,3 +138,5 @@ mlruns/
 # Pytorch dataset default dir
 data
 /.idea/
+
+xai_components/*/arguments

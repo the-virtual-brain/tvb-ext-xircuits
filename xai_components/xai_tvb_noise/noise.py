@@ -7,13 +7,13 @@
 from numpy.random import RandomState
 from tvb.simulator.noise import Noise
 
-from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base import xai_component, InArg, OutArg
+from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Additive(Component):
-    from tvb.simulator.noise import Additive
+class Additive(TVBComponent):
     ntau: InArg[float]
     noise_seed: InArg[int]
     random_stream: InArg[RandomState]
@@ -22,10 +22,15 @@ class Additive(Component):
     additive: OutArg[Noise]
 
     def __init__(self):
-        set_defaults(self, self.Additive)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.noise import Additive
+        return Additive
 
     def execute(self, ctx) -> None:
-        additive = self.Additive()
+        additive = self.tvb_ht_class()
 
         set_values(self, additive)
         self.additive.value = additive
@@ -33,8 +38,7 @@ class Additive(Component):
 
 
 @xai_component(color='rgb(253, 225, 0)')
-class Multiplicative(Component):
-    from tvb.simulator.noise import Multiplicative
+class Multiplicative(TVBComponent):
     from tvb.datatypes.equations import TemporalApplicableEquation
     ntau: InArg[float]
     noise_seed: InArg[int]
@@ -45,10 +49,15 @@ class Multiplicative(Component):
     multiplicative: OutArg[Noise]
 
     def __init__(self):
-        set_defaults(self, self.Multiplicative)
+        set_defaults(self, self.tvb_ht_class)
+
+    @property
+    def tvb_ht_class(self):
+        from tvb.simulator.noise import Multiplicative
+        return Multiplicative
 
     def execute(self, ctx) -> None:
-        multiplicative = self.Multiplicative()
+        multiplicative = self.tvb_ht_class()
 
         set_values(self, multiplicative)
         self.multiplicative.value = multiplicative

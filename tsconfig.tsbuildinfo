@@ -872,8 +872,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/common/position.d.ts": {
-        "version": "3ceb238111cbea7ba1b9b25a4833c5a0432637610f3245c6b1cf5804acfcfbb8",
-        "signature": "3ceb238111cbea7ba1b9b25a4833c5a0432637610f3245c6b1cf5804acfcfbb8",
+        "version": "e1cbde3f55a1d15093334577484cfd3f3f0ace8edb928ff4d0526663ca23ce62",
+        "signature": "e1cbde3f55a1d15093334577484cfd3f3f0ace8edb928ff4d0526663ca23ce62",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/icons/lib/esm/generated/iconcontents.d.ts": {
@@ -882,8 +882,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/icons/lib/esm/generated/iconnames.d.ts": {
-        "version": "2a4ba510a7235a1b87dbfab35046d8ee9a9089b9b4b679deb678191b5cc48709",
-        "signature": "2a4ba510a7235a1b87dbfab35046d8ee9a9089b9b4b679deb678191b5cc48709",
+        "version": "9da38b661062966f1dafc78d034614af5181a92e1b9dba51cb2ad2320e300154",
+        "signature": "9da38b661062966f1dafc78d034614af5181a92e1b9dba51cb2ad2320e300154",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/icons/lib/esm/iconname.d.ts": {
@@ -907,8 +907,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/common/classes.d.ts": {
-        "version": "198ce29d4d850888b5e626e7ac24cf8ea5f2979b6e62e5b63a46bbc926ae3e9a",
-        "signature": "198ce29d4d850888b5e626e7ac24cf8ea5f2979b6e62e5b63a46bbc926ae3e9a",
+        "version": "d7ac703836066d80c98305474443d2b5ce456bf1667e76a89659735e040b686b",
+        "signature": "d7ac703836066d80c98305474443d2b5ce456bf1667e76a89659735e040b686b",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/common/keys.d.ts": {
@@ -937,8 +937,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/common/utils/reactutils.d.ts": {
-        "version": "0d919be05b4ed8807e5fb995a328532cc83f2cf959ca886b336e9411ecdbb0f1",
-        "signature": "0d919be05b4ed8807e5fb995a328532cc83f2cf959ca886b336e9411ecdbb0f1",
+        "version": "4dd37743fe7eb33ee2d65854b63d2e99999e2f8398c427ef6bff99ee1f94a4a7",
+        "signature": "4dd37743fe7eb33ee2d65854b63d2e99999e2f8398c427ef6bff99ee1f94a4a7",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/common/utils/safeinvokemember.d.ts": {
@@ -982,8 +982,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/components/collapse/collapse.d.ts": {
-        "version": "3f2f9f1108a3901476d5ef23697bc3e3684658fda5c71768fb9800d85c4c4d90",
-        "signature": "3f2f9f1108a3901476d5ef23697bc3e3684658fda5c71768fb9800d85c4c4d90",
+        "version": "8822d39d94eec0ce799e13cf2412680fd3238fb0059f05c6bf5f077f8ba9df72",
+        "signature": "8822d39d94eec0ce799e13cf2412680fd3238fb0059f05c6bf5f077f8ba9df72",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/cjs/components/forms/controls.d.ts": {
@@ -1057,8 +1057,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/position.d.ts": {
-        "version": "3ceb238111cbea7ba1b9b25a4833c5a0432637610f3245c6b1cf5804acfcfbb8",
-        "signature": "3ceb238111cbea7ba1b9b25a4833c5a0432637610f3245c6b1cf5804acfcfbb8",
+        "version": "e1cbde3f55a1d15093334577484cfd3f3f0ace8edb928ff4d0526663ca23ce62",
+        "signature": "e1cbde3f55a1d15093334577484cfd3f3f0ace8edb928ff4d0526663ca23ce62",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/refs.d.ts": {
@@ -1072,8 +1072,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/classes.d.ts": {
-        "version": "198ce29d4d850888b5e626e7ac24cf8ea5f2979b6e62e5b63a46bbc926ae3e9a",
-        "signature": "198ce29d4d850888b5e626e7ac24cf8ea5f2979b6e62e5b63a46bbc926ae3e9a",
+        "version": "d7ac703836066d80c98305474443d2b5ce456bf1667e76a89659735e040b686b",
+        "signature": "d7ac703836066d80c98305474443d2b5ce456bf1667e76a89659735e040b686b",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/keys.d.ts": {
@@ -1102,8 +1102,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/utils/reactutils.d.ts": {
-        "version": "0d919be05b4ed8807e5fb995a328532cc83f2cf959ca886b336e9411ecdbb0f1",
-        "signature": "0d919be05b4ed8807e5fb995a328532cc83f2cf959ca886b336e9411ecdbb0f1",
+        "version": "4dd37743fe7eb33ee2d65854b63d2e99999e2f8398c427ef6bff99ee1f94a4a7",
+        "signature": "4dd37743fe7eb33ee2d65854b63d2e99999e2f8398c427ef6bff99ee1f94a4a7",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/utils/safeinvokemember.d.ts": {
@@ -1157,8 +1157,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/overflow-list/overflowlist.d.ts": {
-        "version": "a708913a4d880a392d58c8bd8f94ba4781e7051341059c2aee54439eaffae31e",
-        "signature": "a708913a4d880a392d58c8bd8f94ba4781e7051341059c2aee54439eaffae31e",
+        "version": "9f74908d2668503fae8a6f3291d06c3e07f4d55645b3e2a4f7866425883d6f74",
+        "signature": "9f74908d2668503fae8a6f3291d06c3e07f4d55645b3e2a4f7866425883d6f74",
         "affectsGlobalScope": false
       },
       "./node_modules/popper.js/index.d.ts": {
@@ -1177,8 +1177,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/breadcrumbs/breadcrumbs.d.ts": {
-        "version": "fc92dcf36146b0b3e146c05c7150420c72f2c19eb94630dd24d01b86b39c70cf",
-        "signature": "fc92dcf36146b0b3e146c05c7150420c72f2c19eb94630dd24d01b86b39c70cf",
+        "version": "8f57b36dec78897043a9dd5731cfc4e0206db3fdef0a844accb476c6406724fc",
+        "signature": "8f57b36dec78897043a9dd5731cfc4e0206db3fdef0a844accb476c6406724fc",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/button/abstractbutton.d.ts": {
@@ -1207,8 +1207,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/collapse/collapse.d.ts": {
-        "version": "3f2f9f1108a3901476d5ef23697bc3e3684658fda5c71768fb9800d85c4c4d90",
-        "signature": "3f2f9f1108a3901476d5ef23697bc3e3684658fda5c71768fb9800d85c4c4d90",
+        "version": "8822d39d94eec0ce799e13cf2412680fd3238fb0059f05c6bf5f077f8ba9df72",
+        "signature": "8822d39d94eec0ce799e13cf2412680fd3238fb0059f05c6bf5f077f8ba9df72",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/menu/menuitem.d.ts": {
@@ -1222,8 +1222,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/context-menu/contextmenutarget.d.ts": {
-        "version": "666e577c2f66eda770fe661261f9e1e801502310cb12704a0c3253bf8517849b",
-        "signature": "666e577c2f66eda770fe661261f9e1e801502310cb12704a0c3253bf8517849b",
+        "version": "05edf98e806ebf88280ab4d7542746b7b387268bed2d007d69927b0706dfdf2f",
+        "signature": "05edf98e806ebf88280ab4d7542746b7b387268bed2d007d69927b0706dfdf2f",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/dialog/dialog.d.ts": {
@@ -1287,8 +1287,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/forms/radiogroup.d.ts": {
-        "version": "9c93be27794ff4f7909326ee1765aef556391c773f8f36d664817c45113a1fbd",
-        "signature": "9c93be27794ff4f7909326ee1765aef556391c773f8f36d664817c45113a1fbd",
+        "version": "6efd1a9a45a5246703057855b064f0bd85ff5a87d52961d9186b5b7e06863b25",
+        "signature": "6efd1a9a45a5246703057855b064f0bd85ff5a87d52961d9186b5b7e06863b25",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/forms/textarea.d.ts": {
@@ -1302,8 +1302,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/html-select/htmlselect.d.ts": {
-        "version": "8fc18d7fa5fd967ab3fba4ffa08bc15778501fa175d7e3478e45da45d39469e4",
-        "signature": "8fc18d7fa5fd967ab3fba4ffa08bc15778501fa175d7e3478e45da45d39469e4",
+        "version": "fe728784b93c52b3ce66c34b69faf12a08dedc1e9550825a5acd929e60dd0ad5",
+        "signature": "fe728784b93c52b3ce66c34b69faf12a08dedc1e9550825a5acd929e60dd0ad5",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/html-table/htmltable.d.ts": {
@@ -1327,8 +1327,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/hooks/hotkeys/usehotkeys.d.ts": {
-        "version": "d2d8626436f88ad4ad2ec998661fd76940a4a407509aaa1b1381622c4dfdd682",
-        "signature": "d2d8626436f88ad4ad2ec998661fd76940a4a407509aaa1b1381622c4dfdd682",
+        "version": "2fd6358ad61ca689f3a41c75416ecfd142389973b7e34cc00974d911740fc04c",
+        "signature": "2fd6358ad61ca689f3a41c75416ecfd142389973b7e34cc00974d911740fc04c",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/hooks/index.d.ts": {
@@ -1357,8 +1357,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/hotkeys/hotkeystarget.d.ts": {
-        "version": "db3ae10a4c06659df3644f87b8e1273aaaad367bb8e56d4a952f37158a05e4fe",
-        "signature": "db3ae10a4c06659df3644f87b8e1273aaaad367bb8e56d4a952f37158a05e4fe",
+        "version": "a00351937b267afb1755c02500468206d59e454a277457629a6710ba90294499",
+        "signature": "a00351937b267afb1755c02500468206d59e454a277457629a6710ba90294499",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/hotkeys/hotkeysdialog.d.ts": {
@@ -1367,13 +1367,13 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/hotkeys/hotkeysdialog2.d.ts": {
-        "version": "e4a72f9b03314626e0eae83b968c25a157f0ba0eb789b0c776da246f12a499df",
-        "signature": "e4a72f9b03314626e0eae83b968c25a157f0ba0eb789b0c776da246f12a499df",
+        "version": "705a3c4c90308c507e4a11db93803aeb66c1a7ba3cd87488250278c8fe7a78e0",
+        "signature": "705a3c4c90308c507e4a11db93803aeb66c1a7ba3cd87488250278c8fe7a78e0",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/hotkeys/hotkeystarget2.d.ts": {
-        "version": "68f6ffb302d6f2478e78f6e3956e872e3a31f010c199874c2b8ef8996d75d53c",
-        "signature": "68f6ffb302d6f2478e78f6e3956e872e3a31f010c199874c2b8ef8996d75d53c",
+        "version": "bbd8e5c44e3ab074e769469d43b796c038e8085cff877cabb5ddca13670f1542",
+        "signature": "bbd8e5c44e3ab074e769469d43b796c038e8085cff877cabb5ddca13670f1542",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/hotkeys/index.d.ts": {
@@ -1417,8 +1417,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/text/text.d.ts": {
-        "version": "8bfad86e39974ab6f02771066bc944fd22d30e516e6e313ac79ecd8a13404d63",
-        "signature": "8bfad86e39974ab6f02771066bc944fd22d30e516e6e313ac79ecd8a13404d63",
+        "version": "e9f2290bb471abe6ffbd94da887175211af82fd222c410954a132a8b853fbcc7",
+        "signature": "e9f2290bb471abe6ffbd94da887175211af82fd222c410954a132a8b853fbcc7",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/panel-stack/panelprops.d.ts": {
@@ -1437,8 +1437,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/panel-stack2/panelstack2.d.ts": {
-        "version": "67d9c97a3b1b92e6effce3f4ad4dac29ea6608a54b3c58ae1cd19ba5a3c25dfe",
-        "signature": "67d9c97a3b1b92e6effce3f4ad4dac29ea6608a54b3c58ae1cd19ba5a3c25dfe",
+        "version": "fc2921889e348f02bb9fa2205f6aed53b7afef4f3a4128d91aa46b7809b9c8ac",
+        "signature": "fc2921889e348f02bb9fa2205f6aed53b7afef4f3a4128d91aa46b7809b9c8ac",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/common/context.d.ts": {
@@ -1456,14 +1456,54 @@
         "signature": "db336f2e6a2cf9113e66c2442db885817c51d642ed25e9475b1bf8b942a5c737",
         "affectsGlobalScope": false
       },
-      "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts": {
-        "version": "bfbe7c93f416dcdc014195e0ad886259838d5ce98ba010f7f56293270685ca23",
-        "signature": "bfbe7c93f416dcdc014195e0ad886259838d5ce98ba010f7f56293270685ca23",
+      "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts": {
+        "version": "c93bb3841ee23979a11eed48d03c748b6c00f6b82908208b1b70bee5a2510d11",
+        "signature": "c93bb3841ee23979a11eed48d03c748b6c00f6b82908208b1b70bee5a2510d11",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts": {
+        "version": "c8576d05dd7b580a110af9ac6b66a81cfabc732b0076fc6743eb218ecb387083",
+        "signature": "c8576d05dd7b580a110af9ac6b66a81cfabc732b0076fc6743eb218ecb387083",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts": {
+        "version": "adb44ac0f12dea0e9a41485bcf37f8e0617fae28c5175c8f585ea5119a9ced55",
+        "signature": "adb44ac0f12dea0e9a41485bcf37f8e0617fae28c5175c8f585ea5119a9ced55",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts": {
+        "version": "fda5ce2688395ea5116d61cbfcce51572ff4a552320018fe61acc126d2396ec5",
+        "signature": "fda5ce2688395ea5116d61cbfcce51572ff4a552320018fe61acc126d2396ec5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverboxoptions.d.ts": {
+        "version": "74e473cd4d82d3fbb5a1e1184c08434ff47a092210d21fc8e12be4414c663ef4",
+        "signature": "74e473cd4d82d3fbb5a1e1184c08434ff47a092210d21fc8e12be4414c663ef4",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts": {
+        "version": "32bfdd2bbcf3556ad9d9649e55fbb5f13be9f51d111c8c63c1bb2ebe171c8fa1",
+        "signature": "32bfdd2bbcf3556ad9d9649e55fbb5f13be9f51d111c8c63c1bb2ebe171c8fa1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts": {
+        "version": "02a7893bb8b6af9b2bf0bdd1b6c1649ea57a474d20328b7743c5498f6c1d35a5",
+        "signature": "02a7893bb8b6af9b2bf0bdd1b6c1649ea57a474d20328b7743c5498f6c1d35a5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts": {
+        "version": "7ec37e85f0fa38bedae93389ecd478f02016cae1aba85a84317c85e3be330695",
+        "signature": "7ec37e85f0fa38bedae93389ecd478f02016cae1aba85a84317c85e3be330695",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizesensor.d.ts": {
-        "version": "69587e79f32fcf34ca4029c36a872d1b44064d542ece93c4a14b33d0f048d5ce",
-        "signature": "69587e79f32fcf34ca4029c36a872d1b44064d542ece93c4a14b33d0f048d5ce",
+        "version": "f9a3e4e1482543de33fc583ed0cba9418deb70cb4a23b6a887adae4c475a0ea5",
+        "signature": "f9a3e4e1482543de33fc583ed0cba9418deb70cb4a23b6a887adae4c475a0ea5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts": {
+        "version": "2dc5a147df3cda569a2ea63ad72cdaf5a07d7ed6d8d50c9ae19d9db33b2dbc4a",
+        "signature": "2dc5a147df3cda569a2ea63ad72cdaf5a07d7ed6d8d50c9ae19d9db33b2dbc4a",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/slider/handleprops.d.ts": {
@@ -1472,8 +1512,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/slider/multislider.d.ts": {
-        "version": "4db9411bf80be30d293c1bf0de2ef4de9b014dbcb20cbb1f52e3a9986fed2510",
-        "signature": "4db9411bf80be30d293c1bf0de2ef4de9b014dbcb20cbb1f52e3a9986fed2510",
+        "version": "5ffea48470c0ffac6f0ea8869388967046f926617c75944919b5566d5a8e1250",
+        "signature": "5ffea48470c0ffac6f0ea8869388967046f926617c75944919b5566d5a8e1250",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/slider/rangeslider.d.ts": {
@@ -1487,8 +1527,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/spinner/spinner.d.ts": {
-        "version": "deffc8ebb2b2c84f32f58cc25b11f7d38aff9df1d34bea426426c83bcc621fe9",
-        "signature": "deffc8ebb2b2c84f32f58cc25b11f7d38aff9df1d34bea426426c83bcc621fe9",
+        "version": "54b4e3c73d9e920ef5a62c3f5bcf1a55494dd9890fa9c88b0da13921df66b94e",
+        "signature": "54b4e3c73d9e920ef5a62c3f5bcf1a55494dd9890fa9c88b0da13921df66b94e",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/tabs/tab.d.ts": {
@@ -1497,8 +1537,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/tabs/tabs.d.ts": {
-        "version": "536caf88811ecf978675e3343024ebe15beaadd9fa6100a47a63fa28ffef79ba",
-        "signature": "536caf88811ecf978675e3343024ebe15beaadd9fa6100a47a63fa28ffef79ba",
+        "version": "5057f24d8172296cdc62afb9abb63a2a4d3c07437d12b52f6a0310159e97d971",
+        "signature": "5057f24d8172296cdc62afb9abb63a2a4d3c07437d12b52f6a0310159e97d971",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/tag/tag.d.ts": {
@@ -1507,8 +1547,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/tag-input/taginput.d.ts": {
-        "version": "e010c60036202bf51afbe6f3fa37e44255305262f162fa9a4d81c2a55e9c86c5",
-        "signature": "e010c60036202bf51afbe6f3fa37e44255305262f162fa9a4d81c2a55e9c86c5",
+        "version": "ccdce610b96815ed3531525ccfadf350ff9c65e9e2b3f078d90afecb9759b8cf",
+        "signature": "ccdce610b96815ed3531525ccfadf350ff9c65e9e2b3f078d90afecb9759b8cf",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/toast/toast.d.ts": {
@@ -1532,8 +1572,8 @@
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/tree/tree.d.ts": {
-        "version": "34b3f2cf8d06dbc8365146015419c9ea54f9526e6d2bb19cd76f2876388ee009",
-        "signature": "34b3f2cf8d06dbc8365146015419c9ea54f9526e6d2bb19cd76f2876388ee009",
+        "version": "f750a5987f52545b7892a7154b882831743e83a58c53bafa7ff5ac43f01b9361",
+        "signature": "f750a5987f52545b7892a7154b882831743e83a58c53bafa7ff5ac43f01b9361",
         "affectsGlobalScope": false
       },
       "./node_modules/@blueprintjs/core/lib/esm/components/index.d.ts": {
@@ -2832,24 +2872,74 @@
         "version": "823d72170f201f5e73c6595d5cce2111e01af9934bb5f696d178951ca40ff70a",
         "affectsGlobalScope": false
       },
-      "./src/components/customportmodel.ts": {
-        "version": "acb1f0eca10e99c3cdf3f6aa957fa69f8e53435acf316c26ec12f6b955fa5d15",
-        "signature": "a6fa13b64a7a7d02192f1100b678bde90ac0d50bed16d6ae2a5511c0e9db745b",
+      "./src/components/port/customportmodel.ts": {
+        "version": "8e8b9159cfedb54a0a5fd4bd99026b4db2851b51679b7139bd44bd47526f56c0",
+        "signature": "8c023b53873ed0e1d9446fdaccdc8b1f21a518ac44de2dd5719feecc9ec70285",
         "affectsGlobalScope": false
       },
       "./src/components/customnodemodel.ts": {
-        "version": "6eeb22f9425cffd3203de028ce26e896f34b147471d7b5e62a3658968d9a276f",
-        "signature": "dc4a8a7d7d9e06087e9655c2eb26523bfa916ac884215078d7e7ee5e3b85d7fb",
+        "version": "f88d1f0c59727ce962e94a2173d4355144a93fce232a0c9a82029b072c13b92f",
+        "signature": "90091679323c62ca4b0830d3e9c84cfab165d053090af9d0cc70b23ad7b798e3",
+        "affectsGlobalScope": false
+      },
+      "./src/components/port/types.ts": {
+        "version": "05aa631f91f4a94e03aae092ac23a6be96f7c2399ac53556fdb6c720042ef846",
+        "signature": "5b8b820b3514098aa2a88788fb1d4ab8fb696ffd611a527b9d0c03b4fd1e9628",
+        "affectsGlobalScope": false
+      },
+      "./src/components/port/withtoggle.tsx": {
+        "version": "9f4cec523df92c0830c4fae60cf2e4e959f30ce1f01487d2de8b70dacb37baad",
+        "signature": "b841331132474ab7a6bcb6c3e0575c06bf34b474e4be6ac1e8d768dcb171bdc1",
+        "affectsGlobalScope": false
+      },
+      "./src/components/port/customportlabel.tsx": {
+        "version": "f601b45b8a9ce48efc8e78f60609f8e73e82a814e12fb3fddde7724049670191",
+        "signature": "a19daf5a5b8577465e1e9d5a9184595ef9350429c1abb257fb98cd151983d94f",
+        "affectsGlobalScope": false
+      },
+      "./src/dialog/formdialogwidget.tsx": {
+        "version": "581fc3373fc3b16c1699b6a0b1e89bdf05b62b964680dd47f3cb1f5cb9b14496",
+        "signature": "17d02539645481bb22c3cad5ec6c222a8257744e07a80ae0e375da80c36be0e9",
+        "affectsGlobalScope": false
+      },
+      "./src/dialog/formdialog.tsx": {
+        "version": "d0b529cb28582edf7f4f7d662bf7a37320985d70329ffde021fb328776126cc7",
+        "signature": "5cd514d1e69c3d129b03e53d2508ea144b76bc10ea5c361b84e57305082fb997",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts": {
+        "version": "d4990b42f1ac9307bffb12d35f57d89dbc7cf617c7eb01a791fcaa4a4069eaa6",
+        "signature": "d4990b42f1ac9307bffb12d35f57d89dbc7cf617c7eb01a791fcaa4a4069eaa6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts": {
+        "version": "e38d5bb0f0d07c2105b55ae8845df8c8271822186005469796be48c68058ef33",
+        "signature": "e38d5bb0f0d07c2105b55ae8845df8c8271822186005469796be48c68058ef33",
+        "affectsGlobalScope": false
+      },
+      "./src/dialog/commentdialog.tsx": {
+        "version": "f85243af3db4c68a07986b813c101e02e25d9b7a185f32117084212e48ae3a94",
+        "signature": "37c5c57236980be005483e4d946ccf831d8c7ff8216722d9fdc5192fd741d147",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/react-tooltip/dist/react-tooltip.d.ts": {
+        "version": "4fdee261aed58221ee141cc017cf8a7635a3f5ba30590177873ad9dab1f1201b",
+        "signature": "4fdee261aed58221ee141cc017cf8a7635a3f5ba30590177873ad9dab1f1201b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/marked/index.d.ts": {
+        "version": "391bd2fd4bc5a5f07822a17aeab35dfe90f94f729ae1ae7fc696398ba0ad3fcc",
+        "signature": "391bd2fd4bc5a5f07822a17aeab35dfe90f94f729ae1ae7fc696398ba0ad3fcc",
         "affectsGlobalScope": false
       },
       "./src/components/customnodewidget.tsx": {
-        "version": "5cf4fe3152005e773d1bd47e6a807ae17e411a0e23e718dc603f0f16214bfd66",
-        "signature": "3d6e503f1fbfd0105b1f8b9cb9cd602a23260f0a042b30d68d941e920eb61524",
+        "version": "1c24e7ddb01b4199052e5f19d43934240a3b4b3e7bbea7ff4a3128b6a47ac880",
+        "signature": "9440371bce4b80902b3325c677222de2d6fc1c43b984099aeead6d9109e383d4",
         "affectsGlobalScope": false
       },
       "./src/components/customnodefactory.tsx": {
-        "version": "ae4419637cad30028eaef700f54a5ce6aca8ec4186cfc4cc6b22f0fcef4d3567",
-        "signature": "cef0688c53e2349fea9dfc5fe1b4c36a46a5d84cfa89523ac79b0676898e525d",
+        "version": "c8588befff4fbbda65eadccc1a01f4aa2cf60a0d5b15d90db1a6065bcfc581a8",
+        "signature": "dd3530a721322a3309db6d141c002898454006569373003dc1a36be8fb779ced",
         "affectsGlobalScope": false
       },
       "./src/commands/customactionevent.tsx": {
@@ -2858,18 +2948,28 @@
         "affectsGlobalScope": false
       },
       "./src/components/dragnewlinkstate.ts": {
-        "version": "be623f481e67a2aeb18bcac5fb0c81095d3d6568dde951be6487ae2d769d226f",
-        "signature": "f5ab00bb617d5f6c305de5812e300406f223533e71947dd59b54be905a3e1729",
+        "version": "68ac58086d5332b09a264ab050d7ac537033f10b524beef01094d9d048a8b31f",
+        "signature": "8c41bda68fbde7a74822b9da413d67c6271d1630d708511114ef037d70e897d6",
         "affectsGlobalScope": false
       },
-      "./src/components/customdiagramstate.ts": {
-        "version": "3dc0f33030ba1b27ed5e99fef705dc88a3b6f02b88b42f838c12aa8a8bb24a86",
-        "signature": "ce59acbeae6fcae6d30cd04c78a272c06e1821ce432df0ac19414798d3b199b5",
+      "./src/components/state/moveitemsstate.ts": {
+        "version": "ab80d4bbe7e6fdbff19b7f170d83e663946fa826a7c6b933a4f4308d8d99ea65",
+        "signature": "b11375e50be8075209d2a93c9e56698fc6549856659a181773353af8ef5c226c",
+        "affectsGlobalScope": false
+      },
+      "./src/components/state/dragdiagramitemsstate.ts": {
+        "version": "9fe91ad16df004989c6f9bb4c61c822cc17d851da04f886a5fff88db3530af41",
+        "signature": "e0327f39497f996da7b0ed6154984ec4e72a9d7b4a39128c5ee5c51337f22026",
+        "affectsGlobalScope": false
+      },
+      "./src/components/state/customdiagramstate.ts": {
+        "version": "0a7a060fccf04a5de66db479457cbfe8c39cb78bdae6759aff4a37836934a426",
+        "signature": "7bae16d273e3968ecad043eb033364ad4eddbac84dc675cc1146908db23838d2",
         "affectsGlobalScope": false
       },
       "./src/components/link/customlinkmodel.ts": {
-        "version": "e2fd8a6eb64dcfc9c732e2924edcf752651ceaf3ef6e0c32247f584dd8daaa5a",
-        "signature": "95e85c9bb4511206a6d747b7d2b5d37f548e868d49e517299bb5039f4cf48cac",
+        "version": "7657dc86b751db7151c6506cf4b2460f87784db4ad07a0db301092e8ae461299",
+        "signature": "8274c76b48cd37bc332cbe18e1242f6cf5a5b76935b7708f429a0f3ba1d3c24a",
         "affectsGlobalScope": false
       },
       "./src/components/link/customlinkfactory.tsx": {
@@ -2878,13 +2978,18 @@
         "affectsGlobalScope": false
       },
       "./src/components/xircuitsapp.ts": {
-        "version": "03e594d1a8d805996dbd2ca937fa1f2cdc55d4152fa043134243827f31ce12f7",
-        "signature": "4eee5f29b1a89eda723be191aa97e8514468e90dea3fb4aa3d1a6ced34d28045",
+        "version": "8708c0ab9eb88f1d60e3df2cdc3fd175406c8354b71f4346b64e4734f4a6f852",
+        "signature": "b7d8d68d6472b8d5970ce8a6776f070f28f51b369d59e8622d53618fbbad5cdf",
+        "affectsGlobalScope": false
+      },
+      "./src/server/handler.ts": {
+        "version": "82dad5294c88c2b81d6b4150ebf40da29db1f731a1f974bf1f207bdb7d0f34b0",
+        "signature": "7f6037fa8d3da3ab5b173e089bd9d6eaf4e04e663844a9822b0463636b6ac816",
         "affectsGlobalScope": false
       },
       "./src/xircuitwidget.tsx": {
-        "version": "d6cd68a904a89d4c9dc8949c87e96ceea61ae3f0b6cb3570d5e0a1bb016d9225",
-        "signature": "51bebce61588830ad47669a4ed0f078a4b362297389c25158b63bc86e2713b6a",
+        "version": "7e8ce16195e489b6b817042c73c90fc86b91f2dafbfcc170bf9e03e9396c4d91",
+        "signature": "5cbe978c6f74e55a5460a07c9a9fc33dc62e3ebbfa82771fa309c4c8997735c7",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/outputarea/lib/model.d.ts": {
@@ -2937,44 +3042,19 @@
         "signature": "32de23335daa7d60d836b1e4b4067f0bc88581e255de37ad033ed5b6bfe4a87c",
         "affectsGlobalScope": false
       },
-      "./src/server/handler.ts": {
-        "version": "82dad5294c88c2b81d6b4150ebf40da29db1f731a1f974bf1f207bdb7d0f34b0",
-        "signature": "7f6037fa8d3da3ab5b173e089bd9d6eaf4e04e663844a9822b0463636b6ac816",
-        "affectsGlobalScope": false
-      },
-      "./src/tray_library/component.tsx": {
-        "version": "deedf390f4bf92a57e492a59381ac193d6149961ee29bedcbf779bce6211aa83",
-        "signature": "78060dd110b91ca84455b577401578065566d31557fc1ee42737faf9cbd9d281",
-        "affectsGlobalScope": false
-      },
-      "./src/dialog/formdialogwidget.tsx": {
-        "version": "581fc3373fc3b16c1699b6a0b1e89bdf05b62b964680dd47f3cb1f5cb9b14496",
-        "signature": "17d02539645481bb22c3cad5ec6c222a8257744e07a80ae0e375da80c36be0e9",
-        "affectsGlobalScope": false
-      },
-      "./src/dialog/formdialog.tsx": {
-        "version": "2dc4ebe9501c9035c539e301836806ba980618f41b13bb4f5e9e0498d61d036d",
-        "signature": "5a622ee137b374d6c00842e40129e5f5b6f57ca2be91445fe5c12924113d27b9",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts": {
-        "version": "d4990b42f1ac9307bffb12d35f57d89dbc7cf617c7eb01a791fcaa4a4069eaa6",
-        "signature": "d4990b42f1ac9307bffb12d35f57d89dbc7cf617c7eb01a791fcaa4a4069eaa6",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts": {
-        "version": "e38d5bb0f0d07c2105b55ae8845df8c8271822186005469796be48c68058ef33",
-        "signature": "e38d5bb0f0d07c2105b55ae8845df8c8271822186005469796be48c68058ef33",
-        "affectsGlobalScope": false
-      },
       "./node_modules/react-switch/index.d.ts": {
         "version": "7e6233fc17a00f06e59fa7b73274689084b378204271428b0c7cd33343d02006",
         "signature": "7e6233fc17a00f06e59fa7b73274689084b378204271428b0c7cd33343d02006",
         "affectsGlobalScope": false
       },
       "./src/dialog/rundialog.tsx": {
-        "version": "f00dff42479f5c50f7afa8baf19259a152c947ef6d2d5993d490961bac5d2dbe",
-        "signature": "fc659c1e947c77f5eae59a95cc1102483b7b85bd65c030ab780b0078c85175ee",
+        "version": "dc71022a9b0fd875559f9d104f9ed64a809f11c27afcce086522926838da1163",
+        "signature": "85f84f21139dc23c8b558a32d3c65c2985d28bf708440e314ed63ea86c6e5fa9",
+        "affectsGlobalScope": false
+      },
+      "./src/tray_library/component.tsx": {
+        "version": "428c95a80b23d9ecb65477848576ba540e9ac52ce560b4b3031610cc028e1df7",
+        "signature": "faf4cf998f96b4e4eaa44ec73cd1a6acdfe0e6ba176282cccddf0473c92f884a",
         "affectsGlobalScope": false
       },
       "./node_modules/react-accessible-accordion/dist/types/helpers/types.d.ts": {
@@ -3047,29 +3127,39 @@
         "signature": "45019ce8ff370e42f704f5c0b42ba085cb85421a86fe301892a622d3b725f659",
         "affectsGlobalScope": false
       },
-      "./src/tray_library/generalcomponentlib.ts": {
-        "version": "b6406e5a0f2d79567ea709ff874ee3209f289170817016d5c32f078ad47a5341",
-        "signature": "2e95dc8b98ba4d381d83fb78df95f682574c440b49db066e80ba0cde9b08b446",
+      "./src/dialog/literalinputdialog.tsx": {
+        "version": "874a0f019bea0ae04781819a04d4ce4b22b6a9758aaae5d3657c627a8c5b43a8",
+        "signature": "b3cbfdd2968cf77478677fd14f79470189c58c7cca5f13a07feb5edcbd41cec0",
+        "affectsGlobalScope": false
+      },
+      "./src/tray_library/generalcomponentlib.tsx": {
+        "version": "6fa21f6a4d069f2d758ab9e754dfa95db710677daae12807785cc683db165c03",
+        "signature": "5938fc8ef7774be88625b06413d292ec018d7d099762426284df8ec6d2848125",
+        "affectsGlobalScope": false
+      },
+      "./src/tray_library/advancecomponentlib.tsx": {
+        "version": "aaa7180037a8ef5dcc4d0efe09e1a54ee6ce799539f89325603bf8995891a73f",
+        "signature": "2a047fb3e9a7fe7edae18d4ecab613038b8dcfe66ac0b1cfdb69f658775b6ace",
         "affectsGlobalScope": false
       },
       "./src/context-menu/trayitempanel.tsx": {
-        "version": "415457abbc418f74b2da2fad4faaafca3ee8f17c554b0c68834f43bcee33d355",
-        "signature": "67e639710b05d759f7741fbbf1f6afad645f6c30d22c4a10398e9e50876e3b06",
+        "version": "4293bfa5e352d2611338e5af5371226264710be745ffc4a96143464e94b65f4e",
+        "signature": "abc4cbe05104479c21574f27921d28e56d44cff93a1b6020cda9e65cb64adedb",
         "affectsGlobalScope": false
       },
       "./src/context-menu/componentspanel.tsx": {
-        "version": "36348119d0575e8783a3c19cfcde5cee1269619aafa1e040b8a83bdf40c9c2cf",
+        "version": "a037f64bf698be13481606a7241aa65d16c4eae943051569c64724da011390fc",
         "signature": "a2d69fc8d6a68a2a5e06f70cd16cc41c2cef529cbba71351bb05af458fa9148e",
         "affectsGlobalScope": false
       },
       "./src/context-menu/nodeactionspanel.tsx": {
-        "version": "189867f82a43a74b3f822b0bcd989a739fa7470909df394ac31c6e8e90660bf2",
-        "signature": "9bba899f0113f4a973313478936d7f0d838b4b907ceb86f44ebdf1e5bb561a53",
+        "version": "4889877422a0f21a2f8feafcf42f61f426782381b2fb906b577e0c1395ddceb8",
+        "signature": "7f067c34405a157b11514a7a96ed1bcf8ebbee2efa404ddd390632f32cf35dc7",
         "affectsGlobalScope": false
       },
       "./src/components/xircuitbodywidget.tsx": {
-        "version": "d759ce6f9514482af4f77e4fec6953311d0c919083cd6a046185dda32756822f",
-        "signature": "f631bf49935cd49ac60eba1f639e50c7ab4210896b7ca68ad9227625b17680df",
+        "version": "0c4828aa4476213a58566c752d6e44f15054ff054f3a5bf2c6f9d2c68496070c",
+        "signature": "17a2479df92099fd25ce34779842401e49599c1abf2acb8ed6c2f48ac57e55c7",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/launcher/lib/index.d.ts": {
@@ -3078,7 +3168,7 @@
         "affectsGlobalScope": false
       },
       "./src/components/runswitcher.tsx": {
-        "version": "087ef4332747bbfb8bfec5d620e1bb0d7ef13133f85d1718e8898fd6d4ae707e",
+        "version": "39f33712d63e0d362e52d4d4b7cde05b9a5684cdc0fecdc3f38ea9d61b6c146a",
         "signature": "046ad93f5d2b0c6652e63ed73cb5635a7bd82243fa1ffb31737be2c3b54d3556",
         "affectsGlobalScope": false
       },
@@ -3088,13 +3178,13 @@
         "affectsGlobalScope": false
       },
       "./src/xircuitfactory.ts": {
-        "version": "d5ebe58a9000f47ce58a02e233d146f873e4377acd373128dd8ebeb15f74d5ee",
+        "version": "ac2c1accbcb61df7af199d84e434d29493f91d700ab3713f229186143bfd022a",
         "signature": "f9802a20ef10728e797b8cbb668ab422efd3dda36411ef9ca05d1c1d8f24d566",
         "affectsGlobalScope": false
       },
       "./src/tray_library/trayitemwidget.tsx": {
-        "version": "d42a0fb00109a2a7cf1028d344c5045f1b5a4dca88a8ca4236ef5fd15c55c9a4",
-        "signature": "6752a85e12f87dba0134b8039f45ed9594f1fcbc85986594d61bb90515e08717",
+        "version": "3de915abc4a91ae2a951ab51520e7fbe43b34340a95faf50867a3a5992fc8173",
+        "signature": "2b7fb29a5098d8dac0435812d8349072221e01c42a09fe746cc8dbf767ddb7db",
         "affectsGlobalScope": false
       },
       "./src/tray_library/traywidget.tsx": {
@@ -3103,7 +3193,7 @@
         "affectsGlobalScope": false
       },
       "./src/tray_library/sidebar.tsx": {
-        "version": "48700bb6e4038945f9177a5647b1d77d10f04f9d06809dc769faddf279187794",
+        "version": "9aa0d8ff2d22e59a2878921e27d8da3c7204fe21b9123ab2452ff37de59ff60a",
         "signature": "ec751b18339426d9e5b6c51a55d8f243b506436fe00c6e31be68e6781dd8af90",
         "affectsGlobalScope": false
       },
@@ -3417,8 +3507,8 @@
         "signature": "e5ea28ee85154c78ce4463846fe95b49a87f9c4e937beda5f2cf22ab2499d2f5",
         "affectsGlobalScope": false
       },
-      "./src/commands/nodeactioncommands.ts": {
-        "version": "db8bf6b66c3a84fe23ce03e544def0d3c6adfdfe08b539a26efbb4800705e994",
+      "./src/commands/nodeactioncommands.tsx": {
+        "version": "8cf79b428073cd70d43cf04413d18b8412554e4a25aa05472a7f718626263f88",
         "signature": "c6f8bfeac3a6cfc44be4bd23414401fff940081ee95927c70b0cb829cfaec7ce",
         "affectsGlobalScope": false
       },
@@ -3428,13 +3518,23 @@
         "affectsGlobalScope": false
       },
       "./src/index.tsx": {
-        "version": "f32a9d69ce84122af8147fefcc88e0dd63b4ad3a1780d3cb6d931ac7525dbeae",
+        "version": "278e4fee69f58edc78b018dae62fbb7155c295a411fb36420739365b9351c1ce",
         "signature": "46c1af3e573dc3201a95040bbb2ca99caf562b4ce64b8e4e9931cc5c1fc134c3",
         "affectsGlobalScope": false
       },
       "./src/svg.d.ts": {
         "version": "02f8291a876a74c92a23665ba72e7c328787804d55bbe9579151476b43250a32",
         "signature": "02f8291a876a74c92a23665ba72e7c328787804d55bbe9579151476b43250a32",
+        "affectsGlobalScope": false
+      },
+      "./src/components/state/defaultstate.ts": {
+        "version": "87497459d7fb812308f2c4ab177c62fb89fd82562612321824adf7d7b7c71240",
+        "signature": "e97f1b644c719743f662c9f2962ee446e2a6662436b46800b9f98c40c9599215",
+        "affectsGlobalScope": false
+      },
+      "./src/components/state/dragnewlinkstate.ts": {
+        "version": "807b62456bfcf19b66e6377710c8d8da45d069f99803ba1c58630f05808008d6",
+        "signature": "be815b841366f25d7878d6eefd0919b4286b1b75678b3e788fffcb69e16cf424",
         "affectsGlobalScope": false
       },
       "./src/helpers/demoworkspacewidget.tsx": {
@@ -3470,6 +3570,7 @@
       "types": [],
       "allowJs": true,
       "skipLibCheck": true,
+      "watch": true,
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
@@ -4003,9 +4104,13 @@
         "./node_modules/@blueprintjs/core/lib/esm/common/props.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
+      "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts"
+      ],
       "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizesensor.d.ts": [
         "./node_modules/@blueprintjs/core/lib/esm/common/index.d.ts",
-        "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
       "./node_modules/@blueprintjs/core/lib/esm/components/slider/handleprops.d.ts": [
@@ -4197,6 +4302,26 @@
       "./node_modules/@emotion/styled/types/index.d.ts": [
         "./node_modules/@emotion/react/types/index.d.ts",
         "./node_modules/@emotion/styled/types/base.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverboxoptions.d.ts"
       ],
       "./node_modules/@jupyterlab/application/lib/connectionlost.d.ts": [
         "./node_modules/@jupyterlab/application/lib/tokens.d.ts"
@@ -6512,6 +6637,9 @@
       "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts": [
         "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts"
       ],
+      "./node_modules/react-tooltip/dist/react-tooltip.d.ts": [
+        "./node_modules/@types/react/index.d.ts"
+      ],
       "./node_modules/typestyle/lib/types.d.ts": [
         "./node_modules/typestyle/node_modules/csstype/index.d.ts"
       ],
@@ -6843,24 +6971,24 @@
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./src/components/xircuitbodywidget.tsx"
       ],
-      "./src/commands/nodeactioncommands.ts": [
+      "./src/commands/nodeactioncommands.tsx": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@jupyterlab/translation/lib/index.d.ts",
         "./node_modules/@jupyterlab/ui-components/lib/index.d.ts",
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
         "./src/components/customnodemodel.ts",
         "./src/components/xircuitbodywidget.tsx",
+        "./src/dialog/commentdialog.tsx",
+        "./src/dialog/formdialog.tsx",
+        "./src/dialog/formdialogwidget.tsx",
+        "./src/dialog/literalinputdialog.tsx",
         "./src/index.tsx",
+        "./src/server/handler.ts",
+        "./src/tray_library/advancecomponentlib.tsx",
         "./src/xircuitwidget.tsx"
-      ],
-      "./src/components/customdiagramstate.ts": [
-        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
-        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./node_modules/@types/react/index.d.ts",
-        "./src/components/customportmodel.ts",
-        "./src/components/dragnewlinkstate.ts"
       ],
       "./src/components/customnodefactory.tsx": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
@@ -6873,25 +7001,28 @@
       "./src/components/customnodemodel.ts": [
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
       ],
       "./src/components/customnodewidget.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/marked/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
-        "./src/components/xircuitbodywidget.tsx"
-      ],
-      "./src/components/customportmodel.ts": [
-        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
-        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts"
+        "./node_modules/react-tooltip/dist/react-tooltip.d.ts",
+        "./src/components/port/customportlabel.tsx",
+        "./src/components/xircuitbodywidget.tsx",
+        "./src/dialog/commentdialog.tsx",
+        "./src/dialog/formdialog.tsx",
+        "./src/dialog/formdialogwidget.tsx"
       ],
       "./src/components/dragnewlinkstate.ts": [
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
       ],
       "./src/components/link/customlinkfactory.tsx": [
         "./node_modules/@emotion/react/types/index.d.ts",
@@ -6902,13 +7033,61 @@
       ],
       "./src/components/link/customlinkmodel.ts": [
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
+      ],
+      "./src/components/port/customportlabel.tsx": [
+        "./node_modules/@emotion/styled/types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/port/withtoggle.tsx"
+      ],
+      "./src/components/port/customportmodel.ts": [
+        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts"
+      ],
+      "./src/components/port/types.ts": [
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./src/components/port/withtoggle.tsx": [
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/port/types.ts"
       ],
       "./src/components/runswitcher.tsx": [
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@jupyterlab/ui-components/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/xircuitfactory.ts"
+      ],
+      "./src/components/state/customdiagramstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/dragnewlinkstate.ts",
+        "./src/components/port/customportmodel.ts",
+        "./src/components/state/dragdiagramitemsstate.ts"
+      ],
+      "./src/components/state/defaultstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/state/moveitemsstate.ts"
+      ],
+      "./src/components/state/dragdiagramitemsstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/state/moveitemsstate.ts"
+      ],
+      "./src/components/state/dragnewlinkstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/port/customportmodel.ts"
+      ],
+      "./src/components/state/moveitemsstate.ts": [
+        "./node_modules/@projectstorm/geometry/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts"
       ],
       "./src/components/xircuitbodywidget.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -6921,30 +7100,31 @@
         "./node_modules/@projectstorm/react-diagrams-core/src/entities/node/nodemodel.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
-        "./src/components/customnodemodel.ts",
         "./src/components/xircuitsapp.ts",
         "./src/context-menu/componentspanel.tsx",
         "./src/context-menu/nodeactionspanel.tsx",
         "./src/dialog/formdialog.tsx",
         "./src/dialog/formdialogwidget.tsx",
+        "./src/dialog/literalinputdialog.tsx",
         "./src/dialog/rundialog.tsx",
         "./src/helpers/democanvaswidget.tsx",
         "./src/log/logplugin.ts",
         "./src/server/handler.ts",
-        "./src/tray_library/component.tsx",
-        "./src/tray_library/generalcomponentlib.ts",
+        "./src/tray_library/advancecomponentlib.tsx",
+        "./src/tray_library/generalcomponentlib.tsx",
         "./src/xircuitwidget.tsx"
       ],
       "./src/components/xircuitsapp.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
+        "./node_modules/@projectstorm/geometry/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./src/commands/customactionevent.tsx",
-        "./src/components/customdiagramstate.ts",
         "./src/components/customnodefactory.tsx",
         "./src/components/customnodemodel.ts",
         "./src/components/link/customlinkfactory.tsx",
-        "./src/components/link/customlinkmodel.ts"
+        "./src/components/link/customlinkmodel.ts",
+        "./src/components/state/customdiagramstate.ts"
       ],
       "./src/context-menu/componentspanel.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -6970,7 +7150,8 @@
         "./node_modules/@types/react/index.d.ts",
         "./src/components/customnodemodel.ts",
         "./src/components/xircuitbodywidget.tsx",
-        "./src/tray_library/generalcomponentlib.ts"
+        "./src/tray_library/advancecomponentlib.tsx",
+        "./src/tray_library/generalcomponentlib.tsx"
       ],
       "./src/context-menu/traypanel.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -6992,6 +7173,10 @@
         "./src/ui-components/icons.tsx",
         "./src/xircuitfactory.ts"
       ],
+      "./src/dialog/commentdialog.tsx": [
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts"
+      ],
       "./src/dialog/formdialog.tsx": [
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts"
@@ -7001,7 +7186,17 @@
         "./node_modules/@lumino/messaging/types/index.d.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts"
       ],
+      "./src/dialog/literalinputdialog.tsx": [
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/react-switch/index.d.ts",
+        "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts",
+        "./src/dialog/formdialog.tsx",
+        "./src/dialog/formdialogwidget.tsx",
+        "./src/tray_library/generalcomponentlib.tsx"
+      ],
       "./src/dialog/rundialog.tsx": [
+        "./node_modules/@jupyterlab/ui-components/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./node_modules/react-switch/index.d.ts",
         "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts"
@@ -7026,7 +7221,7 @@
         "./node_modules/@jupyterlab/ui-components/lib/index.d.ts",
         "./node_modules/@lumino/coreutils/types/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
-        "./src/commands/nodeactioncommands.ts",
+        "./src/commands/nodeactioncommands.tsx",
         "./src/components/xircuitbodywidget.tsx",
         "./src/debugger/sidebardebugger.ts",
         "./src/kernel/panel.ts",
@@ -7071,14 +7266,19 @@
         "./node_modules/@jupyterlab/coreutils/lib/index.d.ts",
         "./node_modules/@jupyterlab/services/lib/index.d.ts"
       ],
+      "./src/tray_library/advancecomponentlib.tsx": [
+        "./src/components/customnodemodel.ts",
+        "./src/tray_library/component.tsx"
+      ],
       "./src/tray_library/component.tsx": [
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
-        "./node_modules/@jupyterlab/services/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/server/handler.ts"
       ],
-      "./src/tray_library/generalcomponentlib.ts": [
-        "./src/components/customnodemodel.ts"
+      "./src/tray_library/generalcomponentlib.tsx": [
+        "./src/components/customnodemodel.ts",
+        "./src/dialog/formdialog.tsx",
+        "./src/dialog/literalinputdialog.tsx"
       ],
       "./src/tray_library/sidebar.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -7094,7 +7294,8 @@
       "./src/tray_library/trayitemwidget.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
-        "./node_modules/@types/react/index.d.ts"
+        "./node_modules/@types/react/index.d.ts",
+        "./src/components/xircuitbodywidget.tsx"
       ],
       "./src/tray_library/traywidget.tsx": [
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -7123,9 +7324,13 @@
         "./node_modules/@jupyterlab/docregistry/lib/index.d.ts",
         "./node_modules/@jupyterlab/services/lib/index.d.ts",
         "./node_modules/@lumino/signaling/types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
+        "./src/components/customnodemodel.ts",
         "./src/components/xircuitbodywidget.tsx",
-        "./src/components/xircuitsapp.ts"
+        "./src/components/xircuitsapp.ts",
+        "./src/server/handler.ts"
       ]
     },
     "exportedModulesMap": {
@@ -7659,9 +7864,13 @@
         "./node_modules/@blueprintjs/core/lib/esm/common/props.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
+      "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts"
+      ],
       "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizesensor.d.ts": [
         "./node_modules/@blueprintjs/core/lib/esm/common/index.d.ts",
-        "./node_modules/@blueprintjs/core/lib/esm/components/resize-sensor/resizeobservertypes.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
       "./node_modules/@blueprintjs/core/lib/esm/components/slider/handleprops.d.ts": [
@@ -7853,6 +8062,26 @@
       "./node_modules/@emotion/styled/types/index.d.ts": [
         "./node_modules/@emotion/react/types/index.d.ts",
         "./node_modules/@emotion/styled/types/base.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts",
+        "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts"
+      ],
+      "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts": [
+        "./node_modules/@juggle/resize-observer/lib/resizeobserverboxoptions.d.ts"
       ],
       "./node_modules/@jupyterlab/application/lib/connectionlost.d.ts": [
         "./node_modules/@jupyterlab/application/lib/tokens.d.ts"
@@ -10107,6 +10336,9 @@
       "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts": [
         "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts"
       ],
+      "./node_modules/react-tooltip/dist/react-tooltip.d.ts": [
+        "./node_modules/@types/react/index.d.ts"
+      ],
       "./node_modules/typestyle/lib/types.d.ts": [
         "./node_modules/typestyle/node_modules/csstype/index.d.ts"
       ],
@@ -10437,15 +10669,10 @@
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts"
       ],
-      "./src/commands/nodeactioncommands.ts": [
+      "./src/commands/nodeactioncommands.tsx": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
         "./node_modules/@jupyterlab/translation/lib/index.d.ts",
         "./src/index.tsx"
-      ],
-      "./src/components/customdiagramstate.ts": [
-        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
-        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/dragnewlinkstate.ts"
       ],
       "./src/components/customnodefactory.tsx": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
@@ -10456,22 +10683,19 @@
       "./src/components/customnodemodel.ts": [
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
       ],
       "./src/components/customnodewidget.tsx": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./node_modules/@types/react/index.d.ts"
       ],
-      "./src/components/customportmodel.ts": [
-        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
-        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts"
-      ],
       "./src/components/dragnewlinkstate.ts": [
         "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
       ],
       "./src/components/link/customlinkfactory.tsx": [
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
@@ -10479,12 +10703,49 @@
       ],
       "./src/components/link/customlinkmodel.ts": [
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
-        "./src/components/customportmodel.ts"
+        "./src/components/port/customportmodel.ts"
+      ],
+      "./src/components/port/customportlabel.tsx": [
+        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./src/components/port/customportmodel.ts": [
+        "./node_modules/@projectstorm/react-diagrams-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts"
+      ],
+      "./src/components/port/types.ts": [
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./src/components/port/withtoggle.tsx": [
+        "./src/components/port/types.ts"
       ],
       "./src/components/runswitcher.tsx": [
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
         "./src/xircuitfactory.ts"
+      ],
+      "./src/components/state/customdiagramstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./src/components/dragnewlinkstate.ts",
+        "./src/components/state/dragdiagramitemsstate.ts"
+      ],
+      "./src/components/state/defaultstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts"
+      ],
+      "./src/components/state/dragdiagramitemsstate.ts": [
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./src/components/state/moveitemsstate.ts"
+      ],
+      "./src/components/state/dragnewlinkstate.ts": [
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
+        "./src/components/port/customportmodel.ts"
+      ],
+      "./src/components/state/moveitemsstate.ts": [
+        "./node_modules/@projectstorm/geometry/dist/@types/index.d.ts",
+        "./node_modules/@projectstorm/react-canvas-core/dist/@types/index.d.ts"
       ],
       "./src/components/xircuitbodywidget.tsx": [
         "./node_modules/@emotion/react/types/index.d.ts",
@@ -10545,6 +10806,9 @@
       "./src/dialog/formdialogwidget.tsx": [
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts"
       ],
+      "./src/dialog/literalinputdialog.tsx": [
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts"
+      ],
       "./src/helpers/democanvaswidget.tsx": [
         "./node_modules/@emotion/react/types/index.d.ts",
         "./node_modules/@emotion/styled/types/index.d.ts",
@@ -10577,9 +10841,6 @@
       ],
       "./src/log/logplugin.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts"
-      ],
-      "./src/tray_library/component.tsx": [
-        "./node_modules/@jupyterlab/services/lib/index.d.ts"
       ],
       "./src/tray_library/sidebar.tsx": [
         "./node_modules/@emotion/react/types/index.d.ts",
@@ -10784,6 +11045,14 @@
       "./node_modules/@emotion/styled/node_modules/@emotion/serialize/types/index.d.ts",
       "./node_modules/@emotion/styled/types/base.d.ts",
       "./node_modules/@emotion/styled/types/index.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/domrectreadonly.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/exports/resize-observer.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobserver.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverboxoptions.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobservercallback.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobserverentry.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobserveroptions.d.ts",
+      "./node_modules/@juggle/resize-observer/lib/resizeobserversize.d.ts",
       "./node_modules/@jupyterlab/application/lib/connectionlost.d.ts",
       "./node_modules/@jupyterlab/application/lib/frontend.d.ts",
       "./node_modules/@jupyterlab/application/lib/index.d.ts",
@@ -11171,6 +11440,7 @@
       "./node_modules/@projectstorm/react-diagrams-routing/dist/@types/link/rightanglelinkwidget.d.ts",
       "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
       "./node_modules/@types/dagre/index.d.ts",
+      "./node_modules/@types/marked/index.d.ts",
       "./node_modules/@types/prop-types/index.d.ts",
       "./node_modules/@types/react/global.d.ts",
       "./node_modules/@types/react/index.d.ts",
@@ -11198,6 +11468,7 @@
       "./node_modules/react-switch/index.d.ts",
       "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts",
       "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.cjs.d.ts",
+      "./node_modules/react-tooltip/dist/react-tooltip.d.ts",
       "./node_modules/typescript/lib/lib.dom.d.ts",
       "./node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "./node_modules/typescript/lib/lib.es2015.collection.d.ts",
@@ -11270,16 +11541,23 @@
       "./node_modules/yjs/dist/src/utils/updates.d.ts",
       "./node_modules/yjs/dist/src/utils/yevent.d.ts",
       "./src/commands/customactionevent.tsx",
-      "./src/commands/nodeactioncommands.ts",
-      "./src/components/customdiagramstate.ts",
+      "./src/commands/nodeactioncommands.tsx",
       "./src/components/customnodefactory.tsx",
       "./src/components/customnodemodel.ts",
       "./src/components/customnodewidget.tsx",
-      "./src/components/customportmodel.ts",
       "./src/components/dragnewlinkstate.ts",
       "./src/components/link/customlinkfactory.tsx",
       "./src/components/link/customlinkmodel.ts",
+      "./src/components/port/customportlabel.tsx",
+      "./src/components/port/customportmodel.ts",
+      "./src/components/port/types.ts",
+      "./src/components/port/withtoggle.tsx",
       "./src/components/runswitcher.tsx",
+      "./src/components/state/customdiagramstate.ts",
+      "./src/components/state/defaultstate.ts",
+      "./src/components/state/dragdiagramitemsstate.ts",
+      "./src/components/state/dragnewlinkstate.ts",
+      "./src/components/state/moveitemsstate.ts",
       "./src/components/xircuitbodywidget.tsx",
       "./src/components/xircuitsapp.ts",
       "./src/context-menu/componentspanel.tsx",
@@ -11288,8 +11566,10 @@
       "./src/context-menu/traypanel.tsx",
       "./src/debugger/debuggerwidget.tsx",
       "./src/debugger/sidebardebugger.ts",
+      "./src/dialog/commentdialog.tsx",
       "./src/dialog/formdialog.tsx",
       "./src/dialog/formdialogwidget.tsx",
+      "./src/dialog/literalinputdialog.tsx",
       "./src/dialog/rundialog.tsx",
       "./src/helpers/democanvaswidget.tsx",
       "./src/helpers/demoworkspacewidget.tsx",
@@ -11301,8 +11581,9 @@
       "./src/log/logplugin.ts",
       "./src/server/handler.ts",
       "./src/svg.d.ts",
+      "./src/tray_library/advancecomponentlib.tsx",
       "./src/tray_library/component.tsx",
-      "./src/tray_library/generalcomponentlib.ts",
+      "./src/tray_library/generalcomponentlib.tsx",
       "./src/tray_library/sidebar.tsx",
       "./src/tray_library/trayitemwidget.tsx",
       "./src/tray_library/traywidget.tsx",
