@@ -878,8 +878,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let pythonCode = getPythonCompiler(debuggerMode);
 		let showOutput = false;
 
-		// Only compile when 'Run' is chosen
-		if (runType == 'run') {
+		// Compile when Local or Remote run is selected
+		if (runType !== 'run-dont-compile') {
 			commands.execute(commandIDs.createArbitraryFile, { pythonCode, showOutput });
 			setCompiled(true);
 		}
