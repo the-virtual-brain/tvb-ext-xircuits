@@ -95,7 +95,6 @@ export const RunDialog = ({
 							title={'Select which config to run'}
 							name='runConfig'
 						>
-							<option value="-">-</option>
 							{runConfigs.map((c, i) => ((c.run_type == runType) ?
 								<option id={c.id} key={`index-config-${i}`} value={c.run_config_name}>
 									{(c.run_config_name)}
@@ -103,14 +102,20 @@ export const RunDialog = ({
 							))}
 						</HTMLSelect>
 					</div>
-					Configuration:
 					<div>
 						<TextareaAutosize
+							hidden
 							value={command}
 							minRows={10}
 							name='command'
 							style={{ width: 350, fontSize: 12 }}
 							readOnly />
+					</div>
+					Project:
+					<div>
+						<input
+							name='project'
+							style={{ width: 350 }} />
 					</div></>
 				: null}
 			</div>
