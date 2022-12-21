@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
 from pyunicore.helpers.jobs import Status as unicore_status
@@ -42,16 +43,21 @@ class PyunicoreSubmitter(object):
         return f'pip install -U pip && pip install {self.pip_libraries}'
 
     def connect_client(self):
-        os.environ['CLB_AUTH'] = ''
         print(f"Connecting to {self.site}...")
         token = get_current_token()
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
         sites = registry.site_urls
-        site_url = sites[self.site]
+
+        try:
+            site_url = sites[self.site]
+        except KeyError:
+            print(f'Site {self.site} seems to be down for the moment.')
+            return None
+
         try:
             client = unicore_client.Client(transport, site_url)
-        except AuthenticationFailedException:
+        except (AuthenticationFailedException, HTTPError):
             print(f'Authentication to {self.site} failed, you might not have permissions to access it.', flush=True)
             return None
 
@@ -104,6 +110,10 @@ class PyunicoreSubmitter(object):
             storages = client.get_storages(num=num, offset=offset)
         return None
 
+    def _format_date_for_job(self, job):
+        date = datetime.strptime(job.properties['submissionTime'], '%Y-%m-%dT%H:%M:%S+%f')
+        return date.strftime('%m.%d.%Y, %H:%M:%S')
+
     def submit_job(self, executable, inputs):
         client = self.connect_client()
         if client is None:
@@ -127,22 +137,23 @@ class PyunicoreSubmitter(object):
                 self.PROJECT_KEY: self.project,
                 self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
             job = client.new_job(job_description, inputs=[])
-            print(f"Job is running at {self.site}: {job.working_dir.properties['mountPoint']}. It can be monitored "
-                  f"with tvb-ext-unicore", flush=True)
+            print(f"Job is running at {self.site}: {job.working_dir.properties['mountPoint']}. "
+                  f"Submission time is: {self._format_date_for_job(job)}. "
+                  f"It can be monitored with tvb-ext-unicore.", flush=True)
             job.poll()
             if job.properties['status'] == unicore_status.FAILED:
                 print(f"Encountered an error during environment setup, stopping execution.")
                 return
             print(f"Successfully finished the environment setup.")
 
-        print("Executing workflow...", flush=True)
+        print("Launching workflow...", flush=True)
         job_description = {
             self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && python {executable}",
             self.PROJECT_KEY: self.project}
         job1 = client.new_job(job_description, inputs=inputs)
-        print(f"Job is running at {self.site}: {job1.working_dir.properties['mountPoint']}, It can be monitored "
-              f"with tvb-ext-unicore", flush=True)
-        print('Finished execution.', flush=True)
+        print(f"Job is running at {self.site}: {job1.working_dir.properties['mountPoint']}. "
+              f"Submission time is: {self._format_date_for_job(job1)}.", flush=True)
+        print('Finished remote launch. Please use tvb-ext-unicore to monitor it.', flush=True)
 
 
 def get_xircuits_file():
@@ -181,9 +192,13 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
 
 
 if __name__ == '__main__':
-    workflow_name, workflow_path = get_xircuits_file()
-    print("Preparing job...", flush=True)
-    files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
-    site_arg = sys.argv[2]
-    launch_job(site=site_arg, project='', workflow_file_name=workflow_name, workflow_file_path=workflow_path,
-               files_to_upload=files_to_upload)
+    if len(sys.argv) < 4:
+        print(f"Please provide the HPC project to run this job within, stopping execution.")
+    else:
+        workflow_name, workflow_path = get_xircuits_file()
+        print("Preparing job...", flush=True)
+        files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
+        site_arg = sys.argv[2]
+        project_arg = sys.argv[3]
+        launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
+                   workflow_file_path=workflow_path, files_to_upload=files_to_upload)

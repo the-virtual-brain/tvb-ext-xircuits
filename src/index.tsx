@@ -258,7 +258,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     function doRemoteRun(path: string, config){
 
       try {
-        let command_str = config['command'] + " " + path + " " + config['run_config_name'];
+        let command_str = config['command'] + " " + path + " " + config['run_config_name'] + " " + config['project'];
         let code_str = "\nfrom subprocess import Popen, PIPE\n\n";
 
         code_str += `command_str= "${command_str}"\n`;
