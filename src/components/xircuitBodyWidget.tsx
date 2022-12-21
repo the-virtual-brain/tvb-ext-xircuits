@@ -388,13 +388,13 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					let checkIfNodeIsBranchNode = checkIfNodeHasBranchFlowport(latestFinishedNode?.finishNode);
 					if (checkIfNodeIsBranchNode) {
 						// This will check if the finish node of the branch node is another branch node
-						checkIfNextNodeHasBranchFlowport(latestFinishedNode?.finishNode); 
+						checkIfNextNodeHasBranchFlowport(latestFinishedNode?.finishNode);
 					}else {
 						sourceNodeModelId = latestFinishedNode?.finishNode?.getID();
 					}
 					retNodeModels.push(latestFinishedNode?.finishNode);
 					finishedNodes.forEach((node, index) => {
-						// Remove it from the the list 
+						// Remove it from the the list
 						// to indicate we already finish going through all of this branch node's workflow
 						if (latestFinishedNode?.finishNode === node.finishNode) finishedNodes.splice(index, 1);
 					})
@@ -489,7 +489,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					if (latestFinishedNode.finishNode == null) {
 						// When there's no next node, remove from list
 						finishedNodes.forEach((node, index) => {
-							// Remove it from the the list 
+							// Remove it from the the list
 							// to indicate we already finish going through all of this branch node's workflow
 							if (latestFinishedNode?.currentNode === node.currentNode) finishedNodes.splice(index, 1);
 						})
@@ -648,7 +648,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let showOutput = false;
 
 		// Only compile when 'Run' is chosen
-		if (runType == 'run') {
+		if (runType !== 'run-dont-compile') {
 			commands.execute(commandIDs.compileFile, { showOutput, componentList });
 			setCompiled(true);
 		}
