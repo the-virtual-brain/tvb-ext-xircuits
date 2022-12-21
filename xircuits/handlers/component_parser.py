@@ -9,7 +9,7 @@ import platform
 
 from .config import get_config
 
-from xircuits.handlers.json_parser import save_json_description
+import xai_components
 from xai_components.base_tvb import ComponentWithWidget
 
 DEFAULT_COMPONENTS_PATHS = [
@@ -145,6 +145,8 @@ class ComponentsParser:
         return components
 
     def generate_doc_files(self):
+        from xircuits.handlers.json_parser import save_json_description
+
         components = self.get_components()
 
         # iterate through all the components and create the specific description json file for each one
@@ -242,7 +244,7 @@ class ComponentsParser:
 
 
         description = {}
-        path = os.path.join("xai_components", os.path.dirname(file_path), "arguments", str(node.name).lower() + ".json")
+        path = os.path.join(xai_components.__path__[0], os.path.dirname(file_path), "arguments", str(node.name).lower() + ".json")
         if os.path.isfile(path):
             with open(path) as file:
                 description = json.load(file)

@@ -1,5 +1,4 @@
 import json
-import os
 import tornado
 from jupyter_server.base.handlers import APIHandler
 from .component_parser import ComponentsParser
