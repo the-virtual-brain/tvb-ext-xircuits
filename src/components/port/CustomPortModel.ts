@@ -173,7 +173,8 @@ export  class CustomPortModel extends DefaultPortModel  {
             nodeModelType === 'string' ||
             nodeModelType === 'list' ||
             nodeModelType === 'tuple' ||
-            nodeModelType === 'dict'
+            nodeModelType === 'dict' ||
+            nodeModelType === 'numpy.ndarray'
         );
     }
 
@@ -243,7 +244,8 @@ export  class CustomPortModel extends DefaultPortModel  {
                 nodeType != 'string' &&
                 nodeType != 'list' &&
                 nodeType != 'tuple' &&
-                nodeType != 'dict'){
+                nodeType != 'dict' &&
+                nodeType != 'numpy.ndarray'){
             //console.log("Curent sourceNode:", sourceNode.getOptions()["name"]);
             let inPorts = sourceNode.getInPorts();
             
