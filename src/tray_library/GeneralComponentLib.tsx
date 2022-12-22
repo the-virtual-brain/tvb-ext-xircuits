@@ -226,7 +226,21 @@ export async function GeneralComponentLibrary(props: GeneralComponentLibraryProp
     //     node.addOutPortEnhance('▶', 'out-0');
     //     node.addOutPortEnhance('Should Retrain', 'out-1');
 
-    } 
+    }
+
+    else if (nodeData.type === 'numpy.ndarray') {
+        if (variableValue == '' || variableValue == undefined) {
+            const dialogOptions = inputDialog('String', "", 'String', false ,'textarea');
+            const dialogResult = await showFormDialog(dialogOptions);
+            if (cancelDialog(dialogResult)) return;
+            console.log(dialogResult)
+            inputValue = dialogResult["value"]['String'];
+        }
+
+        node = new CustomNodeModel({ name: nodeName, color: nodeData.color, extras: { "type": nodeData.type } });
+        node.addOutPortEnhance(inputValue, 'out-0');
+
+    }
     // else if (nodeData.type === 'literal') {
 
     //     node = new CustomNodeModel({ name: nodeName, color: nodeData.color, extras: { "type": nodeData.type } });
