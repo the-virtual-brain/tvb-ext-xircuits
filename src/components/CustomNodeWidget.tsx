@@ -18,7 +18,6 @@ import { showFormDialog } from '../dialog/FormDialog';
 import { CommentDialog } from '../dialog/CommentDialog';
 import ReactTooltip from 'react-tooltip';
 import { marked } from 'marked';
-import {MathJax, MathJaxContext} from "better-react-mathjax";
 
 var S;
 (function (S) {
@@ -330,25 +329,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
         }
         else if (this.props.node.getOptions()["name"] !== 'Start' && this.props.node.getOptions()["name"] !== 'Finish') {
             return (
-                <MathJaxContext
-                    version={2}
-                    config={{
-                        jax: ["input/TeX", "output/HTML-CSS"],
-                        tex2jax: {
-                            inlineMath: [['$','$'], ['\\(','\\)'], [":math:`", "`"], [":math: `", "`"]],
-                            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                            processEscapes: true
-                        },
-                        "HTML-CSS": {
-                            styles : {
-                                ".MathJax_Display": {
-                                    "text-align": "left !important"
-                                }
-                            }
-                        }
-                    }}
-                    onStartup={(mathJax) => (mathJax.Hub.processSectionDelay = 0)}
-                >
+                <>
                     <S.Node
                         onMouseEnter={this.showTooltip.bind(this)}
                         onMouseLeave={this.hideTooltip.bind(this)}
@@ -407,9 +388,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                                 <div
                                     onWheel={(e) => e.stopPropagation()}
                                     className='description-container'>
-                                    <div className='markdown-body'>
-                                        <MathJax dangerouslySetInnerHTML={{__html : this.state.descriptionStr}}/>
-                                    </div>
+                                    <div className='markdown-body' dangerouslySetInnerHTML = {{__html : this.state.descriptionStr}}/>
                                 </div>
                             </div>}
                         overridePosition={(
@@ -502,7 +481,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                             }}
                         />
                         : null}
-                </MathJaxContext>
+                </>
             );
         }
         else if(this.props.node.getOptions().extras["imageGalleryItems"] != undefined){
