@@ -145,7 +145,7 @@ class ComponentsParser:
         return components
 
     def generate_doc_files(self):
-        from xircuits.handlers.json_parser import save_json_description
+        from tvbextxircuits.handlers.json_parser import save_json_description
 
         components = self.get_components()
 

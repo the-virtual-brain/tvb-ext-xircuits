@@ -1,4 +1,4 @@
-from xircuits.handlers.component_parser import ComponentsParser
+from tvbextxircuits.handlers.component_parser import ComponentsParser
 
 
 def main():
