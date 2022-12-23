@@ -7,8 +7,8 @@ from pyunicore.helpers.jobs import Status as unicore_status
 from pyunicore.credentials import AuthenticationFailedException
 from tvbwidgets.core.auth import get_current_token
 
-import xircuits._version as xircuits_version
-from xircuits.hpc_config.parse_files import get_files_to_upload
+import tvbextxircuits._version as xircuits_version
+from tvbextxircuits.hpc_config.parse_files import get_files_to_upload
 
 
 class PyunicoreSubmitter(object):

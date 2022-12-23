@@ -2,8 +2,8 @@ import json
 import os.path
 import shutil
 
-from xircuits import nb_generator
-from xircuits.nb_generator import ModelConfigLoader
+from tvbextxircuits import nb_generator
+from tvbextxircuits.nb_generator import ModelConfigLoader
 
 SUP_HOPF_DEFAULT_PARAMS = {
     'a': [-0.5],

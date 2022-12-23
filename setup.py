@@ -1,5 +1,5 @@
 """
-xircuits setup
+tvbextxircuits setup
 """
 import json
 import sys
@@ -15,7 +15,7 @@ HERE = Path(__file__).parent.resolve()
 # The name of the project
 name = "tvb-ext-xircuits"
 
-lab_path = (HERE / "xircuits" / "labextension")
+lab_path = (HERE / "tvbextxircuits" / "labextension")
 
 # Representative files that should exist after a successful build
 ensured_targets = [
@@ -99,9 +99,9 @@ setup_args = dict(
     ],
     entry_points ={
         'console_scripts': [
-            'xircuits = xircuits.start_xircuits:main',
-            'xircuits-examples = xircuits.start_xircuits:download_examples',
-            'xircuits-components = xircuits.start_xircuits:download_component_library'
+            'tvbextxircuits = tvbextxircuits.start_xircuits:main',
+            'tvbextxircuits-examples = tvbextxircuits.start_xircuits:download_examples',
+            'tvbextxircuits-components = tvbextxircuits.start_xircuits:download_component_library'
             ]}
 )
 

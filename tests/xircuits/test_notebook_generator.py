@@ -1,8 +1,8 @@
 import os.path
 import shutil
 
-from xircuits import nb_generator
-from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
+from tvbextxircuits import nb_generator
+from tvbextxircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
 
 TEMP_DIR = "temp_test_dir"
 nb_generator.NOTEBOOKS_DIR = TEMP_DIR

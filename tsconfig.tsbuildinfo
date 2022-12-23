@@ -2602,8 +2602,8 @@
         "affectsGlobalScope": false
       },
       "./src/helpers/democanvaswidget.tsx": {
-        "version": "027dcf08814265db8dad68789bacb307908fe65f9e75a8f5338d38b89cf3a022",
-        "signature": "60355783565bcc6c9874db5150e18fa6b7b0562e1170d61b6e889a8a0fde24af",
+        "version": "e9c8bd87f7ab1ff15957d4b25443eb0a1ee35be171ae89b83a2a02507167adb7",
+        "signature": "da76dc3fb394f69842514e79d3b817b5fb3543c282a02336febd56f1aeb6b6c9",
         "affectsGlobalScope": false
       },
       "./node_modules/@projectstorm/react-diagrams-core/dist/@types/entities/node/nodemodel.d.ts": {
@@ -2873,38 +2873,38 @@
         "affectsGlobalScope": false
       },
       "./src/components/port/customportmodel.ts": {
-        "version": "8e8b9159cfedb54a0a5fd4bd99026b4db2851b51679b7139bd44bd47526f56c0",
-        "signature": "8c023b53873ed0e1d9446fdaccdc8b1f21a518ac44de2dd5719feecc9ec70285",
+        "version": "f265b895e6fe08355aaa4350e75a2aba7dae848885d1c725aac1a8c861d1fab8",
+        "signature": "ffd1d5655b554b88981097cad90bc752778fdc2503f65719515618cb692c7da6",
         "affectsGlobalScope": false
       },
       "./src/components/customnodemodel.ts": {
-        "version": "f88d1f0c59727ce962e94a2173d4355144a93fce232a0c9a82029b072c13b92f",
-        "signature": "90091679323c62ca4b0830d3e9c84cfab165d053090af9d0cc70b23ad7b798e3",
+        "version": "4d6ee1d2c65dba7fd1f09881f8e71ca65ade9e5e2490ea7ed448925ce1b3cac8",
+        "signature": "79384fc3c8f87eea0cbc318220d9b8b904c475841246ccb20cdd05c299df704b",
         "affectsGlobalScope": false
       },
       "./src/components/port/types.ts": {
-        "version": "05aa631f91f4a94e03aae092ac23a6be96f7c2399ac53556fdb6c720042ef846",
-        "signature": "5b8b820b3514098aa2a88788fb1d4ab8fb696ffd611a527b9d0c03b4fd1e9628",
+        "version": "9afa647342cd531581802afe8eea60e5acab2afff77e12a5c356f9049893d722",
+        "signature": "4cd35a77e6296659111c84c6a6d0b6eeead11219a1e398077a8a6f4da8f2807e",
         "affectsGlobalScope": false
       },
       "./src/components/port/withtoggle.tsx": {
-        "version": "9f4cec523df92c0830c4fae60cf2e4e959f30ce1f01487d2de8b70dacb37baad",
-        "signature": "b841331132474ab7a6bcb6c3e0575c06bf34b474e4be6ac1e8d768dcb171bdc1",
+        "version": "cf1b195743ecf75277ff9839e5258ee342885742e02454f34f23e5dd2bfc29b4",
+        "signature": "deec3b6b167f622b167fad0ebcbfd0f17d9554df09aac208c558c761828c2f8a",
         "affectsGlobalScope": false
       },
       "./src/components/port/customportlabel.tsx": {
-        "version": "f601b45b8a9ce48efc8e78f60609f8e73e82a814e12fb3fddde7724049670191",
-        "signature": "a19daf5a5b8577465e1e9d5a9184595ef9350429c1abb257fb98cd151983d94f",
+        "version": "86ccb20e7e080c7f4044e83a2617c99b1afe89107c3300d36b63e920200cfd50",
+        "signature": "cacdece507ca942453773f3f0f9ee03e7a377416199fc02829cf73a5d6d9f806",
         "affectsGlobalScope": false
       },
       "./src/dialog/formdialogwidget.tsx": {
-        "version": "581fc3373fc3b16c1699b6a0b1e89bdf05b62b964680dd47f3cb1f5cb9b14496",
-        "signature": "17d02539645481bb22c3cad5ec6c222a8257744e07a80ae0e375da80c36be0e9",
+        "version": "15683d72074cb12dd7e9c348f90a0c6568e71a89c59cd867e16a325d82b764d6",
+        "signature": "3ad836b99a60249e1f2c60ec01cdbcf6beaff17c48845f972236467cb02fe6f4",
         "affectsGlobalScope": false
       },
       "./src/dialog/formdialog.tsx": {
-        "version": "d0b529cb28582edf7f4f7d662bf7a37320985d70329ffde021fb328776126cc7",
-        "signature": "5cd514d1e69c3d129b03e53d2508ea144b76bc10ea5c361b84e57305082fb997",
+        "version": "83d8388b77bec1eee785cb602193c837a7f0f2a1be407d16c5a39a1f78c4b465",
+        "signature": "9c9ebc2ee807add5b58f6cefae73a4bde0b9ed5f8c111a07bf6c7fc62f4c4939",
         "affectsGlobalScope": false
       },
       "./node_modules/react-textarea-autosize/dist/declarations/src/index.d.ts": {
@@ -2918,8 +2918,8 @@
         "affectsGlobalScope": false
       },
       "./src/dialog/commentdialog.tsx": {
-        "version": "f85243af3db4c68a07986b813c101e02e25d9b7a185f32117084212e48ae3a94",
-        "signature": "37c5c57236980be005483e4d946ccf831d8c7ff8216722d9fdc5192fd741d147",
+        "version": "ede29e6f8f59c314f520de16b53b26811a24c26919346afd9ad198dde01334b5",
+        "signature": "b6e73cbf2d64149561ff7b91df3ed520c415ddb2592176ee7d8fbad971e52575",
         "affectsGlobalScope": false
       },
       "./node_modules/react-tooltip/dist/react-tooltip.d.ts": {
@@ -2932,64 +2932,334 @@
         "signature": "391bd2fd4bc5a5f07822a17aeab35dfe90f94f729ae1ae7fc696398ba0ad3fcc",
         "affectsGlobalScope": false
       },
+      "./node_modules/better-react-mathjax/mathjax2.d.ts": {
+        "version": "c888123e192a2fa20c7d58075aa60b6b48880cdf96bd39e92601ccb698569d05",
+        "signature": "c888123e192a2fa20c7d58075aa60b6b48880cdf96bd39e92601ccb698569d05",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/components/global.d.ts": {
+        "version": "1d959fdfe98916a596e44de2e5c1a302343b6917e58416696822e88bb116c5c2",
+        "signature": "1d959fdfe98916a596e44de2e5c1a302343b6917e58416696822e88bb116c5c2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/options.d.ts": {
+        "version": "7ee96c33ffa8089198e0caa413a0ded9a7d6bda9c428d721500200f561fa5912",
+        "signature": "7ee96c33ffa8089198e0caa413a0ded9a7d6bda9c428d721500200f561fa5912",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/tree/factory.d.ts": {
+        "version": "0553fe55dea25bca5c65dd32b8ddd3be252dac19deedf5351068b14e3802292c",
+        "signature": "0553fe55dea25bca5c65dd32b8ddd3be252dac19deedf5351068b14e3802292c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts": {
+        "version": "e128206c4e79a401f4d56c6d0eccb0e0024206069064eda35352810bce71a13d",
+        "signature": "e128206c4e79a401f4d56c6d0eccb0e0024206069064eda35352810bce71a13d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/tree/node.d.ts": {
+        "version": "07f3e5242785465bb7dfdac011638f60f36f1bdc107d7aed88c6dd5028a05fc8",
+        "signature": "07f3e5242785465bb7dfdac011638f60f36f1bdc107d7aed88c6dd5028a05fc8",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts": {
+        "version": "dd41cffa61aeb7f1f45988fdb6554b3cd6c119d2489d1b060485beb17a24f84b",
+        "signature": "dd41cffa61aeb7f1f45988fdb6554b3cd6c119d2489d1b060485beb17a24f84b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts": {
+        "version": "5bd39ec249095c24afd1250438ba99828f45ef8fa528ecbfcad2b784f2626b85",
+        "signature": "5bd39ec249095c24afd1250438ba99828f45ef8fa528ecbfcad2b784f2626b85",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/domadaptor.d.ts": {
+        "version": "fb66f815ffad21aa39d287143df839080043df9143319f4c0df0ee7ce981d685",
+        "signature": "fb66f815ffad21aa39d287143df839080043df9143319f4c0df0ee7ce981d685",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts": {
+        "version": "a692f79e1c4698b451ac84063159052dd6c5cffd9c1ddcd500371e616f33f49a",
+        "signature": "a692f79e1c4698b451ac84063159052dd6c5cffd9c1ddcd500371e616f33f49a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mathitem.d.ts": {
+        "version": "591c3090cba30fe63313a4cd6e0870e48f664626d06296155053d60e67576bbb",
+        "signature": "591c3090cba30fe63313a4cd6e0870e48f664626d06296155053d60e67576bbb",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts": {
+        "version": "602ee2c4c4b144883e6469ce187d73d07053f7fa1832e38bde7b338d93309b4f",
+        "signature": "602ee2c4c4b144883e6469ce187d73d07053f7fa1832e38bde7b338d93309b4f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/functionlist.d.ts": {
+        "version": "8599238bbe9b0576d88ba9c905e9cdd2f62b4de11724995e634cc44efe8d468f",
+        "signature": "8599238bbe9b0576d88ba9c905e9cdd2f62b4de11724995e634cc44efe8d468f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/inputjax.d.ts": {
+        "version": "d708d5cda41ab5cdb7238c75cab0650a1d8216cf0bd803b166a0b4e3371b2ead",
+        "signature": "d708d5cda41ab5cdb7238c75cab0650a1d8216cf0bd803b166a0b4e3371b2ead",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/outputjax.d.ts": {
+        "version": "d8a3e7a3fd488135d24f3dd2b1c355a5c0ef9bf1169356168c015521f9213881",
+        "signature": "d8a3e7a3fd488135d24f3dd2b1c355a5c0ef9bf1169356168c015521f9213881",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/linkedlist.d.ts": {
+        "version": "8ad33af0c5e997c5fb2687b563ef15be184dfda0284d6ccefa1a63309ea6d3c5",
+        "signature": "8ad33af0c5e997c5fb2687b563ef15be184dfda0284d6ccefa1a63309ea6d3c5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mathlist.d.ts": {
+        "version": "adbe638d4ebb0a68e18fd257cc0be63e4dbf96efb311d6f7a0f502f746bae4d2",
+        "signature": "adbe638d4ebb0a68e18fd257cc0be63e4dbf96efb311d6f7a0f502f746bae4d2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/bitfield.d.ts": {
+        "version": "a8128e02f6c067da2f13224157b3b0024b1c5aa9d2a15946438d35d447a06b32",
+        "signature": "a8128e02f6c067da2f13224157b3b0024b1c5aa9d2a15946438d35d447a06b32",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/mathdocument.d.ts": {
+        "version": "c37aecf4c7828e00392c784013513fff8256d700edb45c6aaf07b6f8156ca36f",
+        "signature": "c37aecf4c7828e00392c784013513fff8256d700edb45c6aaf07b6f8156ca36f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/handler.d.ts": {
+        "version": "4b95398b7517ab91a0dac31797e02be5a8b0e2160610d998a7b9e51c58f9e657",
+        "signature": "4b95398b7517ab91a0dac31797e02be5a8b0e2160610d998a7b9e51c58f9e657",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/stylelist.d.ts": {
+        "version": "98682515f91248382be2c583a819e8e0bef160ad5ec0c49346100098755b4b80",
+        "signature": "98682515f91248382be2c583a819e8e0bef160ad5ec0c49346100098755b4b80",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/output/common/fontdata.d.ts": {
+        "version": "69b50a12f5fe856d5d4d486e068938f364f4e04eee6b2ed323139b7c85edf849",
+        "signature": "69b50a12f5fe856d5d4d486e068938f364f4e04eee6b2ed323139b7c85edf849",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts": {
+        "version": "ecfb422f8cf7cd66fa315e5501ca3d613cdde85aafeab0c22594d9ea3b2783df",
+        "signature": "ecfb422f8cf7cd66fa315e5501ca3d613cdde85aafeab0c22594d9ea3b2783df",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts": {
+        "version": "f54a16d715fb229425b99ce208848b9528b4a0eefb2ab1052e30ab97f215a5dd",
+        "signature": "f54a16d715fb229425b99ce208848b9528b4a0eefb2ab1052e30ab97f215a5dd",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/styles.d.ts": {
+        "version": "3ffb73d98590f61b003647a41911a51e82fce04b7dd8e1eca0390c240540e551",
+        "signature": "3ffb73d98590f61b003647a41911a51e82fce04b7dd8e1eca0390c240540e551",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts": {
+        "version": "765b9f5a1b16c41688e883bd3bb9f0e33d4f5e26cc88b2ba80dca534ecea2cd1",
+        "signature": "765b9f5a1b16c41688e883bd3bb9f0e33d4f5e26cc88b2ba80dca534ecea2cd1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/util/bbox.d.ts": {
+        "version": "12fcef9ef0bba67853c41e49cd57da352cc5d6b940a4ec7b5d9f46075b48bdf7",
+        "signature": "12fcef9ef0bba67853c41e49cd57da352cc5d6b940a4ec7b5d9f46075b48bdf7",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/output/common/wrapper.d.ts": {
+        "version": "b133a567fe7e2ddd69391d546fcc8f29dd3983aee8e9b5e1a0af967c9624ed9f",
+        "signature": "b133a567fe7e2ddd69391d546fcc8f29dd3983aee8e9b5e1a0af967c9624ed9f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/output/common/outputjax.d.ts": {
+        "version": "62a013c189f3ac31c869642c0d6765e41519ba86ee7816de50d0df432693ff00",
+        "signature": "62a013c189f3ac31c869642c0d6765e41519ba86ee7816de50d0df432693ff00",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/core/findmath.d.ts": {
+        "version": "d1e4734feadf722b761d72b601f52aff639497e01f30210c2498b236c88f6d1f",
+        "signature": "d1e4734feadf722b761d72b601f52aff639497e01f30210c2498b236c88f6d1f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/findtex.d.ts": {
+        "version": "b7b3112ed4a8c225f37b6c3b33147b291d76973ab3ad291b49a18df4cb3dfe10",
+        "signature": "b7b3112ed4a8c225f37b6c3b33147b291d76973ab3ad291b49a18df4cb3dfe10",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/texerror.d.ts": {
+        "version": "2efd37a6626889d88e7881b1a3228a24944f7b4a02e4a72081b684bf28477f93",
+        "signature": "2efd37a6626889d88e7881b1a3228a24944f7b4a02e4a72081b684bf28477f93",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts": {
+        "version": "3f8d9d32bba66703ef3cbd3db94ab1092a2ca0f32415947e8eddbfab897fbc11",
+        "signature": "3f8d9d32bba66703ef3cbd3db94ab1092a2ca0f32415947e8eddbfab897fbc11",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts": {
+        "version": "8a480dd48b83a683049509d51b4c008efafd17fc31ffb13c956ea0eaccbd9f36",
+        "signature": "8a480dd48b83a683049509d51b4c008efafd17fc31ffb13c956ea0eaccbd9f36",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/tags.d.ts": {
+        "version": "310837536fb604daac566843519d1aa381312933c070bb250a34e2f8ccd8df09",
+        "signature": "310837536fb604daac566843519d1aa381312933c070bb250a34e2f8ccd8df09",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/symbol.d.ts": {
+        "version": "a6b6d531ffc0e07459b9ee80664e938f998944d36807003dac316dc927aaffcf",
+        "signature": "a6b6d531ffc0e07459b9ee80664e938f998944d36807003dac316dc927aaffcf",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/stack.d.ts": {
+        "version": "b2e20e48ee8ca889fb3196cdc4a15ebc0f7f840dcacc05d0669a400f3753d5bd",
+        "signature": "b2e20e48ee8ca889fb3196cdc4a15ebc0f7f840dcacc05d0669a400f3753d5bd",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/texparser.d.ts": {
+        "version": "a4dfc191cc9469a444e39351b9b2ad2eaf6eb9a3f977827c3f08b7bfb9d6cddd",
+        "signature": "a4dfc191cc9469a444e39351b9b2ad2eaf6eb9a3f977827c3f08b7bfb9d6cddd",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/types.d.ts": {
+        "version": "92361785eb6735bbd0e4e04f2b353b4d1502b0dd452a307d1d8514ba4ab062cb",
+        "signature": "92361785eb6735bbd0e4e04f2b353b4d1502b0dd452a307d1d8514ba4ab062cb",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts": {
+        "version": "f3a5f83f1f11602ef9f1f1859c391996a375b7581041aaace936387a8caac650",
+        "signature": "f3a5f83f1f11602ef9f1f1859c391996a375b7581041aaace936387a8caac650",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts": {
+        "version": "806fe0c46d860f0e256964de1aa5a4fbafb7fdaa152bc3be20edd7890444a8ae",
+        "signature": "806fe0c46d860f0e256964de1aa5a4fbafb7fdaa152bc3be20edd7890444a8ae",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts": {
+        "version": "219efb4c63c52fbb2df716391a8c3b71176cd9861d29300d247bfed566d0c6e0",
+        "signature": "219efb4c63c52fbb2df716391a8c3b71176cd9861d29300d247bfed566d0c6e0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/configuration.d.ts": {
+        "version": "bc264ae77c91f490c177e2353c44eb1d0dff40367d958159789f1e51c4f8fb79",
+        "signature": "bc264ae77c91f490c177e2353c44eb1d0dff40367d958159789f1e51c4f8fb79",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts": {
+        "version": "ed3ff1f2a9d6f6111efe3a848966be05da8123a8f5da106d0c451bf0a100afb5",
+        "signature": "ed3ff1f2a9d6f6111efe3a848966be05da8123a8f5da106d0c451bf0a100afb5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/base/basemappings.d.ts": {
+        "version": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts": {
+        "version": "2d355bca3bcd3583b8c8b5820c4ead05917d24f2ca08d402a2ec1c112e17b087",
+        "signature": "2d355bca3bcd3583b8c8b5820c4ead05917d24f2ca08d402a2ec1c112e17b087",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/input/tex.d.ts": {
+        "version": "48def278284b6070983dc9b8eb1a5d91946eb70eabf9b9a0d3daa4d1e31cb4ee",
+        "signature": "48def278284b6070983dc9b8eb1a5d91946eb70eabf9b9a0d3daa4d1e31cb4ee",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/mathjax-full/js/components/startup.d.ts": {
+        "version": "bcf3d283431b202ead3430491573d56e34153a122181c122ea0207f8f45c6828",
+        "signature": "bcf3d283431b202ead3430491573d56e34153a122181c122ea0207f8f45c6828",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/mathjax3.d.ts": {
+        "version": "d5424c5b192d8683d39187553a7f7aad733af72c70c0ddd3423244650de9e862",
+        "signature": "d5424c5b192d8683d39187553a7f7aad733af72c70c0ddd3423244650de9e862",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts": {
+        "version": "1876bb31872a7078b7970be0652d5417e2283884ab0b9009408dbaf64bc04a47",
+        "signature": "1876bb31872a7078b7970be0652d5417e2283884ab0b9009408dbaf64bc04a47",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts": {
+        "version": "1eec30e1287373c57a19b7b0e6c7769eaeed91f889c930c7c1f8af64d0a57935",
+        "signature": "1eec30e1287373c57a19b7b0e6c7769eaeed91f889c930c7c1f8af64d0a57935",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts": {
+        "version": "038b0db492ddf28ff7bfc06da3a9bb4209bd24be978950ed895a6e3cd7deafa6",
+        "signature": "038b0db492ddf28ff7bfc06da3a9bb4209bd24be978950ed895a6e3cd7deafa6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/mathjax/index.d.ts": {
+        "version": "bf46e2f4e1c7aaa5d3e04f175cae4b6ff230718d606b055bcf929fe81babfd14",
+        "signature": "bf46e2f4e1c7aaa5d3e04f175cae4b6ff230718d606b055bcf929fe81babfd14",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/better-react-mathjax/index.d.ts": {
+        "version": "4fa2f105c0cf7969521837f4bef954f31fa1e228d9b0cde44e6503722a60c858",
+        "signature": "4fa2f105c0cf7969521837f4bef954f31fa1e228d9b0cde44e6503722a60c858",
+        "affectsGlobalScope": false
+      },
       "./src/components/customnodewidget.tsx": {
-        "version": "1c24e7ddb01b4199052e5f19d43934240a3b4b3e7bbea7ff4a3128b6a47ac880",
-        "signature": "9440371bce4b80902b3325c677222de2d6fc1c43b984099aeead6d9109e383d4",
+        "version": "b83638941578750311c49aca6753c7850ca8e5675e91ed24431cecab1ff5d761",
+        "signature": "c0c1bf11e3a778074555de10f17d4c698ea84b05955f59dcb4f554c1a48ae737",
         "affectsGlobalScope": false
       },
       "./src/components/customnodefactory.tsx": {
-        "version": "c8588befff4fbbda65eadccc1a01f4aa2cf60a0d5b15d90db1a6065bcfc581a8",
-        "signature": "dd3530a721322a3309db6d141c002898454006569373003dc1a36be8fb779ced",
+        "version": "29fab7ddb19ffb2d812ae306ab6c2b114a5919559929c81973d4dbc4a882d90d",
+        "signature": "06d0aa231ac41409e01c26278bc0af2a3ec6da8a172f99349055b97d962a9138",
         "affectsGlobalScope": false
       },
       "./src/commands/customactionevent.tsx": {
-        "version": "8ff6dceb4b1a58c6d0f787fec97a1591b02e4450314110f773fc24c36108a650",
-        "signature": "bbc07d9b14b12163be9fa719638cbd13349b22aada24917b006e1d44f1d13937",
+        "version": "61a06795bf14ddd05ee3be55b0e57a4cbfda4b71c10193ea7455929e89b2cd3b",
+        "signature": "5551ebcb2114ecad44d54aae0631cb25694cd4eac4beb7b599e074c76ff7b825",
         "affectsGlobalScope": false
       },
       "./src/components/dragnewlinkstate.ts": {
-        "version": "68ac58086d5332b09a264ab050d7ac537033f10b524beef01094d9d048a8b31f",
-        "signature": "8c41bda68fbde7a74822b9da413d67c6271d1630d708511114ef037d70e897d6",
+        "version": "93af2f6f68e2bd5d8bc706239df2275b8fc33afed2ad1ee1d13325c373819648",
+        "signature": "6f8cf12632bb4507f99643955a46c180fb4c0b6a74b2f767b4d2cb1eb7742dfe",
         "affectsGlobalScope": false
       },
       "./src/components/state/moveitemsstate.ts": {
-        "version": "ab80d4bbe7e6fdbff19b7f170d83e663946fa826a7c6b933a4f4308d8d99ea65",
-        "signature": "b11375e50be8075209d2a93c9e56698fc6549856659a181773353af8ef5c226c",
+        "version": "63f404fddcc66fad7ec51f2e89c1f78d233e7fcf22177b276baf7b600a2f0a65",
+        "signature": "44870c9d8537b4de0d851b75e9ad65f1ec0eb75b7973775fc7366d783b81ec3b",
         "affectsGlobalScope": false
       },
       "./src/components/state/dragdiagramitemsstate.ts": {
-        "version": "9fe91ad16df004989c6f9bb4c61c822cc17d851da04f886a5fff88db3530af41",
-        "signature": "e0327f39497f996da7b0ed6154984ec4e72a9d7b4a39128c5ee5c51337f22026",
+        "version": "178f01cf7b4193c69a789921584d2125137403c0a6a898ffc7705bed26e96a64",
+        "signature": "920b6d81370b7d856e3e4e96fdafa17fbff51f0c50b51e04316340d6187c3589",
         "affectsGlobalScope": false
       },
       "./src/components/state/customdiagramstate.ts": {
-        "version": "0a7a060fccf04a5de66db479457cbfe8c39cb78bdae6759aff4a37836934a426",
-        "signature": "7bae16d273e3968ecad043eb033364ad4eddbac84dc675cc1146908db23838d2",
+        "version": "9ae7aac55f65fd84e34f84b9c1011be833137c0c74cf0d8502ad7b8686bc0a81",
+        "signature": "edbf0fff2252fefc0781b058d3553ffd25d9a6509465e7a3d8dc95123a8af1bb",
         "affectsGlobalScope": false
       },
       "./src/components/link/customlinkmodel.ts": {
-        "version": "7657dc86b751db7151c6506cf4b2460f87784db4ad07a0db301092e8ae461299",
-        "signature": "8274c76b48cd37bc332cbe18e1242f6cf5a5b76935b7708f429a0f3ba1d3c24a",
+        "version": "d6cce493643ce30a146f7146fcf2f3f030d898b4e5d54dc71f1c1945df0d7db0",
+        "signature": "695b2eb0d3ae1099609a45d74f6e00b36a0f6721898ecb3c933c994845f8a15c",
         "affectsGlobalScope": false
       },
       "./src/components/link/customlinkfactory.tsx": {
-        "version": "5d62ab11601ada2b851601f83938cc01e00ba631a3c7254163294bde64e4ac4e",
-        "signature": "434dabd9d38d6f0727db4ef450a2cd8a68c7c346db59f0bdebe276d1b31ac042",
+        "version": "56c15ee3b6f6ab4e655a28807c99c34474032d33a141e5781dbfe20eac451b4f",
+        "signature": "795737340f06327e50e0c50fdcfe8189f696339fe1b010f053e95593a05762ee",
         "affectsGlobalScope": false
       },
       "./src/components/xircuitsapp.ts": {
-        "version": "8708c0ab9eb88f1d60e3df2cdc3fd175406c8354b71f4346b64e4734f4a6f852",
-        "signature": "b7d8d68d6472b8d5970ce8a6776f070f28f51b369d59e8622d53618fbbad5cdf",
+        "version": "dbe06960a327d9419097332571705c6d2a9290df11e4945089c5674f9f091473",
+        "signature": "b7ef8da52015cb4e63ffd9e582f076fdae03b25398b7ab1b0ccc39b8e3926fbc",
         "affectsGlobalScope": false
       },
       "./src/server/handler.ts": {
-        "version": "82dad5294c88c2b81d6b4150ebf40da29db1f731a1f974bf1f207bdb7d0f34b0",
-        "signature": "7f6037fa8d3da3ab5b173e089bd9d6eaf4e04e663844a9822b0463636b6ac816",
+        "version": "f5b74c21c97567f0fbb4d2cff30e8a6cdf275bf7289855f0149628229ac74303",
+        "signature": "daeb12a8a8880a6ee02b74817ba972e5542c3a3fc8daf2fbe258f9cb70bc9c9d",
         "affectsGlobalScope": false
       },
       "./src/xircuitwidget.tsx": {
-        "version": "7e8ce16195e489b6b817042c73c90fc86b91f2dafbfcc170bf9e03e9396c4d91",
-        "signature": "5cbe978c6f74e55a5460a07c9a9fc33dc62e3ebbfa82771fa309c4c8997735c7",
+        "version": "cb3230747e695e4fb795d05a9462c9a635af768121b5567e4f4ce8a97f3595df",
+        "signature": "ede301ec74a67f7d49ef1c70d739375442174f9d6f68bb0667534d1d2c27e8fa",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/outputarea/lib/model.d.ts": {
@@ -3033,13 +3303,13 @@
         "affectsGlobalScope": false
       },
       "./src/log/loglevelswitcher.tsx": {
-        "version": "a47af3f8e78af6b4bc5d7375a4eca2c3194051033683fb23890a4c836efbc6c4",
-        "signature": "be1dda04a05d040f8800479e898a330d528ebe4a9e382b5b9c4c3b673ae97b8b",
+        "version": "eaf8e0b17138276b9628513e9da465ffadc5eeb29f9e1d50055c577ec1cb51ce",
+        "signature": "13c61fb3ddf8dfd5c9adb5fdc2e107bb29423e31fa353b86eb115d86a832f55c",
         "affectsGlobalScope": false
       },
       "./src/log/logplugin.ts": {
-        "version": "1090f9fa0c452a136ae6c5397241c3c59f84f99530e89400b7a3ee013dc0e210",
-        "signature": "32de23335daa7d60d836b1e4b4067f0bc88581e255de37ad033ed5b6bfe4a87c",
+        "version": "a53b53c09f57b2b5d795027e0709ce1e77bf3f7f99dd3f3bac9f1ea4d97110b6",
+        "signature": "404377447a2248ac4cfa575c41942f0d6179a00473df5161795487c744bf2e89",
         "affectsGlobalScope": false
       },
       "./node_modules/react-switch/index.d.ts": {
@@ -3048,13 +3318,13 @@
         "affectsGlobalScope": false
       },
       "./src/dialog/rundialog.tsx": {
-        "version": "dc71022a9b0fd875559f9d104f9ed64a809f11c27afcce086522926838da1163",
-        "signature": "85f84f21139dc23c8b558a32d3c65c2985d28bf708440e314ed63ea86c6e5fa9",
+        "version": "100194c62586863d9c7d08973a117255adb3e38c42d56b9e4d41253e69e1a608",
+        "signature": "45716afc991851c05948bdbef53c3a92e2081042557832370e44be7dca227f79",
         "affectsGlobalScope": false
       },
       "./src/tray_library/component.tsx": {
-        "version": "428c95a80b23d9ecb65477848576ba540e9ac52ce560b4b3031610cc028e1df7",
-        "signature": "faf4cf998f96b4e4eaa44ec73cd1a6acdfe0e6ba176282cccddf0473c92f884a",
+        "version": "d88230838131f60726208216dc3a741a9fed3838f65ab483c50f7443ecc0ee73",
+        "signature": "4072d1cda0c57040d9bc1da851390ef79fcec7963cbdf80ca4f4a78e7d5d9887",
         "affectsGlobalScope": false
       },
       "./node_modules/react-accessible-accordion/dist/types/helpers/types.d.ts": {
@@ -3123,43 +3393,43 @@
         "affectsGlobalScope": false
       },
       "./src/context-menu/traypanel.tsx": {
-        "version": "f8ca3c6a25352ff78cf740fb5e4514c339394be1659fe03ba5704ab0d78fac19",
-        "signature": "45019ce8ff370e42f704f5c0b42ba085cb85421a86fe301892a622d3b725f659",
+        "version": "2d6dc60c64f958caa3a534c3691e3fee82ec13af37627eb3716056baa5dd004d",
+        "signature": "7834eca22bb333345bc0dfac03bc61bd07426743968062eed02c6785df9cae95",
         "affectsGlobalScope": false
       },
       "./src/dialog/literalinputdialog.tsx": {
-        "version": "874a0f019bea0ae04781819a04d4ce4b22b6a9758aaae5d3657c627a8c5b43a8",
-        "signature": "b3cbfdd2968cf77478677fd14f79470189c58c7cca5f13a07feb5edcbd41cec0",
+        "version": "650464aea75a56982dabf03a1782bf942581d356faea5b8ded8c1196ad4e5abc",
+        "signature": "e7274bfc3967c743415a1b2ebc974da893b0b48542a0784247394fa4113a1aa4",
         "affectsGlobalScope": false
       },
       "./src/tray_library/generalcomponentlib.tsx": {
-        "version": "6fa21f6a4d069f2d758ab9e754dfa95db710677daae12807785cc683db165c03",
-        "signature": "5938fc8ef7774be88625b06413d292ec018d7d099762426284df8ec6d2848125",
+        "version": "1590bdcfbf02207a65d7da11c916c098dac24ccc016c2a946a4498e5eb79de04",
+        "signature": "ced4692bfe1c4d7c7b846dda404c4a836c38eb75efaaa285095ea73fbeeca81b",
         "affectsGlobalScope": false
       },
       "./src/tray_library/advancecomponentlib.tsx": {
-        "version": "aaa7180037a8ef5dcc4d0efe09e1a54ee6ce799539f89325603bf8995891a73f",
-        "signature": "2a047fb3e9a7fe7edae18d4ecab613038b8dcfe66ac0b1cfdb69f658775b6ace",
+        "version": "5a219afae2da109bd29144a534d8f6b0511a629921ec639e44e9fcbc0bcf1b6d",
+        "signature": "147b896eb9808d0c5a0cbf15813060d3759ba990d1d42c130a4747ca0baf6b6e",
         "affectsGlobalScope": false
       },
       "./src/context-menu/trayitempanel.tsx": {
-        "version": "4293bfa5e352d2611338e5af5371226264710be745ffc4a96143464e94b65f4e",
-        "signature": "abc4cbe05104479c21574f27921d28e56d44cff93a1b6020cda9e65cb64adedb",
+        "version": "188c923b2b616fcf0146adcc0e406b9617f285ef1962f398dcf77c96a67f7571",
+        "signature": "c56a31499da33105ae102b22564fb8af8e8bcc2468a3a662bf8f02360b8b30bc",
         "affectsGlobalScope": false
       },
       "./src/context-menu/componentspanel.tsx": {
-        "version": "a037f64bf698be13481606a7241aa65d16c4eae943051569c64724da011390fc",
-        "signature": "a2d69fc8d6a68a2a5e06f70cd16cc41c2cef529cbba71351bb05af458fa9148e",
+        "version": "a1fd0087718f135b26bf69127d26d7891775572d45fdede63eb2e37a8ed8d243",
+        "signature": "483f6c15d88ac1bca9c1da1f32f9b8977cb56c9af8f1c59b09fec38a837840a1",
         "affectsGlobalScope": false
       },
       "./src/context-menu/nodeactionspanel.tsx": {
-        "version": "4889877422a0f21a2f8feafcf42f61f426782381b2fb906b577e0c1395ddceb8",
-        "signature": "7f067c34405a157b11514a7a96ed1bcf8ebbee2efa404ddd390632f32cf35dc7",
+        "version": "1b258e76c95775462098ece8192ba5451c13903bb192f41e0babd54c76c26d2e",
+        "signature": "f192976d719923b18c92e2482a0b1878bcbe795a175b898a2d852662d9bca20e",
         "affectsGlobalScope": false
       },
       "./src/components/xircuitbodywidget.tsx": {
-        "version": "0c4828aa4476213a58566c752d6e44f15054ff054f3a5bf2c6f9d2c68496070c",
-        "signature": "17a2479df92099fd25ce34779842401e49599c1abf2acb8ed6c2f48ac57e55c7",
+        "version": "c427adb07aa3603b7d749d726d9ccb835f610452631c760f43ace40137b737cb",
+        "signature": "fbc374b382d17597f938bc987af72c02a19099461c2a877976915d7f8a6c0e86",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/launcher/lib/index.d.ts": {
@@ -3168,33 +3438,33 @@
         "affectsGlobalScope": false
       },
       "./src/components/runswitcher.tsx": {
-        "version": "39f33712d63e0d362e52d4d4b7cde05b9a5684cdc0fecdc3f38ea9d61b6c146a",
-        "signature": "046ad93f5d2b0c6652e63ed73cb5635a7bd82243fa1ffb31737be2c3b54d3556",
+        "version": "96e0507d49d64e2021cca13fa3fa6a978affd0d847075e09d3c8ef14af59d367",
+        "signature": "67e364a3de7097a8ac83af8ece47fa790a6492993b197709f8b48e7c3b89818b",
         "affectsGlobalScope": false
       },
       "./src/ui-components/icons.tsx": {
-        "version": "4b819bf148fac3ab91fd814b6002bc9b0d554bc82f6cc5e83841974cf23119fe",
-        "signature": "277f8be634204cecf654bcb0ec168c13ce988d1d44f06154f294fbff115f18c2",
+        "version": "4de4ffc50618edef358fd6f5519694819de11f1aa9e968ecf2ef077be10c0097",
+        "signature": "e437fbbc5326588e4c01f40d13be1360139a74466772310c0584ab985939f000",
         "affectsGlobalScope": false
       },
       "./src/xircuitfactory.ts": {
-        "version": "ac2c1accbcb61df7af199d84e434d29493f91d700ab3713f229186143bfd022a",
-        "signature": "f9802a20ef10728e797b8cbb668ab422efd3dda36411ef9ca05d1c1d8f24d566",
+        "version": "34071c4f2e7c0f1819dd747673e32afebda05408561f4ee4d53295cdbf434a89",
+        "signature": "1ef3faee05dfbaf502f47416c054babe5138a1b4f4730930653274d82497b4b6",
         "affectsGlobalScope": false
       },
       "./src/tray_library/trayitemwidget.tsx": {
-        "version": "3de915abc4a91ae2a951ab51520e7fbe43b34340a95faf50867a3a5992fc8173",
-        "signature": "2b7fb29a5098d8dac0435812d8349072221e01c42a09fe746cc8dbf767ddb7db",
+        "version": "cf42733c40732a81dd36b077b7979af4d1b7fe5100c333926da049645b27990f",
+        "signature": "1d46087f19cf192cb06c16114679a1782dffc083944616e34d9ba5a6b89865ad",
         "affectsGlobalScope": false
       },
       "./src/tray_library/traywidget.tsx": {
-        "version": "397e1b6652723f5a0aa068c2c92381fa64d39090e0c6aad63c60483722a1f7ee",
-        "signature": "f0c8671c322f4d80020c6d9f21a4a5763cbf73bfb811eb9b266d162b2a7b53be",
+        "version": "8f28dae5204a43d510f3c75fe02337c5a4342af2cac0fa84d1710a8f33f32b86",
+        "signature": "a6fbdc4634814cc2adc36760230626a7a28ceb7971d9a5940f552302f112a434",
         "affectsGlobalScope": false
       },
       "./src/tray_library/sidebar.tsx": {
-        "version": "9aa0d8ff2d22e59a2878921e27d8da3c7204fe21b9123ab2452ff37de59ff60a",
-        "signature": "ec751b18339426d9e5b6c51a55d8f243b506436fe00c6e31be68e6781dd8af90",
+        "version": "d1d5d9a54d3b801ff8ffc02b67536c1c02a56619f75cb3faec60513138f42582",
+        "signature": "f0b5bcb1c532ec159157da1f0e6f83cc416c64942eb08d1d653b68505361d5a6",
         "affectsGlobalScope": false
       },
       "./node_modules/vscode-debugprotocol/lib/debugprotocol.d.ts": {
@@ -3493,58 +3763,58 @@
         "affectsGlobalScope": false
       },
       "./src/debugger/debuggerwidget.tsx": {
-        "version": "d66009e34f719aa63f019fd7b05f966c170ddc718cf0c995190c12b99826aa3f",
-        "signature": "7ea1b1e23dc2a1cc63d010225757c49e85032e1fff35c40c177ea5ad18469132",
+        "version": "0088e26751629b36a88ed05e550127b1f695f6f5c3d4cafeed6b575195161019",
+        "signature": "01dbaedba59cb3ed33f95c3df14c9c196945b9bb7392d97911ff8e3fa7d0fff4",
         "affectsGlobalScope": false
       },
       "./src/debugger/sidebardebugger.ts": {
-        "version": "937310c0d0e02e566ebadc19532f2c43919d28c99ff764be9c2caee771f10b31",
-        "signature": "601841e83368101fe3df7538a2a8a9475a2b7a751b46d81198ad350774adc06e",
+        "version": "ac2d2c4ce36d7c610de992378982db2174c93b0bec17d02bad822e2caced5cd5",
+        "signature": "fe97f580a9604f802be867fa877e702604e9e47d7a052735f46eac0a236bb6c6",
         "affectsGlobalScope": false
       },
       "./src/kernel/panel.ts": {
-        "version": "6ff73e35a3df4465c46ea06a2042b05b99551244d86cc572046b71dae4f2549c",
-        "signature": "e5ea28ee85154c78ce4463846fe95b49a87f9c4e937beda5f2cf22ab2499d2f5",
+        "version": "52677a95f057b37d8bb96c91dd33d2b9ad7f3428ea3da448cb1d17972327c982",
+        "signature": "99c632088970ef9be5369b6f81ee4e1996805ca1905ef91fc3e61e9c513b79ac",
         "affectsGlobalScope": false
       },
       "./src/commands/nodeactioncommands.tsx": {
-        "version": "8cf79b428073cd70d43cf04413d18b8412554e4a25aa05472a7f718626263f88",
-        "signature": "c6f8bfeac3a6cfc44be4bd23414401fff940081ee95927c70b0cb829cfaec7ce",
+        "version": "bc33f90691e76572bfd30bdb65631992495385a72f1501d00bad01e0fb9d0b07",
+        "signature": "3940be29ffc6175013bade79ff9451ef61135975304f4e4529dd6d61344b3db6",
         "affectsGlobalScope": false
       },
       "./src/kernel/runoutput.ts": {
-        "version": "c7b07841d6471bde4e499b6d0e0a08700532f64332404c647039ade21ae221d6",
-        "signature": "ec0c54d6f169c3a57f4d5b08987773a19d8fb3aaf2703fae9e6906faaf4cacd3",
+        "version": "d3c695d7be3884fecb796754d695dc0eb18865bd54ec7e17726f2f1f007c6837",
+        "signature": "eeb0d0599a48c5649eac0b50b1a4ecea7f9079e1be096656c77a1da30aae9ace",
         "affectsGlobalScope": false
       },
       "./src/index.tsx": {
-        "version": "278e4fee69f58edc78b018dae62fbb7155c295a411fb36420739365b9351c1ce",
-        "signature": "46c1af3e573dc3201a95040bbb2ca99caf562b4ce64b8e4e9931cc5c1fc134c3",
+        "version": "c87729594af5d6faf9bdd088c9976ea610513250d0af1660d8d6c43d45caa535",
+        "signature": "43422c58c7885b0a61cf7e39cb5b5e0c74a81fd4532ec7e59cf0f65053312909",
         "affectsGlobalScope": false
       },
       "./src/svg.d.ts": {
-        "version": "02f8291a876a74c92a23665ba72e7c328787804d55bbe9579151476b43250a32",
-        "signature": "02f8291a876a74c92a23665ba72e7c328787804d55bbe9579151476b43250a32",
+        "version": "4fc890d8486dd63e820227855bee3fbf8ca2b9524829a9fa766a3f2a5794f1d3",
+        "signature": "4fc890d8486dd63e820227855bee3fbf8ca2b9524829a9fa766a3f2a5794f1d3",
         "affectsGlobalScope": false
       },
       "./src/components/state/defaultstate.ts": {
-        "version": "87497459d7fb812308f2c4ab177c62fb89fd82562612321824adf7d7b7c71240",
-        "signature": "e97f1b644c719743f662c9f2962ee446e2a6662436b46800b9f98c40c9599215",
+        "version": "0115b893d54f409054cc9468a7881068e3f58d09a954385d2514612dc47ed69f",
+        "signature": "0aba3f37cfee6378e284138fa4bea6c5013e3a57b6441ac68a8045d5b13350f7",
         "affectsGlobalScope": false
       },
       "./src/components/state/dragnewlinkstate.ts": {
-        "version": "807b62456bfcf19b66e6377710c8d8da45d069f99803ba1c58630f05808008d6",
-        "signature": "be815b841366f25d7878d6eefd0919b4286b1b75678b3e788fffcb69e16cf424",
+        "version": "a689f61c66fa12e182d8dc647c6e8f11d7fd8e7bb6ab069658f320a083d1a301",
+        "signature": "71a74a394839b37f3d306acc4cc2d56557502e7723a56cd15f8fd7ec360c3f1d",
         "affectsGlobalScope": false
       },
       "./src/helpers/demoworkspacewidget.tsx": {
-        "version": "ee1a0f743fd522a71cce0690076873909491c484fc1853aa9efc7b82a88ee2f9",
-        "signature": "6db4acc0887c26c2eeb70c2ec963abf740b9653525e23b34ad5e622ec90e42bc",
+        "version": "ad718494b34babb5361b2f39f2c6653aa59fd89a9315e3cf638c8e2386d6b40b",
+        "signature": "3f29c040ce5e0665a643683e0c0d3e84c57044beaef935e153e538abb2745bcd",
         "affectsGlobalScope": false
       },
       "./src/helpers/helper.tsx": {
-        "version": "a1820673e069fa92250eb9b6ce1d9245507d13d0f78e7ab8e4ecce301e7831ba",
-        "signature": "c6d88388e7ec5f937476589bc5a772a81e66f27e74b56c6d3eacfdfa10a4ca16",
+        "version": "4e96376e5e19a92953be257e6f86913e43ca39f0e8ebefc479f1bc46d3adb42b",
+        "signature": "cf9553e4f90c62d7eec7ad25cba963a704ea03fc9f6084fe24a0e8554b9de1fb",
         "affectsGlobalScope": false
       }
     },
@@ -3570,7 +3840,6 @@
       "types": [],
       "allowJs": true,
       "skipLibCheck": true,
-      "watch": true,
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
@@ -6572,6 +6841,257 @@
         "./node_modules/@types/react/node_modules/csstype/index.d.ts",
         "./node_modules/@types/scheduler/tracing.d.ts"
       ],
+      "./node_modules/better-react-mathjax/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjax/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjax2.d.ts",
+        "./node_modules/better-react-mathjax/mathjax3.d.ts",
+        "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax3.d.ts": [
+        "./node_modules/mathjax-full/js/components/startup.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjax2.d.ts",
+        "./node_modules/better-react-mathjax/mathjax3.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/components/startup.d.ts": [
+        "./node_modules/mathjax-full/js/components/global.d.ts",
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/handler.d.ts",
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/input/tex.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/domadaptor.d.ts": [
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/findmath.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/handler.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/inputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathdocument.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mathlist.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/util/bitfield.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathitem.d.ts": [
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathlist.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/linkedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/outputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/node.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex.d.ts": [
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/findtex.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texerror.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/base/basemappings.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/configuration.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/findtex.d.ts": [
+        "./node_modules/mathjax-full/js/core/findmath.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stack.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/symbol.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/symbol.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/tags.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/texparser.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stack.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/types.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/symbol.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/fontdata.d.ts": [
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/outputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapper.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts",
+        "./node_modules/mathjax-full/js/util/styles.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/wrapper.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/util/bbox.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts",
+        "./node_modules/mathjax-full/js/util/styles.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapper.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/util/functionlist.d.ts": [
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
       "./node_modules/react-accessible-accordion/dist/types/components/accordion.d.ts": [
         "./node_modules/@types/react/index.d.ts",
         "./node_modules/react-accessible-accordion/dist/types/components/itemcontext.d.ts",
@@ -7011,6 +7531,7 @@
         "./node_modules/@projectstorm/react-diagrams/dist/@types/index.d.ts",
         "./node_modules/@types/marked/index.d.ts",
         "./node_modules/@types/react/index.d.ts",
+        "./node_modules/better-react-mathjax/index.d.ts",
         "./node_modules/react-tooltip/dist/react-tooltip.d.ts",
         "./src/components/port/customportlabel.tsx",
         "./src/components/xircuitbodywidget.tsx",
@@ -10271,6 +10792,257 @@
         "./node_modules/@types/react/node_modules/csstype/index.d.ts",
         "./node_modules/@types/scheduler/tracing.d.ts"
       ],
+      "./node_modules/better-react-mathjax/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjax/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjax2.d.ts",
+        "./node_modules/better-react-mathjax/mathjax3.d.ts",
+        "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjax3.d.ts": [
+        "./node_modules/mathjax-full/js/components/startup.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts": [
+        "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts"
+      ],
+      "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./node_modules/better-react-mathjax/mathjax2.d.ts",
+        "./node_modules/better-react-mathjax/mathjax3.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/components/startup.d.ts": [
+        "./node_modules/mathjax-full/js/components/global.d.ts",
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/handler.d.ts",
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/input/tex.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/domadaptor.d.ts": [
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/findmath.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/handler.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/inputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathdocument.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mathlist.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/util/bitfield.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathitem.d.ts": [
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mathlist.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/linkedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/outputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/node.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex.d.ts": [
+        "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/findtex.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texerror.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/base/basemappings.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/configuration.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/findtex.d.ts": [
+        "./node_modules/mathjax-full/js/core/findmath.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stack.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/symbol.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/symbol.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/tags.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/texparser.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stack.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/types.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/input/tex/types.d.ts": [
+        "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/symbol.d.ts",
+        "./node_modules/mathjax-full/js/input/tex/texparser.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/fontdata.d.ts": [
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/outputjax.d.ts": [
+        "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapper.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/util/options.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts",
+        "./node_modules/mathjax-full/js/util/styles.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/wrapper.d.ts": [
+        "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+        "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/util/bbox.d.ts",
+        "./node_modules/mathjax-full/js/util/stylelist.d.ts",
+        "./node_modules/mathjax-full/js/util/styles.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts": [
+        "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+        "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts",
+        "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+        "./node_modules/mathjax-full/js/output/common/outputjax.d.ts",
+        "./node_modules/mathjax-full/js/output/common/wrapper.d.ts"
+      ],
+      "./node_modules/mathjax-full/js/util/functionlist.d.ts": [
+        "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts"
+      ],
       "./node_modules/react-accessible-accordion/dist/types/components/accordion.d.ts": [
         "./node_modules/@types/react/index.d.ts",
         "./node_modules/react-accessible-accordion/dist/types/components/itemcontext.d.ts",
@@ -11446,11 +12218,65 @@
       "./node_modules/@types/react/index.d.ts",
       "./node_modules/@types/react/node_modules/csstype/index.d.ts",
       "./node_modules/@types/scheduler/tracing.d.ts",
+      "./node_modules/better-react-mathjax/index.d.ts",
+      "./node_modules/better-react-mathjax/mathjax/index.d.ts",
+      "./node_modules/better-react-mathjax/mathjax/mathjax.d.ts",
+      "./node_modules/better-react-mathjax/mathjax2.d.ts",
+      "./node_modules/better-react-mathjax/mathjax3.d.ts",
+      "./node_modules/better-react-mathjax/mathjaxcontext/index.d.ts",
+      "./node_modules/better-react-mathjax/mathjaxcontext/mathjaxcontext.d.ts",
       "./node_modules/lib0/decoding.d.ts",
       "./node_modules/lib0/encoding.d.ts",
       "./node_modules/lib0/mutex.d.ts",
       "./node_modules/lib0/observable.d.ts",
       "./node_modules/lib0/random.d.ts",
+      "./node_modules/mathjax-full/js/components/global.d.ts",
+      "./node_modules/mathjax-full/js/components/startup.d.ts",
+      "./node_modules/mathjax-full/js/core/domadaptor.d.ts",
+      "./node_modules/mathjax-full/js/core/findmath.d.ts",
+      "./node_modules/mathjax-full/js/core/handler.d.ts",
+      "./node_modules/mathjax-full/js/core/inputjax.d.ts",
+      "./node_modules/mathjax-full/js/core/mathdocument.d.ts",
+      "./node_modules/mathjax-full/js/core/mathitem.d.ts",
+      "./node_modules/mathjax-full/js/core/mathlist.d.ts",
+      "./node_modules/mathjax-full/js/core/mmltree/attributes.d.ts",
+      "./node_modules/mathjax-full/js/core/mmltree/mmlfactory.d.ts",
+      "./node_modules/mathjax-full/js/core/mmltree/mmlnode.d.ts",
+      "./node_modules/mathjax-full/js/core/outputjax.d.ts",
+      "./node_modules/mathjax-full/js/core/tree/factory.d.ts",
+      "./node_modules/mathjax-full/js/core/tree/node.d.ts",
+      "./node_modules/mathjax-full/js/core/tree/nodefactory.d.ts",
+      "./node_modules/mathjax-full/js/core/tree/wrapper.d.ts",
+      "./node_modules/mathjax-full/js/core/tree/wrapperfactory.d.ts",
+      "./node_modules/mathjax-full/js/input/tex.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/base/baseconfiguration.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/base/basemappings.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/configuration.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/findtex.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/maphandler.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/nodefactory.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/parseoptions.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/stack.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/stackitem.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/stackitemfactory.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/symbol.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/symbolmap.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/tags.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/texerror.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/texparser.d.ts",
+      "./node_modules/mathjax-full/js/input/tex/types.d.ts",
+      "./node_modules/mathjax-full/js/output/common/fontdata.d.ts",
+      "./node_modules/mathjax-full/js/output/common/outputjax.d.ts",
+      "./node_modules/mathjax-full/js/output/common/wrapper.d.ts",
+      "./node_modules/mathjax-full/js/output/common/wrapperfactory.d.ts",
+      "./node_modules/mathjax-full/js/util/bbox.d.ts",
+      "./node_modules/mathjax-full/js/util/bitfield.d.ts",
+      "./node_modules/mathjax-full/js/util/functionlist.d.ts",
+      "./node_modules/mathjax-full/js/util/linkedlist.d.ts",
+      "./node_modules/mathjax-full/js/util/options.d.ts",
+      "./node_modules/mathjax-full/js/util/prioritizedlist.d.ts",
+      "./node_modules/mathjax-full/js/util/stylelist.d.ts",
+      "./node_modules/mathjax-full/js/util/styles.d.ts",
       "./node_modules/popper.js/index.d.ts",
       "./node_modules/react-accessible-accordion/dist/types/components/accordion.d.ts",
       "./node_modules/react-accessible-accordion/dist/types/components/accordioncontext.d.ts",
