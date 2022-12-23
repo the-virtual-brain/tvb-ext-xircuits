@@ -11,7 +11,20 @@ For installing in a Jupyter Lab environment:
 
 
 For dev mode setup there are 2 alternatives:
-1. Using `yarn`:
+1. Using `jlpm`:
+
+    `jlpm` is a JupyterLab-provided, locked version of `yarn` and has a similar usage:
+
+    ```
+    conda activate [my-env]
+    pip install --upgrade pip
+    pip install -e .
+    jupyter labextension develop . --overwrite  # Link your development version of the extension with JupyterLab
+    jupyter server extension enable tvbextxircuits  # Enable the server extension
+    xircuits
+    ```
+
+2. Using `yarn`:
 
     You need to have a dedicated `Python env`, `yarn`, `rust` and `cargo` (from https://rustup.rs/) prepared:
    
@@ -23,24 +36,20 @@ For dev mode setup there are 2 alternatives:
     yarn install:extension
     xircuits
     ```
-2. Using `jlpm`:
-
-    `jlpm` is a JupyterLab-provided, locked version of `yarn` and has a similar usage:
-
-    ```
-    conda activate [my-env]
-    pip install --upgrade pip
-    pip install -e .
-    jupyter labextension develop . --overwrite  # Link your development version of the extension with JupyterLab
-    jupyter server extension enable xircuits  # Enable the server extension
-    xircuits
-    ```
     
 To rebuild the extension after making changes to it:
 
-    jlpm build  # Rebuild Typescript source after making changes
-    jupyter lab build   # Rebuild extension after making any changes
+      # Rebuild Typescript source after making changes
+      jlpm build
+      # Rebuild extension after making any changes
+      jupyter lab build
 
+To rebuild automatically:
+
+      # Watch the source directory in another terminal tab
+      jlpm run watch
+      # Run Xircuits in watch mode in one terminal tab
+      jupyter lab --watch
 
 ##  Acknowledgments
 
