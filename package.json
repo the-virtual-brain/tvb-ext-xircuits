@@ -64,7 +64,6 @@
     "@projectstorm/react-diagrams": "^6.6.1",
     "@projectstorm/react-diagrams-defaults": "^6.6.1",
     "@projectstorm/react-diagrams-routing": "^6.6.1",
-    "better-react-mathjax": "^2.0.2",
     "dagre": "^0.8.5",
     "krc-pagination": "^1.0.1",
     "marked": "^4.0.18",
