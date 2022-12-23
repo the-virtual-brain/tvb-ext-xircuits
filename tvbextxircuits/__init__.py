@@ -15,7 +15,7 @@ def _jupyter_labextension_paths():
 
 
 def _jupyter_server_extension_points():
-    return [{"module": "xircuits"}]
+    return [{"module": "tvbextxircuits"}]
 
 
 def _load_jupyter_server_extension(server_app):
@@ -28,7 +28,7 @@ def _load_jupyter_server_extension(server_app):
     url_path = "xircuits"
     setup_handlers(server_app.web_app, url_path)
     server_app.log.info(
-        f"Registered xircuits extension at URL path /{url_path}"
+        f"Registered tvbextxircuits extension at URL path /{url_path}"
     )
 
 # For backward compatibility with the classical notebook

@@ -2,7 +2,7 @@ import json
 import tornado
 from jupyter_server.base.handlers import APIHandler
 from .component_parser import ComponentsParser
-from xircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator, ModelConfigLoader
+from tvbextxircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator, ModelConfigLoader
 
 class EditXircuitsFile(APIHandler):
     @tornado.web.authenticated

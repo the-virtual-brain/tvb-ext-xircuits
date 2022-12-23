@@ -11,7 +11,7 @@ include requirements.txt
 include requirements-full.txt
 graft xai_components
 
-graft xircuits/labextension
+graft tvbextxircuits/labextension
 
 # Javascript files
 graft src
