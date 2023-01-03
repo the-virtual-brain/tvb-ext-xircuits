@@ -230,11 +230,11 @@ export async function GeneralComponentLibrary(props: GeneralComponentLibraryProp
 
     else if (nodeData.type === 'numpy.ndarray') {
         if (variableValue == '' || variableValue == undefined) {
-            const dialogOptions = inputDialog('String', "", 'String', false ,'textarea');
+            const dialogOptions = inputDialog('Numpy Array', "", 'Numpy Array', false ,'textarea');
             const dialogResult = await showFormDialog(dialogOptions);
             if (cancelDialog(dialogResult)) return;
             console.log(dialogResult)
-            inputValue = dialogResult["value"]['String'];
+            inputValue = dialogResult["value"]['Numpy Array'];
         }
 
         node = new CustomNodeModel({ name: nodeName, color: nodeData.color, extras: { "type": nodeData.type } });
