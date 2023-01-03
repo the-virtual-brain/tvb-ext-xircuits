@@ -555,7 +555,8 @@ export function addNodeActionCommands(
         if (widget) {
             const selected_node = selectedNode();
 
-            if (!selected_node.getOptions()["name"].startsWith("Literal")) {
+            if (!selected_node.getOptions()["name"].startsWith("Literal") &&
+                !selected_node.getOptions()["name"].startsWith("Numpy")) {
                 showDialog({
                     title: 'Only Literal Node can be edited',
                     buttons: [Dialog.warnButton({ label: 'OK' })]
@@ -566,11 +567,15 @@ export function addNodeActionCommands(
             let node = null;
             const links = widget.xircuitsApp.getDiagramEngine().getModel()["layers"][0]["models"];
             const oldValue = selected_node.getPorts()["out-0"].getOptions()["label"];
-            const literalType = selected_node["name"].split(" ")[1];
+            let literalType = selected_node["name"]
+            if (!literalType.startsWith('Numpy')) {
+                literalType = selected_node["name"].split(" ")[1];
+            }
             let isStoreDataType: boolean = false;
             let isTextareaInput: string = "";
 
             switch(literalType){
+                case "Numpy Array":
                 case "String":
                     isTextareaInput = 'textarea';
                     break;
