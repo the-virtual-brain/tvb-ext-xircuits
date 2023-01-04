@@ -40,7 +40,7 @@ class PyunicoreSubmitter(object):
 
     @property
     def _install_dependencies_command(self):
-        return f'pip install -U pip && pip install numpy && pip install {self.pip_libraries}'
+        return f'pip install -U pip && pip install {self.pip_libraries}'
 
     def connect_client(self):
         print(f"Connecting to {self.site}...")
