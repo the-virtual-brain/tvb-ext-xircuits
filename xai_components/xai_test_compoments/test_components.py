@@ -10,7 +10,7 @@ from xai_components.base import InArg, Component, xai_component
 
 
 @xai_component(color='rgb(85, 37, 130)')
-class NumpyTest(Component):
+class ANumpyTest(Component):
     numpy_code_str: InArg[numpy.ndarray]
 
     def __init__(self):
