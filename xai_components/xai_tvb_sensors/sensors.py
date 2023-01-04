@@ -1,5 +1,11 @@
-from tvb.datatypes.sensors import Sensors
+# -*- coding: utf-8 -*-
+#
+# "TheVirtualBrain - Widgets" package
+#
+# (c) 2022-2023, TVB Widgets Team
+#
 
+from tvb.datatypes.sensors import Sensors
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import TVBComponent
 from xai_components.utils import set_values, print_component_summary, set_defaults
