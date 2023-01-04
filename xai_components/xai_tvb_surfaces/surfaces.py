@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# "TheVirtualBrain - Widgets" package
+#
+# (c) 2022-2023, TVB Widgets Team
+#
+
 from tvb.datatypes.surfaces import Surface
 from xai_components.base import xai_component, InArg, OutArg, InCompArg
 from xai_components.base_tvb import TVBComponent

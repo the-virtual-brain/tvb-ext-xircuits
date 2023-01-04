@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# "TheVirtualBrain - Widgets" package
+#
+# (c) 2022-2023, TVB Widgets Team
+#
+
 from tvb.datatypes.projections import ProjectionMatrix
 from tvb.datatypes.sensors import Sensors
 from tvb.datatypes.surfaces import Surface
@@ -7,7 +14,6 @@ from xai_components.utils import print_component_summary
 
 @xai_component(color='rgb(67, 47, 106)')
 class ProjectionSurfaceEEG(Component):
-    from tvb.datatypes.projections import ProjectionSurfaceEEG
     file_path: InArg[str]
     sources: InCompArg[Surface]
     sensors: InCompArg[Sensors]
