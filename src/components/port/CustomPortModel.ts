@@ -122,6 +122,10 @@ export  class CustomPortModel extends DefaultPortModel  {
                 if(result[1] == 'any'){
                     return;
                 }
+                // if multiple types are accepted by target node port, check if source port type is among them
+                if(result[1].includes(thisNodeModelType)) {
+                    return;
+                }
 		        port.getNode().getOptions().extras["borderColor"]="red";
 		        port.getNode().getOptions().extras["tip"]= `Incorrect data type. Port ${thisLabel} is a type ` + "*`" + result[1] + "`*.";
                 port.getNode().setSelected(true);
