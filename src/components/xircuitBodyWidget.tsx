@@ -541,7 +541,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 									if (port.startsWith("parameter")) {
 
-										if (sourceNodeName.startsWith("Literal") || sourceNodeName.startsWith('Numpy')) {
+										if (sourceNodeName.startsWith("Literal")) {
 											switch (sourceNodeType) {
 												case "string":
 													sourcePortLabelStructure = '"""' + sourcePortLabel + '"""';

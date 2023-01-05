@@ -227,8 +227,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
      * Allow to edit Literal Component
      */
     handleEditLiteral() {
-        if ((!this.props.node.getOptions()["name"].startsWith("Literal")) &&
-            (!this.props.node.getOptions()["name"].startsWith("Numpy"))) {
+        if ((!this.props.node.getOptions()["name"].startsWith("Literal"))) {
             return;
         }
         this.props.app.commands.execute(commandIDs.editNode)
@@ -310,8 +309,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
                 </S.CommentContainer>
             );
         } 
-        else if (this.props.node.getOptions()["name"].startsWith('Literal') ||
-                this.props.node.getOptions()["name"].startsWith('Numpy')) {
+        else if (this.props.node.getOptions()["name"].startsWith('Literal')) {
             return (
                 <S.Node
                     borderColor={this.props.node.getOptions().extras["borderColor"]}

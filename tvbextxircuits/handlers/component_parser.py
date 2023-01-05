@@ -36,7 +36,7 @@ DEFAULT_COMPONENTS = {
     10:{ "name": "Literal List", "returnType": "list"},
     11:{ "name": "Literal Tuple", "returnType": "tuple"},
     12:{ "name": "Literal Dict", "returnType": "dict"},
-    13:{ "name": "Numpy Array", "returnType": "numpy.ndarray"},
+    13:{ "name": "Literal Numpy Array", "returnType": "numpy.ndarray"},
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
     # 2: { "name": "Convert to Aurora", "returnType": "convert"},
