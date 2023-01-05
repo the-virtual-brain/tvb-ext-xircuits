@@ -73,8 +73,8 @@ export  class CustomPortModel extends DefaultPortModel  {
     /**
      * the qty of ports of parameter node link to the same port in other node can
      * not be more than one
-     * @param thisPort
-     * @param port
+     * @param thisPort - source port
+     * @param port - target port
      */
     canParameterLinkToPort = (thisPort, port) => {
 
@@ -84,8 +84,8 @@ export  class CustomPortModel extends DefaultPortModel  {
         const thisLabel: string = "**" + port.getOptions()["label"] + "**";
         const sourcePortName: string = thisPort.getName();
         const thisPortType: string = thisName.split('-')[1];
-        const thisPortTypeText: string = "*`" + thisPortType + "`*";
         const sourcePortType: string = sourcePortName.split('-')[2];
+        let thisPortTypeText: string = "*`" + thisPortType + "`*";
 
         if (this.isParameterNode(thisNodeModelType) == true){
             // if the port you are trying to link ready has other links
@@ -93,6 +93,10 @@ export  class CustomPortModel extends DefaultPortModel  {
             console.log("parameter port: ", port.getNode().getInPorts());
             if (Object.keys(port.getLinks()).length > 0){
 		        port.getNode().getOptions().extras["borderColor"]="red";
+                // if port supports multiple types
+                if (thisPortTypeText.includes(',')) {
+                    thisPortTypeText = this.parsePortType(thisPortTypeText);
+                }
 		        port.getNode().getOptions().extras["tip"]=`Port ${thisLabel} doesn't allow multi-links of ${thisPortTypeText} type.`;
                 port.getNode().setSelected(true);
                 return false;
@@ -131,10 +135,7 @@ export  class CustomPortModel extends DefaultPortModel  {
 
                 // if a list of types is provided for the port, parse it a bit to display it nicer
                 if (thisLinkedPortType.includes(',')) {
-                    // port type is of form: Union[type1,type2]
-                    thisLinkedPortType = thisLinkedPortType.replace('Union', '')    // remove Union word
-                    thisLinkedPortType = thisLinkedPortType.replace(/[\[\]]/g, '')  // remove square brackets
-                    thisLinkedPortType = thisLinkedPortType.replace(', ', ' or ')
+                    thisLinkedPortType = this.parsePortType(thisLinkedPortType)
                 }
 		        port.getNode().getOptions().extras["tip"]= `Incorrect data type. Port ${thisLabel} is of type ` + "*`" + thisLinkedPortType + "`*.";
                 port.getNode().setSelected(true);
@@ -317,6 +318,19 @@ export  class CustomPortModel extends DefaultPortModel  {
         }
 
         return true;
+    }
+
+    /**
+     * When a port supports multiple types, parse them to display them nicer
+     * Parsed type looks like: type1 or type2
+     * @param portType - unparsed port type (looks like: "Union[type1, type2]"
+     */
+    parsePortType = (portType: string) => {
+        // port type is of form: Union[type1, type2]
+        portType = portType.replace('Union', '');    // remove Union word
+        portType = portType.replace(/[\[\]]/g, '');  // remove square brackets
+        portType = portType.replace(', ', ' or ');
+        return portType;
     }
 
 }
