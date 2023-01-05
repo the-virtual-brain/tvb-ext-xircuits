@@ -24,10 +24,10 @@ DEFAULT_COMPONENTS_PATHS = [
 # A good point in time to do that, would be when the python compilation step
 # gets refactored
 DEFAULT_COMPONENTS = {
-    1: { "name": "Get Hyper-parameter String Name", "returnType": "string"},
-    2: { "name": "Get Hyper-parameter Int Name", "returnType": "int"},
-    3: { "name": "Get Hyper-parameter Float Name", "returnType": "float"},
-    4: { "name": "Get Hyper-parameter Boolean Name", "returnType": "boolean"},
+    # 1: { "name": "Get Hyper-parameter String Name", "returnType": "string"},
+    # 2: { "name": "Get Hyper-parameter Int Name", "returnType": "int"},
+    # 3: { "name": "Get Hyper-parameter Float Name", "returnType": "float"},
+    # 4: { "name": "Get Hyper-parameter Boolean Name", "returnType": "boolean"},
     5: { "name": "Literal String", "returnType": "string"},
     6:{ "name": "Literal Integer", "returnType": "int"},
     7:{ "name": "Literal Float", "returnType": "float"},
