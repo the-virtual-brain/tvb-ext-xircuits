@@ -70,11 +70,11 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 		} else {
 			portType = portName.split("-")[1];
 		}
-		// if multiple types provided (primitive and numpy array), show the symbol for the primitive one
+		// if multiple types provided, show the symbol for the first provided type
 		if (portType.includes(',')) {
-			portType = portType.replace('Union', '')
-			portType = portType.replace('numpy.ndarray', '')
-			portType = portType.replace(/[\[\], ]/g, '')
+			portType = portType.replace('Union', '');
+			portType = portType.replace(/[\[\]]/g, '');
+			portType = portType.split(',')[0];
 		}
 
 		switch (portType) {
