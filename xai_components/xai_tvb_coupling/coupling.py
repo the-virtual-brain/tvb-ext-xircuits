@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.coupling import Coupling
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_values
@@ -13,8 +15,8 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(0, 102, 178)')
 class LinearCoupling(TVBComponent):
-    a: InArg[float]
-    b: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
 
     linear: OutArg[Coupling]
 
@@ -33,7 +35,7 @@ class LinearCoupling(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class Scaling(TVBComponent):
-    a: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
 
     scaling: OutArg[Coupling]
 
@@ -52,10 +54,10 @@ class Scaling(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class HyperbolicTangent(TVBComponent):
-    a: InArg[float]
-    b: InArg[float]
-    midpoint: InArg[float]
-    sigma: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    midpoint: InArg[Union[float, numpy.ndarray]]
+    sigma: InArg[Union[float, numpy.ndarray]]
 
     hyperbolicTangent: OutArg[Coupling]
 
@@ -74,11 +76,11 @@ class HyperbolicTangent(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class Sigmoidal(TVBComponent):
-    cmin: InArg[float]
-    cmax: InArg[float]
-    midpoint: InArg[float]
-    a: InArg[float]
-    sigma: InArg[float]
+    cmin: InArg[Union[float, numpy.ndarray]]
+    cmax: InArg[Union[float, numpy.ndarray]]
+    midpoint: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
+    sigma: InArg[Union[float, numpy.ndarray]]
 
     sigmoidal: OutArg[Coupling]
 
@@ -97,11 +99,11 @@ class Sigmoidal(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class SigmoidalJansenRit(TVBComponent):
-    cmin: InArg[float]
-    cmax: InArg[float]
-    midpoint: InArg[float]
-    r: InArg[float]
-    a: InArg[float]
+    cmin: InArg[Union[float, numpy.ndarray]]
+    cmax: InArg[Union[float, numpy.ndarray]]
+    midpoint: InArg[Union[float, numpy.ndarray]]
+    r: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
 
     sigmoidalJansenRit: OutArg[Coupling]
 
@@ -120,11 +122,11 @@ class SigmoidalJansenRit(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class PreSigmoidal(TVBComponent):
-    H: InArg[float]
-    Q: InArg[float]
-    G: InArg[float]
-    P: InArg[float]
-    theta: InArg[float]
+    H: InArg[Union[float, numpy.ndarray]]
+    Q: InArg[Union[float, numpy.ndarray]]
+    G: InArg[Union[float, numpy.ndarray]]
+    P: InArg[Union[float, numpy.ndarray]]
+    theta: InArg[Union[float, numpy.ndarray]]
     dynamic: InArg[bool]
     globalT: InArg[bool]
 
@@ -145,7 +147,7 @@ class PreSigmoidal(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class Difference(TVBComponent):
-    a: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
 
     difference: OutArg[Coupling]
 
@@ -164,7 +166,7 @@ class Difference(TVBComponent):
 
 @xai_component(color='rgb(0, 102, 178)')
 class KuramotoCoupling(TVBComponent):
-    a: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
 
     kuramoto: OutArg[Coupling]
 
