@@ -374,6 +374,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let pythonCode = 'from argparse import ArgumentParser\n';
 		pythonCode += 'from datetime import datetime\n';
 		pythonCode += 'from time import sleep\n';
+		pythonCode += 'import numpy\n';
+		pythonCode += 'import numpy as np\n';
 		if (debuggerMode == true) {
 			pythonCode += 'import json, os, signal\n';
 			pythonCode += 'from flask import Flask, jsonify, request\n';
@@ -554,7 +556,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 													sourcePortLabelStructure = "{" + sourcePortLabel + "}";
 													break;
 												case "numpy.ndarray":
-													sourcePortLabelStructure = '"""' + sourcePortLabel + '"""';
+													sourcePortLabelStructure = sourcePortLabel;
 													break;
 												default:
 													sourcePortLabelStructure = sourcePortLabel;
