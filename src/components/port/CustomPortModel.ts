@@ -116,18 +116,27 @@ export  class CustomPortModel extends DefaultPortModel  {
             let thisLinkedName = port.getNode().getInPorts()[index].getOptions()["name"];
             let regEx = /\-([^-]+)\-/;
             let result = thisLinkedName.match(regEx);
+            let thisLinkedPortType = result[1];
 
-            if(thisNodeModelType != result[1]){
+            if(thisNodeModelType != thisLinkedPortType){
                 // Skip 'any' type check
-                if(result[1] == 'any'){
+                if(thisLinkedPortType == 'any'){
                     return;
                 }
                 // if multiple types are accepted by target node port, check if source port type is among them
-                if(result[1].includes(thisNodeModelType)) {
+                if(thisLinkedPortType.includes(thisNodeModelType)) {
                     return;
                 }
 		        port.getNode().getOptions().extras["borderColor"]="red";
-		        port.getNode().getOptions().extras["tip"]= `Incorrect data type. Port ${thisLabel} is a type ` + "*`" + result[1] + "`*.";
+
+                // if a list of types is provided for the port, parse it a bit to display it nicer
+                if (thisLinkedPortType.includes(',')) {
+                    // port type is of form: Union[type1,type2]
+                    thisLinkedPortType = thisLinkedPortType.replace('Union', '')    // remove Union word
+                    thisLinkedPortType = thisLinkedPortType.replace(/[\[\]]/g, '')  // remove square brackets
+                    thisLinkedPortType = thisLinkedPortType.replace(', ', ' or ')
+                }
+		        port.getNode().getOptions().extras["tip"]= `Incorrect data type. Port ${thisLabel} is of type ` + "*`" + thisLinkedPortType + "`*.";
                 port.getNode().setSelected(true);
                 //tested - add stuff
                 return false;
