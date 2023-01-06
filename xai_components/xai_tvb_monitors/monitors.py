@@ -4,15 +4,17 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
+
+import numpy
 from tvb.basic.neotraits.api import EnumAttr
 from tvb.datatypes.equations import HRFKernelEquation
 from tvb.datatypes.projections import ProjectionSurfaceEEG, ProjectionSurfaceMEG, ProjectionSurfaceSEEG
 from tvb.datatypes.region_mapping import RegionMapping
 from tvb.datatypes.sensors import SensorsEEG, SensorsInternal, SensorsMEG
 from tvb.simulator.noise import Noise
-
-from xai_components.base import xai_component, InArg, OutArg, InCompArg
+from typing import Union
 from xai_components.base_tvb import TVBComponent
+from xai_components.base import xai_component, InArg, OutArg, InCompArg
 from xai_components.utils import print_component_summary, set_defaults, set_values
 
 
@@ -102,7 +104,7 @@ class SpatialAverage(TVBComponent):
     previous_monitors: InArg[list]
     period: InArg[float]
     variables_of_interest: InArg[list]
-    spatial_mask: InArg[list]
+    spatial_mask: InArg[Union[list, numpy.ndarray]]
     default_mask: InArg[EnumAttr]
 
     spatialAverage: OutArg[list]
