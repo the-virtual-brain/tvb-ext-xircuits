@@ -5,7 +5,7 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
-from tvb.datatypes.sensors import Sensors
+from tvb.datatypes.sensors import SensorsEEG, SensorsMEG, SensorsInternal
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import TVBComponent
 from xai_components.utils import set_values, print_component_summary, set_defaults
@@ -18,7 +18,7 @@ class SensorsEEG(TVBComponent):
     orientations: InArg[list]
     usable: InArg[list]
 
-    sensorsEEG: OutArg[Sensors]
+    sensorsEEG: OutArg[SensorsEEG]
 
     @property
     def tvb_ht_class(self):
@@ -46,7 +46,7 @@ class SensorsMEG(TVBComponent):
     file_path: InArg[str]
     usable: InArg[list]
 
-    sensorsMEG: OutArg[Sensors]
+    sensorsMEG: OutArg[SensorsMEG]
 
     @property
     def tvb_ht_class(self):
@@ -76,7 +76,7 @@ class SensorsInternal(TVBComponent):
     orientations: InArg[list]
     usable: InArg[list]
 
-    sensorsInternal: OutArg[Sensors]
+    sensorsInternal: OutArg[SensorsInternal]
 
     @property
     def tvb_ht_class(self):

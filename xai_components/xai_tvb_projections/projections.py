@@ -5,8 +5,8 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
-from tvb.datatypes.projections import ProjectionMatrix
-from tvb.datatypes.sensors import Sensors
+from tvb.datatypes.projections import ProjectionSurfaceEEG, ProjectionSurfaceMEG, ProjectionSurfaceSEEG
+from tvb.datatypes.sensors import SensorsEEG, SensorsMEG, SensorsInternal
 from tvb.datatypes.surfaces import Surface
 from xai_components.base import xai_component, InArg, OutArg, Component, InCompArg
 from xai_components.utils import print_component_summary
@@ -16,9 +16,9 @@ from xai_components.utils import print_component_summary
 class ProjectionSurfaceEEG(Component):
     file_path: InArg[str]
     sources: InCompArg[Surface]
-    sensors: InCompArg[Sensors]
+    sensors: InCompArg[SensorsEEG]
 
-    projectionSurfaceEEG: OutArg[ProjectionMatrix]
+    projectionSurfaceEEG: OutArg[ProjectionSurfaceEEG]
 
     @property
     def tvb_ht_class(self):
@@ -51,9 +51,9 @@ class ProjectionSurfaceEEG(Component):
 class ProjectionSurfaceMEG(Component):
     file_path: InArg[str]
     sources: InCompArg[Surface]
-    sensors: InCompArg[Sensors]
+    sensors: InCompArg[SensorsMEG]
 
-    projectionSurfaceMEG: OutArg[ProjectionMatrix]
+    projectionSurfaceMEG: OutArg[ProjectionSurfaceMEG]
 
     @property
     def tvb_ht_class(self):
@@ -86,9 +86,9 @@ class ProjectionSurfaceMEG(Component):
 class ProjectionSurfaceSEEG(Component):
     file_path: InArg[str]
     sources: InCompArg[Surface]
-    sensors: InCompArg[Sensors]
+    sensors: InCompArg[SensorsInternal]
 
-    projectionSurfaceSEEG: OutArg[ProjectionMatrix]
+    projectionSurfaceSEEG: OutArg[ProjectionSurfaceSEEG]
 
     @property
     def tvb_ht_class(self):
