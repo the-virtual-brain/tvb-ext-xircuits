@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,14 +15,14 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedSetFitzHughNagumo(ComponentWithWidget):
-    tau: InArg[float]
-    a: InArg[float]
-    b: InArg[float]
-    K11: InArg[float]
-    K12: InArg[float]
-    K21: InArg[float]
-    sigma: InArg[float]
-    mu: InArg[float]
+    tau: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    K11: InArg[Union[float, numpy.ndarray]]
+    K12: InArg[Union[float, numpy.ndarray]]
+    K21: InArg[Union[float, numpy.ndarray]]
+    sigma: InArg[Union[float, numpy.ndarray]]
+    mu: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     reducedSetFitzHughNagumo: OutArg[Model]
@@ -40,18 +42,18 @@ class ReducedSetFitzHughNagumo(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedSetHindmarshRose(ComponentWithWidget):
-    r: InArg[float]
-    a: InArg[float]
-    b: InArg[float]
-    c: InArg[float]
-    d: InArg[float]
-    s: InArg[float]
-    xo: InArg[float]
-    K11: InArg[float]
-    K12: InArg[float]
-    K21: InArg[float]
-    sigma: InArg[float]
-    mu: InArg[float]
+    r: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    c: InArg[Union[float, numpy.ndarray]]
+    d: InArg[Union[float, numpy.ndarray]]
+    s: InArg[Union[float, numpy.ndarray]]
+    xo: InArg[Union[float, numpy.ndarray]]
+    K11: InArg[Union[float, numpy.ndarray]]
+    K12: InArg[Union[float, numpy.ndarray]]
+    K21: InArg[Union[float, numpy.ndarray]]
+    sigma: InArg[Union[float, numpy.ndarray]]
+    mu: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     reducedSetHindmarshRose: OutArg[Model]

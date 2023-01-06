@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,9 +15,9 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class Hopfield(ComponentWithWidget):
-    taux: InArg[float]
-    tauT: InArg[float]
-    dynamic: InArg[int]
+    taux: InArg[Union[float, numpy.ndarray]]
+    tauT: InArg[Union[float, numpy.ndarray]]
+    dynamic: InArg[Union[int, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     hopfield: OutArg[Model]
