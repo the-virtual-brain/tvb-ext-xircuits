@@ -4,9 +4,10 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
-from numpy.random import RandomState
-from tvb.simulator.noise import Noise
 
+import numpy
+from tvb.simulator.noise import Noise
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import TVBComponent
 from xai_components.utils import print_component_summary, set_defaults, set_values
@@ -16,8 +17,8 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 class Additive(TVBComponent):
     ntau: InArg[float]
     noise_seed: InArg[int]
-    random_stream: InArg[RandomState]
-    nsig: InArg[float]
+    random_stream: InArg[numpy.random.RandomState]
+    nsig: InArg[Union[float, numpy.ndarray]]
 
     additive: OutArg[Noise]
 
@@ -42,8 +43,8 @@ class Multiplicative(TVBComponent):
     from tvb.datatypes.equations import TemporalApplicableEquation
     ntau: InArg[float]
     noise_seed: InArg[int]
-    random_stream: InArg[RandomState]
-    nsig: InArg[float]
+    random_stream: InArg[numpy.random.RandomState]
+    nsig: InArg[Union[float, numpy.ndarray]]
     b: InArg[TemporalApplicableEquation]
 
     multiplicative: OutArg[Noise]
