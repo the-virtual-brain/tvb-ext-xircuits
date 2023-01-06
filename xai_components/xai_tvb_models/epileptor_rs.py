@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,35 +15,35 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class EpileptorRestingState(ComponentWithWidget):
-    a: InArg[float]
-    b: InArg[float]
-    c: InArg[float]
-    d: InArg[float]
-    r: InArg[float]
-    s: InArg[float]
-    x0: InArg[float]
-    Iext: InArg[float]
-    slope: InArg[float]
-    Iext2: InArg[float]
-    tau: InArg[float]
-    aa: InArg[float]
-    bb: InArg[float]
-    Kvf: InArg[float]
-    Kf: InArg[float]
-    Ks: InArg[float]
-    tt: InArg[float]
-    tau_rs: InArg[float]
-    I_rs: InArg[float]
-    a_rs: InArg[float]
-    b_rs: InArg[float]
-    d_rs: InArg[float]
-    e_rs: InArg[float]
-    f_rs: InArg[float]
-    alpha_rs: InArg[float]
-    beta_rs: InArg[float]
-    gamma_rs: InArg[float]
-    K_rs: InArg[float]
-    p: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    c: InArg[Union[float, numpy.ndarray]]
+    d: InArg[Union[float, numpy.ndarray]]
+    r: InArg[Union[float, numpy.ndarray]]
+    s: InArg[Union[float, numpy.ndarray]]
+    x0: InArg[Union[float, numpy.ndarray]]
+    Iext: InArg[Union[float, numpy.ndarray]]
+    slope: InArg[Union[float, numpy.ndarray]]
+    Iext2: InArg[Union[float, numpy.ndarray]]
+    tau: InArg[Union[float, numpy.ndarray]]
+    aa: InArg[Union[float, numpy.ndarray]]
+    bb: InArg[Union[float, numpy.ndarray]]
+    Kvf: InArg[Union[float, numpy.ndarray]]
+    Kf: InArg[Union[float, numpy.ndarray]]
+    Ks: InArg[Union[float, numpy.ndarray]]
+    tt: InArg[Union[float, numpy.ndarray]]
+    tau_rs: InArg[Union[float, numpy.ndarray]]
+    I_rs: InArg[Union[float, numpy.ndarray]]
+    a_rs: InArg[Union[float, numpy.ndarray]]
+    b_rs: InArg[Union[float, numpy.ndarray]]
+    d_rs: InArg[Union[float, numpy.ndarray]]
+    e_rs: InArg[Union[float, numpy.ndarray]]
+    f_rs: InArg[Union[float, numpy.ndarray]]
+    alpha_rs: InArg[Union[float, numpy.ndarray]]
+    beta_rs: InArg[Union[float, numpy.ndarray]]
+    gamma_rs: InArg[Union[float, numpy.ndarray]]
+    K_rs: InArg[Union[float, numpy.ndarray]]
+    p: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     epileptorRestingState: OutArg[Model]

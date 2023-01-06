@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,18 +15,18 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class Generic2dOscillator(ComponentWithWidget):
-    tau: InArg[float]
-    I: InArg[float]
-    a: InArg[float]
-    b: InArg[float]
-    c: InArg[float]
-    d: InArg[float]
-    e: InArg[float]
-    f: InArg[float]
-    g: InArg[float]
-    alpha: InArg[float]
-    beta: InArg[float]
-    gamma: InArg[float]
+    tau: InArg[Union[float, numpy.ndarray]]
+    I: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    c: InArg[Union[float, numpy.ndarray]]
+    d: InArg[Union[float, numpy.ndarray]]
+    e: InArg[Union[float, numpy.ndarray]]
+    f: InArg[Union[float, numpy.ndarray]]
+    g: InArg[Union[float, numpy.ndarray]]
+    alpha: InArg[Union[float, numpy.ndarray]]
+    beta: InArg[Union[float, numpy.ndarray]]
+    gamma: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     generic2dOscillator: OutArg[Model]
@@ -44,7 +46,7 @@ class Generic2dOscillator(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class Kuramoto(ComponentWithWidget):
-    omega: InArg[float]
+    omega: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     kuramoto: OutArg[Model]
@@ -64,8 +66,8 @@ class Kuramoto(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class SupHopf(ComponentWithWidget):
-    a: InArg[float]
-    omega: InArg[float]
+    a: InArg[Union[float, numpy.ndarray]]
+    omega: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     supHopf: OutArg[Model]
