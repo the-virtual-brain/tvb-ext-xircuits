@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,21 +15,21 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class JansenRit(ComponentWithWidget):
-    A: InArg[float]
-    B: InArg[float]
-    a: InArg[float]
-    b: InArg[float]
-    v0: InArg[float]
-    nu_max: InArg[float]
-    r: InArg[float]
-    J: InArg[float]
-    a_1: InArg[float]
-    a_2: InArg[float]
-    a_3: InArg[float]
-    a_4: InArg[float]
-    p_min: InArg[float]
-    p_max: InArg[float]
-    mu: InArg[float]
+    A: InArg[Union[float, numpy.ndarray]]
+    B: InArg[Union[float, numpy.ndarray]]
+    a: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    v0: InArg[Union[float, numpy.ndarray]]
+    nu_max: InArg[Union[float, numpy.ndarray]]
+    r: InArg[Union[float, numpy.ndarray]]
+    J: InArg[Union[float, numpy.ndarray]]
+    a_1: InArg[Union[float, numpy.ndarray]]
+    a_2: InArg[Union[float, numpy.ndarray]]
+    a_3: InArg[Union[float, numpy.ndarray]]
+    a_4: InArg[Union[float, numpy.ndarray]]
+    p_min: InArg[Union[float, numpy.ndarray]]
+    p_max: InArg[Union[float, numpy.ndarray]]
+    mu: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     jansenRit: OutArg[Model]
@@ -47,24 +49,24 @@ class JansenRit(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class ZetterbergJansen(ComponentWithWidget):
-    He: InArg[float]
-    Hi: InArg[float]
-    ke: InArg[float]
-    ki: InArg[float]
-    e0: InArg[float]
-    rho_2: InArg[float]
-    rho_1: InArg[float]
-    gamma_1: InArg[float]
-    gamma_2: InArg[float]
-    gamma_3: InArg[float]
-    gamma_4: InArg[float]
-    gamma_5: InArg[float]
-    gamma_1T: InArg[float]
-    gamma_2T: InArg[float]
-    gamma_3T: InArg[float]
-    P: InArg[float]
-    U: InArg[float]
-    Q: InArg[float]
+    He: InArg[Union[float, numpy.ndarray]]
+    Hi: InArg[Union[float, numpy.ndarray]]
+    ke: InArg[Union[float, numpy.ndarray]]
+    ki: InArg[Union[float, numpy.ndarray]]
+    e0: InArg[Union[float, numpy.ndarray]]
+    rho_2: InArg[Union[float, numpy.ndarray]]
+    rho_1: InArg[Union[float, numpy.ndarray]]
+    gamma_1: InArg[Union[float, numpy.ndarray]]
+    gamma_2: InArg[Union[float, numpy.ndarray]]
+    gamma_3: InArg[Union[float, numpy.ndarray]]
+    gamma_4: InArg[Union[float, numpy.ndarray]]
+    gamma_5: InArg[Union[float, numpy.ndarray]]
+    gamma_1T: InArg[Union[float, numpy.ndarray]]
+    gamma_2T: InArg[Union[float, numpy.ndarray]]
+    gamma_3T: InArg[Union[float, numpy.ndarray]]
+    P: InArg[Union[float, numpy.ndarray]]
+    U: InArg[Union[float, numpy.ndarray]]
+    Q: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     zetterbergJansen: OutArg[Model]

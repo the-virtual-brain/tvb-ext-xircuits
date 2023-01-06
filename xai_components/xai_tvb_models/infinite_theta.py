@@ -4,7 +4,9 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -12,14 +14,14 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class MontbrioPazoRoxin(ComponentWithWidget):
-    tau: InArg[float]
-    I: InArg[float]
-    Delta: InArg[float]
-    J: InArg[float]
-    eta: InArg[float]
-    Gamma: InArg[float]
-    cr: InArg[float]
-    cv: InArg[float]
+    tau: InArg[Union[float, numpy.ndarray]]
+    I: InArg[Union[float, numpy.ndarray]]
+    Delta: InArg[Union[float, numpy.ndarray]]
+    J: InArg[Union[float, numpy.ndarray]]
+    eta: InArg[Union[float, numpy.ndarray]]
+    Gamma: InArg[Union[float, numpy.ndarray]]
+    cr: InArg[Union[float, numpy.ndarray]]
+    cv: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
     parameter_names: InArg[list]
 
@@ -40,11 +42,11 @@ class MontbrioPazoRoxin(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class CoombesByrne(ComponentWithWidget):
-    Delta: InArg[float]
-    alpha: InArg[float]
-    v_syn: InArg[float]
-    k: InArg[float]
-    eta: InArg[float]
+    Delta: InArg[Union[float, numpy.ndarray]]
+    alpha: InArg[Union[float, numpy.ndarray]]
+    v_syn: InArg[Union[float, numpy.ndarray]]
+    k: InArg[Union[float, numpy.ndarray]]
+    eta: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     coombesByrne: OutArg[Model]
@@ -64,10 +66,10 @@ class CoombesByrne(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class CoombesByrne2D(ComponentWithWidget):
-    Delta: InArg[float]
-    v_syn: InArg[float]
-    k: InArg[float]
-    eta: InArg[float]
+    Delta: InArg[Union[float, numpy.ndarray]]
+    v_syn: InArg[Union[float, numpy.ndarray]]
+    k: InArg[Union[float, numpy.ndarray]]
+    eta: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     coombesByrne2D: OutArg[Model]
@@ -87,15 +89,15 @@ class CoombesByrne2D(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class GastSchmidtKnosche_SD(ComponentWithWidget):
-    tau: InArg[float]
-    tau_A: InArg[float]
-    alpha: InArg[float]
-    I: InArg[float]
-    Delta: InArg[float]
-    J: InArg[float]
-    eta: InArg[float]
-    cr: InArg[float]
-    cv: InArg[float]
+    tau: InArg[Union[float, numpy.ndarray]]
+    tau_A: InArg[Union[float, numpy.ndarray]]
+    alpha: InArg[Union[float, numpy.ndarray]]
+    I: InArg[Union[float, numpy.ndarray]]
+    Delta: InArg[Union[float, numpy.ndarray]]
+    J: InArg[Union[float, numpy.ndarray]]
+    eta: InArg[Union[float, numpy.ndarray]]
+    cr: InArg[Union[float, numpy.ndarray]]
+    cv: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     gastSchmidtKnosche_SD: OutArg[Model]
@@ -115,15 +117,15 @@ class GastSchmidtKnosche_SD(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class GastSchmidtKnosche_SF(ComponentWithWidget):
-    tau: InArg[float]
-    tau_A: InArg[float]
-    alpha: InArg[float]
-    I: InArg[float]
-    Delta: InArg[float]
-    J: InArg[float]
-    eta: InArg[float]
-    cr: InArg[float]
-    cv: InArg[float]
+    tau: InArg[Union[float, numpy.ndarray]]
+    tau_A: InArg[Union[float, numpy.ndarray]]
+    alpha: InArg[Union[float, numpy.ndarray]]
+    I: InArg[Union[float, numpy.ndarray]]
+    Delta: InArg[Union[float, numpy.ndarray]]
+    J: InArg[Union[float, numpy.ndarray]]
+    eta: InArg[Union[float, numpy.ndarray]]
+    cr: InArg[Union[float, numpy.ndarray]]
+    cv: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     gastSchmidtKnosche_SF: OutArg[Model]
@@ -143,20 +145,20 @@ class GastSchmidtKnosche_SF(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class DumontGutkin(ComponentWithWidget):
-    I_e: InArg[float]
-    Delta_e: InArg[float]
-    eta_e: InArg[float]
-    tau_e: InArg[float]
-    I_i: InArg[float]
-    Delta_i: InArg[float]
-    eta_i: InArg[float]
-    tau_i: InArg[float]
-    tau_s: InArg[float]
-    J_ee: InArg[float]
-    J_ei: InArg[float]
-    J_ie: InArg[float]
-    J_ii: InArg[float]
-    Gamma: InArg[float]
+    I_e: InArg[Union[float, numpy.ndarray]]
+    Delta_e: InArg[Union[float, numpy.ndarray]]
+    eta_e: InArg[Union[float, numpy.ndarray]]
+    tau_e: InArg[Union[float, numpy.ndarray]]
+    I_i: InArg[Union[float, numpy.ndarray]]
+    Delta_i: InArg[Union[float, numpy.ndarray]]
+    eta_i: InArg[Union[float, numpy.ndarray]]
+    tau_i: InArg[Union[float, numpy.ndarray]]
+    tau_s: InArg[Union[float, numpy.ndarray]]
+    J_ee: InArg[Union[float, numpy.ndarray]]
+    J_ei: InArg[Union[float, numpy.ndarray]]
+    J_ie: InArg[Union[float, numpy.ndarray]]
+    J_ii: InArg[Union[float, numpy.ndarray]]
+    Gamma: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     dumontGutkin: OutArg[Model]
