@@ -227,7 +227,7 @@ export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
      * Allow to edit Literal Component
      */
     handleEditLiteral() {
-        if ((!this.props.node.getOptions()["name"].startsWith("Literal"))) {
+        if (!this.props.node.getOptions()["name"].startsWith("Literal")) {
             return;
         }
         this.props.app.commands.execute(commandIDs.editNode)
