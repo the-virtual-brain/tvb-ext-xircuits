@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,25 +15,25 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class ReducedWongWangExcInh(ComponentWithWidget):
-    a_e: InArg[float]
-    b_e: InArg[float]
-    d_e: InArg[float]
-    gamma_e: InArg[float]
-    tau_e: InArg[float]
-    w_p: InArg[float]
-    J_N: InArg[float]
-    W_e: InArg[float]
-    a_i: InArg[float]
-    b_i: InArg[float]
-    d_i: InArg[float]
-    gamma_i: InArg[float]
-    tau_i: InArg[float]
-    J_i: InArg[float]
-    W_i: InArg[float]
-    I_o: InArg[float]
-    I_ext: InArg[float]
-    G: InArg[float]
-    lamda: InArg[float]
+    a_e: InArg[Union[float, numpy.ndarray]]
+    b_e: InArg[Union[float, numpy.ndarray]]
+    d_e: InArg[Union[float, numpy.ndarray]]
+    gamma_e: InArg[Union[float, numpy.ndarray]]
+    tau_e: InArg[Union[float, numpy.ndarray]]
+    w_p: InArg[Union[float, numpy.ndarray]]
+    J_N: InArg[Union[float, numpy.ndarray]]
+    W_e: InArg[Union[float, numpy.ndarray]]
+    a_i: InArg[Union[float, numpy.ndarray]]
+    b_i: InArg[Union[float, numpy.ndarray]]
+    d_i: InArg[Union[float, numpy.ndarray]]
+    gamma_i: InArg[Union[float, numpy.ndarray]]
+    tau_i: InArg[Union[float, numpy.ndarray]]
+    J_i: InArg[Union[float, numpy.ndarray]]
+    W_i: InArg[Union[float, numpy.ndarray]]
+    I_o: InArg[Union[float, numpy.ndarray]]
+    I_ext: InArg[Union[float, numpy.ndarray]]
+    G: InArg[Union[float, numpy.ndarray]]
+    lamda: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     reducedWongWangExcInh: OutArg[Model]
@@ -51,26 +53,26 @@ class ReducedWongWangExcInh(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class DecoBalancedExcInh(ComponentWithWidget):
-    M_i: InArg[float]
-    a_e: InArg[float]
-    b_e: InArg[float]
-    d_e: InArg[float]
-    gamma_e: InArg[float]
-    tau_e: InArg[float]
-    w_p: InArg[float]
-    J_N: InArg[float]
-    W_e: InArg[float]
-    a_i: InArg[float]
-    b_i: InArg[float]
-    d_i: InArg[float]
-    gamma_i: InArg[float]
-    tau_i: InArg[float]
-    J_i: InArg[float]
-    W_i: InArg[float]
-    I_o: InArg[float]
-    I_ext: InArg[float]
-    G: InArg[float]
-    lamda: InArg[float]
+    M_i: InArg[Union[float, numpy.ndarray]]
+    a_e: InArg[Union[float, numpy.ndarray]]
+    b_e: InArg[Union[float, numpy.ndarray]]
+    d_e: InArg[Union[float, numpy.ndarray]]
+    gamma_e: InArg[Union[float, numpy.ndarray]]
+    tau_e: InArg[Union[float, numpy.ndarray]]
+    w_p: InArg[Union[float, numpy.ndarray]]
+    J_N: InArg[Union[float, numpy.ndarray]]
+    W_e: InArg[Union[float, numpy.ndarray]]
+    a_i: InArg[Union[float, numpy.ndarray]]
+    b_i: InArg[Union[float, numpy.ndarray]]
+    d_i: InArg[Union[float, numpy.ndarray]]
+    gamma_i: InArg[Union[float, numpy.ndarray]]
+    tau_i: InArg[Union[float, numpy.ndarray]]
+    J_i: InArg[Union[float, numpy.ndarray]]
+    W_i: InArg[Union[float, numpy.ndarray]]
+    I_o: InArg[Union[float, numpy.ndarray]]
+    I_ext: InArg[Union[float, numpy.ndarray]]
+    G: InArg[Union[float, numpy.ndarray]]
+    lamda: InArg[Union[float, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     decoBalancedExcInh: OutArg[Model]

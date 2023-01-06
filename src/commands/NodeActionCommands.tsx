@@ -566,11 +566,13 @@ export function addNodeActionCommands(
             let node = null;
             const links = widget.xircuitsApp.getDiagramEngine().getModel()["layers"][0]["models"];
             const oldValue = selected_node.getPorts()["out-0"].getOptions()["label"];
-            const literalType = selected_node["name"].split(" ")[1];
+            let literalType = selected_node["name"];
+            literalType = literalType.substring(literalType.indexOf(' ') + 1);  // return everything after the first space
             let isStoreDataType: boolean = false;
             let isTextareaInput: string = "";
 
             switch(literalType){
+                case "Numpy Array":
                 case "String":
                     isTextareaInput = 'textarea';
                     break;

@@ -5,7 +5,9 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import numpy
 from tvb.simulator.models.base import Model
+from typing import Union
 from xai_components.base import xai_component, InArg, OutArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.utils import print_component_summary, set_values
@@ -13,19 +15,19 @@ from xai_components.utils import print_component_summary, set_values
 
 @xai_component(color='rgb(101, 179, 46)')
 class EpileptorCodim3(ComponentWithWidget):
-    mu1_start: InArg[float]
-    mu2_start: InArg[float]
-    nu_start: InArg[float]
-    mu1_stop: InArg[float]
-    mu2_stop: InArg[float]
-    nu_stop: InArg[float]
-    b: InArg[float]
-    R: InArg[float]
-    c: InArg[float]
-    dstar: InArg[float]
-    Ks: InArg[float]
-    N: InArg[float]
-    modification: InArg[bool]
+    mu1_start: InArg[Union[float, numpy.ndarray]]
+    mu2_start: InArg[Union[float, numpy.ndarray]]
+    nu_start: InArg[Union[float, numpy.ndarray]]
+    mu1_stop: InArg[Union[float, numpy.ndarray]]
+    mu2_stop: InArg[Union[float, numpy.ndarray]]
+    nu_stop: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    R: InArg[Union[float, numpy.ndarray]]
+    c: InArg[Union[float, numpy.ndarray]]
+    dstar: InArg[Union[float, numpy.ndarray]]
+    Ks: InArg[Union[float, numpy.ndarray]]
+    N: InArg[Union[float, numpy.ndarray]]
+    modification: InArg[Union[bool, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     epileptorCodim3: OutArg[Model]
@@ -45,27 +47,27 @@ class EpileptorCodim3(ComponentWithWidget):
 
 @xai_component(color='rgb(101, 179, 46)')
 class EpileptorCodim3SlowMod(ComponentWithWidget):
-    mu1_Ain: InArg[float]
-    mu2_Ain: InArg[float]
-    nu_Ain: InArg[float]
-    mu1_Bin: InArg[float]
-    mu2_Bin: InArg[float]
-    nu_Bin: InArg[float]
-    mu1_Aend: InArg[float]
-    mu2_Aend: InArg[float]
-    nu_Aend: InArg[float]
-    mu1_Bend: InArg[float]
-    mu2_Bend: InArg[float]
-    nu_Bend: InArg[float]
-    b: InArg[float]
-    R: InArg[float]
-    c: InArg[float]
-    cA: InArg[float]
-    cB: InArg[float]
-    dstar: InArg[float]
-    Ks: InArg[float]
-    N: InArg[float]
-    modification: InArg[bool]
+    mu1_Ain: InArg[Union[float, numpy.ndarray]]
+    mu2_Ain: InArg[Union[float, numpy.ndarray]]
+    nu_Ain: InArg[Union[float, numpy.ndarray]]
+    mu1_Bin: InArg[Union[float, numpy.ndarray]]
+    mu2_Bin: InArg[Union[float, numpy.ndarray]]
+    nu_Bin: InArg[Union[float, numpy.ndarray]]
+    mu1_Aend: InArg[Union[float, numpy.ndarray]]
+    mu2_Aend: InArg[Union[float, numpy.ndarray]]
+    nu_Aend: InArg[Union[float, numpy.ndarray]]
+    mu1_Bend: InArg[Union[float, numpy.ndarray]]
+    mu2_Bend: InArg[Union[float, numpy.ndarray]]
+    nu_Bend: InArg[Union[float, numpy.ndarray]]
+    b: InArg[Union[float, numpy.ndarray]]
+    R: InArg[Union[float, numpy.ndarray]]
+    c: InArg[Union[float, numpy.ndarray]]
+    cA: InArg[Union[float, numpy.ndarray]]
+    cB: InArg[Union[float, numpy.ndarray]]
+    dstar: InArg[Union[float, numpy.ndarray]]
+    Ks: InArg[Union[float, numpy.ndarray]]
+    N: InArg[Union[float, numpy.ndarray]]
+    modification: InArg[Union[bool, numpy.ndarray]]
     variables_of_interest: InArg[list]
 
     epileptorCodim3SlowMod: OutArg[Model]

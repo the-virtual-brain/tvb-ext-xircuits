@@ -374,6 +374,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let pythonCode = 'from argparse import ArgumentParser\n';
 		pythonCode += 'from datetime import datetime\n';
 		pythonCode += 'from time import sleep\n';
+		pythonCode += 'import numpy\n';
+		pythonCode += 'import numpy as np\n';
 		if (debuggerMode == true) {
 			pythonCode += 'import json, os, signal\n';
 			pythonCode += 'from flask import Flask, jsonify, request\n';
@@ -394,7 +396,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				nodeType === 'boolean' ||
 				nodeType === 'int' ||
 				nodeType === 'float' ||
-				nodeType === 'string') { }
+				nodeType === 'string' ||
+				nodeType === 'numpy.ndarray') { }
 			else {
 				uniqueComponents[componentName] = componentName;
 			}
@@ -458,7 +461,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				nodeType === 'boolean' ||
 				nodeType === 'int' ||
 				nodeType === 'float' ||
-				nodeType === 'string') {
+				nodeType === 'string' ||
+				nodeType === 'numpy.ndarray') {
 			} else {
 				let bindingName = 'c_' + i;
 				let componentName = allNodes[i]["name"];
@@ -550,6 +554,9 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 													break;
 												case "dict":
 													sourcePortLabelStructure = "{" + sourcePortLabel + "}";
+													break;
+												case "numpy.ndarray":
+													sourcePortLabelStructure = sourcePortLabel;
 													break;
 												default:
 													sourcePortLabelStructure = sourcePortLabel;
