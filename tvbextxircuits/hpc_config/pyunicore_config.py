@@ -114,7 +114,7 @@ class PyunicoreSubmitter(object):
         date = datetime.strptime(job.properties['submissionTime'], '%Y-%m-%dT%H:%M:%S+%f')
         return date.strftime('%m.%d.%Y, %H:%M:%S')
 
-    def submit_job(self, executable, inputs):
+    def submit_job(self, executable, inputs, do_monitoring):
         client = self.connect_client()
         if client is None:
             print(f"Could not connect to {self.site}, stopping execution.")
@@ -136,12 +136,13 @@ class PyunicoreSubmitter(object):
                                      f"{self._activate_command} && {self._install_dependencies_command}",
                 self.PROJECT_KEY: self.project,
                 self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
-            job = client.new_job(job_description, inputs=[])
-            print(f"Job is running at {self.site}: {job.working_dir.properties['mountPoint']}. "
-                  f"Submission time is: {self._format_date_for_job(job)}. "
-                  f"It can be monitored with tvb-ext-unicore.", flush=True)
-            job.poll()
-            if job.properties['status'] == unicore_status.FAILED:
+            job_env_prep = client.new_job(job_description, inputs=[])
+            print(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
+                  f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
+                  f"Waiting for job to finish..."
+                  f"It can also be monitored interactively with tvb-ext-unicore.", flush=True)
+            job_env_prep.poll()
+            if job_env_prep.properties['status'] == unicore_status.FAILED:
                 print(f"Encountered an error during environment setup, stopping execution.")
                 return
             print(f"Successfully finished the environment setup.")
@@ -150,10 +151,50 @@ class PyunicoreSubmitter(object):
         job_description = {
             self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && python {executable}",
             self.PROJECT_KEY: self.project}
-        job1 = client.new_job(job_description, inputs=inputs)
-        print(f"Job is running at {self.site}: {job1.working_dir.properties['mountPoint']}. "
-              f"Submission time is: {self._format_date_for_job(job1)}.", flush=True)
-        print('Finished remote launch. Please use tvb-ext-unicore to monitor it.', flush=True)
+        job_workflow = client.new_job(job_description, inputs=inputs)
+        print(f"Job is running at {self.site}: {job_workflow.working_dir.properties['mountPoint']}. "
+              f"Submission time is: {self._format_date_for_job(job_workflow)}.", flush=True)
+        print('Finished remote launch.', flush=True)
+
+        if do_monitoring:
+            self.monitor_job(job_workflow)
+
+        else:
+            print('You can use tvb-ext-unicore to monitor it.', flush=True)
+
+    def monitor_job(self, job):
+        print('Waiting for job to finish...'
+              'It can also be monitored interactively with tvb-ext-unicore.', flush=True)
+        job.poll()
+
+        if job.properties['status'] == unicore_status.FAILED:
+            print(f"Job finished with errors.", flush=True)
+            return
+        print(f"Job finished with success. Staging out the results...", flush=True)
+        self.stage_out_results(job)
+
+    def stage_out_results(self, job):
+        content = job.working_dir.listdir()
+        print(f"Contents of working dir: {content}")
+
+        results_dirname = None
+        for key, val in content.items():
+            if isinstance(val, unicore_client.PathDir):
+                results_dirname = key.replace("/", "")
+                print(f"Found sub dir: {results_dirname}")
+
+        results_content = job.working_dir.listdir(results_dirname)
+        print(f"Contents of results dir: {results_content}")
+
+        if os.path.isdir(results_dirname):
+            results_dirname += f"_{datetime.now().strftime('%m.%d.%Y_%H:%M:%S')}"
+        os.mkdir(results_dirname)
+
+        print(f"Downloading results to {results_dirname}...")
+        for key, val in results_content.items():
+            if isinstance(val, unicore_client.PathFile):
+                val.download(os.path.join(results_dirname, os.path.basename(key)))
+        print(f"Finished execution.")
 
 
 def get_xircuits_file():
@@ -175,7 +216,7 @@ def get_xircuits_file():
     return filename, full_path
 
 
-def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload):
+def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_monitoring=False):
     """
     Submit a job to a EBRAINS HPC site
     :param site: unicore site
@@ -188,7 +229,7 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
     if files_to_upload:
         inputs.extend(files_to_upload)
 
-    PyunicoreSubmitter(site, project).submit_job(workflow_file_name, inputs)
+    PyunicoreSubmitter(site, project).submit_job(workflow_file_name, inputs, do_monitoring)
 
 
 if __name__ == '__main__':
