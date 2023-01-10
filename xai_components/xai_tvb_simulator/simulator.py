@@ -4,10 +4,7 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
-import datetime
-import os.path
 
-import numpy
 from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
@@ -34,15 +31,13 @@ class Simulator(TVBComponent):
     monitors: InArg[list]
     simulation_length: InArg[float]
     backend: InArg[MakoUtilMix]
-    output_directory: InArg[str]
 
     time_series_list: OutArg[list]
 
     def __init__(self):
         set_defaults(self, self.tvb_ht_class)
         self.backend = InArg(None)
-        self.time_series = OutArg(None)
-        self.output_directory = InArg("results")
+        self.time_series_list = OutArg(None)
 
     @property
     def tvb_ht_class(self):
@@ -66,26 +61,16 @@ class Simulator(TVBComponent):
         else:
             result = simulator.run()
 
-        # prepare output folder
-        if os.path.isdir(self.output_directory.value):
-            self.output_directory.value += f"_{datetime.datetime.now().strftime('%m.%d.%Y_%H:%M:%S')}"
-        os.mkdir(self.output_directory.value)
-
         # create TS
-        ts_list = []
+        self.time_series_list.value = []
         for i in range(len(simulator.monitors)):
             monitor = simulator.monitors[i]
             time, data = result[i]
             ts = monitor.create_time_series(connectivity=simulator.connectivity)
             ts.data = data
             ts.time = time
+            ts.title = type(monitor).__name__
             ts.configure()
 
-            monitor_name = type(monitor).__name__
-            ts_file_name = os.path.join(self.output_directory.value, f"timeseries_{monitor_name}.npy")
-            print(f"Storing timeseries for {monitor_name} monitor to {ts_file_name}...")
-            numpy.save(ts_file_name, ts.data)
-
             print_component_summary(ts)
-            ts_list.append(ts)
-
+            self.time_series_list.value.append(ts)
