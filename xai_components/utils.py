@@ -4,8 +4,10 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
+
 import numpy    # DO NOT remove this; needed when Numpy Array Literals are used
 import numpy as np
+from inspect import isclass
 from tvb.basic.neotraits._attr import NArray, Final
 from tvb.basic.neotraits._core import HasTraits
 
@@ -36,7 +38,7 @@ def set_defaults(component, tvb_datatype):
     for attr in tvb_datatype.declarative_attrs:
         attr_value = getattr(tvb_datatype, attr)
         attr_default = attr_value.default
-        if attr_default and issubclass(attr_value.field_type, HasTraits):
+        if isclass(attr_default) and issubclass(attr_value.field_type, HasTraits):
             attr_default = attr_default()
         if should_set_attr(attr_value):
             setattr(component, attr, InArg(attr_default))
