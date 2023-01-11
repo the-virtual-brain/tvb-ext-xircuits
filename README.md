@@ -21,7 +21,7 @@ For dev mode setup there are 2 alternatives:
     pip install -e .
     jupyter labextension develop . --overwrite  # Link your development version of the extension with JupyterLab
     jupyter server extension enable tvbextxircuits  # Enable the server extension
-    xircuits
+    tvbextxircuits
     ```
 
 2. Using `yarn`:
@@ -34,7 +34,7 @@ For dev mode setup there are 2 alternatives:
     pip install -e .
     yarn install
     yarn install:extension
-    xircuits
+    tvbextxircuits
     ```
     
 To rebuild the extension after making changes to it:
@@ -57,6 +57,6 @@ Copyright (c) 2022 to Xircuits Team See: https://github.com/XpressAI/xircuits
 
 Copyright (c) 2022 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
 
-This extension is build on top of the Xircuits https://xircuits.io Jupyter extension, and it ads custom features, tailored for EBRAINS env.
+This extension is build on top of the Xircuits https://xircuits.io Jupyter extension, and it adds custom features, tailored for EBRAINS env.
 
 This project has received funding from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3).
