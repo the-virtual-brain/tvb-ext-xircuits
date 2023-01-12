@@ -149,7 +149,8 @@ class PyunicoreSubmitter(object):
 
         print("Launching workflow...", flush=True)
         job_description = {
-            self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && python {executable}",
+            self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && "
+                                 f"python {executable} --is_hpc_launch=True",
             self.PROJECT_KEY: self.project}
         job_workflow = client.new_job(job_description, inputs=inputs)
         print(f"Job is running at {self.site}: {job_workflow.working_dir.properties['mountPoint']}. "

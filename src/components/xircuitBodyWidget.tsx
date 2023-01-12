@@ -698,6 +698,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 			pythonCode += "if __name__ == '__main__':\n";
 			pythonCode += '    ' + 'parser = ArgumentParser()\n';
+			pythonCode += '    ' + "parser.add_argument('--is_hpc_launch', default=False, type=bool)\n";
+
 
 			if (stringNodes) {
 				for (let i = 0; i < stringNodes.length; i++) {
