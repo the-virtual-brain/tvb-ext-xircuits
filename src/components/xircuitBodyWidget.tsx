@@ -84,6 +84,7 @@ export const Layer = styled.div`
 
 export const commandIDs = {
 	openXircuitEditor: 'Xircuit-editor:open',
+	openTvbExtUnicore: 'tvbextunicore:open',
 	openDocManager: 'docmanager:open',
 	newDocManager: 'docmanager:new-untitled',
 	saveDocManager: 'docmanager:save',
