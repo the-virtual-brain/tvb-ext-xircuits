@@ -1291,6 +1291,10 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				}
 			});
 		}
+		if (runType !== "") {
+			// It means a remote launch was started
+			await app.commands.execute(commandIDs.openTvbExtUnicore);
+		}
 		return { commandStr, config };
 	};
 
