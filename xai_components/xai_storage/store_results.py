@@ -21,22 +21,28 @@ class StoreResults(Component):
 
     def __init__(self):
         self.done = False
+        self.is_hpc_launch = False
         self.bucket_name = InArg(None)
         self.folder_path = InArg('')
         self.H5_format = InArg(False)
 
     def execute(self, ctx) -> None:
+        args = ctx.get('args')
+        if args is not None:
+            self.is_hpc_launch = args.is_hpc_launch
         if self.bucket_name.value is not None:
             self._store_to_bucket()
         else:
             self._store_to_drive()
 
     def _store_to_bucket(self):
-        print(f"Will store results to bucket {self.bucket_name.value}...")
+        print(f"TODO: Storing results to bucket {self.bucket_name.value}...")
 
     def _store_to_drive(self):
         # prepare output folder
-        output_directory = os.path.join(self.folder_path.value, 'results')
+        output_directory = 'results'
+        if not self.is_hpc_launch:
+            output_directory = os.path.join(self.folder_path.value, output_directory)
         if os.path.isdir(output_directory):
             output_directory += f"_{datetime.now().strftime('%m.%d.%Y_%H:%M:%S')}"
         os.mkdir(output_directory)
@@ -59,7 +65,7 @@ class StoreFactory(object):
     @staticmethod
     def store_time_series(time_series, output_directory, h5_format):
         if h5_format:
-            print(f"Storing to H5 is not supported yet. Will be added soon...")
+            print(f"TODO: Storing timeseries to H5...")
         else:
             ts_file_name = os.path.join(output_directory, f"timeseries_{time_series.title}.npy")
             print(f"Storing timeseries for {time_series.title} monitor to {ts_file_name}...")
