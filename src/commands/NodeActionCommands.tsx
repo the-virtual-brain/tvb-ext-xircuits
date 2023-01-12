@@ -72,7 +72,8 @@ export function addNodeActionCommands(
                 {
                     path: response["widget"],
                     factory: 'Notebook',
-                    kernel: { name: 'python3' }
+                    kernel: { name: 'python3' },
+                    options: { mode: 'split-right' }
                 });
         }
     });
