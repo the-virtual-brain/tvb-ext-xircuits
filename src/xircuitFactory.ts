@@ -260,6 +260,17 @@ export class XircuitFactory extends ABCWidgetFactory<DocumentWidget> {
       }
     });
 
+    /**
+     * Create an HPC monitoring button toolbar item.
+     */
+    let monitoringButton = new ToolbarButton({
+      label: 'Monitor HPC',
+      tooltip: 'Open monitoring with tvb-ext-unicore',
+      onClick: (): void => {
+        this.commands.execute(commandIDs.openTvbExtUnicore);
+      }
+    });
+
     widget.toolbar.insertItem(0, 'xircuits-add-save', saveButton);
     widget.toolbar.insertItem(1, 'xircuits-add-undo', undoButton);
     widget.toolbar.insertItem(2, 'xircuits-add-redo', redoButton);
@@ -273,6 +284,7 @@ export class XircuitFactory extends ABCWidgetFactory<DocumentWidget> {
     widget.toolbar.insertItem(10, 'xircuits-add-compile', compileButton);
     widget.toolbar.insertItem(11, 'xircuits-add-run', compileAndRunButton);
     widget.toolbar.insertItem(12, 'xircuits-run-type', new RunSwitcher(this));
+    widget.toolbar.insertItem(13, 'xircuits-add-monitor', monitoringButton);
     // TODO: Fix debugger
     // widget.toolbar.insertItem(5,'xircuits-add-debug', debugButton);
 
