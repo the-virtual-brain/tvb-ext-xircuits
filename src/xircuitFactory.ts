@@ -265,7 +265,7 @@ export class XircuitFactory extends ABCWidgetFactory<DocumentWidget> {
      */
     let monitoringButton = new ToolbarButton({
       label: 'Monitor HPC',
-      tooltip: 'Open monitoring with tvb-ext-unicore',
+      tooltip: 'Monitor your HPC jobs with tvb-ext-unicore',
       onClick: (): void => {
         this.commands.execute(commandIDs.openTvbExtUnicore);
       }
