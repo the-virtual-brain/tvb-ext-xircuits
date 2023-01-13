@@ -301,5 +301,7 @@ if __name__ == '__main__':
         files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
         site_arg = sys.argv[2]
         project_arg = sys.argv[3]
+        monitoring_arg = sys.argv[4]
+        do_monitoring = True if monitoring_arg.startswith('Sync') else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
-                   workflow_file_path=workflow_path, files_to_upload=files_to_upload)
+                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_monitoring=do_monitoring)

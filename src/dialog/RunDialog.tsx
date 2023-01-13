@@ -69,9 +69,8 @@ export const RunDialog = ({
 
 	return (
 		<form>
-			{childStringNodes.length > 0 ? <h3 style={{ marginTop: 0, marginBottom: 5 }}>Arguments:</h3> : null}
 			<div>{runConfigs.length != 0 ?
-				<><h4 style={{ marginTop: 2, marginBottom: 0 }}>Remote Execution</h4>
+				<><h3 style={{ marginTop: 2, marginBottom: 0 }}>Remote Execution</h3>
 					<div>Available Run Type:
 						<HTMLSelect
 							onChange={(e) => handleTypeChange(e)}
@@ -87,12 +86,12 @@ export const RunDialog = ({
 							))}
 						</HTMLSelect>
 					</div>
-					<div>Available Run Config:
+					<div>Available Run Sites:
 						<HTMLSelect
 							onChange={(e) => handleConfigChange(e)}
 							value={runConfig}
-							aria-label={'Run Configuration'}
-							title={'Select which config to run'}
+							aria-label={'Available Run Sites'}
+							title={'Select on which site to run'}
 							name='runConfig'
 						>
 							{runConfigs.map((c, i) => ((c.run_type == runType) ?
@@ -102,30 +101,34 @@ export const RunDialog = ({
 							))}
 						</HTMLSelect>
 					</div>
-					<div>
-						<TextareaAutosize
-							hidden
-							value={command}
-							minRows={10}
-							name='command'
-							style={{ width: 350, fontSize: 12 }}
-							readOnly />
-					</div>
 					Project:
 					<div>
 						<input
 							name='project'
-							style={{ width: 350 }} />
+							title={'Project account to use on the HPC site chosen above'}
+							style={{ width: 300, fontSize: 13 }} />
+					</div>
+					Monitoring:
+					<div>
+						<HTMLSelect
+							options={['Asynchronous', 'Synchronous']}
+							aria-label={'Monitoring'}
+							title={'If asynchronous, the HPC monitoring system is opened up in a new tab. This can be accessed from the Monitor HPC button as well. \n If synchronous, the workflow waits for all HPC jobs to finish.'}
+							name='monitoring'
+						>
+						</HTMLSelect>
 					</div></>
 				: null}
 			</div>
 			<div></div>
+			{/*<div><h4 style={{ marginTop: 2, marginBottom: 0 }}>String</h4></div>*/}
 			{childStringNodes.map((stringNode, i) =>
 				<div key={`index-${i}`}>{stringNode}
 					<div>
 						<input
 							type="text"
 							name={stringNode}
+							style={{ width: 300, fontSize: 13 }}
 						/>
 					</div>
 				</div>)}
