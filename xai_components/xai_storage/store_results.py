@@ -8,6 +8,8 @@
 import os
 from datetime import datetime
 import numpy
+from tvb.core.neocom import h5
+from tvb.storage.storage_interface import StorageInterface
 
 from xai_components.base import xai_component, Component, InArg, InCompArg
 
@@ -65,8 +67,11 @@ class StoreFactory(object):
     @staticmethod
     def store_time_series(time_series, output_directory, h5_format):
         if h5_format:
-            print(f"TODO: Storing timeseries to H5...")
+            ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
+            ts_file_path = os.path.join(output_directory, ts_file_name)
+            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
+            h5.store(time_series, ts_file_path)
         else:
-            ts_file_name = os.path.join(output_directory, f"timeseries_{time_series.title}.npy")
-            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_name}...")
-            numpy.save(ts_file_name, time_series.data)
+            ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npy")
+            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
+            numpy.save(ts_file_path, time_series.data)
