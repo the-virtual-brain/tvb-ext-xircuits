@@ -1230,11 +1230,13 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let runType = dialogResult["value"]['runType'] ?? "";
 		let runConfig = dialogResult["value"]['runConfig'] ?? "";
 		let runProject = dialogResult["value"]['project'] ?? "";
+		let runMonitoring = dialogResult["value"]['monitoring'] ?? "";
 		if (runConfigs.length != 0) {
 			runConfigs.map(cfg => {
 				if (cfg.run_type == runType && cfg.run_config_name == runConfig) {
 					config = cfg;
 					cfg['project'] = runProject;
+					cfg['monitoring'] = runMonitoring;
 					setLastConfigs(cfg);
 				}
 			})
