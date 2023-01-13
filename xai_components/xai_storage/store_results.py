@@ -5,12 +5,14 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
+import json
 import os
 from datetime import datetime
 import numpy
 from tvb.core.neocom import h5
 from tvb.storage.storage_interface import StorageInterface
 
+from tvbextxircuits.utils import STORAGE_CONFIG_FILE, STORE_RESULTS_DIR, BUCKET_NAME_KEY, FOLDER_PATH_KEY
 from xai_components.base import xai_component, Component, InArg, InCompArg
 
 
@@ -32,17 +34,24 @@ class StoreResults(Component):
         args = ctx.get('args')
         if args is not None:
             self.is_hpc_launch = args.is_hpc_launch
+        if self.is_hpc_launch:
+            # Save the config in json format for stage-out step
+            json_config = {BUCKET_NAME_KEY: self.bucket_name.value,
+                           FOLDER_PATH_KEY: self.folder_path.value}
+            with open(STORAGE_CONFIG_FILE, 'w') as f:
+                json.dump(json_config, f)
         if self.bucket_name.value is not None:
             self._store_to_bucket()
         else:
             self._store_to_drive()
 
     def _store_to_bucket(self):
+        # TODO: store results to bucket as well
         print(f"TODO: Storing results to bucket {self.bucket_name.value}...")
 
     def _store_to_drive(self):
         # prepare output folder
-        output_directory = 'results'
+        output_directory = STORE_RESULTS_DIR
         if not self.is_hpc_launch:
             output_directory = os.path.join(self.folder_path.value, output_directory)
         if os.path.isdir(output_directory):
