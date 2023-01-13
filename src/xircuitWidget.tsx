@@ -133,19 +133,26 @@ export class XPipePanel extends ReactWidget {
     let position_y_offset = -50;
     Object.values(modelParams).map(param => {
       const param_type = param['type'];
-      const component_param_name = 'parameter-' + param_type + '-' + param['name'];
+      const param_name = param['name'];
 
-      const targetPort = modelNode.getPorts()[component_param_name];
-      this.removeLiteralNodesForPort(targetPort);
-      position_y_offset += 50;
+      const ports = modelNode.getPorts();
+      for (const port_name in ports) {
+        const targetPort = ports[port_name];
+        // @ts-ignore
+        if (targetPort.getOptions().label === param_name) {
+            this.removeLiteralNodesForPort(targetPort);
+            position_y_offset += 50;
 
-      const sourcePort = this.createLiteralNodeForParam(
-        param_type,
-        param['value'],
-        position_x,
-        position_y + position_y_offset
-      );
-      this.addNewLink(sourcePort, targetPort);
+            const sourcePort = this.createLiteralNodeForParam(
+                param_type,
+                param['value'],
+                position_x,
+                position_y + position_y_offset
+            );
+            this.addNewLink(sourcePort, targetPort);
+            break
+          }
+      }
     });
   }
 
