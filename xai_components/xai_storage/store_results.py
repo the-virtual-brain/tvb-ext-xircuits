@@ -16,7 +16,7 @@ from tvbextxircuits.utils import STORAGE_CONFIG_FILE, STORE_RESULTS_DIR, BUCKET_
 from xai_components.base import xai_component, Component, InArg, InCompArg
 
 
-@xai_component(color='rgb(47,79,79)')
+@xai_component(color='rgb(153,0,102)')
 class StoreResults(Component):
     data_to_store: InCompArg[list]
     bucket_name: InArg[str]
