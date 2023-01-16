@@ -46,6 +46,27 @@ export function addNodeActionCommands(
         return node ?? null;
     }
 
+    function gatherNodeInPortValues(node) {
+        const nodePorts = node.getInPorts();
+        const model_params_dict = {};
+        Object.values(nodePorts).map(port => {
+            // @ts-ignore
+            const targetPortLinks = port.getLinks();
+            if (targetPortLinks) {
+                Object.values(targetPortLinks).map(link => {
+                    // @ts-ignore
+                    const sourceNode = link.getSourcePort().getParent();
+                    if (sourceNode.name.includes('Literal')) {
+                        const model_param = sourceNode.getOutPorts()[0].getOptions();
+                        // @ts-ignore
+                        model_params_dict[port.getOptions().label] = model_param.label;
+                    }
+                });
+            }
+        });
+        return model_params_dict;
+    }
+
     //Add command to open node's viewer in notebook
     commands.addCommand(commandIDs.openViewer, {
         execute: async (args) => {
@@ -58,8 +79,13 @@ export function addNodeActionCommands(
                 return;
             }
 
-            const dataToSend = { 'component': node.name, 'path':  node.extras.path,
-                'component_id': node.options.id, 'xircuits_id': node.parent.parent.options.id };
+            const dataToSend = {
+                'component': node.name,
+                'component_id': node.options.id,
+                'component_inputs': gatherNodeInPortValues(node),
+                'path':  node.extras.path,
+                'xircuits_id': node.parent.parent.options.id
+            };
 
             const response = await requestAPI<any>('components/', {
 				body: JSON.stringify(dataToSend),
@@ -70,7 +96,7 @@ export function addNodeActionCommands(
             await app.commands.execute(
                 commandIDs.openDocManager,
                 {
-                    path: response["widget"],
+                    path: response['widget'],
                     factory: 'Notebook',
                     kernel: { name: 'python3' },
                     options: { mode: 'split-right' }

@@ -113,26 +113,49 @@ class NotebookGenerator(object):
 class WidgetCodeGenerator(object):
 
     @staticmethod
-    def phase_plane(model=Generic2dOscillator, integrator=HeunDeterministic, export_filename=None):
+    def phase_plane(inputs_dict, model=Generic2dOscillator, integrator=HeunDeterministic, export_filename=None):
         code = "%matplotlib widget\n" \
                "\n" \
+               "import numpy\n" \
                "from tvb.simulator.lab import models, integrators\n" \
                "from tvbwidgets.api import PhasePlaneWidget\n" \
                "from IPython.core.display_functions import display\n" \
                "\n" \
-               "w = PhasePlaneWidget(model=models.{0}(), integrator=integrators.{1}());\n" \
-               "w.export_filename = '{2}' \n" \
+               "w = PhasePlaneWidget(model=models.{0}(**{2}), integrator=integrators.{1}());\n" \
+               "w.export_filename = '{3}' \n" \
                "w.disable_model_dropdown = True \n" \
                "w.disable_export_dropdown = True \n" \
                "display(w.get_widget());"
-        return code.format(model.__name__, integrator.__name__, export_filename)
+        return code.format(model.__name__, integrator.__name__, inputs_dict, export_filename)
 
     @staticmethod
-    def get_widget_code(component_name, component_id, component_path):
+    def prepare_component_inputs(component_inputs):
+        inputs_str = "{"
+        param_str = "'{}': {}, "
+        for key, val in component_inputs.items():
+            if type(val) is str:
+                if val.startswith('numpy'):
+                    inputs_str += param_str.format(key, val)
+                elif val in ('True', 'False'):
+                    inputs_str += param_str.format(key, f"numpy.array([{bool(val)}])")
+                elif val.startswith("'"):
+                    inputs_str += param_str.format(key, f"[{val}]")
+                elif val.startswith('"'):
+                    val = val.replace('"', "'")
+                    inputs_str += param_str.format(key, f"[{val}]")
+                else:
+                    inputs_str += param_str.format(key, f"numpy.array([{val}])")
+            else:
+                inputs_str += param_str.format(key, f"numpy.array([{val}])")
+        return inputs_str + '}'
+
+    @staticmethod
+    def get_widget_code(component_name, component_id, component_path, component_inputs):
         component_class = determine_component_class(component_name, component_path)
+        inputs_dict = WidgetCodeGenerator.prepare_component_inputs(component_inputs)
 
         if issubclass(component_class, ComponentWithWidget):
-            return WidgetCodeGenerator.phase_plane(component_class().tvb_ht_class,
+            return WidgetCodeGenerator.phase_plane(inputs_dict, model=component_class().tvb_ht_class,
                                                    export_filename=f"{MODEL_CONFIG_FILE_PREFIX}_{component_id}")
 
         else:
