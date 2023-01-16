@@ -175,6 +175,7 @@ export class XPipePanel extends ReactWidget {
 
     const node = new CustomNodeModel({
       name: 'Literal ' + type.charAt(0).toUpperCase() + type.slice(1),
+      color: 'rgb(255,153,102)',
       extras: { type: type }
     });
 
