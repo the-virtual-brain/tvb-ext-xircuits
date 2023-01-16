@@ -4,6 +4,7 @@
 #
 # (c) 2022-2023, TVB Widgets Team
 #
+
 from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
@@ -36,7 +37,7 @@ class Simulator(TVBComponent):
     def __init__(self):
         set_defaults(self, self.tvb_ht_class)
         self.backend = InArg(None)
-        self.time_series = OutArg(None)
+        self.time_series_list = OutArg(None)
 
     @property
     def tvb_ht_class(self):
@@ -61,16 +62,15 @@ class Simulator(TVBComponent):
             result = simulator.run()
 
         # create TS
-        ts_list = []
+        self.time_series_list.value = []
         for i in range(len(simulator.monitors)):
             monitor = simulator.monitors[i]
             time, data = result[i]
             ts = monitor.create_time_series(connectivity=simulator.connectivity)
             ts.data = data
             ts.time = time
+            ts.title = type(monitor).__name__
             ts.configure()
-            ts_list.append(ts)
 
-        for ts in ts_list:
             print_component_summary(ts)
-
+            self.time_series_list.value.append(ts)

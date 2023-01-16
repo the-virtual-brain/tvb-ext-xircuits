@@ -84,6 +84,7 @@ export const Layer = styled.div`
 
 export const commandIDs = {
 	openXircuitEditor: 'Xircuit-editor:open',
+	openTvbExtUnicore: 'tvbextunicore:open',
 	openDocManager: 'docmanager:open',
 	newDocManager: 'docmanager:new-untitled',
 	saveDocManager: 'docmanager:save',
@@ -697,6 +698,8 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 			pythonCode += "if __name__ == '__main__':\n";
 			pythonCode += '    ' + 'parser = ArgumentParser()\n';
+			pythonCode += '    ' + "parser.add_argument('--is_hpc_launch', default=False, type=bool)\n";
+
 
 			if (stringNodes) {
 				for (let i = 0; i < stringNodes.length; i++) {
@@ -1467,11 +1470,13 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let runType = dialogResult["value"]['runType'] ?? "";
 		let runConfig = dialogResult["value"]['runConfig'] ?? "";
 		let runProject = dialogResult["value"]['project'] ?? "";
+		let runMonitoring = dialogResult["value"]['monitoring'] ?? "";
 		if (runConfigs.length != 0) {
 			runConfigs.map(cfg => {
 				if (cfg.run_type == runType && cfg.run_config_name == runConfig) {
 					config = cfg;
 					cfg['project'] = runProject;
+					cfg['monitoring'] = runMonitoring;
 					setLastConfigs(cfg);
 				}
 			})
@@ -1527,6 +1532,10 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					commandStr += '--' + filteredParam + ' ' + dialogResult["value"][param] + ' ';
 				}
 			});
+		}
+		if (runType !== "") {
+			// It means a remote launch was started
+			await app.commands.execute(commandIDs.openTvbExtUnicore);
 		}
 		return { commandStr, config };
 	};
