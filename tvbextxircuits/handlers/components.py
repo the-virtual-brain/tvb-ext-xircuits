@@ -47,8 +47,9 @@ class ComponentsRouteHandler(APIHandler):
             component_id = input_data["component_id"]
             component_path = input_data["path"]
             xircuits_id = input_data["xircuits_id"]
+            component_inputs = input_data['component_inputs']
 
-            notebook_path = self.generate_widget_notebook(component, component_id, component_path, xircuits_id)
+            notebook_path = self.generate_widget_notebook(component, component_id, component_path, xircuits_id, component_inputs)
             data = {"widget": notebook_path}
             self.finish(json.dumps(data))
 
@@ -56,7 +57,7 @@ class ComponentsRouteHandler(APIHandler):
             data = {"error_msg": "Could not determine the component from POST params!"}
             self.finish(json.dumps(data))
 
-    def generate_widget_notebook(self, component, component_id, component_path, xircuits_id):
+    def generate_widget_notebook(self, component, component_id, component_path, xircuits_id, component_inputs):
         nb_generator = NotebookGenerator()
 
         text = f"""# Interactive setup for {component} model"""
@@ -65,7 +66,7 @@ class ComponentsRouteHandler(APIHandler):
                f"#### Export the model configuration to add it in the Xircuits diagram\n" \
                f"*Some select fields in the Phase Plane are meant to be disabled in this context"
         nb_generator.add_markdown_cell(text)
-        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_id, component_path))
+        nb_generator.add_code_cell(WidgetCodeGenerator.get_widget_code(component, component_id, component_path, component_inputs))
 
         path = nb_generator.store(component, xircuits_id)
         return path
