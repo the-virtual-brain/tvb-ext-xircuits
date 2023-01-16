@@ -18,6 +18,6 @@ pygithub
 pyunicore
 siibra
 tqdm
-tvb-library<2.7
+tvb-library
 tvb-widgets>=1.0
 tvb-framework
