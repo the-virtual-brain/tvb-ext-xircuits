@@ -2,7 +2,7 @@ import os.path
 import shutil
 
 from tvbextxircuits import nb_generator
-from tvbextxircuits.nb_generator import NotebookGenerator, WidgetCodeGenerator
+from tvbextxircuits.nb_generator import NotebookGenerator, PhasePlaneNotebookGenerator
 
 TEMP_DIR = "temp_test_dir"
 nb_generator.NOTEBOOKS_DIR = TEMP_DIR
@@ -26,7 +26,7 @@ def test_notebook_generator():
 
 
 def test_widget_code_generator():
-    widget_code_generator = WidgetCodeGenerator()
+    widget_code_generator = PhasePlaneNotebookGenerator()
     code = widget_code_generator.get_widget_code('Simulator', 'sim_id', 'xai_components/xai_tvb_simulator/simulator.py')
     assert code is None
 
