@@ -153,7 +153,7 @@ class PyunicoreSubmitter(object):
             return
         print(f"Successfully finished the environment setup.")
 
-    def submit_job(self, executable, inputs, do_monitoring):
+    def submit_job(self, executable, inputs, do_stage_out):
         client = self.connect_client()
         if client is None:
             print(f"Could not connect to {self.site}, stopping execution.")
@@ -197,7 +197,7 @@ class PyunicoreSubmitter(object):
               f"Submission time is: {self._format_date_for_job(job_workflow)}.", flush=True)
         print('Finished remote launch.', flush=True)
 
-        if do_monitoring:
+        if do_stage_out:
             self.monitor_job(job_workflow)
 
         else:
@@ -282,7 +282,7 @@ def get_xircuits_file():
     return filename, full_path
 
 
-def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_monitoring=False):
+def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_stage_out=False):
     """
     Submit a job to a EBRAINS HPC site
     :param site: unicore site
@@ -295,11 +295,11 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
     if files_to_upload:
         inputs.extend(files_to_upload)
 
-    PyunicoreSubmitter(site, project).submit_job(workflow_file_name, inputs, do_monitoring)
+    PyunicoreSubmitter(site, project).submit_job(workflow_file_name, inputs, do_stage_out)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 5:
         print(f"Please provide the HPC project to run this job within, stopping execution.")
     else:
         workflow_name, workflow_path = get_xircuits_file()
@@ -307,7 +307,7 @@ if __name__ == '__main__':
         files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
         site_arg = sys.argv[2]
         project_arg = sys.argv[3]
-        monitoring_arg = sys.argv[4]
-        do_monitoring = True if monitoring_arg.startswith('Sync') else False
+        stage_out_arg = sys.argv[4]
+        do_stage_out = True if stage_out_arg == 'true' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
-                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_monitoring=do_monitoring)
+                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out)
