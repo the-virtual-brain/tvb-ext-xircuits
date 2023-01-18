@@ -78,13 +78,50 @@ class ModelConfigLoader(object):
             os.rmdir(self.model_configs_folder)
 
 
+class NotebookFactory(object):
+
+    @staticmethod
+    def get_notebook_for_component(component_name, component_id, component_path, component_inputs):
+        component_class = determine_component_class(component_name, component_path)
+
+        if not issubclass(component_class, ComponentWithWidget):
+            return None
+
+        if component_class.__name__ == 'StoreResults':
+            return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
+
+        return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
+
+    @staticmethod
+    def store(notebook, component_name, xircuits_id):
+        file_name = f'{component_name}_widget.ipynb'
+
+        notebook_dir = os.path.join(NOTEBOOKS_DIR, xircuits_id)
+        if not os.path.exists(notebook_dir):
+            os.mkdir(notebook_dir)
+
+        path = os.path.join(notebook_dir, file_name)
+
+        with open(path, 'w') as f:
+            nbformat.write(notebook, f)
+
+        return os.path.join(notebook_dir, file_name)
+
+
 class NotebookGenerator(object):
 
-    def __init__(self):
+    def __init__(self, component_class, component_id, component_inputs):
+        self.component_class = component_class
+        self.component_id = component_id
+        self.component_inputs = component_inputs
+
         if not os.path.exists(NOTEBOOKS_DIR):
             os.mkdir(NOTEBOOKS_DIR)
 
         self.notebook = nbformat.v4.new_notebook()
+
+    def get_notebook(self):
+        raise NotImplementedError
 
     def add_code_cell(self, code):
         self._add_cell(nbformat.v4.new_code_cell(code, metadata={'editable': False, 'deletable': False}))
@@ -95,22 +132,45 @@ class NotebookGenerator(object):
     def _add_cell(self, cell):
         self.notebook['cells'].append(cell)
 
-    def store(self, component, xircuits_id):
-        file_name = f'{component}_widget.ipynb'
 
-        notebook_dir = os.path.join(NOTEBOOKS_DIR, xircuits_id)
-        if not os.path.exists(notebook_dir):
-            os.mkdir(notebook_dir)
+class TimeSeriesNotebookGenerator(NotebookGenerator):
 
-        path = os.path.join(notebook_dir, file_name)
+    def get_notebook(self):
+        code = self.time_series_widget()
+        self.add_code_cell(code)
 
-        with open(path, 'w') as f:
-            nbformat.write(self.notebook, f)
+        return self.notebook
 
-        return os.path.join(notebook_dir, file_name)
+    def time_series_widget(self):
+        code = "%load_ext autoreload\n" \
+               "%autoreload 2\n" \
+               "%matplotlib widget\n" \
+               "\n" \
+               "from tvbwidgets.api import TimeSeriesBrowserWidget\n" \
+               "from IPython.core.display_functions import display\n" \
+               "\n" \
+               "tsw = TimeSeriesBrowserWidget()\n" \
+               "display(tsw)"
+        return code
 
 
-class WidgetCodeGenerator(object):
+class PhasePlaneNotebookGenerator(NotebookGenerator):
+
+    def get_notebook(self):
+        title = f"""# Interactive setup for {self.component_class.__name__} model"""
+        self.add_markdown_cell(title)
+
+        intro = f"#### Run the cell below in order to display the Phase Plane\n" \
+                f"#### Export the model configuration to add it in the Xircuits diagram\n" \
+                f"*Some select fields in the Phase Plane are meant to be disabled in this context"
+        self.add_markdown_cell(intro)
+
+        inputs_dict = self._prepare_component_inputs()
+        export_filename = f"{MODEL_CONFIG_FILE_PREFIX}_{self.component_id}"
+        code = PhasePlaneNotebookGenerator.phase_plane(inputs_dict, model=self.component_class().tvb_ht_class,
+                                                       export_filename=export_filename)
+        self.add_code_cell(code)
+        return self.notebook
 
     @staticmethod
     def phase_plane(inputs_dict, model=Generic2dOscillator, integrator=HeunDeterministic, export_filename=None):
@@ -128,11 +188,10 @@ class WidgetCodeGenerator(object):
                "display(w.get_widget());"
         return code.format(model.__name__, integrator.__name__, inputs_dict, export_filename)
 
-    @staticmethod
-    def prepare_component_inputs(component_inputs):
+    def _prepare_component_inputs(self):
         inputs_str = "{"
         param_str = "'{}': {}, "
-        for key, val in component_inputs.items():
+        for key, val in self.component_inputs.items():
             if type(val) is str:
                 if val.startswith('numpy'):
                     inputs_str += param_str.format(key, val)
@@ -148,18 +207,6 @@ class WidgetCodeGenerator(object):
             else:
                 inputs_str += param_str.format(key, f"numpy.array([{val}])")
         return inputs_str + '}'
-
-    @staticmethod
-    def get_widget_code(component_name, component_id, component_path, component_inputs):
-        component_class = determine_component_class(component_name, component_path)
-        inputs_dict = WidgetCodeGenerator.prepare_component_inputs(component_inputs)
-
-        if issubclass(component_class, ComponentWithWidget):
-            return WidgetCodeGenerator.phase_plane(inputs_dict, model=component_class().tvb_ht_class,
-                                                   export_filename=f"{MODEL_CONFIG_FILE_PREFIX}_{component_id}")
-
-        else:
-            return None
 
 
 def determine_component_class(component_name, component_path):
