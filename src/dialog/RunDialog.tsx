@@ -108,16 +108,23 @@ export const RunDialog = ({
 							title={'Project account to use on the HPC site chosen above'}
 							style={{ width: 300, fontSize: 13 }} />
 					</div>
-					Monitoring:
+					Launch monitoring HPC:
 					<div>
-						<HTMLSelect
-							options={['Asynchronous', 'Synchronous']}
-							aria-label={'Monitoring'}
-							title={'If asynchronous, the HPC monitoring system is opened up in a new tab. This can be accessed from the Monitor HPC button as well. \n If synchronous, the workflow waits for all HPC jobs to finish.'}
+						<input type={'checkbox'}
+							title={'If checked, the HPC monitoring widget is opened up automatically in a new tab. This can be accessed from the Monitor HPC button as well.'}
 							name='monitoring'
 						>
-						</HTMLSelect>
-					</div></>
+						</input>
+					</div>
+					Stage-out results:
+					<div>
+						<input type={'checkbox'}
+							title={'If checked, the workflow waits for all HPC jobs to finish and stages-out the results. Otherwise, they can be downloaded manually from the HPC monitoring widget.'}
+							name='stage-out'
+						>
+						</input>
+					</div>
+				</>
 				: null}
 			</div>
 			<div></div>

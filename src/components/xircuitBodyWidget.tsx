@@ -1230,13 +1230,14 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let runType = dialogResult["value"]['runType'] ?? "";
 		let runConfig = dialogResult["value"]['runConfig'] ?? "";
 		let runProject = dialogResult["value"]['project'] ?? "";
+		let runStageOut = dialogResult["value"]['stage-out'] ?? "";
 		let runMonitoring = dialogResult["value"]['monitoring'] ?? "";
 		if (runConfigs.length != 0) {
 			runConfigs.map(cfg => {
 				if (cfg.run_type == runType && cfg.run_config_name == runConfig) {
 					config = cfg;
 					cfg['project'] = runProject;
-					cfg['monitoring'] = runMonitoring;
+					cfg['stage-out'] = runStageOut;
 					setLastConfigs(cfg);
 				}
 			})
@@ -1293,7 +1294,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				}
 			});
 		}
-		if (runType !== "") {
+		if (runType !== '' && runMonitoring) {
 			// It means a remote launch was started
 			await app.commands.execute(commandIDs.openTvbExtUnicore);
 		}
