@@ -9,15 +9,17 @@ import json
 import os
 from datetime import datetime
 import numpy
+from tvb.config.init.datatypes_registry import populate_datatypes_registry
 from tvb.core.neocom import h5
 from tvb.storage.storage_interface import StorageInterface
 
 from tvbextxircuits.utils import STORAGE_CONFIG_FILE, STORE_RESULTS_DIR, BUCKET_NAME_KEY, FOLDER_PATH_KEY
-from xai_components.base import xai_component, Component, InArg, InCompArg
+from xai_components.base import xai_component, InArg, InCompArg
+from xai_components.base_tvb import ComponentWithWidget
 
 
 @xai_component(color='rgb(153,0,102)')
-class StoreResults(Component):
+class StoreResults(ComponentWithWidget):
     data_to_store: InCompArg[list]
     bucket_name: InArg[str]
     folder_path: InArg[str]
@@ -77,8 +79,9 @@ class StoreFactory(object):
             ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
             ts_file_path = os.path.join(output_directory, ts_file_name)
             print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
+            populate_datatypes_registry()
             h5.store(time_series, ts_file_path)
         else:
-            ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npy")
+            ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npz")
             print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
-            numpy.save(ts_file_path, time_series.data)
+            numpy.savez(ts_file_path, data=time_series.data, time=time_series.time)
