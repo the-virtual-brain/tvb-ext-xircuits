@@ -131,6 +131,8 @@ class PyunicoreSubmitter(object):
         Then, make sure to call this method from submit_job method before launching the workflow job.
         """
         local_package_name = f'tvb_ext_xircuits-{xircuits_version.__version__}-py3-none-any.whl'
+        print(f"You are running in dev mode, starting to install {local_package_name} on HPC {self.site}...")
+        home_storage.rm(local_package_name)
         home_storage.upload(
             input_file=f'dist/{local_package_name}',
             destination=f'{self.env_dir}/{local_package_name}')
@@ -217,9 +219,13 @@ class PyunicoreSubmitter(object):
         storage_config = {}
         content = job.working_dir.listdir()
 
-        results_dirname = STORE_RESULTS_DIR
-        if content.get(results_dirname) is None and content.get(results_dirname + '/') is None:
-            print(f"Could not find results folder for this job. Nothing to stage out.")
+        results_dirname = None
+        for file_name in content.keys():
+            if file_name.startswith(STORE_RESULTS_DIR):
+                results_dirname = file_name
+
+        if results_dirname is None:
+            print(f"Could not find results folder for this job. Nothing to stage out.", flush=True)
             return
 
         print(f"Found sub dir: {results_dirname}", flush=True)
