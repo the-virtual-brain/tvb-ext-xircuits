@@ -136,6 +136,15 @@ class NotebookGenerator(object):
 class TimeSeriesNotebookGenerator(NotebookGenerator):
 
     def get_notebook(self):
+        title = f"""# Interactive viewer for time series"""
+        self.add_markdown_cell(title)
+
+        intro = f"#### Run the cell below in order to display the TimeSeriesBrowser widget\n" \
+                f"#### It will allow you to browse through the EBRAINS Drive and view the time series from there\n" \
+                f"*This widget supports the display of a single time series at a time. If you want to visualize more " \
+                f"time series in parallel, please duplicate the cell below to generate new widgets"
+
+        self.add_markdown_cell(intro)
         code = self.time_series_widget()
         self.add_code_cell(code)
 
@@ -146,10 +155,10 @@ class TimeSeriesNotebookGenerator(NotebookGenerator):
                "%autoreload 2\n" \
                "%matplotlib widget\n" \
                "\n" \
-               "from tvbwidgets.api import TimeSeriesBrowserWidget\n" \
+               "from tvbwidgets.api import TimeSeriesBrowser\n" \
                "from IPython.core.display_functions import display\n" \
                "\n" \
-               "tsw = TimeSeriesBrowserWidget()\n" \
+               "tsw = TimeSeriesBrowser()\n" \
                "display(tsw)"
         return code
 
