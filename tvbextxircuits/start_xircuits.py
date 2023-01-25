@@ -9,6 +9,10 @@ import pkg_resources
 import shutil
 from .handlers.request_folder import request_folder
 from .handlers.request_submodule import get_submodule_config, request_submodule_library
+from .logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 def init_xircuits():
 
@@ -42,7 +46,7 @@ def download_component_library():
             request_submodule_library(component_lib)
 
 def download_submodule_library():
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('submodule_library')
     parser.add_argument("--no-install", default=False, action='store_true')
@@ -90,13 +94,13 @@ def main():
             os.system(launch_cmd)
 
         except Exception as e:
-            print("Error in launch args! Error log:\n")
-            print(e)
-    
+            LOGGER.error("Error in launch args! Error log:\n")
+            LOGGER.error(e)
+
     else:
         os.system("jupyter lab")
 
-print(
+LOGGER.info(
 '''
 ======================================
 __   __  ___                _ _       

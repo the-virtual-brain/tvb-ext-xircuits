@@ -2,6 +2,10 @@ from tvb.basic.neotraits.api import HasTraits
 from rst2html import rst2html
 import json
 
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 def doc_to_html(doc):
     html, _ = rst2html(doc, report_level=5)
@@ -36,7 +40,7 @@ def object_parse(object):
                 if doc != "":
                     output_dict['arguments'][attr_name] = doc_to_html(doc) if doc else ""
     except TypeError:
-        print(str(tvb_object) + "     " + str(type(tvb_object)))
+        LOGGER.warn(str(tvb_object) + "     " + str(type(tvb_object)))
 
     return output_dict
 

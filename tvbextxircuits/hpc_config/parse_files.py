@@ -8,7 +8,11 @@
 import os
 import re
 
-FILE_ARGUMENT = 'file_path'    # name of InArg for HPC file upload
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
+FILE_ARGUMENT = 'file_path'  # name of InArg for HPC file upload
 
 
 def get_file_path_from_line(line):
@@ -17,7 +21,7 @@ def get_file_path_from_line(line):
     :param line: line where the file_input param. of a component gets a value (a path from disk)
     :return: absolute path to the file
     """
-    file_path = line.split('"""')[1]    # the relative file path is always between these this sequence of characters
+    file_path = line.split('"""')[1]  # the relative file path is always between these this sequence of characters
     abs_file_path = os.path.abspath(file_path)  # absolute file path
     return abs_file_path
 
@@ -28,7 +32,7 @@ def get_file_name_from_line(line):
     :param line: line where the file_input param. of a component gets a value (a relative path from disk)
     :return: the file name of the file
     """
-    file_path = line.split('"""')[1]    # the relative file path is always between these this sequence of characters
+    file_path = line.split('"""')[1]  # the relative file path is always between these this sequence of characters
     file_name = os.path.basename(file_path)
     return file_name
 
@@ -41,9 +45,9 @@ def get_files_to_upload(xircuits_file_path):
     :param xircuits_file_path: path to the compiled xircuits workflow file
     :return: list containing the files that need to be uploaded to the HPC
     """
-    print("Gathering input files...", flush=True)
+    LOGGER.info("Gathering input files...")
     files_to_upload = []  # will contain the paths of all files that need to be uploaded
-    new_file = []   # will contain the xircuits .py file, but keeping only the file names, not their whole relative path
+    new_file = []  # will contain the xircuits .py file, but keeping only the file names, not their whole relative path
     with open(xircuits_file_path) as f:
         lines = f.readlines()
 
@@ -69,4 +73,3 @@ def get_files_to_upload(xircuits_file_path):
             f.writelines(new_file)
 
     return files_to_upload
-
