@@ -122,11 +122,11 @@ class StoreFactory(object):
         if h5_format:
             ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
             ts_file_path = os.path.join(output_directory, ts_file_name)
-            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
+            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...")
             populate_datatypes_registry()
             h5.store(time_series, ts_file_path)
         else:
             ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npz")
-            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...", flush=True)
+            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...")
             numpy.savez(ts_file_path, data=time_series.data, time=time_series.time)
         return ts_file_path

@@ -8,6 +8,10 @@ import argparse
 
 from .handlers.request_folder import request_folder
 from .handlers.request_submodule import request_submodule_library
+from .logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 def init_xircuits():
 
@@ -18,7 +22,7 @@ def init_xircuits():
     shutil.copytree(config_path, path)
 
 def download_examples():
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--branch', nargs='?', default="master", help='pull files from a xircuits branch')
 
@@ -69,13 +73,13 @@ def main():
             os.system(launch_cmd)
 
         except Exception as e:
-            print("Error in launch args! Error log:\n")
-            print(e)
-    
+            LOGGER.error("Error in launch args! Error log:\n")
+            LOGGER.error(e)
+
     else:
         os.system("jupyter lab")
 
-print(
+LOGGER.info(
 '''
 ======================================
 __   __  ___                _ _       
