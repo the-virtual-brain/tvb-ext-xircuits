@@ -73,20 +73,20 @@ def set_values(component, tvb_object):
 
 
 def print_component_summary(traited_obj):
-    print('== COMPONENT SUMMARY ==')
-    summary = traited_obj.summary_info()
-    print("{")
+    component_summary = '== COMPONENT SUMMARY ==\n {\n'
+    hastraits_summary = traited_obj.summary_info()
 
     # this if is needed because Connectivity doesn't add its type in its summary_info() method
-    if TYPE_STR not in summary.keys():
+    if TYPE_STR not in hastraits_summary.keys():
         cls = type(traited_obj)
-        print(f'"{TYPE_STR}": "{cls.__name__}",')
+        component_summary += f'"{TYPE_STR}": "{cls.__name__}",\n'
 
-    for attr_name, attr in summary.items():
-        print(f'"{attr_name}": "{attr}",')
+    for attr_name, attr in hastraits_summary.items():
+        component_summary += f'"{attr_name}": "{attr}",\n'
 
     # this if is needed because Connectivity doesn't add its gid in its summary_info() method
-    if GID_STR not in summary.keys():
+    if GID_STR not in hastraits_summary.keys():
         gid_value = repr(traited_obj.gid)
-        print(f'"{GID_STR}": "{gid_value}"')
-    print("}")
+        component_summary += f'"{GID_STR}": "{gid_value}"\n'
+    component_summary += "}"
+    print(component_summary)
