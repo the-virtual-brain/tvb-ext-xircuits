@@ -128,24 +128,24 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     app.shell.add(sidebarWidget, "left");
 
     // Creating the sidebar debugger
-    const sidebarDebugger = new XircuitsDebugger.Sidebar({ app, translator, widgetFactory })
-    sidebarDebugger.id = 'xircuits-debugger-sidebar';
-    sidebarDebugger.title.icon = debuggerIcon;
-    sidebarDebugger.title.caption = "Xircuits Debugger";
-    restorer.add(sidebarDebugger, sidebarDebugger.id);
-    app.shell.add(sidebarDebugger, 'right', { rank: 1001 });
-
-    // Additional commands for node action
-    addNodeActionCommands(app, tracker, translator);
-
-    // Add a command to open xircuits sidebar debugger
-    app.commands.addCommand(commandIDs.openDebugger, {
-      execute: () => {
-        if (sidebarDebugger.isHidden) {
-          app.shell.activateById(sidebarDebugger.id);
-        }
-      },
-    });
+    // const sidebarDebugger = new XircuitsDebugger.Sidebar({ app, translator, widgetFactory })
+    // sidebarDebugger.id = 'xircuits-debugger-sidebar';
+    // sidebarDebugger.title.icon = debuggerIcon;
+    // sidebarDebugger.title.caption = "Xircuits Debugger";
+    // restorer.add(sidebarDebugger, sidebarDebugger.id);
+    // app.shell.add(sidebarDebugger, 'right', { rank: 1001 });
+    //
+    // // Additional commands for node action
+    // addNodeActionCommands(app, tracker, translator);
+    //
+    // // Add a command to open xircuits sidebar debugger
+    // app.commands.addCommand(commandIDs.openDebugger, {
+    //   execute: () => {
+    //     if (sidebarDebugger.isHidden) {
+    //       app.shell.activateById(sidebarDebugger.id);
+    //     }
+    //   },
+    // });
 
     // Add a command for creating a new xircuits file.
     app.commands.addCommand(commandIDs.createNewXircuit, {
