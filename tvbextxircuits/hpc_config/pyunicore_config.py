@@ -17,7 +17,7 @@ from tvbwidgets.core.auth import get_current_token
 
 import tvbextxircuits._version as xircuits_version
 from tvbextxircuits.hpc_config.parse_files import get_files_to_upload
-from tvbextxircuits.utils import STORAGE_CONFIG_FILE, STORE_RESULTS_DIR, FOLDER_PATH_KEY, BUCKET_NAME_KEY
+from tvbextxircuits.utils import *
 
 
 class PyunicoreSubmitter(object):
@@ -250,7 +250,7 @@ class PyunicoreSubmitter(object):
 
     def _stage_out_results_to_drive(self, results_folder_content, results_dirname):
         if os.path.isdir(results_dirname):
-            results_dirname += f"_{datetime.now().strftime('%m.%d.%Y_%H:%M:%S')}"
+            results_dirname += f"_{datetime.now().strftime(DIR_TIME_STAMP_FRMT)}"
         os.mkdir(results_dirname)
 
         print(f"Downloading results to {results_dirname}...", flush=True)
