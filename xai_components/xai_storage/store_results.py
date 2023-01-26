@@ -13,7 +13,7 @@ from tvb.config.init.datatypes_registry import populate_datatypes_registry
 from tvb.core.neocom import h5
 from tvb.storage.storage_interface import StorageInterface
 
-from tvbextxircuits.utils import STORAGE_CONFIG_FILE, STORE_RESULTS_DIR, BUCKET_NAME_KEY, FOLDER_PATH_KEY
+from tvbextxircuits.utils import *
 from xai_components.base import xai_component, InArg, InCompArg
 from xai_components.base_tvb import ComponentWithWidget
 
@@ -53,7 +53,7 @@ class StoreResults(ComponentWithWidget):
 
     def _store_to_drive(self):
         # prepare output folder
-        output_directory = STORE_RESULTS_DIR + f"_{datetime.now().strftime('%m.%d.%Y_%H:%M:%S')}"
+        output_directory = STORE_RESULTS_DIR + f"_{datetime.now().strftime(DIR_TIME_STAMP_FRMT)}"
         if not self.is_hpc_launch:
             output_directory = os.path.join(self.folder_path.value, output_directory)
         os.mkdir(output_directory)
