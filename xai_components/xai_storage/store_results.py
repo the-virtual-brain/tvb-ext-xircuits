@@ -21,7 +21,7 @@ from xai_components.base_tvb import ComponentWithWidget
 @xai_component(color='rgb(153,0,102)')
 class StoreResults(ComponentWithWidget):
     data_to_store: InCompArg[list]
-    bucket_name: InArg[str]
+    # bucket_name: InArg[str]
     folder_path: InArg[str]
     H5_format: InArg[bool]
 
