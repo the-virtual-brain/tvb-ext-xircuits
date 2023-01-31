@@ -134,10 +134,10 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     // sidebarDebugger.title.caption = "Xircuits Debugger";
     // restorer.add(sidebarDebugger, sidebarDebugger.id);
     // app.shell.add(sidebarDebugger, 'right', { rank: 1001 });
-    //
-    // // Additional commands for node action
-    // addNodeActionCommands(app, tracker, translator);
-    //
+
+    // Additional commands for node action
+    addNodeActionCommands(app, tracker, translator);
+
     // // Add a command to open xircuits sidebar debugger
     // app.commands.addCommand(commandIDs.openDebugger, {
     //   execute: () => {
