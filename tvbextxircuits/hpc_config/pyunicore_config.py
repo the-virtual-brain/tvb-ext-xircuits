@@ -9,6 +9,7 @@ import json
 import os
 import sys
 from datetime import datetime
+from io import BytesIO
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
 from pyunicore.helpers.jobs import Status as unicore_status
@@ -18,6 +19,7 @@ from tvbwidgets.core.auth import get_current_token
 import tvbextxircuits._version as xircuits_version
 from tvbextxircuits.hpc_config.parse_files import get_files_to_upload
 from tvbextxircuits.utils import *
+from xai_components.xai_storage.store_results import StoreResultsToDrive
 
 
 class PyunicoreSubmitter(object):
@@ -216,7 +218,6 @@ class PyunicoreSubmitter(object):
         print(f"Finished execution.", flush=True)
 
     def stage_out_results(self, job):
-        storage_config = {}
         content = job.working_dir.listdir()
 
         results_dirname = None
@@ -233,32 +234,37 @@ class PyunicoreSubmitter(object):
 
         storage_config_file = content.get(STORAGE_CONFIG_FILE)
         if storage_config_file is None:
-            print(f"Could not find file: {STORAGE_CONFIG_FILE}, downloading results to default location...", flush=True)
+            print(f"Could not find file: {STORAGE_CONFIG_FILE}", flush=True)
+            print("Could not finalize the stage out. "
+                  "Please download your results manually using the Monitor HPC button.", flush=True)
+            return
         else:
             storage_config_file.download(STORAGE_CONFIG_FILE)
             with open(STORAGE_CONFIG_FILE) as f:
                 storage_config = json.load(f)
             os.remove(STORAGE_CONFIG_FILE)
 
-        if storage_config.get(FOLDER_PATH_KEY) is not None:
-            results_dirname = os.path.join(storage_config.get('folder_path'), results_dirname)
+        collab_name = storage_config.get(COLLAB_NAME_KEY)
+        bucket_name = storage_config.get(BUCKET_NAME_KEY)
+        folder_path = storage_config.get(FOLDER_PATH_KEY)
 
-        if storage_config.get(BUCKET_NAME_KEY) is None:
-            self._stage_out_results_to_drive(results_content, results_dirname)
+        if bucket_name is None:
+            self._stage_out_results_to_drive(results_content, collab_name, folder_path, results_dirname)
         else:
-            self._stage_out_results_to_bucket(results_content, results_dirname)
+            self._stage_out_results_to_bucket(results_content, bucket_name, folder_path, results_dirname)
 
-    def _stage_out_results_to_drive(self, results_folder_content, results_dirname):
-        if os.path.isdir(results_dirname):
-            results_dirname += f"_{datetime.now().strftime(DIR_TIME_STAMP_FRMT)}"
-        os.mkdir(results_dirname)
+    def _stage_out_results_to_drive(self, results_folder_content, collab_name, folder_path, results_dirname):
+        print(f"Storing results to Collab {collab_name} under {folder_path}/{results_dirname} ...", flush=True)
+        sub_folder = StoreResultsToDrive.create_results_folder_in_collab(collab_name, folder_path, results_dirname)
 
-        print(f"Downloading results to {results_dirname}...", flush=True)
         for key, val in results_folder_content.items():
             if isinstance(val, unicore_client.PathFile):
-                val.download(os.path.join(results_dirname, os.path.basename(key)))
+                with BytesIO() as in_memory_file:
+                    val.download(in_memory_file)
+                    file = sub_folder.upload(in_memory_file.getvalue(), os.path.basename(key))
+                    print(f'File {file.path} has been stored to Drive', flush=True)
 
-    def _stage_out_results_to_bucket(self, results_folder_content, results_dirname):
+    def _stage_out_results_to_bucket(self, results_content, bucket_name, folder_path, results_dirname):
         # TODO: stage-out to bucket as well
         print("TODO: Downloading result to Bucket...")
 

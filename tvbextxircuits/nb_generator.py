@@ -87,7 +87,7 @@ class NotebookFactory(object):
         if not issubclass(component_class, ComponentWithWidget):
             return None
 
-        if component_class.__name__ == 'StoreResults':
+        if component_class.__name__.startswith('StoreResults'):
             return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
 
         return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
@@ -158,9 +158,19 @@ class TimeSeriesNotebookGenerator(NotebookGenerator):
                "from tvbwidgets.api import TimeSeriesBrowser\n" \
                "from IPython.core.display_functions import display\n" \
                "\n" \
-               "tsw = TimeSeriesBrowser()\n" \
+               "tsw = TimeSeriesBrowser({0})\n" \
                "display(tsw)"
-        return code
+
+        inputs_str = self._prepare_component_inputs()
+        return code.format(inputs_str)
+
+    def _prepare_component_inputs(self):
+        collab_name = self.component_inputs.get('collab_name')
+        if collab_name is None:
+            return ''
+
+        folder_path = self.component_inputs.get('folder_path')
+        return f"'{collab_name}', '{folder_path}'"
 
 
 class PhasePlaneNotebookGenerator(NotebookGenerator):
