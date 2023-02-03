@@ -59,7 +59,8 @@ export function addNodeActionCommands(
                     if (sourceNode.name.includes('Literal')) {
                         const model_param = sourceNode.getOutPorts()[0].getOptions();
                         // @ts-ignore
-                        model_params_dict[port.getOptions().label] = model_param.label;
+                        const label = port.getOptions().label[0] === "★" ? port.getOptions().label.slice(1) : port.getOptions().label;
+                        model_params_dict[label] = model_param.label;
                     }
                 });
             }
