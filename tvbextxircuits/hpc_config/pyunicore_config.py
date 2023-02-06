@@ -237,9 +237,9 @@ class PyunicoreSubmitter(object):
 
         storage_config_file = content.get(STORAGE_CONFIG_FILE)
         if storage_config_file is None:
-            print(f"Could not find file: {STORAGE_CONFIG_FILE}", flush=True)
-            print("Could not finalize the stage out. "
-                  "Please download your results manually using the Monitor HPC button.", flush=True)
+            LOGGER.info(f"Could not find file: {STORAGE_CONFIG_FILE}")
+            LOGGER.info("Could not finalize the stage out. "
+                        "Please download your results manually using the Monitor HPC button.")
             return
         else:
             storage_config_file.download(STORAGE_CONFIG_FILE)
@@ -257,7 +257,7 @@ class PyunicoreSubmitter(object):
             self._stage_out_results_to_bucket(results_content, bucket_name, folder_path, results_dirname)
 
     def _stage_out_results_to_drive(self, results_folder_content, collab_name, folder_path, results_dirname):
-        print(f"Storing results to Collab {collab_name} under {folder_path}/{results_dirname} ...", flush=True)
+        LOGGER.info(f"Storing results to Collab {collab_name} under {folder_path}/{results_dirname} ...")
         sub_folder = StoreResultsToDrive.create_results_folder_in_collab(collab_name, folder_path, results_dirname)
 
         for key, val in results_folder_content.items():
@@ -265,7 +265,7 @@ class PyunicoreSubmitter(object):
                 with BytesIO() as in_memory_file:
                     val.download(in_memory_file)
                     file = sub_folder.upload(in_memory_file.getvalue(), os.path.basename(key))
-                    print(f'File {file.path} has been stored to Drive', flush=True)
+                    LOGGER.info(f'File {file.path} has been stored to Drive')
 
     def _stage_out_results_to_bucket(self, results_content, bucket_name, folder_path, results_dirname):
         # TODO: stage-out to bucket as well

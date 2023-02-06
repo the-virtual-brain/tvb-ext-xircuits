@@ -1,6 +1,10 @@
 from argparse import Namespace
 from typing import TypeVar, Generic
 
+from xai_components.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 T = TypeVar('T')
 
 
@@ -72,7 +76,7 @@ class Component(BaseComponent):
     done: False
 
     def do(self, ctx) -> BaseComponent:
-        print(f"\nExecuting: {self.__class__.__name__}")
+        LOGGER.info(f"Executing: {self.__class__.__name__}")
         self.execute(ctx)
 
         return self.done, self.next
