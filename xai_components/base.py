@@ -1,6 +1,10 @@
 from argparse import Namespace
 from typing import TypeVar, Generic, Tuple
 
+from xai_components.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 T = TypeVar('T')
 
 
@@ -89,7 +93,7 @@ class Component(BaseComponent):
         self.done = False
 
     def do(self, ctx) -> Tuple[bool, BaseComponent]:
-        print(f"\nExecuting: {self.__class__.__name__}")
+        LOGGER.info(f"\nExecuting: {self.__class__.__name__}")
         self.execute(ctx)
 
         return self.done, self.next
@@ -99,13 +103,13 @@ class Component(BaseComponent):
 
 
 class SubGraphExecutor:
-    
+
     def __init__(self, component):
         self.comp = component
-        
+
     def do(self, ctx):
         comp = self.comp
-        
+
         while comp is not None:
             is_done, comp = comp.do(ctx)
         return is_done, None

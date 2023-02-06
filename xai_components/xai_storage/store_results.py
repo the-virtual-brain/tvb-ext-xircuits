@@ -19,6 +19,9 @@ from tvbwidgets.core.auth import get_current_token
 from tvbextxircuits.utils import *
 from xai_components.base import xai_component, InArg, InCompArg
 from xai_components.base_tvb import ComponentWithWidget
+from xai_components.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
 
 
 @xai_component(color='rgb(153,0,102)')
@@ -78,23 +81,26 @@ class StoreResultsToDrive(ComponentWithWidget):
         repos = drive_client.repos.get_repos_by_name(collab_name)
 
         if repos is None or len(repos) == 0:
-            print(f'Could not find the selected Collab {collab_name} within the Drive.', flush=True)
+            LOGGER.error(f'Could not find the selected Collab {collab_name} within the Drive.')
             return False
 
         if len(repos) > 1:
-            print(f'Found multiple Collabs with the name {collab_name}. Storing files to the first one...')
+            LOGGER.warn(f'Found multiple Collabs with the name {collab_name}. Storing files to the first one...')
 
         folder = repos[0].get_dir(folder_path)
         sub_folder = folder.mkdir(output_directory)
-        print(f'Folder {sub_folder.path} has been created into Drive, under Collab {collab_name}', flush=True)
+        LOGGER.info(f'Folder {sub_folder.path} has been created into Drive, under Collab {collab_name}')
         return sub_folder
 
     def _upload_to_drive(self, files_to_upload, output_directory):
+        LOGGER.info('Uploading files to Drive...')
         sub_folder = self.create_results_folder_in_collab(self.collab_name.value, self.folder_path.value, output_directory)
+        if sub_folder is False:
+            return False
 
         for file_to_upload in files_to_upload:
             file = sub_folder.upload_local_file(file_to_upload)
-            print(f'File {file.path} has been stored to Drive', flush=True)
+            LOGGER.info(f'File {file.path} has been stored to Drive')
         return True
 
     def _create_temporary_dir(self, dirname):
@@ -103,6 +109,7 @@ class StoreResultsToDrive(ComponentWithWidget):
         return temp_dirname
 
     def _remove_temporary_dir(self, dirname):
+        LOGGER.info(f'Removing temporary local folder {dirname}')
         shutil.rmtree(f'.{dirname}')
 
 
@@ -115,18 +122,19 @@ class StoreFactory(object):
         if issubclass(type(data_piece), TimeSeries):
             return StoreFactory.store_time_series(data_piece, output_directory, h5_format)
         else:
-            print(f"Cannot store data of type {type(data_piece)} yet. Please contact the development team for this.")
+            LOGGER.error(f"Cannot store data of type {type(data_piece)} yet. "
+                         f"Please contact the development team for this.")
 
     @staticmethod
     def store_time_series(time_series, output_directory, h5_format):
         if h5_format:
             ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
             ts_file_path = os.path.join(output_directory, ts_file_name)
-            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...")
+            LOGGER.info(f"Storing timeseries for {time_series.title} monitor temporary to {ts_file_path}...")
             populate_datatypes_registry()
             h5.store(time_series, ts_file_path)
         else:
             ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npz")
-            print(f"Storing timeseries for {time_series.title} monitor to {ts_file_path}...")
+            LOGGER.info(f"Storing timeseries for {time_series.title} monitor temporary to {ts_file_path}...")
             numpy.savez(ts_file_path, data=time_series.data, time=time_series.time)
         return ts_file_path

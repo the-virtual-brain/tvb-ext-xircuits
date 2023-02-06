@@ -11,7 +11,7 @@ from .config import get_config
 
 import xai_components
 from xai_components.base_tvb import ComponentWithWidget
-from ..logger.builder import get_logger
+from tvbextxircuits.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
 
