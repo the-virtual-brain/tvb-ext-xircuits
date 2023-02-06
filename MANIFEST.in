@@ -3,6 +3,7 @@ include *.md
 include pyproject.toml
 recursive-include jupyter-config *.json
 
+include tvbextxircuits/logger/logging.conf
 include package.json
 include install.json
 include ts*.json
