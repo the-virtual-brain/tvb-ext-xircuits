@@ -11,6 +11,9 @@ from .config import get_config
 
 import xai_components
 from xai_components.base_tvb import ComponentWithWidget
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
 
 DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
@@ -161,7 +164,7 @@ class ComponentsParser:
                     class_path = ".".join([d["package_name"], d["class"]])
                     save_json_description(class_path, output_file_path)
                 except (NotImplementedError, AttributeError):
-                    print(f"Documentation has been ignored for this component {d['class']}")
+                    LOGGER.warn(f"Documentation has been ignored for this component {d['class']}")
 
     def get(self):
         error_msg = ""

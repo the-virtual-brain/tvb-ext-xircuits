@@ -18,8 +18,11 @@ from tvbwidgets.core.auth import get_current_token
 
 import tvbextxircuits._version as xircuits_version
 from tvbextxircuits.hpc_config.parse_files import get_files_to_upload
+from tvbextxircuits.logger.builder import get_logger
 from tvbextxircuits.utils import *
 from xai_components.xai_storage.store_results import StoreResultsToDrive
+
+LOGGER = get_logger(__name__)
 
 
 class PyunicoreSubmitter(object):
@@ -54,7 +57,7 @@ class PyunicoreSubmitter(object):
         return f'pip install -U pip && pip install allensdk && pip install {self.pip_libraries}'
 
     def connect_client(self):
-        print(f"Connecting to {self.site}...")
+        LOGGER.info(f"Connecting to {self.site}...")
         token = get_current_token()
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
@@ -63,27 +66,27 @@ class PyunicoreSubmitter(object):
         try:
             site_url = sites[self.site]
         except KeyError:
-            print(f'Site {self.site} seems to be down for the moment.')
+            LOGGER.error(f'Site {self.site} seems to be down for the moment.')
             return None
 
         try:
             client = unicore_client.Client(transport, site_url)
         except (AuthenticationFailedException, HTTPError):
-            print(f'Authentication to {self.site} failed, you might not have permissions to access it.', flush=True)
+            LOGGER.error(f'Authentication to {self.site} failed, you might not have permissions to access it.')
             return None
 
-        print(f'Authenticated to {self.site} with success.', flush=True)
+        LOGGER.info(f'Authenticated to {self.site} with success.')
         return client
 
     def _check_environment_ready(self, home_storage):
         # Pyunicore listdir method returns directory names suffixed by '/'
         if f"{self.env_dir}/" not in home_storage.listdir():
             home_storage.mkdir(self.env_dir)
-            print(f"Environment directory not found in HOME, will be created.")
+            LOGGER.info(f"Environment directory not found in HOME, will be created.")
             return False
 
         if f"{self.env_dir}/{self.env_name}/" not in home_storage.listdir(self.env_dir):
-            print(f"Environment not found in HOME, will be created.")
+            LOGGER.info(f"Environment not found in HOME, will be created.")
             return False
 
         try:
@@ -94,22 +97,22 @@ class PyunicoreSubmitter(object):
             remote_version = files[0].split("tvb_ext_xircuits-")[1].split('.dist-info')[0]
             local_version = xircuits_version.__version__
             if remote_version != local_version:
-                print(f"Found an older version {remote_version} of tvb-ext-xircuits installed in the environment, "
-                      f"will recreate it with {local_version}.")
+                LOGGER.info(f"Found an older version {remote_version} of tvb-ext-xircuits installed in the "
+                            f"environment, will recreate it with {local_version}.")
                 return False
             return True
         except HTTPError as e:
-            print(f"Could not find site-packages in the environment, will recreate it: {e}")
+            LOGGER.info(f"Could not find site-packages in the environment, will recreate it: {e}")
             return False
         except AssertionError:
-            print(f"Could not find tvb-ext-xircuits installed in the environment, will recreate it.")
+            LOGGER.info(f"Could not find tvb-ext-xircuits installed in the environment, will recreate it.")
             return False
         except IndexError:
-            print(f"Could not find tvb-ext-xircuits installed in the environment, will recreate it.")
+            LOGGER.info(f"Could not find tvb-ext-xircuits installed in the environment, will recreate it.")
             return False
 
     def _search_for_home_dir(self, client):
-        print(f"Accessing storages on {self.site}...", flush=True)
+        LOGGER.info(f"Accessing storages on {self.site}...")
         num = 10
         offset = 0
         storages = client.get_storages(num=num, offset=offset)
@@ -133,7 +136,7 @@ class PyunicoreSubmitter(object):
         Then, make sure to call this method from submit_job method before launching the workflow job.
         """
         local_package_name = f'tvb_ext_xircuits-{xircuits_version.__version__}-py3-none-any.whl'
-        print(f"You are running in dev mode, starting to install {local_package_name} on HPC {self.site}...")
+        LOGGER.info(f"You are running in dev mode, starting to install {local_package_name} on HPC {self.site}...")
         home_storage.rm(local_package_name)
         home_storage.upload(
             input_file=f'dist/{local_package_name}',
@@ -145,77 +148,77 @@ class PyunicoreSubmitter(object):
             self.PROJECT_KEY: self.project,
             self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
         job_env_prep = client.new_job(job_description, inputs=[])
-        print(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
-              f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
-              f"Waiting for job to finish..."
-              f"It can also be monitored interactively with the Monitor HPC button.", flush=True)
+        LOGGER.info(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
+                    f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
+                    f"Waiting for job to finish..."
+                    f"It can also be monitored interactively with the Monitor HPC button.")
         job_env_prep.poll()
         if job_env_prep.properties['status'] == unicore_status.FAILED:
-            print(f"Encountered an error during environment setup, stopping execution.")
+            LOGGER.error(f"Encountered an error during environment setup, stopping execution.")
             return
-        print(f"Successfully finished the environment setup.")
+        LOGGER.info(f"Successfully finished the environment setup.")
 
     def submit_job(self, executable, inputs, do_stage_out):
         client = self.connect_client()
         if client is None:
-            print(f"Could not connect to {self.site}, stopping execution.")
+            LOGGER.error(f"Could not connect to {self.site}, stopping execution.")
             return
 
         home_storage = self._search_for_home_dir(client)
         if home_storage is None:
-            print(f"Could not find a {self.storage_name} storage on {self.site}, stopping execution.")
+            LOGGER.error(f"Could not find a {self.storage_name} storage on {self.site}, stopping execution.")
             return
 
         is_env_ready = self._check_environment_ready(home_storage)
 
         if is_env_ready:
-            print(f"Environment is already prepared, it won't be recreated.")
+            LOGGER.info(f"Environment is already prepared, it won't be recreated.")
             # self._dev_mode(home_storage, client)
         else:
-            print(f"Preparing environment in your {self.storage_name} folder...", flush=True)
+            LOGGER.info(f"Preparing environment in your {self.storage_name} folder...")
             job_description = {
                 self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._create_env_command} && "
                                      f"{self._activate_command} && {self._install_dependencies_command}",
                 self.PROJECT_KEY: self.project,
                 self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
             job_env_prep = client.new_job(job_description, inputs=[])
-            print(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
-                  f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
-                  f"Waiting for job to finish..."
-                  f"It can also be monitored interactively with the Monitor HPC button.", )
+            LOGGER.info(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
+                        f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
+                        f"Waiting for job to finish..."
+                        f"It can also be monitored interactively with the Monitor HPC button.")
             job_env_prep.poll()
             if job_env_prep.properties['status'] == unicore_status.FAILED:
-                print(f"Encountered an error during environment setup, stopping execution.")
+                LOGGER.error(f"Encountered an error during environment setup, stopping execution.")
                 return
-            print(f"Successfully finished the environment setup.")
+            LOGGER.info(f"Successfully finished the environment setup.")
 
-        print("Launching workflow...", flush=True)
+        LOGGER.info("Launching workflow...")
         job_description = {
             self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && "
                                  f"python {executable} --is_hpc_launch=True",
             self.PROJECT_KEY: self.project}
         job_workflow = client.new_job(job_description, inputs=inputs)
-        print(f"Job is running at {self.site}: {job_workflow.working_dir.properties['mountPoint']}. "
-              f"Submission time is: {self._format_date_for_job(job_workflow)}.", flush=True)
-        print('Finished remote launch.', flush=True)
+        LOGGER.info(f"Job is running at {self.site}: {job_workflow.working_dir.properties['mountPoint']}. "
+                    f"Submission time is: {self._format_date_for_job(job_workflow)}.")
+        LOGGER.info('Finished remote launch.')
 
         if do_stage_out:
             self.monitor_job(job_workflow)
 
         else:
-            print('You can use Monitor HPC button to monitor it.', flush=True)
+            LOGGER.info('You can use Monitor HPC button to monitor it.')
 
     def monitor_job(self, job):
-        print('Waiting for job to finish...'
-              'It can also be monitored interactively with the Monitor HPC button.', flush=True)
+        LOGGER.info('Waiting for job to finish...'
+                    'It can also be monitored interactively with the Monitor HPC button.')
         job.poll()
 
         if job.properties['status'] == unicore_status.FAILED:
-            print(f"Job finished with errors.", flush=True)
+            LOGGER.error(f"Job finished with errors.")
             return
-        print(f"Job finished with success. Staging out the results...", flush=True)
+        LOGGER.info(f"Job finished with success. Staging out the results...")
         self.stage_out_results(job)
-        print(f"Finished execution.", flush=True)
+        LOGGER.info(f"Finished execution.")
 
     def stage_out_results(self, job):
         content = job.working_dir.listdir()
@@ -226,17 +229,17 @@ class PyunicoreSubmitter(object):
                 results_dirname = file_name
 
         if results_dirname is None:
-            print(f"Could not find results folder for this job. Nothing to stage out.", flush=True)
+            LOGGER.info(f"Could not find results folder for this job. Nothing to stage out.")
             return
 
-        print(f"Found sub dir: {results_dirname}", flush=True)
+        LOGGER.info(f"Found sub dir: {results_dirname}")
         results_content = job.working_dir.listdir(results_dirname)
 
         storage_config_file = content.get(STORAGE_CONFIG_FILE)
         if storage_config_file is None:
-            print(f"Could not find file: {STORAGE_CONFIG_FILE}", flush=True)
-            print("Could not finalize the stage out. "
-                  "Please download your results manually using the Monitor HPC button.", flush=True)
+            LOGGER.info(f"Could not find file: {STORAGE_CONFIG_FILE}")
+            LOGGER.info("Could not finalize the stage out. "
+                        "Please download your results manually using the Monitor HPC button.")
             return
         else:
             storage_config_file.download(STORAGE_CONFIG_FILE)
@@ -254,7 +257,7 @@ class PyunicoreSubmitter(object):
             self._stage_out_results_to_bucket(results_content, bucket_name, folder_path, results_dirname)
 
     def _stage_out_results_to_drive(self, results_folder_content, collab_name, folder_path, results_dirname):
-        print(f"Storing results to Collab {collab_name} under {folder_path}/{results_dirname} ...", flush=True)
+        LOGGER.info(f"Storing results to Collab {collab_name} under {folder_path}/{results_dirname} ...")
         sub_folder = StoreResultsToDrive.create_results_folder_in_collab(collab_name, folder_path, results_dirname)
 
         for key, val in results_folder_content.items():
@@ -262,11 +265,11 @@ class PyunicoreSubmitter(object):
                 with BytesIO() as in_memory_file:
                     val.download(in_memory_file)
                     file = sub_folder.upload(in_memory_file.getvalue(), os.path.basename(key))
-                    print(f'File {file.path} has been stored to Drive', flush=True)
+                    LOGGER.info(f'File {file.path} has been stored to Drive')
 
     def _stage_out_results_to_bucket(self, results_content, bucket_name, folder_path, results_dirname):
         # TODO: stage-out to bucket as well
-        print("TODO: Downloading result to Bucket...")
+        LOGGER.warn("TODO: Downloading result to Bucket...")
 
 
 def get_xircuits_file():
@@ -275,12 +278,12 @@ def get_xircuits_file():
     """
     # check that compiled .xircuits file is correctly passed as argument
     file_arg = sys.argv[1]
-    print(f'Identified the executable file: {file_arg}', flush=True)
+    LOGGER.info(f'Identified the executable file: {file_arg}')
 
     if os.path.exists(file_arg):
         full_path = os.path.abspath(file_arg)
     else:
-        print(f"Cannot find the executable file: {file_arg}", flush=True)
+        LOGGER.error(f"Cannot find the executable file: {file_arg}")
         full_path = None
 
     filename = os.path.basename(file_arg)
@@ -306,10 +309,10 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
 
 if __name__ == '__main__':
     if len(sys.argv) < 5:
-        print(f"Please provide the HPC project to run this job within, stopping execution.")
+        LOGGER.error(f"Please provide the HPC project to run this job within, stopping execution.")
     else:
         workflow_name, workflow_path = get_xircuits_file()
-        print("Preparing job...", flush=True)
+        LOGGER.info("Preparing job...")
         files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
         site_arg = sys.argv[2]
         project_arg = sys.argv[3]

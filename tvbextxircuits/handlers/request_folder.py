@@ -3,22 +3,26 @@ import os
 from urllib import request, parse
 from github import Github
 
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 def request_folder(folder, repo_name="XpressAi/Xircuits", branch="master"):
-    print("Downloading " + folder + " from " + repo_name + " branch " + branch)
+    LOGGER.info("Downloading " + folder + " from " + repo_name + " branch " + branch)
     g = Github()
     
     try:
         repo = g.get_repo(repo_name)
         contents = repo.get_contents(folder, ref=branch)
     except:
-       print(folder + " from " + repo_name + " branch " + branch + " does not exist!")
+       LOGGER.warn(folder + " from " + repo_name + " branch " + branch + " does not exist!")
        return 
 
     if not os.path.exists(folder):
         os.mkdir(folder)
     else:
-        print(folder + " already exists.")
+        LOGGER.warn(folder + " already exists.")
     
     base_url = "https://raw.githubusercontent.com/" + repo_name + "/" + branch    
     urls = {}
@@ -38,4 +42,4 @@ def request_folder(folder, repo_name="XpressAi/Xircuits", branch="master"):
         try:
             request.urlretrieve(url, urls[url])
         except:
-            print("Unable to retrieve " + urls[url] + ". Skipping...")
+            LOGGER.warn("Unable to retrieve " + urls[url] + ". Skipping...")
