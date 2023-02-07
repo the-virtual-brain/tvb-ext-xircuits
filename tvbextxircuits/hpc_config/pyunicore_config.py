@@ -22,7 +22,7 @@ from tvbextxircuits.logger.builder import get_logger
 from tvbextxircuits.utils import *
 from xai_components.xai_storage.store_results import StoreResultsToDrive
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger('tvbextxircuits.hpc_config.pyunicore_config')
 
 
 class PyunicoreSubmitter(object):
