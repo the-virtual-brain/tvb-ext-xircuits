@@ -11,6 +11,7 @@ import shutil
 from datetime import datetime
 import ebrains_drive
 import numpy
+from ebrains_drive.exceptions import DoesNotExist
 from tvb.config.init.datatypes_registry import populate_datatypes_registry
 from tvb.core.neocom import h5
 from tvb.storage.storage_interface import StorageInterface
@@ -87,7 +88,15 @@ class StoreResultsToDrive(ComponentWithWidget):
         if len(repos) > 1:
             LOGGER.warn(f'Found multiple Collabs with the name {collab_name}. Storing files to the first one...')
 
-        folder = repos[0].get_dir(folder_path)
+        if not folder_path.startswith('/'):
+            folder_path = '/' + folder_path
+
+        try:
+            folder = repos[0].get_dir(folder_path)
+        except DoesNotExist:
+            folder = repos[0].get_dir('/')
+            LOGGER.warn(f'Folder {folder_path} does not exist under the chosen Collab. Will store files under root...')
+
         sub_folder = folder.mkdir(output_directory)
         LOGGER.info(f'Folder {sub_folder.path} has been created into Drive, under Collab {collab_name}')
         return sub_folder
