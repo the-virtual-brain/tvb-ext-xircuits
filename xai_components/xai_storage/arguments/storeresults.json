@@ -1,9 +1,0 @@
-{
-    "description": "Component able to take a list of datatypes and store them to disk, as configured in the arguments.\nBy default, this component will store the datatypes on the Drive, in NPY format.\nYou can choose to store them on the Bucket by setting the <i><b>bucket_name</b></i> argument.\nIt also supports to store the datatypes in H5 format, if you set the <i><b>H5_format</b></i> parameter to True.",
-    "arguments": {
-        "data_to_store": "List of datatypes to store",
-        "bucket_name": "Leave this empty if data should be stored to Drive. If data should be stored on the Bucket, set this to the preferred bucket name.",
-        "folder_path": "Path to the folder where the results should be stored (valid for both Bucket and Drive)",
-        "H5_format": "By default data will be stored as NPY. Set this to True if you want them to be stored in H5 format."
-    }
-}
