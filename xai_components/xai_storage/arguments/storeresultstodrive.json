@@ -1,0 +1,9 @@
+{
+    "description": "Component able to take a list of datatypes and store them to the EBRAINS Drive, as configured in the arguments.\nBy default, this component will store the datatypes in NPY format.\n It also supports to store the datatypes in H5 format, if you set the <i><b>H5_format</b></i> parameter to True.",
+    "arguments": {
+        "data_to_store": "List of datatypes to store",
+        "collab_name": "Set this to the preferred Collab/repo name from the Drive",
+        "folder_path": "Path to the folder where the results should be stored under the Collab",
+        "H5_format": "By default data will be stored as NPY. Set this to True if you want them to be stored in H5 format."
+    }
+}
