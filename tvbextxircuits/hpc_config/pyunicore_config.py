@@ -12,8 +12,11 @@ from datetime import datetime
 from io import BytesIO
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
+import requests
 from pyunicore.helpers.jobs import Status as unicore_status
 from pyunicore.credentials import AuthenticationFailedException
+from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
+from tvb_ext_bucket.exceptions import CollabAccessError
 from tvbwidgets.core.auth import get_current_token
 
 import tvbextxircuits._version as xircuits_version
@@ -267,9 +270,25 @@ class PyunicoreSubmitter(object):
                     file = sub_folder.upload(in_memory_file.getvalue(), os.path.basename(key))
                     LOGGER.info(f'File {file.path} has been stored to Drive')
 
-    def _stage_out_results_to_bucket(self, results_content, bucket_name, folder_path, results_dirname):
-        # TODO: stage-out to bucket as well
-        LOGGER.warn("TODO: Downloading result to Bucket...")
+    def _stage_out_results_to_bucket(self, results_folder_content, bucket_name, folder_path, results_dirname):
+        LOGGER.info(f"Storing results to Bucket {bucket_name} under {folder_path}/{results_dirname}")
+        bucket_wrapper = BucketWrapper()
+
+        for key, val in results_folder_content.items():
+            if isinstance(val, unicore_client.PathFile):
+                with BytesIO() as in_memory_file:
+                    val.download(in_memory_file)
+
+                    try:
+                        upload_url = bucket_wrapper.get_bucket_upload_url(bucket_name, os.path.basename(key),
+                                                                          os.path.join(folder_path, results_dirname))
+                    except CollabAccessError:
+                        LOGGER.info(f'Could not upload file {key} to the selected Bucket. '
+                                    f'You can find the results under the job directory.')
+                        return
+                    resp = requests.request("PUT", upload_url, data=in_memory_file.getvalue())
+                    resp.raise_for_status()
+                    LOGGER.info(f'File {key} has been stored to Bucket')
 
 
 def get_xircuits_file():
