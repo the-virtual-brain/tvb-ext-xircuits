@@ -64,7 +64,13 @@ class PyunicoreSubmitter(object):
         token = get_current_token()
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
-        sites = registry.site_urls
+
+        try:
+            sites = registry.site_urls
+        except Exception:
+            LOGGER.error(f"Unicore seems to be down at the moment. "
+                         f"Please check service availability and try again later")
+            return None
 
         try:
             site_url = sites[self.site]
