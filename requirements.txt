@@ -21,5 +21,6 @@ tqdm
 tvb-library
 tvb-gdist==2.1.0
 tvb-framework
+tvb-ext-bucket
 tvb-ext-unicore
 tvb-widgets>=1.0
