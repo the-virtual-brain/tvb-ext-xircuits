@@ -15,6 +15,8 @@ from ebrains_drive.exceptions import DoesNotExist
 from tvb.config.init.datatypes_registry import populate_datatypes_registry
 from tvb.core.neocom import h5
 from tvb.storage.storage_interface import StorageInterface
+from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
+from tvb_ext_bucket.exceptions import CollabAccessError
 from tvbwidgets.core.auth import get_current_token
 
 from tvbextxircuits.utils import *
@@ -53,12 +55,7 @@ class StoreResultsToDrive(ComponentWithWidget):
 
     def _store_to_drive(self):
         # prepare output folder
-        output_directory = STORE_RESULTS_DIR + f"_{datetime.now().strftime(DIR_TIME_STAMP_FRMT)}"
-        if self.is_hpc_launch:
-            os.mkdir(output_directory)
-            temp_local_directory = output_directory
-        else:
-            temp_local_directory = self._create_temporary_dir(output_directory)
+        temp_local_directory = create_temporary_dir()
 
         files_to_upload = list()
         for data_piece in self.data_to_store.value:
@@ -66,9 +63,9 @@ class StoreResultsToDrive(ComponentWithWidget):
             files_to_upload.append(data_file)
 
         if not self.is_hpc_launch:
-            is_stored = self._upload_to_drive(files_to_upload, output_directory)
+            is_stored = self._upload_to_drive(files_to_upload, temp_local_directory)
             if is_stored:
-                self._remove_temporary_dir(output_directory)
+                remove_temporary_dir(temp_local_directory)
 
     @staticmethod
     def connect_to_drive():
@@ -103,7 +100,8 @@ class StoreResultsToDrive(ComponentWithWidget):
 
     def _upload_to_drive(self, files_to_upload, output_directory):
         LOGGER.info('Uploading files to Drive...')
-        sub_folder = self.create_results_folder_in_collab(self.collab_name.value, self.folder_path.value, output_directory)
+        sub_folder = self.create_results_folder_in_collab(self.collab_name.value, self.folder_path.value,
+                                                          output_directory)
         if sub_folder is False:
             return False
 
@@ -112,14 +110,80 @@ class StoreResultsToDrive(ComponentWithWidget):
             LOGGER.info(f'File {file.path} has been stored to Drive')
         return True
 
-    def _create_temporary_dir(self, dirname):
-        temp_dirname = f'.{dirname}'
-        os.mkdir(temp_dirname)
-        return temp_dirname
 
-    def _remove_temporary_dir(self, dirname):
-        LOGGER.info(f'Removing temporary local folder {dirname}')
-        shutil.rmtree(f'.{dirname}')
+@xai_component(color='rgb(153,0,102)')
+class StoreResultsToBucket(ComponentWithWidget):
+    data_to_store: InCompArg[list]
+    bucket_name: InCompArg[str]
+    folder_path: InArg[str]
+    H5_format: InArg[bool]
+
+    def __init__(self):
+        self.done = False
+        self.is_hpc_launch = False
+        self.bucket_name = InArg('')
+        self.folder_path = InArg('')
+        self.H5_format = InArg(False)
+
+    def execute(self, ctx) -> None:
+        args = ctx.get('args')
+        if args is not None:
+            self.is_hpc_launch = args.is_hpc_launch
+        if self.is_hpc_launch:
+            # Save the config in json format for stage-out step
+            json_config = {BUCKET_NAME_KEY: self.bucket_name.value,
+                           FOLDER_PATH_KEY: self.folder_path.value}
+            with open(STORAGE_CONFIG_FILE, 'w') as f:
+                json.dump(json_config, f)
+        self._store_to_bucket()
+
+    def _upload_to_bucket(self, files_to_upload, output_directory):
+        LOGGER.info('Uploading files to Drive...')
+        bucket_wrapper = BucketWrapper()
+
+        for file_to_upload in files_to_upload:
+            filename = os.path.basename(file_to_upload)
+            folder = os.path.join(self.folder_path.value, output_directory)
+
+            try:
+                is_uploaded = bucket_wrapper.upload_file_to(file_to_upload, self.bucket_name.value, folder, filename)
+                if is_uploaded:
+                    LOGGER.info(f'File {file_to_upload} has been stored to Bucket')
+                    return True
+                else:
+                    LOGGER.info(f'Could not upload file {file_to_upload} to the selected Bucket. '
+                                f'You can find the results locally.')
+                    return False
+
+            except CollabAccessError:
+                LOGGER.info(f'Could not upload file {file_to_upload} to the selected Bucket. '
+                            f'You can find the results locally.')
+                return False
+
+    def _store_to_bucket(self):
+        # prepare output folder
+        temp_local_directory = create_temporary_dir()
+
+        files_to_upload = list()
+        for data_piece in self.data_to_store.value:
+            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.H5_format.value)
+            files_to_upload.append(data_file)
+
+        if not self.is_hpc_launch:
+            is_stored = self._upload_to_bucket(files_to_upload, temp_local_directory)
+            if is_stored:
+                remove_temporary_dir(temp_local_directory)
+
+
+def create_temporary_dir():
+    dirname = STORE_RESULTS_DIR + f"_{datetime.now().strftime(DIR_TIME_STAMP_FRMT)}"
+    os.mkdir(dirname)
+    return dirname
+
+
+def remove_temporary_dir(dirname):
+    LOGGER.info(f'Removing temporary local folder {dirname}')
+    shutil.rmtree(dirname)
 
 
 class StoreFactory(object):
