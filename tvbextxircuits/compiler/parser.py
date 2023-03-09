@@ -1,8 +1,8 @@
 import json
 import re
 
-from xircuits.compiler.node import Node
-from xircuits.compiler.port import Port
+from tvbextxircuits.compiler.node import Node
+from tvbextxircuits.compiler.port import Port
 
 
 class XircuitsFileParser:

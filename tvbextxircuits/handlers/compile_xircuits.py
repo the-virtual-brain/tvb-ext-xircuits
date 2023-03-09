@@ -5,7 +5,7 @@ from jupyter_server.base.handlers import APIHandler
 
 from pathlib import Path
 
-from xircuits.compiler import compile
+from tvbextxircuits.compiler import compile
 import traceback
 
 
@@ -34,13 +34,13 @@ class CompileXircuitsFileRouteHandler(APIHandler):
                     compile(infile, outfile, component_python_paths)
 
             msg = "completed"
-        
+
         except Exception:
             msg = traceback.format_exc()
             print(msg)
             pass
-        
+
         finally:
-                
+
             data = {"message": msg}
             self.finish(json.dumps(data))

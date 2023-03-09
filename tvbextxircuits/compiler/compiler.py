@@ -1,7 +1,7 @@
 import json
 
-from xircuits.compiler.parser import XircuitsFileParser
-from xircuits.compiler.generator import CodeGenerator
+from tvbextxircuits.compiler.parser import XircuitsFileParser
+from tvbextxircuits.compiler.generator import CodeGenerator
 
 
 def compile(input_file, output_file, component_python_paths=None):

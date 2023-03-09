@@ -1,7 +1,7 @@
 from typing import List
 from dataclasses import dataclass
 
-from xircuits.compiler.port import Port
+from tvbextxircuits.compiler.port import Port
 
 
 @dataclass
