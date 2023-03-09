@@ -5,7 +5,7 @@ from jupyter_server.base.handlers import APIHandler
 
 from pathlib import Path
 
-from xircuits.compiler import compile
+from tvbextxircuits.compiler import compile
 
 
 class CompileXircuitsFileRouteHandler(APIHandler):
