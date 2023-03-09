@@ -27,19 +27,19 @@ DEFAULT_COMPONENTS_PATHS = [
 # A good point in time to do that, would be when the python compilation step
 # gets refactored
 DEFAULT_COMPONENTS = {
-    # 1: { "name": "Get Hyper-parameter String Name", "returnType": "string"},
-    # 2: { "name": "Get Hyper-parameter Int Name", "returnType": "int"},
-    # 3: { "name": "Get Hyper-parameter Float Name", "returnType": "float"},
-    # 4: { "name": "Get Hyper-parameter Boolean Name", "returnType": "boolean"},
-    5: { "name": "Literal String", "returnType": "string"},
-    6:{ "name": "Literal Integer", "returnType": "int"},
-    7:{ "name": "Literal Float", "returnType": "float"},
-    8:{ "name": "Literal True", "returnType": "boolean"},
-    9:{ "name": "Literal False", "returnType": "boolean"},
-    10:{ "name": "Literal List", "returnType": "list"},
-    11:{ "name": "Literal Tuple", "returnType": "tuple"},
-    12:{ "name": "Literal Dict", "returnType": "dict"},
-    13:{ "name": "Literal Numpy Array", "returnType": "numpy.ndarray"},
+    # 1: {"name": "Get Argument String Name", "returnType": "string", "color": "lightpink"},
+    # 2: {"name": "Get Argument Integer Name", "returnType": "int", "color": "blue"},
+    # 3: {"name": "Get Argument Float Name", "returnType": "float", "color": "green"},
+    # 4: {"name": "Get Argument Boolean Name", "returnType": "boolean", "color": "red"},
+    5: {"name": "Literal String", "returnType": "string", "color": "lightpink"},
+    6: {"name": "Literal Integer", "returnType": "int", "color": "blue"},
+    7: {"name": "Literal Float", "returnType": "float", "color": "green"},
+    8: {"name": "Literal True", "returnType": "boolean", "color": "red"},
+    9: {"name": "Literal False", "returnType": "boolean", "color": "red"},
+    10: {"name": "Literal List", "returnType": "list", "color": "yellow"},
+    11: {"name": "Literal Tuple", "returnType": "tuple", "color": "purple"},
+    12: {"name": "Literal Dict", "returnType": "dict", "color": "orange"},
+    13: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
     # 2: { "name": "Convert to Aurora", "returnType": "convert"},
@@ -70,14 +70,13 @@ COLOR_PALETTE = [
 GROUP_GENERAL = "GENERAL"
 GROUP_ADVANCED = "ADVANCED"
 
+
 def remove_prefix(input_str, prefix):
     prefix_len = len(prefix)
     if input_str[0:prefix_len] == prefix:
         return input_str[prefix_len:]
     else:
         return input_str
-
-
 
 
 def read_orig_code(node: ast.AST, lines):
@@ -92,7 +91,7 @@ def read_orig_code(node: ast.AST, lines):
         return line[col_from:col_to]
     else:
         start_line = lines[line_from][col_from:]
-        between_lines = lines[(line_from+1):line_to]
+        between_lines = lines[(line_from + 1):line_to]
         end_line = lines[line_to][col_to]
         return "\n".join(chain([start_line], between_lines, [end_line]))
 
@@ -108,6 +107,7 @@ class ComponentsParser:
 
     def get_components(self):
         components = []
+        error_msg = ""
 
         for id, c in DEFAULT_COMPONENTS.items():
             components.append({
@@ -115,7 +115,8 @@ class ComponentsParser:
                 "header": GROUP_GENERAL,
                 "category": GROUP_GENERAL,
                 "variables": [],
-                "type": c["returnType"]
+                "type": c["returnType"],
+                "color": c.get('color') or None
             })
 
         default_paths = set(pathlib.Path(p).expanduser().resolve() for p in sys.path)
@@ -146,12 +147,21 @@ class ComponentsParser:
                             self.extract_components(f, directory, python_path) for f in python_files))
 
         components = list({(c["header"], c["task"]): c for c in components}.values())
-        return components
+
+        # Set up component colors according to palette
+        for idx, c in enumerate(components):
+            if c.get("color") is None:
+                c["color"] = COLOR_PALETTE[idx % len(COLOR_PALETTE)]
+
+        data = {"components": components,
+                "error_msg": error_msg}
+
+        return data
 
     def generate_doc_files(self):
         from tvbextxircuits.handlers.json_parser import save_json_description
 
-        components = self.get_components()
+        components = self.get_components().get("components")
 
         # iterate through all the components and create the specific description json file for each one
         for d in components:
@@ -169,7 +179,7 @@ class ComponentsParser:
     def get(self):
         error_msg = ""
 
-        components = self.get_components()
+        components = self.get_components().get("components")
 
         # Set up component colors according to palette
         for idx, c in enumerate(components):
@@ -180,8 +190,6 @@ class ComponentsParser:
                 "error_msg": error_msg}
 
         return json.dumps(data)
-
-
 
     def get_component_directories(self):
         paths = list(DEFAULT_COMPONENTS_PATHS)
@@ -195,7 +203,8 @@ class ComponentsParser:
         parse_tree = ast.parse(file_path.read_text(), file_path)
         # Look for top level class definitions that are decorated with "@xai_component"
         is_xai_component = lambda node: isinstance(node, ast.ClassDef) and \
-                                        any((isinstance(decorator, ast.Call) and decorator.func.id == "xai_component") or \
+                                        any((isinstance(decorator,
+                                                        ast.Call) and decorator.func.id == "xai_component") or \
                                             (isinstance(decorator, ast.Name) and decorator.id == "xai_component")
                                             for decorator in node.decorator_list)
 
@@ -206,39 +215,41 @@ class ComponentsParser:
         name = node.name
 
         keywords = {kw.arg: kw.value.value for kw in chain.from_iterable(decorator.keywords
-                        for decorator in node.decorator_list
-                        if isinstance(decorator, ast.Call) and decorator.func.id == "xai_component")}
+                                                                         for decorator in node.decorator_list
+                                                                         if isinstance(decorator,
+                                                                                       ast.Call) and decorator.func.id == "xai_component")}
 
         # Group Name for Display
         category = remove_prefix(file_path.parent.name, "xai_").upper()
 
         is_arg = lambda n: isinstance(n, ast.AnnAssign) and \
-                                           isinstance(n.annotation, ast.Subscript) and \
-                                           n.annotation.value.id in ('InArg', 'InCompArg', 'OutArg')
+                           isinstance(n.annotation, ast.Subscript) and \
+                           n.annotation.value.id in ['InArg', 'InCompArg', 'OutArg']
+
+        is_flow_arg = lambda n: isinstance(n, ast.AnnAssign) and \
+                                isinstance(n.annotation, ast.Name) and \
+                                n.annotation.id in ['BaseComponent']
 
         python_version = platform.python_version_tuple()
-        if int(python_version[1]) == 8:
-            variables = [
-                {
+
+        variables = []
+        for v in (node.body):
+            if is_flow_arg(v):
+                variables.append({
+                    "name": v.target.id,
+                    "kind": v.annotation.id,
+                })
+                continue
+            elif is_arg(v):
+                variables.append({
                     "name": v.target.id,
                     "kind": v.annotation.value.id,
-                    "type": read_orig_code(v.annotation.slice.value, file_lines)
-                }
-                for v in node.body if is_arg(v)
-            ]
-        else:
-            variables = [
-                {
-                    "name": v.target.id,
-                    "kind": v.annotation.value.id,
-                    # "type": ast.unparse(v.annotation.slice)
-                    "type": read_orig_code(v.annotation.slice, file_lines)
-                }
-                for v in node.body if is_arg(v)
-            ]
+                    "type": read_orig_code(
+                        v.annotation.slice.value if int(python_version[1]) == 8 else v.annotation.slice, file_lines)
+                })
+                continue
 
         docstring = ast.get_docstring(node)
-
         lineno = [
             {
                 "lineno": node.lineno,
@@ -246,22 +257,23 @@ class ComponentsParser:
             }
         ]
 
-
         description = {}
-        path = os.path.join(xai_components.__path__[0], os.path.dirname(file_path), "arguments", str(node.name).lower() + ".json")
+        path = os.path.join(xai_components.__path__[0], os.path.dirname(file_path), "arguments",
+                            str(node.name).lower() + ".json")
         if os.path.isfile(path):
             with open(path) as file:
                 description = json.load(file)
-
 
         has_widget = component_has_widget_assigned(node)
 
         output = {
             "class": name,
-            "package_name": ("xai_components." if python_path is None else "") + file_path.as_posix().replace("/", ".")[:-3],
+            "package_name": ("xai_components." if python_path is None else "") + file_path.as_posix().replace("/", ".")[
+                                                                                 :-3],
             "python_path": str(python_path) if python_path is not None else None,
             "abs_file_path": os.path.join(str(python_path), str(file_path)) if python_path is not None else None,
-            "file_path": "xai_components/" + (file_path.as_posix()[:-3] + ".py" if platform.system() == "Windows" else str(file_path)),
+            "file_path": "xai_components/" + (
+                file_path.as_posix()[:-3] + ".py" if platform.system() == "Windows" else str(file_path)),
             "task": name,
             "header": GROUP_ADVANCED,
             "category": category,
@@ -272,7 +284,6 @@ class ComponentsParser:
             "lineno": lineno,
             "has_widget": has_widget
         }
-
 
         output.update(keywords)
 
