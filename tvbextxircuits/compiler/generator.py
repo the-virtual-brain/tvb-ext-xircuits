@@ -124,7 +124,7 @@ def main(args):
                     # Literal
                     assignment_target += ".value"
                     tpl = ast.parse("%s = 1" % (assignment_target))
-                    if port.source.name == "Literal String":
+                    if port.source.name in ("Literal String", "Literal Numpy Array"):
                         value = port.sourceLabel
                     else:
                         value = eval(port.sourceLabel)
