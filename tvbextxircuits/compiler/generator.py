@@ -208,7 +208,8 @@ if __name__ == '__main__':
         }
 
         code = """
-parser = ArgumentParser()        
+parser = ArgumentParser()
+parser.add_argument('--is_hpc_launch', default=False, type=bool)  
         """
         body = ast.parse(code).body
 
