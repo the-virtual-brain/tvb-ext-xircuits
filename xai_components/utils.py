@@ -64,6 +64,8 @@ def set_values(component, tvb_object):
                 # if default for attr is None and was not set by user do not attempt to set it
                 if xircuits_value is None:
                     continue
+                if type(xircuits_value) is str:
+                    xircuits_value = eval(xircuits_value)
                 # if value set by a user not a numpy array, we must create it using the float/int provided
                 if type(xircuits_value) != np.ndarray:
                     dtype = attr_value.dtype.name  # needed for NArrays of int type
