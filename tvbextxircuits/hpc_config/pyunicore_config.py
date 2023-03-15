@@ -29,9 +29,10 @@ LOGGER = get_logger('tvbextxircuits.hpc_config.pyunicore_config')
 
 
 class PyunicoreSubmitter(object):
-    storage_name = 'HOME'
+    storage_name = {'DAINT-CSCS': 'HOME', 'JUSUF': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
+    python_dir = {'DAINT-CSCS': 'python3.9', 'JUSUF': 'python3.10'}
     modules = {'DAINT-CSCS': 'cray-python', 'JUSUF': 'Python'}
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
@@ -45,7 +46,7 @@ class PyunicoreSubmitter(object):
 
     @property
     def _activate_command(self):
-        return f'source ${self.storage_name}/{self.env_dir}/{self.env_name}/bin/activate'
+        return f'source ${self.storage_name[self.site]}/{self.env_dir}/{self.env_name}/bin/activate'
 
     @property
     def _module_load_command(self):
@@ -53,7 +54,9 @@ class PyunicoreSubmitter(object):
 
     @property
     def _create_env_command(self):
-        return f'cd ${self.storage_name}/{self.env_dir} && rm -rf {self.env_name} && python -mvenv {self.env_name}'
+        return f'cd ${self.storage_name[self.site]}/{self.env_dir} ' \
+               f'&& rm -rf {self.env_name} ' \
+               f'&& python -mvenv {self.env_name}'
 
     @property
     def _install_dependencies_command(self):
@@ -100,7 +103,8 @@ class PyunicoreSubmitter(object):
 
         try:
             # Check whether tvb-ext-xircuits is installed in HPC env and if version is updated
-            site_packages = home_storage.listdir(f'{self.env_dir}/{self.env_name}/lib/python3.9/site-packages')
+            site_packages_path = f'{self.env_dir}/{self.env_name}/lib/{self.python_dir[self.site]}/site-packages'
+            site_packages = home_storage.listdir(site_packages_path)
             files = [file for file in site_packages if "tvb_ext_xircuits" in file]
             assert len(files) >= 1
             remote_version = files[0].split("tvb_ext_xircuits-")[1].split('.dist-info')[0]
@@ -127,7 +131,7 @@ class PyunicoreSubmitter(object):
         storages = client.get_storages(num=num, offset=offset)
         while len(storages) > 0:
             for storage in storages:
-                if storage.resource_url.endswith(self.storage_name):
+                if storage.resource_url.endswith(self.storage_name[self.site]):
                     return storage
             offset += num
             storages = client.get_storages(num=num, offset=offset)
@@ -175,7 +179,7 @@ class PyunicoreSubmitter(object):
 
         home_storage = self._search_for_home_dir(client)
         if home_storage is None:
-            LOGGER.error(f"Could not find a {self.storage_name} storage on {self.site}, stopping execution.")
+            LOGGER.error(f"Could not find a {self.storage_name[self.site]} storage on {self.site}, stopping execution.")
             return
 
         is_env_ready = self._check_environment_ready(home_storage)
@@ -184,7 +188,7 @@ class PyunicoreSubmitter(object):
             LOGGER.info(f"Environment is already prepared, it won't be recreated.")
             # self._dev_mode(home_storage, client)
         else:
-            LOGGER.info(f"Preparing environment in your {self.storage_name} folder...")
+            LOGGER.info(f"Preparing environment in your {self.storage_name[self.site]} folder...")
             job_description = {
                 self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._create_env_command} && "
                                      f"{self._activate_command} && {self._install_dependencies_command}",
