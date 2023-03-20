@@ -3,6 +3,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import { HTMLSelect } from "@jupyterlab/ui-components";
+import Collapsible from "react-collapsible";
 
 export const RunDialog = ({
 	runTypes,
@@ -124,6 +125,38 @@ export const RunDialog = ({
 						>
 						</input>
 					</div>
+					<Collapsible trigger="Advanced setup:" triggerTagName="div" triggerClassName="CustomTriggerCSS">
+						<div>
+							Filesystem:
+							<div>
+								<input
+									name='filesystem'
+									title={'Filesystem to use on HPC for preparing the environment'}
+									style={{ width: 300, fontSize: 13 }}/>
+							</div>
+							Python dir:
+							<div>
+								<input
+									name='python'
+									title={'Python directory to use on HPC'}
+									style={{ width: 300, fontSize: 13 }}/>
+							</div>
+							Modules to load:
+							<div>
+								<input
+									name='modules'
+									title={'Modules to load on HPC'}
+									style={{ width: 300, fontSize: 13 }}/>
+							</div>
+							Libraries to install:
+							<div>
+								<input
+									name='libraries'
+									title={'Libraries to install on HPC'}
+									style={{ width: 300, fontSize: 13 }}/>
+							</div>
+						</div>
+					</Collapsible>
 				</>
 				: null}
 			</div>
