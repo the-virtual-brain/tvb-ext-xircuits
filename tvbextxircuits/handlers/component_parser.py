@@ -153,7 +153,9 @@ class ComponentsParser:
             if c.get("color") is None:
                 c["color"] = COLOR_PALETTE[idx % len(COLOR_PALETTE)]
 
-        data = {"components": components,
+        sorted_components = sorted(components, key=lambda x: x.get('class', 'a').upper())
+
+        data = {"components": sorted_components,
                 "error_msg": error_msg}
 
         return data
