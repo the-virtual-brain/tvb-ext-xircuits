@@ -145,7 +145,7 @@ export class XPipePanel extends ReactWidget {
 
             const sourcePort = this.createLiteralNodeForParam(
                 param_type,
-                param['value'],
+                param['value'].toString(),
                 position_x,
                 position_y + position_y_offset
             );
@@ -175,7 +175,7 @@ export class XPipePanel extends ReactWidget {
 
     const node = new CustomNodeModel({
       name: 'Literal ' + type.charAt(0).toUpperCase() + type.slice(1),
-      color: 'rgb(255,153,102)',
+      color: 'green',
       extras: { type: type }
     });
 
