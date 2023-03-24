@@ -19,6 +19,9 @@ export const RunDialog = ({
 	const [runType, setRunType] = useState("");
 	const [runConfig, setRunConfig] = useState("");
 	const [command, setCommand] = useState("");
+	const [filesystem, setFilesystem] = useState("HOME");
+	const [python, setPython] = useState("python=3.9");
+	const [modules, setModules] = useState("cray-python");
 
 	const handleChecked = (e, i) => {
 		let newChecked = [...checked];
@@ -45,6 +48,15 @@ export const RunDialog = ({
 		setRunConfig(configName);
 		if (configName == "-") {
 			setCommand("");
+		}
+		if (configName == "JUSUF") {
+			setFilesystem('PROJECT');
+			setPython('python3.10');
+			setModules('Python');
+		} else {
+			setFilesystem('HOME');
+			setPython('python3.9');
+			setModules("cray-python");
 		}
 	};
 
@@ -84,6 +96,7 @@ export const RunDialog = ({
 					<div>
 						<input
 							name='filesystem'
+							defaultValue={filesystem}
 							title={'Filesystem to use on HPC for preparing the environment'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
@@ -91,6 +104,7 @@ export const RunDialog = ({
 					<div>
 						<input
 							name='python'
+							defaultValue={python}
 							title={'Python directory to use on HPC'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
@@ -98,6 +112,7 @@ export const RunDialog = ({
 					<div>
 						<input
 							name='modules'
+							defaultValue={modules}
 							title={'Modules to load on HPC'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
@@ -105,6 +120,7 @@ export const RunDialog = ({
 					<div>
 						<input
 							name='libraries'
+							defaultValue={'tvb-ext-xircuits tvb-data'}
 							title={'Libraries to install on HPC'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
