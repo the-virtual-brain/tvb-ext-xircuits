@@ -1232,12 +1232,20 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let runProject = dialogResult["value"]['project'] ?? "";
 		let runStageOut = dialogResult["value"]['stage-out'] ?? "";
 		let runMonitoring = dialogResult["value"]['monitoring'] ?? "";
+		let runFilesystem = dialogResult["value"]['filesystem'] ?? "";
+		let runPython = dialogResult["value"]['python'] ?? "";
+		let runModules = dialogResult["value"]['modules'] ?? "";
+		let runLibraries = dialogResult["value"]['libraries'] ?? "";
 		if (runConfigs.length != 0) {
 			runConfigs.map(cfg => {
 				if (cfg.run_type == runType && cfg.run_config_name == runConfig) {
 					config = cfg;
-					cfg['project'] = runProject;
+					cfg['project'] = runProject.length > 0 ? runProject : 'NONE';
 					cfg['stage-out'] = runStageOut;
+					cfg['filesystem'] = runFilesystem.length > 0 ? runFilesystem : 'NONE';
+					cfg['python'] = runPython.length > 0 ? runPython : 'NONE';
+					cfg['modules'] = runModules.length > 0 ? runModules : 'NONE';
+					cfg['libraries'] = runLibraries.length > 0 ? runLibraries : 'NONE';
 					setLastConfigs(cfg);
 				}
 			})

@@ -260,8 +260,13 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     function doRemoteRun(path: string, cfg){
 
       try {
-        let command_str = cfg['command'] + " " + path + " " + cfg['run_config_name'] + " " + cfg['project']
-            + " " + cfg['stage-out'];
+        let command_str = cfg['command'] + " " + path + " " + cfg['run_config_name']
+            + " " + "'" + cfg['project'] + "'"
+            + " " + cfg['stage-out']
+            + " " + "'" + cfg['filesystem'] + "'"
+            + " " + "'" + cfg['python'] + "'"
+            + " " + "'" + cfg['modules'] + "'"
+            + " " + "'" + cfg['libraries'] + "'" ;
         let code_str = "\nfrom subprocess import Popen, PIPE\n\n";
 
         code_str += `command_str= "${command_str}"\n`;

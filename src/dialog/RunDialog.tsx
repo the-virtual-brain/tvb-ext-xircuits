@@ -3,6 +3,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import { HTMLSelect } from "@jupyterlab/ui-components";
+import useCollapse from 'react-collapsed';
 
 export const RunDialog = ({
 	runTypes,
@@ -18,6 +19,9 @@ export const RunDialog = ({
 	const [runType, setRunType] = useState("");
 	const [runConfig, setRunConfig] = useState("");
 	const [command, setCommand] = useState("");
+	const [filesystem, setFilesystem] = useState("HOME");
+	const [python, setPython] = useState("python=3.9");
+	const [modules, setModules] = useState("cray-python");
 
 	const handleChecked = (e, i) => {
 		let newChecked = [...checked];
@@ -45,6 +49,15 @@ export const RunDialog = ({
 		if (configName == "-") {
 			setCommand("");
 		}
+		if (configName == "JUSUF") {
+			setFilesystem('PROJECT');
+			setPython('python3.10');
+			setModules('Python');
+		} else {
+			setFilesystem('HOME');
+			setPython('python3.9');
+			setModules("cray-python");
+		}
 	};
 
 	useEffect(() => {
@@ -66,6 +79,56 @@ export const RunDialog = ({
 			})
 		}
 	}, [runConfig])
+
+	function Collapsible() {
+    	const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
+		return (
+		<div className="collapsible">
+			<div className="header" {...getToggleProps()}>
+				{isExpanded ? 'Advanced setup' : 'Advanced setup'}
+				<div className="icon">
+                	<i className={'fas fa-chevron-circle-' + (isExpanded ? 'up' : 'down')}></i>
+            </div>
+			</div>
+			<div {...getCollapseProps()}>
+				<div>
+					Filesystem:
+					<div>
+						<input
+							name='filesystem'
+							defaultValue={filesystem}
+							title={'Filesystem to use on HPC for preparing the environment'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Python dir:
+					<div>
+						<input
+							name='python'
+							defaultValue={python}
+							title={'Python directory to use on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Modules to load:
+					<div>
+						<input
+							name='modules'
+							defaultValue={modules}
+							title={'Modules to load on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Libraries to install:
+					<div>
+						<input
+							name='libraries'
+							defaultValue={'tvb-ext-xircuits tvb-data'}
+							title={'Libraries to install on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+				</div>
+			</div>
+		</div>
+		);
+	}
 
 	return (
 		<form>
@@ -124,6 +187,7 @@ export const RunDialog = ({
 						>
 						</input>
 					</div>
+					<Collapsible/>
 				</>
 				: null}
 			</div>

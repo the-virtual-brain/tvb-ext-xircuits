@@ -44,6 +44,16 @@ class PyunicoreSubmitter(object):
         self.site = site
         self.project = project
 
+    def set_hpc_settings(self, filesystem, python, libraries, modules):
+        if filesystem:
+            self.storage_name[self.site] = filesystem
+        if python:
+            self.python_dir[self.site] = python
+        if libraries:
+            self.pip_libraries = libraries
+        if modules:
+            self.modules[self.site] = modules
+
     @property
     def _activate_command(self):
         return f'source ${self.storage_name[self.site]}/{self.env_dir}/{self.env_name}/bin/activate'
@@ -320,7 +330,8 @@ def get_xircuits_file():
     return filename, full_path
 
 
-def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_stage_out=False):
+def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_stage_out=False,
+               filesystem=None, python=None, libraries=None, modules=None):
     """
     Submit a job to a EBRAINS HPC site
     :param site: unicore site
@@ -333,19 +344,26 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
     if files_to_upload:
         inputs.extend(files_to_upload)
 
-    PyunicoreSubmitter(site, project).submit_job(workflow_file_name, inputs, do_stage_out)
+    submitter = PyunicoreSubmitter(site, project)
+    submitter.set_hpc_settings(filesystem, python, libraries, modules)
+    submitter.submit_job(workflow_file_name, inputs, do_stage_out)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 5:
+    workflow_name, workflow_path = get_xircuits_file()
+    LOGGER.info("Preparing job...")
+    files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
+    project_arg = sys.argv[3]
+    if project_arg == 'NONE':
         LOGGER.error(f"Please provide the HPC project to run this job within, stopping execution.")
     else:
-        workflow_name, workflow_path = get_xircuits_file()
-        LOGGER.info("Preparing job...")
-        files_to_upload = get_files_to_upload(xircuits_file_path=workflow_path)
         site_arg = sys.argv[2]
-        project_arg = sys.argv[3]
         stage_out_arg = sys.argv[4]
+        filesystem_arg = sys.argv[5] if sys.argv[5] != 'NONE' else None
+        python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
+        modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
+        libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
         do_stage_out = True if stage_out_arg == 'true' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
-                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out)
+                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
+                   filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)

@@ -48,3 +48,12 @@ input[type=number]::-webkit-inner-spin-button {
   padding: 0;
   margin: 0;
 }
+
+.collapsible .header {
+    background-color: rgb(200, 200, 200);
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid rgb(220, 220, 220);
+}
