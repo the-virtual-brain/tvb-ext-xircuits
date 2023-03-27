@@ -149,7 +149,7 @@ class PyunicoreSubmitter(object):
 
     def _format_date_for_job(self, job):
         date = datetime.strptime(job.properties['submissionTime'], '%Y-%m-%dT%H:%M:%S+%f')
-        return date.strftime('%m.%d.%Y, %H:%M:%S')
+        return date.strftime('%m.%d.%Y, %H_%M_%S')
 
     def _dev_mode(self, home_storage, client):
         """
