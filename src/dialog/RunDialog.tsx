@@ -17,10 +17,10 @@ export const RunDialog = ({
 
 	const [checked, setChecked] = useState<boolean[]>([false]);
 	const [runType, setRunType] = useState("");
-	const [runConfig, setRunConfig] = useState("");
+	const [runConfig, setRunConfig] = useState("DAINT-CSCS");
 	const [command, setCommand] = useState("");
 	const [filesystem, setFilesystem] = useState("HOME");
-	const [python, setPython] = useState("python=3.9");
+	const [python, setPython] = useState("python3.9");
 	const [modules, setModules] = useState("cray-python");
 
 	const handleChecked = (e, i) => {
