@@ -58,11 +58,11 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests -r ap
+        pytest tvbextxircuits -r ap
 
     - name: Compute coverage
       run: |
-          pytest -v --cov=tests --cov-report=xml:coverage.xml
+          pytest -v --cov --cov-report=xml:coverage.xml
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
