@@ -39,6 +39,11 @@ def test_widget_code_generator():
     notebook_path = notebook_factory.store(notebook, 'model', 'xircuits_id')
     assert os.path.exists(notebook_path)
 
+    notebook_factory = NotebookFactory()
+    notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
+                                                           'xai_components/xai_storage/store_results.py', {})
+    assert notebook is not None
+
 
 def teardown_function():
     if os.path.exists(nb_generator.NOTEBOOKS_DIR):
