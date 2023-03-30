@@ -43,7 +43,7 @@ jobs:
           nvm install 14.15.3
           nvm use 14.15.3
           npm install --global yarn
-          npm i react-collapsed
+          npm install react-collapsed
 
     - name: Install dependencies
       run: |
