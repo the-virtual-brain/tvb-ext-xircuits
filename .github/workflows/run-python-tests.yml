@@ -43,6 +43,7 @@ jobs:
           nvm install 14.15.3
           nvm use 14.15.3
           npm install --global yarn
+          npm install react-collapsed
 
     - name: Install dependencies
       run: |
@@ -61,7 +62,7 @@ jobs:
 
     - name: Compute coverage
       run: |
-          pytest -v  --cov --cov-report=xml
+          pytest -v --cov=tests --cov-report=xml:coverage.xml
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
