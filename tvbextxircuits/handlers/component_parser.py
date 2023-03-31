@@ -168,7 +168,11 @@ class ComponentsParser:
         # iterate through all the components and create the specific description json file for each one
         for d in components:
             if "class" in d:
-                output_folder_path = os.path.join(*d["package_name"].split(".")[:-1], "arguments")
+                output_folder_path = os.path.join(
+                    os.path.dirname(xai_components.__path__[0]),
+                    *d["package_name"].split(".")[:-1],
+                    "arguments"
+                )
                 output_file_path = os.path.join(output_folder_path, d["class"].lower() + ".json")
                 try:
                     if not os.path.isdir(output_folder_path):

@@ -1,3 +1,4 @@
+docutils
 ipykernel
 packaging
 tornado>=6.1.0
@@ -12,7 +13,6 @@ jupyterlab-widgets==1.1.0
 nbformat
 numpy
 requests
-rst2html
 gitpython
 pygithub
 pyunicore
