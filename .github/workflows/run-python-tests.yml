@@ -50,7 +50,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install allensdk
           pip install -r requirements.txt
-          pip install -U pytest pytest-cov
+          pip install -U pytest pytest-cov pytest-mock
 
     - name: Build Extension in Dev Mode
       run: |

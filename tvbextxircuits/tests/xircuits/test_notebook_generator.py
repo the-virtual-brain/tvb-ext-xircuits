@@ -1,5 +1,6 @@
 import os.path
 import shutil
+import pytest
 
 from tvbextxircuits import nb_generator
 from tvbextxircuits.nb_generator import NotebookGenerator, NotebookFactory
@@ -20,6 +21,9 @@ def test_notebook_generator():
 
     notebook_generator.add_markdown_cell("Hello world")
     assert len(notebook_generator.notebook['cells']) == 2
+
+    with pytest.raises(NotImplementedError):
+        notebook_generator.get_notebook()
 
 
 def test_widget_code_generator():
@@ -43,6 +47,14 @@ def test_widget_code_generator():
     notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
                                                            'xai_components/xai_storage/store_results.py', {})
     assert notebook is not None
+    assert 'TimeSeriesBrowser()' in notebook.cells[2]['source']
+
+    notebook_factory = NotebookFactory()
+    notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
+                                                           'xai_components/xai_storage/store_results.py',
+                                                           {'collab_name': 'collab', 'folder_path': 'folder'})
+    assert notebook is not None
+    assert "TimeSeriesBrowser('collab', 'folder')" in notebook.cells[2]['source']
 
 
 def teardown_function():
