@@ -10,6 +10,7 @@ import numpy as np
 from inspect import isclass
 from tvb.basic.neotraits._attr import NArray, Final
 from tvb.basic.neotraits._core import HasTraits
+from tvb.datatypes.equations import Equation
 
 from xai_components.base import OutArg, InArg
 from xai_components.logger.builder import get_logger
@@ -41,7 +42,9 @@ def set_defaults(component, tvb_datatype):
     for attr in tvb_datatype.declarative_attrs:
         attr_value = getattr(tvb_datatype, attr)
         attr_default = attr_value.default
-        if isclass(attr_default) and issubclass(attr_value.field_type, HasTraits):
+        # if default is a HasTraits class or lambda function
+        if (isclass(attr_default) and issubclass(attr_value.field_type, HasTraits)) or \
+                (callable(attr_default) and attr_default.__name__ == '<lambda>'):
             attr_default = attr_default()
         if should_set_attr(attr_value):
             setattr(component, attr, InArg(attr_default))
