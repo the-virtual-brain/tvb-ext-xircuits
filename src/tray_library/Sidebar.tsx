@@ -152,8 +152,9 @@ export default function Sidebar(props: SidebarProps) {
             setCategory([]);
         }
 
-        setComponentList(response_1);
-        setCategory(response_2);
+        // @ts-ignore
+        setComponentList(response_1.sort((a,b) => a.task > b.task ? 1 : -1 ));
+        setCategory(response_2.sort((a,b) => a.task > b.task ? 1 : -1));
     }
 
     useEffect(() => {
