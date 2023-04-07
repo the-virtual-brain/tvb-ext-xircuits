@@ -29,6 +29,7 @@ import { CommandIDs } from './log/LogPlugin';
 import { ServiceManager } from '@jupyterlab/services';
 import { RunSwitcher } from './components/RunSwitcher';
 import { lockIcon, xircuitsIcon } from './ui-components/icons';
+import { readDefaultSite } from './siteUtils';
 
 const XPIPE_CLASS = 'xircuits-editor';
 
@@ -267,7 +268,9 @@ export class XircuitFactory extends ABCWidgetFactory<DocumentWidget> {
       label: 'Monitor HPC',
       tooltip: 'Monitor your HPC jobs with tvb-ext-unicore',
       onClick: (): void => {
-        this.commands.execute(commandIDs.openTvbExtUnicore);
+        this.commands.execute(commandIDs.openTvbExtUnicore, {
+          defaultSite: readDefaultSite()
+        });
       }
     });
 

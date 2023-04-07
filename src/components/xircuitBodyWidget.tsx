@@ -24,6 +24,7 @@ import { cancelDialog, GeneralComponentLibrary } from '../tray_library/GeneralCo
 import { NodeActionsPanel } from '../context-menu/NodeActionsPanel';
 import { AdvancedComponentLibrary, fetchNodeByName } from '../tray_library/AdvanceComponentLib';
 import { inputDialog, getItsLiteralType } from '../dialog/LiteralInputDialog';
+import { readDefaultSite } from "../siteUtils";
 
 export interface BodyWidgetProps {
 	context: DocumentRegistry.Context;
@@ -1304,7 +1305,9 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		}
 		if (runType !== '' && runMonitoring) {
 			// It means a remote launch was started
-			await app.commands.execute(commandIDs.openTvbExtUnicore);
+			await app.commands.execute(commandIDs.openTvbExtUnicore, {
+          defaultSite: readDefaultSite()
+        });
 		}
 		return { commandStr, config };
 	};
