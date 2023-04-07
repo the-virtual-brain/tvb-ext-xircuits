@@ -3,7 +3,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
 import Switch from "react-switch";
 import { HTMLSelect } from "@jupyterlab/ui-components";
-import useCollapse from 'react-collapsed';
+import { useCollapse } from 'react-collapsed';
+import { writeDefaultSite } from "../siteUtils";
 
 export const RunDialog = ({
 	runTypes,
@@ -45,6 +46,7 @@ export const RunDialog = ({
 	 */
 	const handleConfigChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
 		let configName = event.target.value;
+		writeDefaultSite(configName);
 		setRunConfig(configName);
 		if (configName == "-") {
 			setCommand("");
