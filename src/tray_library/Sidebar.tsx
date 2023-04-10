@@ -152,6 +152,7 @@ export default function Sidebar(props: SidebarProps) {
             setCategory([]);
         }
 
+        // this is needed because the linter sees response_1 as a string[], but it is not
         // @ts-ignore
         setComponentList(response_1.sort((a,b) => a.task > b.task ? 1 : -1 ));
         setCategory(response_2.sort((a,b) => a.task > b.task ? 1 : -1));
