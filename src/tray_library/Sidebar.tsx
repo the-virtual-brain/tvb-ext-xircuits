@@ -141,16 +141,23 @@ export default function Sidebar(props: SidebarProps) {
 
     const fetchComponentList = async () => {
           // get the component list 
-        const response_1 = await ComponentList();
+        let response_1 = await ComponentList();
 
         // get the header from the components
-        const response_2 = await fetchComponent(response_1);
+        let response_2 = await fetchComponent(response_1);
 
         // to ensure the component list is empty before setting the component list
         if (response_1.length > 0) {
             setComponentList([]);
             setCategory([]);
         }
+
+        const comparisonFunction = (a,b) => a.task.toUpperCase() > b.task.toUpperCase() ? 1 : -1;
+
+        // this is needed because the linter sees response_1 as a string[], but it is not
+        // @ts-ignore
+        response_1 = response_1.sort(comparisonFunction);
+        response_2 = response_2.sort(comparisonFunction);
 
         setComponentList(response_1);
         setCategory(response_2);
