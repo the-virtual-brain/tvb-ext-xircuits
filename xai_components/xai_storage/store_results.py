@@ -33,14 +33,14 @@ class StoreResultsToDrive(ComponentWithWidget):
     data_to_store: InCompArg[list]
     collab_name: InCompArg[str]
     folder_path: InArg[str]
-    H5_format: InArg[bool]
+    format: InArg[Literal['h5', 'npz']]
 
     def __init__(self):
         self.done = False
         self.is_hpc_launch = False
         self.collab_name = InArg('')
         self.folder_path = InArg('')
-        self.H5_format = InArg(False)
+        self.format = InArg('h5')
 
     def execute(self, ctx) -> None:
         args = ctx.get('args')
@@ -60,7 +60,7 @@ class StoreResultsToDrive(ComponentWithWidget):
 
         files_to_upload = list()
         for data_piece in self.data_to_store.value:
-            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.H5_format.value)
+            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.format.value)
             files_to_upload.append(data_file)
 
         if not self.is_hpc_launch:
