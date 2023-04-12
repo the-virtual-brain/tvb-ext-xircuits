@@ -40,7 +40,7 @@ class StoreResultsToDrive(ComponentWithWidget):
         self.is_hpc_launch = False
         self.collab_name = InArg('')
         self.folder_path = InArg('')
-        self.format = InArg('h5')
+        self.format = InArg('npz')
 
     def execute(self, ctx) -> None:
         args = ctx.get('args')
@@ -124,7 +124,7 @@ class StoreResultsToBucket(ComponentWithWidget):
         self.is_hpc_launch = False
         self.bucket_name = InArg('')
         self.folder_path = InArg('')
-        self.format = InArg('h5')
+        self.format = InArg('npz')
 
     def execute(self, ctx) -> None:
         args = ctx.get('args')
