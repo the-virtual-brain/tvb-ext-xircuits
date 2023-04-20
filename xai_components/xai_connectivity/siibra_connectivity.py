@@ -38,7 +38,7 @@ class ConnectivityFromSiibra(Component):
 
         atlas = self.atlas.value
         parcellation = self.parcellation.value
-        cohort = self.cohort
+        cohort = self.cohort.value
 
         subject_id = self.subject_id.value
 
