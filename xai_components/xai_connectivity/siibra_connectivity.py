@@ -6,6 +6,8 @@
 #
 
 import os
+
+from typing import Literal
 from siibra.retrieval import SiibraHttpRequestError
 from tvb.adapters.creators import siibra_base as sb
 from tvb.datatypes.connectivity import Connectivity
@@ -18,6 +20,7 @@ class ConnectivityFromSiibra(Component):
     atlas: InArg[str]
     parcellation: InArg[str]
     subject_id: InArg[str]
+    cohort: InArg[Literal['HCP', '1000BRAINS']]
 
     connectivity: OutArg[Connectivity]
 
@@ -25,6 +28,7 @@ class ConnectivityFromSiibra(Component):
         self.done = False
         self.atlas = InArg(sb.DEFAULT_ATLAS)
         self.parcellation = InArg(sb.DEFAULT_PARCELLATION)
+        self.cohort = InArg(sb.DEFAULT_COHORT)
         self.subject_id = InArg('000')
         self.connectivity = OutArg(None)
 
@@ -34,13 +38,15 @@ class ConnectivityFromSiibra(Component):
 
         atlas = self.atlas.value
         parcellation = self.parcellation.value
+        cohort = self.cohort.value
+
         subject_id = self.subject_id.value
 
         token = get_current_token()
         os.environ['HBP_AUTH_TOKEN'] = token
 
         try:
-            sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation,
+            sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation, cohort=cohort,
                                                        subject_ids=subject_id,
                                                        compute_fc=False)
             connectivity = sc_dict[subject_id]

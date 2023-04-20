@@ -1394,36 +1394,48 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let nodeType: string = portType;
 		let varInput: string = '';
 		let errorMsg: string;
-		switch (portType) {
-			case 'int':
-				nodeType = 'Integer';
-				break;
-			case 'boolean':
-				let boolTitle = 'Enter boolean value: ';
-				const dialogOptions = inputDialog(boolTitle, "", 'Boolean');
-				const dialogResult = await showFormDialog(dialogOptions);
-				if (cancelDialog(dialogResult)) return;
-				let boolValue = dialogResult["value"][boolTitle];
-				if (boolValue == false) {
-					nodeType = 'False'
-				} else {
-					nodeType = 'True'
-				}
-				break;
-			case 'any':
-				// When inPort is 'any' type, get the correct literal type based on the first character inputed
-				let portAnyType = await getItsLiteralType();
-				if (portAnyType == undefined) return;
-				nodeType = portAnyType.nodeType;
-				varInput = portAnyType.varInput;
-				errorMsg = portAnyType.errorMsg;
-				break;
-			default:
-				nodeType = portType.charAt(0).toUpperCase() + portType.slice(1);
-				break;
+		if (portType.slice(0,7) === "Literal"){
+			let enumTitle = 'Select the value: ';
+			const possibleValues = eval(portType.slice(7))
+			const dialogOptions = inputDialog(enumTitle, "", 'Enum', null, null, possibleValues);
+			const dialogResult = await showFormDialog(dialogOptions);
+			if (cancelDialog(dialogResult)) return;
+			nodeType = "String";
+			varInput = dialogResult["value"][enumTitle]
 		}
+		else {
+			switch (portType) {
+				case 'int':
+					nodeType = 'Integer';
+					break;
+				case 'boolean':
+					let boolTitle = 'Enter boolean value: ';
+					const dialogOptions = inputDialog(boolTitle, "", 'Boolean');
+					const dialogResult = await showFormDialog(dialogOptions);
+					if (cancelDialog(dialogResult)) return;
+					let boolValue = dialogResult["value"][boolTitle];
+					if (boolValue == false) {
+						nodeType = 'False'
+					} else {
+						nodeType = 'True'
+					}
+					break;
+				case 'any':
+					// When inPort is 'any' type, get the correct literal type based on the first character inputed
+					let portAnyType = await getItsLiteralType();
+					if (portAnyType == undefined) return;
+					nodeType = portAnyType.nodeType;
+					varInput = portAnyType.varInput;
+					errorMsg = portAnyType.errorMsg;
+					break;
+				default:
+					nodeType = portType.charAt(0).toUpperCase() + portType.slice(1);
+					break;
+			}
+		}
+
 		if (errorMsg != undefined) {
-			if (nodeType == ('Float' || 'Integer')) {
+			if (nodeType === 'Float' || nodeType === 'Integer') {
 				showErrorDialog('Error : Input have non-numeric values', errorMsg);
 			} else {
 				showErrorDialog('Error : Type undefined', errorMsg);

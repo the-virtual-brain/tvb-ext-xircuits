@@ -23,6 +23,7 @@ from tvbextxircuits.utils import *
 from xai_components.base import xai_component, InArg, InCompArg
 from xai_components.base_tvb import ComponentWithWidget
 from xai_components.logger.builder import get_logger
+from typing import Literal
 
 LOGGER = get_logger(__name__)
 
@@ -32,14 +33,14 @@ class StoreResultsToDrive(ComponentWithWidget):
     data_to_store: InCompArg[list]
     collab_name: InCompArg[str]
     folder_path: InArg[str]
-    H5_format: InArg[bool]
+    format: InArg[Literal['h5', 'npz']]
 
     def __init__(self):
         self.done = False
         self.is_hpc_launch = False
         self.collab_name = InArg('')
         self.folder_path = InArg('')
-        self.H5_format = InArg(False)
+        self.format = InArg('npz')
 
     def execute(self, ctx) -> None:
         args = ctx.get('args')
@@ -59,7 +60,7 @@ class StoreResultsToDrive(ComponentWithWidget):
 
         files_to_upload = list()
         for data_piece in self.data_to_store.value:
-            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.H5_format.value)
+            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.format.value)
             files_to_upload.append(data_file)
 
         if not self.is_hpc_launch:
@@ -116,14 +117,14 @@ class StoreResultsToBucket(ComponentWithWidget):
     data_to_store: InCompArg[list]
     bucket_name: InCompArg[str]
     folder_path: InArg[str]
-    H5_format: InArg[bool]
+    format: InArg[Literal['h5', 'npz']]
 
     def __init__(self):
         self.done = False
         self.is_hpc_launch = False
         self.bucket_name = InArg('')
         self.folder_path = InArg('')
-        self.H5_format = InArg(False)
+        self.format = InArg('npz')
 
     def execute(self, ctx) -> None:
         args = ctx.get('args')
@@ -166,7 +167,7 @@ class StoreResultsToBucket(ComponentWithWidget):
 
         files_to_upload = list()
         for data_piece in self.data_to_store.value:
-            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.H5_format.value)
+            data_file = StoreFactory.store_data_piece(data_piece, temp_local_directory, self.format.value)
             files_to_upload.append(data_file)
 
         if not self.is_hpc_launch:
@@ -189,25 +190,27 @@ def remove_temporary_dir(dirname):
 class StoreFactory(object):
 
     @staticmethod
-    def store_data_piece(data_piece, output_directory, h5_format):
+    def store_data_piece(data_piece, output_directory, save_format):
         from tvb.datatypes.time_series import TimeSeries
 
         if issubclass(type(data_piece), TimeSeries):
-            return StoreFactory.store_time_series(data_piece, output_directory, h5_format)
+            return StoreFactory.store_time_series(data_piece, output_directory, save_format)
         else:
             LOGGER.error(f"Cannot store data of type {type(data_piece)} yet. "
                          f"Please contact the development team for this.")
 
     @staticmethod
-    def store_time_series(time_series, output_directory, h5_format):
-        if h5_format:
+    def store_time_series(time_series, output_directory, save_format):
+        if save_format == 'h5':
             ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
             ts_file_path = os.path.join(output_directory, ts_file_name)
             LOGGER.info(f"Storing timeseries for {time_series.title} monitor temporary to {ts_file_path}...")
             populate_datatypes_registry()
             h5.store(time_series, ts_file_path)
-        else:
+        elif save_format == 'npz':
             ts_file_path = os.path.join(output_directory, f"timeseries_{time_series.title}.npz")
             LOGGER.info(f"Storing timeseries for {time_series.title} monitor temporary to {ts_file_path}...")
             numpy.savez(ts_file_path, data=time_series.data, time=time_series.time)
+        else:
+            raise NotImplementedError("this format is not supported yet")
         return ts_file_path

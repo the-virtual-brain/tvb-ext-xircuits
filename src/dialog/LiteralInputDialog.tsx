@@ -5,8 +5,9 @@ import { Dialog } from '@jupyterlab/apputils';
 import Switch from "react-switch";
 import { showFormDialog } from './FormDialog';
 import { cancelDialog } from '../tray_library/GeneralComponentLib';
+import Dropdown from "../components/common/Dropdown";
 
-export function inputDialog(titleName: string, oldValue: any, type: string, isStoreDataType?: boolean, inputType?: string) {
+export function inputDialog(titleName: string, oldValue: any, type: string, isStoreDataType?: boolean, inputType?: string, possibleValues?: string[]) {
 	let title = titleName;
 	const dialogOptions: Partial<Dialog.IOptions<any>> = {
 		title,
@@ -16,7 +17,9 @@ export function inputDialog(titleName: string, oldValue: any, type: string, isSt
 				oldValue={oldValue}
 				type={type}
 				isStoreDataType={isStoreDataType}
-				inputType={inputType} />
+				inputType={inputType}
+				possibleValues={possibleValues}
+			/>
 		),
 		buttons: [Dialog.cancelButton(), Dialog.okButton({ label: ('Submit') })],
 		defaultButton: 1,
@@ -87,7 +90,7 @@ export async function getItsLiteralType(){
 	return { nodeType, varInput, errorMsg}
 }
 
-export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inputType }): JSX.Element => {
+export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inputType, possibleValues}): JSX.Element => {
 
 	const [checked, setChecked] = useState<boolean>(true);
 
@@ -164,6 +167,12 @@ export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inp
 					/>
 				</div>
 			);
+		} else if (type === 'Enum') {
+			return (
+				<div style={{ paddingLeft: 5, paddingTop: 5, height:"10rem", width:"10rem"}}>
+					<Dropdown name={title} types={possibleValues}/>
+				</div>
+			);
 		} else if (
 			(type == 'String' && inputType != 'textarea') ||
 			type == 'List' ||
@@ -183,7 +192,7 @@ export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inp
 
 	return (
 		<form>
-			{type != 'Boolean' && type != 'Variable' ?
+			{type !== 'Boolean' && type !== 'Variable' && type !== 'Enum' ?
 				<h3 style={{ marginTop: 0, marginBottom: 5 }}>
 					Enter {title.includes('parameter') ? 'Argument Name' : `${type} Value`} ({isStoreDataType ? 'Without Brackets' : 'Without Quotes'}):
 				</h3>
