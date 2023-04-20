@@ -167,7 +167,7 @@ export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inp
 					/>
 				</div>
 			);
-		} else if (type == 'Enum') {
+		} else if (type === 'Enum') {
 			return (
 				<div style={{ paddingLeft: 5, paddingTop: 5, height:"10rem", width:"10rem"}}>
 					<Dropdown name={title} types={possibleValues}/>
@@ -192,7 +192,7 @@ export const LiteralInputDialog = ({ title, oldValue, type, isStoreDataType, inp
 
 	return (
 		<form>
-			{type != 'Boolean' && type != 'Variable' ?
+			{type !== 'Boolean' && type !== 'Variable' && type !== 'Enum' ?
 				<h3 style={{ marginTop: 0, marginBottom: 5 }}>
 					Enter {title.includes('parameter') ? 'Argument Name' : `${type} Value`} ({isStoreDataType ? 'Without Brackets' : 'Without Quotes'}):
 				</h3>
