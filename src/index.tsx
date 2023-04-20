@@ -289,16 +289,19 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       execute: async args => {
         const xircuitsLogger = new Log(app);
         const current_path = tracker.currentWidget.context.path;
-        const model_path = current_path.split(".xircuits")[0] + ".py";
+        let model_path = current_path.split(".xircuits")[0] + ".py";
         const message = typeof args['runCommand'] === 'undefined' ? '' : (args['runCommand'] as string);
         const debug_mode = typeof args['debug_mode'] === 'undefined' ? '' : (args['debug_mode'] as string);
         const runType = typeof args['runType'] === 'undefined' ? '' : (args['runType'] as string);
         const config = typeof args['config'] === 'undefined' ? '' : (args['config'] as string);
-
+        
         // Create the panel if it does not exist
         if (!outputPanel || outputPanel.isDisposed) {
           await createPanel();
         }
+
+        // Convert the model_path to be bash aware
+        model_path = `"${model_path}"`
 
         outputPanel.session.ready.then(async () => {
           let code = startRunOutputStr();
@@ -306,7 +309,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
             // Run subprocess when run type is Remote Run
             code += doRemoteRun(model_path, config);
           } else {
-            code += "%run " + model_path + message + debug_mode
+            code += `%run ${model_path} ${message} ${debug_mode}`
           }
 
           outputPanel.execute(code, xircuitsLogger);
