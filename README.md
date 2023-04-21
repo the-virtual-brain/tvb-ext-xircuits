@@ -53,9 +53,9 @@ To rebuild automatically:
 
 ##  Acknowledgments
 
-Copyright (c) 2022 to Xircuits Team See: https://github.com/XpressAI/xircuits
+Copyright (c) 2022-2023 to Xircuits Team See: https://github.com/XpressAI/xircuits
 
-Copyright (c) 2022 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
+Copyright (c) 2022-2023 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
 
 This extension is build on top of the Xircuits https://xircuits.io Jupyter extension, and it adds custom features, tailored for EBRAINS env.
 
