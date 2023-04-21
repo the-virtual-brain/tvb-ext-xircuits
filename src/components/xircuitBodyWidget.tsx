@@ -1385,7 +1385,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	const connectLinkToItsLiteral = async (linkName, event) => {
 		let portType = linkName.split("-")[1];
 		// if multiple types provided, Use the first type.
-		if (portType.includes(',')) {
+		if (portType.startsWith("Union")) {
 			portType = portType.replace('Union', '');
 			portType = portType.replace(/[\[\]]/g, '');
 			portType = portType.split(',')[0];
