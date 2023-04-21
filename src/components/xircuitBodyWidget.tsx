@@ -1408,7 +1408,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				case 'int':
 					nodeType = 'Integer';
 					break;
-				case 'boolean':
+				case 'boolean':{
 					let boolTitle = 'Enter boolean value: ';
 					const dialogOptions = inputDialog(boolTitle, "", 'Boolean');
 					const dialogResult = await showFormDialog(dialogOptions);
@@ -1420,6 +1420,15 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 						nodeType = 'True'
 					}
 					break;
+				}
+				case 'numpy.ndarray': {
+					const dialogOptions = inputDialog('Numpy Array', "", 'Numpy Array', false, 'textarea');
+					const dialogResult = await showFormDialog(dialogOptions);
+					if (cancelDialog(dialogResult)) return;
+					nodeType = 'Numpy Array'
+					varInput = dialogResult["value"]['Numpy Array'];
+					break;
+				}
 				case 'any':
 					// When inPort is 'any' type, get the correct literal type based on the first character inputed
 					let portAnyType = await getItsLiteralType();
