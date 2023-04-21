@@ -25,9 +25,9 @@ namespace S {
 	export const Label = styled.div`
 		padding: 0 5px;
 		flex-grow: 1;
-		text-overflow: ellipsis;
+		white-space: pre-wrap; // Preserve line breaks and wrap text to the next line
 		overflow:hidden;
-		max-width: 640px;
+		max-width: 40ch;
 	`;
 
 	export const SymbolContainer = styled.div<{ symbolType: string; selected: boolean; isOutPort: boolean }>`
@@ -135,7 +135,7 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 			</S.SymbolContainer>);
 
 		const label = (
-			<S.Label>
+			<S.Label style={{textAlign: (!this.props.port.getOptions().in && this.props.port.getOptions().label === '▶') ? 'right': 'left'}}>
 				<WithToggle
 					renderToggleBeforeChildren={!this.props.port.getOptions().in}
 					showDescription={this.props.showDescription}
