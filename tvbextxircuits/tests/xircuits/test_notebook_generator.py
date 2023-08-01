@@ -6,6 +6,7 @@ from tvbextxircuits import nb_generator
 from tvbextxircuits.nb_generator import NotebookGenerator, NotebookFactory
 from xai_components.xai_tvb_simulator.simulator import Simulator
 
+
 TEMP_DIR = "temp_test_dir"
 nb_generator.NOTEBOOKS_DIR = TEMP_DIR
 
@@ -29,15 +30,17 @@ def test_notebook_generator():
 def test_widget_code_generator():
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('Simulator', 'sim_id',
-                                                           'xai_components/xai_tvb_simulator/simulator.py', {})
+                                                           'xai_components/xai_tvb_simulator/simulator.py', {},
+                                                           'xircuits_id')
     assert notebook is None
 
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('ReducedWongWang', 'model_id',
-                                                           'xai_components/xai_tvb_models/wong_wang.py', {})
+                                                           'xai_components/xai_tvb_models/wong_wang.py', {},
+                                                           'xircuits_id')
     assert notebook is not None
     assert "models.ReducedWongWang(**{})" in notebook.cells[2]['source']
-    assert "w.export_filename = 'model_model_id'" in notebook.cells[2]['source']
+    assert f"w.export_filename = r'{os.path.join('temp_test_dir', 'xircuits_id', 'model_model_id')}" in notebook.cells[2]['source']
 
     assert len(os.listdir(nb_generator.NOTEBOOKS_DIR)) == 0
     notebook_path = notebook_factory.store(notebook, 'model', 'xircuits_id')
@@ -45,14 +48,16 @@ def test_widget_code_generator():
 
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
-                                                           'xai_components/xai_storage/store_results.py', {})
+                                                           'xai_components/xai_storage/store_results.py', {},
+                                                           'xircuits_id')
     assert notebook is not None
     assert 'TimeSeriesBrowser()' in notebook.cells[2]['source']
 
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
                                                            'xai_components/xai_storage/store_results.py',
-                                                           {'collab_name': 'collab', 'folder_path': 'folder'})
+                                                           {'collab_name': 'collab', 'folder_path': 'folder'},
+                                                           'xircuits_id')
     assert notebook is not None
     assert "TimeSeriesBrowser('collab', 'folder')" in notebook.cells[2]['source']
 
