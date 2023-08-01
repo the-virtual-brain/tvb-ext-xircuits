@@ -11,10 +11,15 @@ import os
 import nbformat
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
-
 from xai_components.base_tvb import ComponentWithWidget
 
-NOTEBOOKS_DIR = 'TVB_generated_notebooks'
+from xai_components.logger.builder import get_logger
+
+
+LOGGER = get_logger(__name__)
+
+
+NOTEBOOKS_DIR = os.path.abspath('TVB_generated_notebooks')
 MODEL_CONFIG_FILE_PREFIX = 'model'
 
 
@@ -81,7 +86,7 @@ class ModelConfigLoader(object):
 class NotebookFactory(object):
 
     @staticmethod
-    def get_notebook_for_component(component_name, component_id, component_path, component_inputs):
+    def get_notebook_for_component(component_name, component_id, component_path, component_inputs, xircuits_id):
         component_class = determine_component_class(component_name, component_path)
 
         if not issubclass(component_class, ComponentWithWidget):
@@ -90,7 +95,7 @@ class NotebookFactory(object):
         if component_class.__name__.startswith('StoreResults'):
             return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
 
-        return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
+        return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs, xircuits_id).get_notebook()
 
     @staticmethod
     def store(notebook, component_name, xircuits_id):
@@ -110,10 +115,11 @@ class NotebookFactory(object):
 
 class NotebookGenerator(object):
 
-    def __init__(self, component_class, component_id, component_inputs):
+    def __init__(self, component_class, component_id, component_inputs, xircuits_id=None):
         self.component_class = component_class
         self.component_id = component_id
         self.component_inputs = component_inputs
+        self.xircuits_id = xircuits_id
 
         if not os.path.exists(NOTEBOOKS_DIR):
             os.mkdir(NOTEBOOKS_DIR)
@@ -185,9 +191,15 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
         self.add_markdown_cell(intro)
 
         inputs_dict = self._prepare_component_inputs()
+
+        export_dir = os.path.join(NOTEBOOKS_DIR, self.xircuits_id) if self.xircuits_id else NOTEBOOKS_DIR
         export_filename = f"{MODEL_CONFIG_FILE_PREFIX}_{self.component_id}"
+        export_path = os.path.join(export_dir, export_filename)
+
+        LOGGER.info(f'Export path: {export_path}')
+
         code = PhasePlaneNotebookGenerator.phase_plane(inputs_dict, model=self.component_class().tvb_ht_class,
-                                                       export_filename=export_filename)
+                                                       export_filename=export_path)
         self.add_code_cell(code)
         return self.notebook
 
@@ -201,7 +213,7 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
                "from IPython.core.display_functions import display\n" \
                "\n" \
                "w = PhasePlaneWidget(model=models.{0}(**{2}), integrator=integrators.{1}());\n" \
-               "w.export_filename = '{3}' \n" \
+               "w.export_filename = r'{3}' \n" \
                "w.disable_model_dropdown = True \n" \
                "w.disable_export_dropdown = True \n" \
                "display(w.get_widget());"
