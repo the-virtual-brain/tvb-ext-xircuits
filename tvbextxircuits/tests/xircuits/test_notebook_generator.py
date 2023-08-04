@@ -42,7 +42,7 @@ def test_widget_code_generator():
     if USE_ABSOLUTE_PATHS:
         assert f"w.export_filename = r'{os.path.join('temp_test_dir', 'xircuits_id', 'model_model_id')}" in notebook.cells[2]['source']
     else:
-        assert "w.export_filename = 'model_model_id'" in notebook.cells[2]['source']
+        assert "w.export_filename = r'model_model_id'" in notebook.cells[2]['source']
 
     assert len(os.listdir(nb_generator.NOTEBOOKS_DIR)) == 0
     notebook_path = notebook_factory.store(notebook, 'model', 'xircuits_id')
