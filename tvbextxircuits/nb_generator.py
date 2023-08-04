@@ -5,21 +5,23 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
-import importlib
 import json
 import os
+import sys
 import nbformat
+import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 from xai_components.base_tvb import ComponentWithWidget
 
 from xai_components.logger.builder import get_logger
 
-
 LOGGER = get_logger(__name__)
+USE_ABSOLUTE_PATHS = sys.platform.startswith('win')
+NOTEBOOKS_DIR = 'TVB_generated_notebooks'
+if USE_ABSOLUTE_PATHS:
+    NOTEBOOKS_DIR = os.path.abspath('TVB_generated_notebooks')
 
-
-NOTEBOOKS_DIR = os.path.abspath('TVB_generated_notebooks')
 MODEL_CONFIG_FILE_PREFIX = 'model'
 
 
@@ -192,14 +194,15 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
 
         inputs_dict = self._prepare_component_inputs()
 
-        export_dir = os.path.join(NOTEBOOKS_DIR, self.xircuits_id) if self.xircuits_id else NOTEBOOKS_DIR
         export_filename = f"{MODEL_CONFIG_FILE_PREFIX}_{self.component_id}"
-        export_path = os.path.join(export_dir, export_filename)
+        if USE_ABSOLUTE_PATHS:
+            export_dir = os.path.join(NOTEBOOKS_DIR, self.xircuits_id) if self.xircuits_id else NOTEBOOKS_DIR
+            export_filename = os.path.join(export_dir, export_filename)
 
-        LOGGER.info(f'Export path: {export_path}')
+        LOGGER.info(f'Exporting path for model: {export_filename}')
 
         code = PhasePlaneNotebookGenerator.phase_plane(inputs_dict, model=self.component_class().tvb_ht_class,
-                                                       export_filename=export_path)
+                                                       export_filename=export_filename)
         self.add_code_cell(code)
         return self.notebook
 
