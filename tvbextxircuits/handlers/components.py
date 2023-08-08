@@ -3,6 +3,10 @@ import tornado
 from jupyter_server.base.handlers import APIHandler
 from .component_parser import ComponentsParser
 from tvbextxircuits.nb_generator import ModelConfigLoader, NotebookFactory
+from xai_components.logger.builder import get_logger
+
+
+LOGGER = get_logger(__name__)
 
 
 class EditXircuitsFile(APIHandler):
@@ -60,6 +64,7 @@ class ComponentsRouteHandler(APIHandler):
 
     def _generate_widget_notebook(self, component, component_id, component_path, xircuits_id, component_inputs):
         factory = NotebookFactory()
-        notebook = factory.get_notebook_for_component(component, component_id, component_path, component_inputs)
+        notebook = factory.get_notebook_for_component(component, component_id, component_path, component_inputs,
+                                                      xircuits_id)
         path = factory.store(notebook, component, xircuits_id)
         return path

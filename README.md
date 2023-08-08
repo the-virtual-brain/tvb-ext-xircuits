@@ -51,6 +51,11 @@ To rebuild automatically:
       # Run Xircuits in watch mode in one terminal tab
       jupyter lab --watch
 
+##  Notes
+To be able to see details info related to TVB components you must first run the command `python generate_description_files.py`
+
+Notebooks generated can be found at `TVB_generated_notebooks/<xircuits_id>`
+
 ##  Acknowledgments
 
 Copyright (c) 2022-2023 to Xircuits Team See: https://github.com/XpressAI/xircuits
