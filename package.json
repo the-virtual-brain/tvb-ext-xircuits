@@ -13,8 +13,8 @@
   },
   "license": "Apache-2.0",
   "author": {
-    "name": "Xpress AI",
-    "email": "eduardo@xpress.ai"
+    "name": "TVB-Xircuits Team",
+    "email": "science@codemart.ro"
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
