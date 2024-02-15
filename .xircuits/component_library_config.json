@@ -1,0 +1,277 @@
+{
+    "libraries": [
+        {
+            "name": "xai_pycaret",
+            "library_id": "PYCARET",
+            "repository": "https://github.com/XpressAI/xai-pycaret",
+            "local_path": "xai_components\\xai_pycaret",
+            "status": "remote"
+        },
+        {
+            "name": "xai_modelstash",
+            "library_id": "MODELSTASH",
+            "repository": "https://github.com/XpressAI/xai-modelstash",
+            "local_path": "xai_components\\xai_modelstash",
+            "status": "remote"
+        },
+        {
+            "name": "xai_rpa",
+            "library_id": "RPA",
+            "repository": "https://github.com/yuenherny/xai-rpa",
+            "local_path": "xai_components\\xai_rpa",
+            "status": "remote"
+        },
+        {
+            "name": "xai_streamlit",
+            "library_id": "STREAMLIT",
+            "repository": "https://github.com/XpressAI/xai-streamlit",
+            "local_path": "xai_components\\xai_streamlit",
+            "status": "remote"
+        },
+        {
+            "name": "xai_rabbitmq",
+            "library_id": "RABBITMQ",
+            "repository": "https://github.com/XpressAI/xai-rabbitmq",
+            "local_path": "xai_components\\xai_rabbitmq",
+            "status": "remote"
+        },
+        {
+            "name": "xai_mqtt",
+            "library_id": "MQTT",
+            "repository": "https://github.com/XpressAI/xai-mqtt",
+            "local_path": "xai_components\\xai_mqtt",
+            "status": "remote"
+        },
+        {
+            "name": "xai_vecto",
+            "library_id": "VECTO",
+            "repository": "https://github.com/XpressAI/xai-vecto",
+            "local_path": "xai_components\\xai_vecto",
+            "status": "remote"
+        },
+        {
+            "name": "xai_openai",
+            "library_id": "OPENAI",
+            "repository": "https://github.com/XpressAI/xai-openai",
+            "local_path": "xai_components\\xai_openai",
+            "status": "remote"
+        },
+        {
+            "name": "xai_gpt_agent_toolkit",
+            "library_id": "GPT_AGENT_TOOLKIT",
+            "repository": "https://github.com/XpressAI/xai-gpt-agent-toolkit",
+            "local_path": "xai_components\\xai_gpt_agent_toolkit",
+            "status": "remote"
+        },
+        {
+            "name": "xai_slack",
+            "library_id": "SLACK",
+            "repository": "https://github.com/XpressAI/xai-slack",
+            "local_path": "xai_components\\xai_slack",
+            "status": "remote"
+        },
+        {
+            "name": "xai_discord",
+            "library_id": "DISCORD",
+            "repository": "https://github.com/XpressAI/xai-discord",
+            "local_path": "xai_components\\xai_discord",
+            "status": "remote"
+        },
+        {
+            "name": "xai_tests",
+            "library_id": "TESTS",
+            "repository": "https://github.com/XpressAI/xai-tests",
+            "local_path": "xai_components\\xai_tests",
+            "status": "remote"
+        },
+        {
+            "name": "xai_anthropic",
+            "library_id": "ANTHROPIC",
+            "repository": "https://github.com/XpressAI/xai-anthropic",
+            "local_path": "xai_components\\xai_anthropic",
+            "status": "remote"
+        },
+        {
+            "name": "xai_hfagent",
+            "library_id": "HFAGENT",
+            "repository": "https://github.com/XpressAI/xai-hfagent",
+            "local_path": "xai_components\\xai_hfagent",
+            "status": "remote"
+        },
+        {
+            "name": "xai_flask",
+            "library_id": "FLASK",
+            "repository": "https://github.com/XpressAI/xai-flask",
+            "local_path": "xai_components\\xai_flask",
+            "status": "remote"
+        },
+        {
+            "name": "xai_actors",
+            "library_id": "ACTORS",
+            "repository": "https://github.com/XpressAI/xai-actors",
+            "local_path": "xai_components\\xai_actors",
+            "status": "remote"
+        },
+        {
+            "name": "xai_sqlite",
+            "library_id": "SQLITE",
+            "repository": "https://github.com/XpressAI/xai-sqlite",
+            "local_path": "xai_components\\xai_sqlite",
+            "status": "remote"
+        },
+        {
+            "name": "xai_gdrive",
+            "library_id": "GDRIVE",
+            "repository": "https://github.com/XpressAI/xai-gdrive",
+            "local_path": "xai_components\\xai_gdrive",
+            "status": "remote"
+        },
+        {
+            "name": "xai_gspread",
+            "library_id": "GSPREAD",
+            "repository": "https://github.com/XpressAI/xai-gspread",
+            "local_path": "xai_components\\xai_gspread",
+            "status": "remote"
+        },
+        {
+            "name": "xai_vertexai",
+            "library_id": "VERTEXAI",
+            "repository": "https://github.com/XpressAI/xai-google-vertexai",
+            "local_path": "xai_components\\xai_vertexai",
+            "status": "remote"
+        },
+        {
+            "name": "xai_xgboost",
+            "library_id": "XGBOOST",
+            "repository": "https://github.com/XpressAI/xai-xgboost",
+            "local_path": "xai_components\\xai_xgboost",
+            "status": "remote"
+        },
+        {
+            "name": "xai_spark",
+            "library_id": "SPARK",
+            "repository": "https://github.com/XpressAI/xai-spark",
+            "local_path": "xai_components\\xai_spark",
+            "status": "remote"
+        },
+        {
+            "name": "xai_sklearn",
+            "library_id": "SKLEARN",
+            "repository": "https://github.com/XpressAI/xai-sklearn",
+            "local_path": "xai_components\\xai_sklearn",
+            "status": "remote"
+        },
+        {
+            "name": "xai_tensorflow_keras",
+            "library_id": "TENSORFLOW_KERAS",
+            "repository": "https://github.com/XpressAI/xai-tensorflow-keras",
+            "local_path": "xai_components\\xai_tensorflow_keras",
+            "status": "remote"
+        },
+        {
+            "name": "xai_pytorch",
+            "library_id": "PYTORCH",
+            "repository": "https://github.com/XpressAI/xai-pytorch",
+            "local_path": "xai_components\\xai_pytorch",
+            "status": "remote"
+        },
+        {
+            "name": "xai-controlflow",
+            "library_id": "CONTROLFLOW",
+            "version": "0.1.0",
+            "description": "Xircuits component library for controlflow purposes.",
+            "authors": [
+                {
+                    "name": "XpressAI",
+                    "email": "eduardo@xpress.ai"
+                }
+            ],
+            "license": "Apache-2.0",
+            "readme": "readme.md",
+            "repository": "https://github.com/XpressAI/xircuits/tree/master/xai_components/xai_controlflow",
+            "keywords": [
+                "xircuits",
+                "controlflow",
+                "if-else",
+                "branch"
+            ],
+            "local_path": "xai_components\\xai_controlflow",
+            "status": "installed",
+            "requirements_path": null,
+            "requirements": [],
+            "default_example_path": "ControlflowBranch.xircuits"
+        },
+        {
+            "name": "xai-events",
+            "library_id": "EVENTS",
+            "version": "0.1.0",
+            "description": "Xircuits component library for decoupling features, like functions or events.",
+            "authors": [
+                {
+                    "name": "XpressAI",
+                    "email": "paul@xpress.ai"
+                }
+            ],
+            "license": "Apache-2.0",
+            "readme": "readme.md",
+            "repository": "https://github.com/XpressAI/xircuits/tree/master/xai_components/xai_events",
+            "keywords": [
+                "xircuits",
+                "events"
+            ],
+            "local_path": "xai_components\\xai_events",
+            "status": "installed",
+            "requirements_path": null,
+            "requirements": [],
+            "default_example_path": "Events.xircuits"
+        },
+        {
+            "name": "xai-template",
+            "library_id": "TEMPLATE",
+            "version": "0.1.0",
+            "description": "Xircuits component library template for Xircuits.",
+            "authors": [
+                {
+                    "name": "XpressAI",
+                    "email": "eduardo@xpress.ai"
+                }
+            ],
+            "license": "Apache-2.0",
+            "readme": "README.md",
+            "repository": "https://github.com/XpressAI/xircuits/tree/master/xai_components/xai_template",
+            "keywords": [
+                "xircuits",
+                "example components"
+            ],
+            "local_path": "xai_components\\xai_template",
+            "status": "installed",
+            "requirements_path": "xai_components\\xai_template\\requirements.txt",
+            "requirements": [],
+            "default_example_path": null
+        },
+        {
+            "name": "xai-utils",
+            "library_id": "UTILS",
+            "version": "0.1.0",
+            "description": "A collection of utility components for Xircuits.",
+            "authors": [
+                {
+                    "name": "XpressAI",
+                    "email": "eduardo@xpress.ai"
+                }
+            ],
+            "license": "Apache-2.0",
+            "readme": "readme.md",
+            "repository": "https://github.com/XpressAI/xircuits/tree/master/xai_components/xai_utils",
+            "keywords": [
+                "xircuits",
+                "utility"
+            ],
+            "local_path": "xai_components\\xai_utils",
+            "status": "installed",
+            "requirements_path": null,
+            "requirements": [],
+            "default_example_path": "UtilsZipDirectory.xircuits"
+        }
+    ]
+}
