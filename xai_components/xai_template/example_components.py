@@ -1,4 +1,5 @@
-from xai_components.base import InArg, OutArg, InCompArg, Component, BaseComponent, xai_component
+from xai_components.base import InArg, OutArg, InCompArg, Component, BaseComponent, xai_component, dynalist, dynatuple
+
 from typing import Union
 @xai_component(color="red")
 class HelloComponent(Component):
@@ -12,9 +13,6 @@ class HelloComponent(Component):
         creator_name = os.getlogin()
         print("Hello, " + creator_name)
 
-        self.done = True
-
-
 @xai_component
 class HelloHyperparameter(Component):
     """A component that changes the print message depending on the supplied parameter.
@@ -27,8 +25,7 @@ class HelloHyperparameter(Component):
     def execute(self, ctx) -> None:
         input_str = self.input_str.value
         print("Hello " + str(input_str))
-        self.done = True
-
+        
 @xai_component
 class CompulsoryHyperparameter(Component):
     """A component that uses Compulsory inPorts. 
@@ -52,8 +49,6 @@ class CompulsoryHyperparameter(Component):
         print("Hello, " + str(input_str))
         print("I'm " + str(comp_str))
         print("Me " + str(comp_int))
-
-        self.done = True
 
 @xai_component
 class HelloListTupleDict(Component):
@@ -82,8 +77,6 @@ class HelloListTupleDict(Component):
         print(input_tuple)
         print("\nDisplaying Dict: ")
         print(input_dict)
-
-        self.done = True
 
 @xai_component
 class MultiType(Component):
@@ -115,15 +108,12 @@ class HelloContext(Component):
         ctx.update(context_dict)
 
         print(f"After Adding Context:\n{ctx}")
-
-        self.done = True
         
 @xai_component
 class MultiBranchComponent(BaseComponent):
     if_A: BaseComponent
     if_B: BaseComponent
     if_C: BaseComponent
-    done: bool
 
     abc: InArg[str]
 
@@ -138,8 +128,29 @@ class MultiBranchComponent(BaseComponent):
             next = None
         
         while next:
-            is_done, next = next.do(ctx)
+            next = next.do(ctx)
         try:
-            return self.done, self.next
+            return self.next
         except:
-            return self.done, None
+            return None
+        
+
+
+@xai_component
+class DynaPorts(Component):
+    """A component showcasing dynamic ports: `dynalist` and `dynatuple`.
+    
+    ##### inPorts:
+    - dlist: A `dynalist` port. 
+    - dtuple: A `dynatuple` port.
+    
+    """
+    
+    dlist: InArg[dynalist]
+    dtuple: InArg[dynatuple]
+    
+    def execute(self, ctx) -> None:
+        print("Printing dynalist value:")
+        print(self.dlist.value)
+        print("Printing dynatuple value:")
+        print(self.dtuple.value)

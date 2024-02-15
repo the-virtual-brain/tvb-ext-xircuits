@@ -19,3 +19,57 @@
 [submodule "xai_components/xai_vecto"]
 	path = xai_components/xai_vecto
 	url = https://github.com/XpressAI/xai-vecto
+[submodule "xai_components/xai_openai"]
+	path = xai_components/xai_openai
+	url = https://github.com/XpressAI/xai-openai
+[submodule "xai_components/xai_gpt_agent_toolkit"]
+	path = xai_components/xai_gpt_agent_toolkit
+	url = https://github.com/XpressAI/xai-gpt-agent-toolkit
+[submodule "xai_components/xai_slack"]
+	path = xai_components/xai_slack
+	url = https://github.com/XpressAI/xai-slack
+[submodule "xai_components/xai_discord"]
+	path = xai_components/xai_discord
+	url = https://github.com/XpressAI/xai-discord
+[submodule "xai_components/xai_tests"]
+	path = xai_components/xai_tests
+	url = https://github.com/XpressAI/xai-tests
+[submodule "xai_components/xai_anthropic"]
+	path = xai_components/xai_anthropic
+	url = https://github.com/XpressAI/xai-anthropic
+[submodule "xai_components/xai_hfagent"]
+	path = xai_components/xai_hfagent
+	url = https://github.com/XpressAI/xai-hfagent
+[submodule "xai_components/xai_flask"]
+	path = xai_components/xai_flask
+	url = https://github.com/XpressAI/xai-flask
+[submodule "xai_components/xai_actors"]
+	path = xai_components/xai_actors
+	url = https://github.com/XpressAI/xai-actors
+[submodule "xai_components/xai_sqlite"]
+	path = xai_components/xai_sqlite
+	url = https://github.com/XpressAI/xai-sqlite
+[submodule "xai_components/xai_gdrive"]
+	path = xai_components/xai_gdrive
+	url = https://github.com/XpressAI/xai-gdrive
+[submodule "xai_components/xai_gspread"]
+	path = xai_components/xai_gspread
+	url = https://github.com/XpressAI/xai-gspread
+[submodule "xai_components/xai_vertexai"]
+	path = xai_components/xai_vertexai
+	url = https://github.com/XpressAI/xai-google-vertexai
+[submodule "xai_components/xai_xgboost"]
+	path = xai_components/xai_xgboost
+	url = https://github.com/XpressAI/xai-xgboost
+[submodule "xai_components/xai_spark"]
+	path = xai_components/xai_spark
+	url = https://github.com/XpressAI/xai-spark
+[submodule "xai_components/xai_sklearn"]
+	path = xai_components/xai_sklearn
+	url = https://github.com/XpressAI/xai-sklearn
+[submodule "xai_components/xai_tensorflow_keras"]
+	path = xai_components/xai_tensorflow_keras
+	url = https://github.com/XpressAI/xai-tensorflow-keras
+[submodule "xai_components/xai_pytorch"]
+	path = xai_components/xai_pytorch
+	url = https://github.com/XpressAI/xai-pytorch

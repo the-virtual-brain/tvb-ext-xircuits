@@ -23,6 +23,9 @@
     <a href="https://github.com/XpressAI/xircuits/releases">
         <img alt="GitHub release" src="https://img.shields.io/github/release/XpressAI/xircuits.svg?color=yellow">
     </a>
+    <a href="https://mybinder.org/v2/gh/XpressAi/xircuits/main?urlpath=lab">
+        <img alt="Binder" src="https://mybinder.org/badge_logo.svg">
+    </a>
     <a href="https://xircuits.io">
         <img alt="Documentation" src="https://img.shields.io/website/http/xircuits.io.svg?color=orange">
     </a>
@@ -31,7 +34,7 @@
     </a>
 </p>
 
-![xircuits-frontpage](https://user-images.githubusercontent.com/68586800/190063124-3b16ed9c-4094-4995-8a0a-3f23816f6774.gif)
+![1 10 release](https://github.com/XpressAI/xircuits/assets/68586800/242630dd-4583-4f39-9b37-daa3dc413262)
 
 
 Xircuits is a Jupyterlab-based extension that enables visual, low-code, training workflows. It allows anyone to easily create executable python code in seconds.
@@ -53,6 +56,9 @@ Xircuits is a Jupyterlab-based extension that enables visual, low-code, training
   
   <p align="center">Component Tooltips<br>
   <img src=https://user-images.githubusercontent.com/84708008/163518580-186d4298-3344-4280-a87a-67be90eec13f.gif width="600"></p>
+
+  <p align="center">Dynamic Ports<br>
+  <img src=https://user-images.githubusercontent.com/68586800/270856813-47c39215-6874-430c-b4c1-cad6c848818e.gif width="600"></p>
 </details>
 
 <details>
@@ -101,14 +107,14 @@ You will need python 3.8+ to install Xircuits. We recommend installing in a virt
 You will also need to install the component library before using them. For example, if you would like to use the Pytorch components, install them by:
 
   ```
-  $ pip install xircuits[pytorch]
+  $ xircuits install pytorch
   ```
 
-For the list of available libraries, you can check [here]( https://github.com/XpressAI/xircuits/tree/master/xai_components#internal-library). 
+For the list of available libraries, you can check [here]( https://github.com/XpressAI/xircuits/tree/master/xai_components). 
 
 ## Download Examples
 ```
-$ xircuits-examples
+$ xircuits examples
 ```
 ## Launch
 ```
@@ -126,8 +132,11 @@ Creating workflows and components in Xircuits is easy. We've provided extensive 
 
 # Use Cases
 
-### Machine Learning
-![ML example](https://user-images.githubusercontent.com/68586800/160897662-cfe31276-fe33-4400-b0a8-4f4b32263d2b.gif)
+### GPT Agent Toolkit | BabyAGI
+![BabyAGI demo](https://github.com/XpressAI/xai-gpt-agent-toolkit/blob/main/demo.gif?raw=true)
+
+### Discord Bots
+![DiscordCVBot](https://user-images.githubusercontent.com/68586800/232880388-0a999fa2-f9cf-40df-be51-73601afc8963.gif)
 
 ### PySpark
 ![spark submit](https://user-images.githubusercontent.com/68586800/156138662-f3181471-6433-49dd-a8c1-2f73eea14d11.png)
@@ -140,8 +149,6 @@ Creating workflows and components in Xircuits is easy. We've provided extensive 
 
 ### NLP
 ![nlp](https://user-images.githubusercontent.com/68586800/161892702-fbe51b93-846d-410a-bb80-75255c1a9565.gif)
-### Clustering
-![clustering](https://user-images.githubusercontent.com/68586800/161884656-ec2a3d33-e56d-4cdf-8c16-4fc964c1b8f3.gif)
 
 ## Developers Discord
 Have any questions? Feel free to chat with the devs at our [Discord](https://discord.com/invite/vgEg2ZtxCw)!

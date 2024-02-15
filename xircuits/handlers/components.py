@@ -16,7 +16,7 @@ DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
     "xai_components",
     os.path.expanduser("~/xai_components"),
-    os.environ.get("XPIPES_COMPONENTS_DIR")
+    os.environ.get("XIRCUITS_COMPONENTS_DIR")
 ]
 
 # Get the default components from here for now
@@ -36,6 +36,9 @@ DEFAULT_COMPONENTS = {
     10:{ "name": "Literal List", "returnType": "list","color":"yellow"},
     11:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
     12:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
+    13:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
+    14:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
+
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
     # 2: { "name": "Convert to Aurora", "returnType": "convert"},
@@ -124,12 +127,12 @@ class ComponentsRouteHandler(APIHandler):
                         python_path = None
 
                     try:
-                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files))
+                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files if not f.name.startswith(".")))
                     except Exception:
                         error_msg = traceback.format_exc()
                         pass
                     finally:
-                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files))
+                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files if not f.name.startswith(".")))
 
 
         components = list({(c["header"], c["task"]): c for c in components}.values())

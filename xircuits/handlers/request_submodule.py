@@ -16,11 +16,10 @@ def get_submodule_config(user_query):
     
     submodule_keys = [submodule for submodule in config.sections() if user_query in submodule]
     if len(submodule_keys) == 0:
-        print(user_query + " component library submodule not found.")
-        return
-        
+        raise ValueError(f"{user_query} component library submodule not found.")
+    
     if len(submodule_keys) > 1:
-        print("Multiple '" + user_query + "' found. Returning first instance.")
+        raise ValueError(f"Multiple instances of '{user_query}' found.")
 
     submodule_key = submodule_keys.pop(0)
     
@@ -30,16 +29,26 @@ def get_submodule_config(user_query):
     return submodule_path, submodule_url
 
 
-def request_submodule_library(component_library_query):
 
-    # ensure syntax is as xai_components/xai_library_name
-    if "xai" not in component_library_query:
-        component_library_query = "xai_" + component_library_query
+def request_submodule_library(component_library_query) -> (bool, str):
+    try:
+        submodule_path, submodule_url = get_submodule_config(component_library_query)
+        print("Cloning " + submodule_path + " from " + submodule_url)
+        Repo.clone_from(submodule_url, submodule_path, progress=Progress())
+        return True, f"Successfully cloned {submodule_path}."
+    except ValueError as e:
+        return False, str(e)
 
-    if "xai_components" not in component_library_query:
-        component_library_query = "xai_components/" + component_library_query
+def get_submodules(repo, ref="master"):
+    try:
+        gitmodules_content = repo.get_contents(".gitmodules", ref=ref)
+        gitmodules = gitmodules_content.decoded_content.decode("utf-8")
+        
+        submodules = []
+        for line in gitmodules.split("\n"):
+            if "path = " in line:
+                submodules.append(line.split(" = ")[-1].strip())
+        return submodules
     
-    submodule_path, submodule_url = get_submodule_config(component_library_query)
-    
-    print("Cloning " + submodule_path + " from " + submodule_url)
-    Repo.clone_from(submodule_url, submodule_path, progress=Progress())
+    except:
+        return []

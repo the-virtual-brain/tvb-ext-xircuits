@@ -1,4 +1,4 @@
-from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component
+from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, dynalist, dynatuple
 
 import os
 import sys
@@ -8,7 +8,6 @@ import time
 @xai_component
 class Print(Component):
     msg: InArg[any]
-    done: bool
     
     def execute(self, ctx) -> None:
         print(str(self.msg.value))
@@ -18,7 +17,6 @@ class ConcatString(Component):
     a: InArg[str]
     b: InArg[str]
     out: OutArg[str]
-    done: bool
 
     def execute(self, cts) -> None:
         self.out.value = self.a.value + self.b.value
@@ -100,8 +98,6 @@ class ZipDirectory(Component):
 
         zipObj.close()        
        
-        self.done = True
-
 @xai_component
 class DeleteFile(Component):
     """Deletes a file.
@@ -119,8 +115,6 @@ class DeleteFile(Component):
           os.remove(filename)
         else:
           print(filename + " does not exist.") 
-
-        self.done = True
 
 @xai_component(color="green")
 class TimerComponent(Component):
@@ -173,3 +167,122 @@ class SleepComponent(Component):
         sleep_timer = self.sleep_timer.value if self.sleep_timer.value else 5.0
         print("Sleeping for " + str(sleep_timer) + " seconds.")
         time.sleep(sleep_timer)
+
+@xai_component(color="grey")
+class MakeList(Component):
+    """
+    A component that takes values from its dynamic list port and output as a normal list.
+    ##### inPorts:
+    - list_values: Dynamic list port that can take any vars and append it in a list.
+
+    ##### outPorts:
+    - output_list: The constructed list from the dynamic list inPorts.
+    """
+    list_values: InArg[dynalist]
+    output_list: OutArg[list]
+
+    def execute(self, ctx) -> None:
+
+        self.output_list.value = self.list_values.value
+        print("Constructed List:", self.output_list.value)
+
+@xai_component(color="grey")
+class MakeTuple(Component):
+    """
+    A component that takes values from its dynamic tuple port and output as a normal tuple.
+    ##### inPorts:
+    - tuple_values: Dynamic tuple port that can take any vars and append it in a tuple.
+
+    ##### outPorts:
+    - output_tuple: The constructed tuple from the dynamic tuple inPorts.
+    """
+    tuple_values: InArg[dynatuple]
+    output_tuple: OutArg[tuple]
+
+    def execute(self, ctx) -> None:
+
+        self.output_tuple.value = self.tuple_values.value
+        print("Constructed Tuple:", self.output_tuple.value)
+
+@xai_component(color="grey")
+class MakeDict(Component):
+    """
+    A component that takes two dynamic lists (dynalists) as inputs - one for keys and one for values,
+    and constructs a dictionary from these lists. If there are more keys than values, the unmatched keys
+    will have None as their value.
+
+    ##### inPorts:
+    - keys_list: Dynamic list of keys for the dictionary.
+    - values_list: Dynamic list of values for the dictionary.
+
+    ##### outPorts:
+    - output_dict: The constructed dictionary from the provided keys and values.
+    """
+    keys_list: InArg[dynalist]
+    values_list: InArg[dynalist]
+    output_dict: OutArg[dict]
+
+    def execute(self, ctx) -> None:
+        keys = self.keys_list.value
+        values = self.values_list.value
+
+        constructed_dict = {key: values[i] if i < len(values) else None for i, key in enumerate(keys)}
+        
+        self.output_dict.value = constructed_dict
+        print("Constructed Dictionary:", self.output_dict.value)
+
+@xai_component(color="orange")
+class ExecuteNotebook(Component):
+    """Executes a Jupyter notebook from a given file path and logs the output.
+
+    This component runs a Jupyter notebook and can save a log of the execution.
+    It's useful for automated running of notebooks for data analysis or similar tasks.
+
+    ##### inPorts:
+    - notebook_filepath: Path of the '.ipynb' file to execute.
+    - log_filepath: Path for saving the execution log (optional).
+
+    ##### Notes:
+    - Only '.ipynb' files are accepted.
+    - Execution timeout is 10 minutes.
+    - Errors during execution are logged or printed.
+    """
+
+    notebook_filepath: InCompArg[str]
+    log_filepath: InArg[str]
+
+    def execute(self, context):
+        
+        import nbformat
+        from nbconvert.preprocessors import ExecutePreprocessor, CellExecutionError
+
+        notebook_filepath = self.notebook_filepath.value
+
+        # Ensure that the input file has a valid ".ipynb" extension
+        if not notebook_filepath.lower().endswith(".ipynb"):
+            raise ValueError("Invalid input file path. Please provide a valid jupyter notebook '.ipynb' file.")
+
+        # Extract the filename and directory path
+        input_filename, _ = os.path.splitext(os.path.basename(notebook_filepath))
+        log_filepath = self.log_filepath.value
+
+        with open(notebook_filepath) as f:
+            nb = nbformat.read(f, as_version=4)
+
+        ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+
+        try:
+            out = ep.preprocess(nb, {'metadata': {'path': '.'}})
+        
+        except CellExecutionError:
+
+            msg = 'Error executing the notebook "%s".\n\n' % notebook_filepath
+            msg += 'See notebook "%s" for the traceback.' % log_filepath
+            print(msg)
+            log_filepath if log_filepath else f"{input_filename}-output.ipynb"
+            raise
+
+        finally:
+            if log_filepath:
+                with open(log_filepath, mode='w', encoding='utf-8') as f:
+                    nbformat.write(nb, f)
