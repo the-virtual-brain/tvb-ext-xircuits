@@ -1,10 +1,13 @@
+import * as SRD from '@projectstorm/react-diagrams';
 import { JupyterFrontEnd } from '@jupyterlab/application';
-import { commandIDs } from '../components/xircuitBodyWidget';
+import { commandIDs } from '../components/XircuitsBodyWidget';
 import { ITranslator } from '@jupyterlab/translation';
 import { IXircuitsDocTracker } from '../index';
 import * as _ from 'lodash';
-import { CustomNodeModel } from '../components/CustomNodeModel';
-import { XPipePanel } from '../xircuitWidget';
+import { NodeModel } from '@projectstorm/react-diagrams';
+import { CustomNodeModel } from '../components/node/CustomNodeModel';
+import { LinkModel } from '@projectstorm/react-diagrams';
+import { XircuitsPanel } from '../XircuitsWidget';
 import { Dialog, showDialog } from '@jupyterlab/apputils';
 import { DefaultLinkModel } from '@projectstorm/react-diagrams';
 import { BaseModel, BaseModelGenerics } from '@projectstorm/react-canvas-core';
@@ -14,7 +17,12 @@ import { formDialogWidget } from '../dialog/formDialogwidget';
 import { CommentDialog } from '../dialog/CommentDialog';
 import React from 'react';
 import { showFormDialog } from '../dialog/FormDialog';
-import { inputDialog } from '../dialog/LiteralInputDialog';
+import { CustomPortModel } from '../components/port/CustomPortModel';
+import { CustomLinkModel, ParameterLinkModel, TriangleLinkModel } from '../components/link/CustomLinkModel';
+import { PointModel } from '@projectstorm/react-diagrams';
+import { Point } from '@projectstorm/geometry';
+import { handleLiteralInput } from '../tray_library/GeneralComponentLib';
+import { CustomDynaPortModel } from '../components/port/CustomDynaPortModel';
 import {requestAPI} from "../server/handler";
 
 /**
@@ -38,8 +46,8 @@ export function addNodeActionCommands(
         );
     }
 
-    function selectedNode() {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+    function getLastSelectedNode() {
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
         const selectedEntities = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities();
         let node;
         selectedEntities.map((x) => node = x);
@@ -108,10 +116,17 @@ export function addNodeActionCommands(
     //Add command to open node's script at specific line
     commands.addCommand(commandIDs.openScript, {
         execute: async (args) => {
-            const node = selectedNode();
-            const nodePath = args['nodePath'] as string ?? node.extras.path;
-            const nodeName = args['nodeName'] as string ?? node.name;
-            const nodeLineNo = args['nodeLineNo'] as number ?? node.extras.lineNo;
+            let node, nodePath, nodeName, nodeLineNo;
+
+            // call getLastSelectedNode() if opened from Xircuits canvas
+            if (args['nodePath'] === undefined && args['nodeName'] === undefined && args['nodeLineNo'] === undefined) {
+                node = getLastSelectedNode();
+            }
+
+            // Assign values based on whether args were provided or derived from getLastSelectedNode()
+            nodePath = args['nodePath'] ?? node?.extras.path;
+            nodeName = args['nodeName'] ?? node?.name;
+            nodeLineNo = args['nodeLineNo'] ?? node?.extras.lineNo;
 
             if (nodeName.startsWith('Literal') || nodeName.startsWith('Argument')) {
                 showDialog({
@@ -122,29 +137,22 @@ export function addNodeActionCommands(
             }
 
             // Open node's file name
-            const newWidget = await app.commands.execute(
-                commandIDs.openDocManager,
-                {
-                    path: nodePath
-                }
-            );
-            newWidget.context.ready.then(() => {
-                // Go to end of node's line first before go to its class
-                app.commands.execute('codemirror:go-to-line', {
-                    line: nodeLineNo[0].end_lineno
-                }).then(() => {
-                    app.commands.execute('codemirror:go-to-line', {
-                        line: nodeLineNo[0].lineno
-                    })
-                })
-            });
+            const newWidget = await app.commands.execute(commandIDs.openDocManager, { path: nodePath });
+            await newWidget.context.ready;
+
+            // Go to end of node's line first before go to its class
+            await app.commands.execute('fileeditor:go-to-line', { line: nodeLineNo[0].end_lineno });
+
+            await new Promise(resolve => setTimeout(resolve, 10));
+            // Then go to the specific line
+            await app.commands.execute('fileeditor:go-to-line', { line: nodeLineNo[0].lineno });
         }
     });
 
     //Add command to undo
     commands.addCommand(commandIDs.undo, {
         execute: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const model = widget.context.model.sharedModel;
 
             model.undo();
@@ -152,7 +160,7 @@ export function addNodeActionCommands(
         label: trans.__('Undo'),
         icon: undoIcon,
         isEnabled: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const canUndo = widget.context.model.sharedModel.canUndo();
 
             return canUndo ?? false;
@@ -162,7 +170,7 @@ export function addNodeActionCommands(
     //Add command to redo
     commands.addCommand(commandIDs.redo, {
         execute: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const model = widget.context.model.sharedModel;
 
             model.redo();
@@ -170,7 +178,7 @@ export function addNodeActionCommands(
         label: trans.__('Redo'),
         icon: redoIcon,
         isEnabled: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const canRedo = widget.context.model.sharedModel.canRedo();
 
             return canRedo ?? false;
@@ -183,7 +191,7 @@ export function addNodeActionCommands(
         label: trans.__('Cut'),
         icon: cutIcon,
         isEnabled: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const selectedEntities = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities();
             let isNodeSelected: boolean;
             if (selectedEntities.length > 0) {
@@ -199,7 +207,7 @@ export function addNodeActionCommands(
         label: trans.__('Copy'),
         icon: copyIcon,
         isEnabled: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const selectedEntities = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities();
             let isNodeSelected: boolean;
             if (selectedEntities.length > 0) {
@@ -230,7 +238,7 @@ export function addNodeActionCommands(
         label: trans.__('Edit'),
         isEnabled: () => {
             let isNodeSelected: boolean;
-            const node = selectedNode();
+            const node = getLastSelectedNode();
             if (node.getOptions()["name"].startsWith("Literal")) {
                 isNodeSelected = true;
             }
@@ -238,12 +246,12 @@ export function addNodeActionCommands(
         }
     });
 
-    //Add command to delete node
-    commands.addCommand(commandIDs.deleteNode, {
-        execute: deleteNode,
+    //Add command to delete entities
+    commands.addCommand(commandIDs.deleteEntity, {
+        execute: deleteEntity,
         label: "Delete",
         isEnabled: () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const selectedEntities = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities();
             let isNodeSelected: boolean
             if (selectedEntities.length > 0) {
@@ -253,84 +261,141 @@ export function addNodeActionCommands(
         }
     });
 
-    //Add command to reload selected node
+    // Add command to reload selected node
     commands.addCommand(commandIDs.reloadNode, {
         execute: async () => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
-            const selected_node = selectedNode();
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
+            const engine = widget.xircuitsApp.getDiagramEngine()
+            const model = engine.getModel()
+            const selected_entities = model.getSelectedEntities();
+            const selected_nodes = selected_entities.filter(entity => entity instanceof NodeModel) as CustomNodeModel[];
+            const nodesToRemove = [];
+            const linksToRemove = [];
+            const nodesToHighlight = [];
 
-            // When a General Component is selected, just return
-            if (selected_node.name.startsWith("Literal") || selected_node.name.startsWith("Argument")) {
-                showDialog({
-                    title: `${selected_node.name} cannot be reloaded`,
-                    buttons: [Dialog.warnButton({ label: 'OK' })]
-                })
-                return
-            }
+            for (let selected_node of selected_nodes) {
 
-            const current_node = await fetchNodeByName(selected_node.name)
-            const node = AdvancedComponentLibrary({ model: current_node });
-            const nodePosition = selected_node.position;
+                if (
+                    selected_node.name.startsWith("Literal") ||
+                    selected_node.name.startsWith("Argument") ||
+                    selected_node.name.startsWith("Start") ||
+                    selected_node.name.startsWith("Finish")
+                ) {
+                    console.info(selected_node.name + " cannot be reloaded.");
+                    continue;
+                }
 
-            // Add node at given position
-            node.setPosition(nodePosition);
-            widget.xircuitsApp.getDiagramEngine().getModel().addNode(node);
+                let current_node = await fetchNodeByName(selected_node.name)
 
-            // Get all connected links
-            let links = widget.xircuitsApp.getDiagramEngine().getModel()["layers"][0]["models"];
+                let node;
 
-            try {
-                // Update the links
-                for (let linkID in links) {
+                try {
+                    node = AdvancedComponentLibrary({ model: current_node });
+                  } catch (error) {
+                    let path = selected_node.getOptions()["extras"].path;
+                    console.log(`Error reloading component from path: ${path}. Error: ${error.message}`);
+                    selected_node.getOptions().extras["tip"] = `Component could not be loaded from path: \`${path}\`.\nPlease ensure that the component exists!`;
+                    selected_node.getOptions().extras["borderColor"]="red";
+                    nodesToHighlight.push(selected_node)
+                    continue;
+                  }
 
-                    let link = links[linkID];
+                let nodePositionX = selected_node.getX();
+                let nodePositionY = selected_node.getY();
 
-                    if (link["sourcePort"] && link["targetPort"]) {
+                // Add node at given position
+                node.setPosition(nodePositionX, nodePositionY);
+                engine.getModel().addNode(node);
+                try {
 
-                        const oldSourcePortLink = link['sourcePort'];
-                        const oldTargetPortLink = link['targetPort'];
-                        const sourcePortName = oldSourcePortLink.options.name;
-                        const targetPortName = oldTargetPortLink.options.name;
-                        const selectedNodeId = selected_node.getOptions()["id"];
-                        let newLink = new DefaultLinkModel();
+                    // get the old ports
+                    let ports = selected_node.getPorts();
+                    for (let portName in ports) {
+                        let port = ports[portName];
 
-                        // When old link came from outPorts of selected node
-                        if (oldSourcePortLink.parent.name == node.name) {
-                            // Set rendered node's outPorts as sourcePort
-                            let sourcePort = node.getPorts()[sourcePortName];
-                            newLink.setSourcePort(sourcePort);
+                        for (let linkID in port.links) {
+                            let link = port.links[linkID];
 
-                            // This to make sure the target new link came from the same node as previous link
-                            let sourceLinkNodeId = oldSourcePortLink.getParent().getID();
-                            if (sourceLinkNodeId == selectedNodeId) {
-                                newLink.setTargetPort(oldTargetPortLink);
-                            }
+                            if (link.getSourcePort() === port) {
+                                let sourcePortName = link.getSourcePort().getName();
+                                let newSourcePort = node.getPorts()[sourcePortName];
+                                if (newSourcePort) {
+                                    link.setSourcePort(newSourcePort);
+                                } else {
+                                    console.log(`Source port '${sourcePortName}' not found in reloaded node '${node.name}'.`);
+                                    linksToRemove.push(link)
+                                    continue
+                                }
+
+                            } else if (link.getTargetPort() === port) {
+
+                                let targetPort = link.getTargetPort();
+                                let targetPortName = targetPort.getName();
+                                let newTargetPort = node.getPorts()[targetPortName];
+
+                                if (!newTargetPort){
+                                    console.log(`Target port '${targetPortName}' not found in reloaded node '${node.name}'.`);
+                                    linksToRemove.push(link)
+                                    continue
+                                }
+
+                                if (targetPort instanceof CustomDynaPortModel){
+                                    const newPort = newTargetPort.spawnDynamicPort({ offset: 1 });
+                                    newPort.previous = newTargetPort.getID();
+                                    newTargetPort.next = newPort.getID();
+                                    }
+
+                                link.setTargetPort(newTargetPort);
+
+                                }
+
+                            engine.getModel().addLink(link);
                         }
-                        // When old link go to inPorts of selected node
-                        else if (oldTargetPortLink.parent.name == node.name) {
-                            // This to make sure the source new link came from the same node as previous link
-                            let targetLinkNodeId = oldTargetPortLink.getParent().getID();
-                            if (targetLinkNodeId == selectedNodeId) {
-                                newLink.setSourcePort(oldSourcePortLink);
-                            }
-
-                            // Set rendered node's inPorts as targetPort
-                            let targetPort = node.getPorts()[targetPortName];
-                            newLink.setTargetPort(targetPort);
-                        }
-                        widget.xircuitsApp.getDiagramEngine().getModel().addLink(newLink);
                     }
                 }
-            } catch{
-                // No-op
+
+                catch (error) {
+                    // Code to handle the exception
+                    console.log('An error occurred:', error.message);
+                }
+                finally {
+                    // Add old node to nodesToRemove
+                    nodesToRemove.push(selected_node);
+                }
             }
-            finally {
-                // Remove old node
-                selected_node.remove();
+
+            // Remove old nodes and links
+            for (const nodeToRemove of nodesToRemove) {
+                engine.getModel().removeNode(nodeToRemove);
             }
+
+            for (const linkToRemove of linksToRemove) {
+                engine.getModel().removeLink(linkToRemove);
+            }
+
+
+            // Repaint canvas
+            selected_nodes.forEach(node => node.setSelected(false));
+            nodesToHighlight.forEach(node => node.setSelected(true));
+
+            pruneLooseLinks(model);
+            engine.repaintCanvas();
+
         },
         label: trans.__('Reload node')
     });
+
+    function pruneLooseLinks(model: SRD.DiagramModel): void {
+
+        const links = model.getLinks()
+
+        // Iterate over all links and prune those that do not have either a source or a target port
+        Object.values(links).forEach(link => {
+        if (!link.getSourcePort() || !link.getTargetPort()) {
+            model.removeLink(link);
+            }
+        });
+    }
 
     //Add command to add node given position
     commands.addCommand(commandIDs.addNodeGivenPosition, {
@@ -338,7 +403,7 @@ export function addNodeActionCommands(
             const node = args['node'] as unknown as CustomNodeModel;
             const nodePosition = args['nodePosition'] as any;
 
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
 
             const canvasNodePosition = widget.xircuitsApp.getDiagramEngine().getRelativeMousePoint(nodePosition)
             node.setPosition(canvasNodePosition);
@@ -354,7 +419,7 @@ export function addNodeActionCommands(
             const targetNode = args['targetNode'] as any;
             const sourceLink = args['sourceLink'] as any;
             const isParameterLink = args['isParameterLink'] as boolean;
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
 
             // Create new link to connect to new node automatically
             let newLink = new DefaultLinkModel();
@@ -390,7 +455,7 @@ export function addNodeActionCommands(
     //Add command to connect link to obvious port given link and target node
     commands.addCommand(commandIDs.connectLinkToObviousPorts, {
         execute: (args) => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
             const draggedLink = args['draggedLink'] as any;
             const droppedSourceLink = args['droppedSourceLink'] as any;
             // Check whether link is dropped or dragged
@@ -452,8 +517,8 @@ export function addNodeActionCommands(
     //Add command to add comment node at given position
     commands.addCommand(commandIDs.addCommentNode, {
         execute: async (args) => {
-            const widget = tracker.currentWidget?.content as XPipePanel;
-
+            const widget = tracker.currentWidget?.content as XircuitsPanel;
+            
             const dialogOptions: Partial<Dialog.IOptions<any>> = {
                 body: formDialogWidget(
                         <CommentDialog commentInput={""}/>
@@ -478,110 +543,220 @@ export function addNodeActionCommands(
     });
 
     function cutNode(): void {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
 
-        if (widget) {
-            const engine = widget.xircuitsApp.getDiagramEngine();
-            const selected = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities()
-            const copies = selected.map(entity =>
-                entity.clone().serialize()
-            );
+        if (!widget) return;
 
-            // TODO: Need to make this event working to be on the command manager, so the user can undo
-            // and redo it.
-            // engine.fireEvent(
-            //     {
-            //         nodes: selected,
-            //         links: selected.reduce(
-            //             (arr, node) => [...arr, ...node.getAllLinks()],
-            //             [],
-            //         ),
-            //     },
-            //     'entitiesRemoved',
-            // );
-            selected.forEach(node => node.remove());
-            engine.repaintCanvas();
+        const engine = widget.xircuitsApp.getDiagramEngine();
+        const selected = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities()
+        const copies = selected.map(entity =>
+            entity.serialize()
+        );
 
-            localStorage.setItem('clipboard', JSON.stringify(copies));
+        selected.forEach(node => node.remove());
+        engine.repaintCanvas();
 
-        }
+        localStorage.setItem('clipboard', JSON.stringify(copies));
+
+
     }
 
     function copyNode(): void {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
 
-        if (widget) {
-            const copies = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities().map(entity =>
-                entity.clone().serialize(),
-            );
+        if (!widget) return;
 
-            localStorage.setItem('clipboard', JSON.stringify(copies));
+        const copies = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities().map(entity =>
+            entity.serialize(),
+        );
 
-        }
+        localStorage.setItem('clipboard', JSON.stringify(copies));
     }
 
     function pasteNode(): void {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
+        if (!widget) return;
 
-        if (widget) {
-            const engine = widget.xircuitsApp.getDiagramEngine();
-            const model = widget.xircuitsApp.getDiagramEngine().getModel();
+        const engine = widget.xircuitsApp.getDiagramEngine();
+        const model = engine.getModel();
+        const clipboard = JSON.parse(localStorage.getItem('clipboard'));
 
-            const clipboard = JSON.parse(localStorage.getItem('clipboard'));
-            if (!clipboard) return;
+        if (!clipboard) return;
+        model.clearSelection();
 
-            model.clearSelection();
+        const newNodeModels = [];
+        let idMap = {};
 
-            const models = clipboard.map(serialized => {
-                const modelInstance = model
-                    .getActiveNodeLayer()
-                    .getChildModelFactoryBank(engine)
-                    .getFactory(serialized.type)
-                    .generateModel({ initialConfig: serialized });
+        const clipboardNodes = clipboard.filter(serialized => serialized.type.includes('node'));
+        const clipboardLinks = clipboard.filter(serialized => serialized.type.includes('link'));
 
-                modelInstance.deserialize({
-                    engine: engine,
-                    data: serialized,
-                    registerModel: () => { },
-                    getModel: function <T extends BaseModel<BaseModelGenerics>>(id: string): Promise<T> {
-                        throw new Error('Function not implemented.');
-                    }
-                });
+        let totalX = 0, totalY = 0, nodesCount = clipboardNodes.length;
 
-                return modelInstance;
-            });
+        clipboardNodes.forEach(serializedNode => {
 
-            models.forEach(modelInstance => {
-                const oldX = modelInstance.getX();
-                const oldY = modelInstance.getY();
+            if (serializedNode.name === 'Start' || serializedNode.name === 'Finish') {
+                console.log(serializedNode.name, " cannot be copied!")
+                return;
+            }
 
-                modelInstance.setPosition(oldX + 10, oldY + 10)
-                model.addNode(modelInstance);
-                // Remove any empty/default node
-                if (modelInstance.getOptions()['type'] == 'default') model.removeNode(modelInstance)
-                modelInstance.setSelected(true);
-            });
+            let originalNodeInstance = model.getNodes().find(node => node.getID() === serializedNode.id);
+            let clonedNodeModelInstance;
 
-            localStorage.setItem(
-                'clipboard',
-                JSON.stringify(
-                    models.map(modelInstance =>
-                        modelInstance.clone().serialize(),
-                    ),
-                ),
-            );
-            // TODO: Need to make this event working to be on the command manager, so the user can undo
-            // and redo it.
-            // engine.fireEvent({ nodes: models }, 'componentsAdded');
-            widget.xircuitsApp.getDiagramEngine().repaintCanvas();
-        }
+            if (originalNodeInstance) {
+                clonedNodeModelInstance = originalNodeInstance.clone();
+            } else {
+                clonedNodeModelInstance = createNewNodeInstance(model, engine, serializedNode);
+            }
+
+            newNodeModels.push(clonedNodeModelInstance);
+            idMap = mapNodeAndPortIds(serializedNode, clonedNodeModelInstance, idMap);
+
+            totalX += clonedNodeModelInstance.getX();
+            totalY += clonedNodeModelInstance.getY();
+        });
+
+        // Calculate the center of the group of nodes.
+        const centerX = totalX / nodesCount;
+        const centerY = totalY / nodesCount;
+
+        placeNodes(engine, model, newNodeModels, widget.mousePosition, centerX, centerY);
+        recreateLinks(engine, model, clipboardLinks, idMap, widget.mousePosition, centerX, centerY);
+
+        engine.repaintCanvas();
     }
 
+    function createNewNodeInstance(model: SRD.DiagramModel, engine: SRD.DiagramEngine, serializedNode): NodeModel {
+        const clonedNodeModelInstance = model.getActiveNodeLayer()
+                                        .getChildModelFactoryBank(engine)
+                                        .getFactory(serializedNode.type)
+                                        .generateModel({ initialConfig: serializedNode });
+
+        clonedNodeModelInstance.deserialize({
+            engine: engine,
+            data: serializedNode,
+            registerModel: () => {},
+            getModel: function <T extends BaseModel<BaseModelGenerics>>(id: string): Promise<T> {
+                throw new Error('Function not implemented.');
+            }
+        });
+
+        return clonedNodeModelInstance;
+    }
+
+    function mapNodeAndPortIds(serializedNode, clonedNodeModelInstance: CustomNodeModel, idMap) {
+        // Map the ID of the serialized node to the ID of the cloned node instance.
+        idMap[serializedNode.id] = clonedNodeModelInstance.getID();
+
+        // For each serialized port in the serialized node...
+        serializedNode.ports.forEach(serializedPort => {
+            // ...find the corresponding port in the cloned node instance by comparing names.
+            const correspondingNewPort: any = Object.values(clonedNodeModelInstance.getPorts()).find((newPort: CustomPortModel) => newPort.getName() === serializedPort.name);
+
+            // If the corresponding port exists, map the ID of the serialized port to the ID of the cloned port.
+            if(correspondingNewPort) idMap[serializedPort.id] = correspondingNewPort.getID();
+        });
+
+        // Return the updated ID map.
+        return idMap;
+    }
+
+    function placeNodes(engine: SRD.DiagramEngine, model: SRD.DiagramModel, newNodeModels: CustomNodeModel[], mousePosition: { x: number; y: number }, centerX: number, centerY: number): void {
+        let clientMouseEvent = { clientX: mousePosition.x, clientY: mousePosition.y };
+        let relativeMousePosition = engine.getRelativeMousePoint(clientMouseEvent);
+
+        newNodeModels.forEach((modelInstance) => {
+            // Get the offset position of the node relative to the group's center
+            let nodeOffsetX = modelInstance.getX() - centerX;
+            let nodeOffsetY = modelInstance.getY() - centerY;
+
+            modelInstance.setPosition(
+                relativeMousePosition.x + nodeOffsetX,
+                relativeMousePosition.y + nodeOffsetY
+            );
+
+            model.addNode(modelInstance);
+
+            if (modelInstance.getOptions()['type'] === 'default') {
+                model.removeNode(modelInstance);
+            }
+
+            modelInstance.setSelected(true);
+        });
+    }
+
+    function recreateLinks(engine: SRD.DiagramEngine, model: SRD.DiagramModel, clipboardLinks, idMap, mousePosition: { x: number; y: number }, centerX: number, centerY: number): void {
+        clipboardLinks.forEach(serializedLink => {
+            const newSourceID = idMap[serializedLink.sourcePort];
+            const newTargetID = idMap[serializedLink.targetPort];
+
+            if (newSourceID && newTargetID) {
+                const { sourcePort, targetPort } = getSourceAndTargetPorts(model, newSourceID, newTargetID);
+                if(sourcePort && targetPort) recreateLink(engine, model, serializedLink, sourcePort, targetPort, mousePosition, centerX, centerY);
+            }
+        });
+    }
+
+    function getSourceAndTargetPorts(model: SRD.DiagramModel, newSourceID: string, newTargetID: string): { sourcePort, targetPort } {
+        let sourcePort, targetPort;
+
+        model.getSelectedEntities().forEach((entity) => {
+            if (entity instanceof NodeModel) {
+                if(entity.getPortFromID(newSourceID)) sourcePort = entity.getPortFromID(newSourceID);
+                if(entity.getPortFromID(newTargetID)) targetPort = entity.getPortFromID(newTargetID);
+            }
+        });
+
+        return { sourcePort, targetPort };
+    }
+
+    function recreateLink(engine: SRD.DiagramEngine, model: SRD.DiagramModel, serializedLink, sourcePort, targetPort, mousePosition: { x: number; y: number }, centerX: number, centerY: number): void {
+        let originalLink = model.getLinks().find(link => link.getID() === serializedLink.id);
+        let clonedLink;
+        let points = [];
+
+        let clientMouseEvent = { clientX: mousePosition.x, clientY: mousePosition.y };
+        let relativeMousePosition = engine.getRelativeMousePoint(clientMouseEvent);
+
+        if (originalLink) {
+            clonedLink = originalLink.clone();
+        } else {
+            clonedLink = createNewLink(serializedLink);
+            points = serializedLink.points.map(point => new PointModel({ id: point.id, link: clonedLink, position: new Point(point.x, point.y) }));
+        }
+
+        clonedLink.setSourcePort(sourcePort);
+        clonedLink.setTargetPort(targetPort);
+        clonedLink.setSelected(true);
+
+        if (points.length > 0) clonedLink.setPoints(points);
+
+        clonedLink.getPoints().forEach((point) => {
+            // Adjust each point's position relative to the group's center
+            let pointOffsetX = point.getX() - centerX;
+            let pointOffsetY = point.getY() - centerY;
+
+            point.setPosition(
+                relativeMousePosition.x + pointOffsetX,
+                relativeMousePosition.y + pointOffsetY
+            );
+
+            point.setSelected(true);
+        });
+
+        model.addLink(clonedLink);
+    }
+
+    function createNewLink(serializedLink): CustomLinkModel {
+        if(serializedLink.type === 'parameter-link') return new ParameterLinkModel(serializedLink);
+        else if(serializedLink.type === 'triangle-link') return new TriangleLinkModel(serializedLink);
+    }
+
+
     async function editLiteral(): Promise<void> {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
 
         if (widget) {
-            const selected_node = selectedNode();
+            const selected_node = getLastSelectedNode();
 
             if (!selected_node.getOptions()["name"].startsWith("Literal")) {
                 showDialog({
@@ -593,39 +768,23 @@ export function addNodeActionCommands(
 
             let node = null;
             const links = widget.xircuitsApp.getDiagramEngine().getModel()["layers"][0]["models"];
-            const oldValue = selected_node.getPorts()["out-0"].getOptions()["label"];
-            let literalType = selected_node["name"];
-            literalType = literalType.substring(literalType.indexOf(' ') + 1);  // return everything after the first space
-            let isStoreDataType: boolean = false;
-            let isTextareaInput: string = "";
+            const literalType = selected_node["extras"]["type"];
+            let oldValue = selected_node.getPorts()["out-0"].getOptions()["label"];
 
-            switch(literalType){
-                case "Numpy Array":
-                case "String":
-                    isTextareaInput = 'textarea';
-                    break;
-                case "List":
-                case "Tuple":
-                case "Dict":
-                    isStoreDataType = true;
-                    break;
-                case "True":
-                case "False":
-                    return;
-                default:
-                    break;
+            if (literalType == "chat"){
+                oldValue = JSON.parse(oldValue);
             }
-            const newTitle = `Update ${literalType}`;
-            const dialogOptions = inputDialog(newTitle, oldValue, literalType, isStoreDataType, isTextareaInput);
-            const dialogResult = await showFormDialog(dialogOptions);
-            if (dialogResult["button"]["label"] == 'Cancel') {
-                // When Cancel is clicked on the dialog, just return
+
+            const updateTitle = `Update ${literalType}`;
+
+            let updatedContent = await handleLiteralInput(selected_node["name"], {color: selected_node["color"], type: selected_node["extras"]["type"]}, oldValue, literalType, updateTitle);
+
+            if (!updatedContent) {
+                // handle case where Cancel was clicked or an error occurred
                 return;
             }
-            const strContent: string = dialogResult["value"][newTitle];
 
-            node = new CustomNodeModel({ name: selected_node["name"], color: selected_node["color"], extras: { "type": selected_node["extras"]["type"] } });
-            node.addOutPortEnhance(strContent, 'out-0');
+            node = updatedContent;
 
             // Set new node to old node position
             let position = selected_node.getPosition();
@@ -657,44 +816,86 @@ export function addNodeActionCommands(
 
             // Remove old node
             selected_node.remove();
+            widget.xircuitsApp.getDiagramEngine().repaintCanvas();
         }
     }
 
-    function deleteNode(): void {
-        const widget = tracker.currentWidget?.content as XPipePanel;
+    function deleteEntity(): void {
+        const widget = tracker.currentWidget?.content as XircuitsPanel;
 
         if (widget) {
-            const node = selectedNode();
-            if (!node) {
-                // When no node selected, just return
-                return;
-            }
             const selectedEntities = widget.xircuitsApp.getDiagramEngine().getModel().getSelectedEntities();
-            selectedEntities.forEach((node) => {
-                if (node.getOptions()["name"] !== "undefined") {
-                    let modelName = node.getOptions()["name"];
-                    const errorMsg = `${modelName} node cannot be deleted!`
-                    if (modelName !== 'Start' && modelName !== 'Finish') {
-                        if (!node.isLocked()) {
-                            node.remove()
-                        } else {
-                            showDialog({
-                                title: 'Locked Node',
-                                body: errorMsg,
-                                buttons: [Dialog.warnButton({ label: 'OK' })]
-                            });
-                        }
+            const model = widget.xircuitsApp.getDiagramEngine().getModel()
+        // Separate collections for nodes and links
+        let nodes = [];
+        let links = [];
+        let points = [];
+
+        // Separating nodes and links
+        selectedEntities.forEach((entity) => {
+            if (entity instanceof CustomNodeModel) {
+                nodes.push(entity);
+            } else if (entity instanceof LinkModel) {
+                links.push(entity);
+            } else if (entity instanceof PointModel) {
+                points.push(entity);
+            }
+        });
+
+        // Processing Links
+        links.forEach((link) => {
+            const port = link.getTargetPort();
+            if (port instanceof CustomDynaPortModel) {
+                port.shiftPorts( { shouldShiftBack: true }) // delete
+            }
+            link.remove();
+        });
+
+        // Processing Points
+        points.forEach((point) => {
+            point.remove();
+        });
+
+        // Processing Nodes
+        nodes.forEach((node) => {
+            // Before deleting the node, Check each outPort's links and their targetPorts
+            node.getOutPorts().forEach((outPort) => {
+                const outPortLinks = outPort.getLinks();
+                for (let linkId in outPortLinks) {
+                    const link = model.getLink(linkId);
+                    const targetPort = link.getTargetPort();
+                    if (targetPort instanceof CustomDynaPortModel) {
+                        targetPort.shiftPorts( { shouldShiftBack: true }) // delete
                     }
-                    else {
+                }
+            });
+
+            if (node.getOptions()["name"] !== "undefined") {
+                let modelName = node.getOptions()["name"];
+                const errorMsg = `${modelName} node cannot be deleted!`;
+
+                if (modelName !== 'Start' && modelName !== 'Finish') {
+                    if (!node.isLocked()) {
+                        node.remove();
+                    } else {
                         showDialog({
-                            title: 'Undeletable Node',
+                            title: 'Locked Node',
                             body: errorMsg,
                             buttons: [Dialog.warnButton({ label: 'OK' })]
                         });
                     }
+                } else {
+                    showDialog({
+                        title: 'Undeletable Node',
+                        body: errorMsg,
+                        buttons: [Dialog.warnButton({ label: 'OK' })]
+                    });
                 }
-            })
-            widget.xircuitsApp.getDiagramEngine().repaintCanvas();
+            }
+        });
+
+        widget.xircuitsApp.getDiagramEngine().repaintCanvas();
+
         }
     }
 }

@@ -2,9 +2,10 @@ from jupyter_server.utils import url_path_join
 
 from .compile_xircuits import CompileXircuitsFileRouteHandler
 from .components import ComponentsRouteHandler, EditXircuitsFile
-from .config import RunConfigRouteHandler
+from .config import RunConfigRouteHandler, SplitModeConfigHandler
 from .debugger import DebuggerRouteHandler
 from .spark_submit import SparkSubmitRouteHandler
+from .request_library import InstallLibraryRouteHandler, GetLibraryDirectoryRouteHandler, GetLibraryReadmeRouteHandler, GetLibraryExampleRouteHandler, ReloadComponentLibraryConfigHandler
 
 
 def setup_handlers(web_app, url_path):
@@ -22,6 +23,10 @@ def setup_handlers(web_app, url_path):
             RunConfigRouteHandler
         ),
         (
+            url_path_join(base_url, url_path, "config/split_mode"),
+            SplitModeConfigHandler
+        ),
+        (
             url_path_join(base_url, url_path, "components/"),
             ComponentsRouteHandler
         ),
@@ -36,6 +41,25 @@ def setup_handlers(web_app, url_path):
         (
             url_path_join(base_url, url_path, "components_edit/"),
             EditXircuitsFile
+        ),
+        (
+            url_path_join(base_url, url_path, "library/reload_config"),
+            ReloadComponentLibraryConfigHandler
+        ),
+        (
+            url_path_join(base_url, url_path, "library/install"),
+            InstallLibraryRouteHandler
+        ),
+        (
+            url_path_join(base_url, url_path, "library/get_directory"),
+            GetLibraryDirectoryRouteHandler
+        ),
+        (
+            url_path_join(base_url, url_path, "library/get_readme"),
+            GetLibraryReadmeRouteHandler
+        ),
+        (
+            url_path_join(base_url, url_path, "library/get_example"),
+            GetLibraryExampleRouteHandler
         )
-
     ])

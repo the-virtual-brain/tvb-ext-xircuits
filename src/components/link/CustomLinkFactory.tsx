@@ -1,6 +1,6 @@
 import { DefaultLinkFactory } from '@projectstorm/react-diagrams';
 import * as React from 'react';
-import { CustomLinkModel, TriangleLinkModel } from './CustomLinkModel';
+import { ParameterLinkModel, TriangleLinkModel } from './CustomLinkModel';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
 
@@ -16,28 +16,50 @@ namespace S {
 
 	const selected = css`
 		stroke-dasharray: 10, 2;
-		animation: ${Keyframes} 1s linear infinite;
+		animation: ${Keyframes} 1s steps(24) infinite;
 	`;
 
 	export const Path = styled.path<{ selected: boolean }>`
 		${(p) => p.selected && selected};
+
 		fill: none;
 		pointer-events: auto;
+		filter: drop-shadow(2px 2px 4px rgb(0 0 0 / 40%)) opacity(60%);
+		
+		body.low-powered-mode & {
+			animation: none !important;
+		}
 	`;
 }
 
-export class CustomLinkFactory extends DefaultLinkFactory {
+function addHover(model: TriangleLinkModel | ParameterLinkModel){
+	return (() => {
+					document.querySelector(`div.port[data-nodeid='${model.getSourcePort().getNode().getID()}'][data-name='${model.getSourcePort().getName()}']>div`).classList.add("hover");
+					document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div`).classList.add("hover");
+				});
+}
+
+function removeHover(model: TriangleLinkModel | ParameterLinkModel){
+	return () => {
+					document.querySelector(`div.port[data-nodeid='${model.getSourcePort().getNode().getID()}'][data-name='${model.getSourcePort().getName()}']>div`).classList.remove("hover");
+					document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div`).classList.remove("hover");
+				}
+}
+
+export class ParameterLinkFactory extends DefaultLinkFactory {
 	constructor() {
-		super('custom');
+		super('parameter-link');
 	}
 
-	generateModel(): CustomLinkModel {
-		return new CustomLinkModel();
+	generateModel(): ParameterLinkModel {
+		return new ParameterLinkModel();
 	}
 
-	generateLinkSegment(model: CustomLinkModel, selected: boolean, path: string) {
+	generateLinkSegment(model: ParameterLinkModel, selected: boolean, path: string) {
 		return (
 			<S.Path
+				onMouseOver={addHover(model)}
+				onMouseOut={removeHover(model)}
 				selected={selected}
 				stroke={selected ? 'yellow' : model.getOptions().color}
 				strokeWidth={model.getOptions().width}
@@ -49,7 +71,7 @@ export class CustomLinkFactory extends DefaultLinkFactory {
 
 export class TriangleLinkFactory extends DefaultLinkFactory {
 	constructor() {
-		super('triangle');
+		super('triangle-link');
 	}
 
 	generateModel(): TriangleLinkModel {
@@ -59,6 +81,8 @@ export class TriangleLinkFactory extends DefaultLinkFactory {
 	generateLinkSegment(model: TriangleLinkModel, selected: boolean, path: string) {
 		return (
 			<S.Path
+				onMouseOver={addHover(model)}
+				onMouseOut={removeHover(model)}
 				selected={!selected}
 				stroke={!selected ? model.getOptions().selectedColor : 'yellow'}
 				strokeWidth={model.getOptions().width}
@@ -67,4 +91,3 @@ export class TriangleLinkFactory extends DefaultLinkFactory {
 		);
 	}
 }
-

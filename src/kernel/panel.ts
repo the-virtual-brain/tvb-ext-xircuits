@@ -1,7 +1,7 @@
 import {
     ISessionContext,
     SessionContext,
-    sessionContextDialogs,
+    SessionContextDialogs,
 } from '@jupyterlab/apputils';
 import { OutputAreaModel, SimplifiedOutputArea } from '@jupyterlab/outputarea';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
@@ -15,27 +15,38 @@ import { Message } from '@lumino/messaging';
 import { StackedPanel } from '@lumino/widgets';
 import { Log } from '../log/LogPlugin';
 import { xircuitsIcon } from '../ui-components/icons';
-import { XircuitFactory } from '../xircuitFactory';
+import { XircuitsFactory } from '../XircuitsFactory';
 
 /**
  * The class name added to the output panel.
  */
 const PANEL_CLASS = 'jp-RovaPanel';
 
-/**
- * A panel with the ability to add other children.
- */
+class CustomOutputArea extends SimplifiedOutputArea {
+    constructor(options) {
+        super(options);
+
+        // Listen to the content change signal of the output area model
+        this.model.changed.connect(this._scrollToBottom, this);
+    }
+
+    private _scrollToBottom(): void {
+        // Scroll the output area to the bottom
+        this.node.scrollTop = this.node.scrollHeight;
+    }
+}
+
 export class OutputPanel extends StackedPanel {
     constructor(
         manager: ServiceManager.IManager,
         rendermime: IRenderMimeRegistry,
-        xircuitFactory: XircuitFactory,
+        XircuitsFactory: XircuitsFactory,
         translator?: ITranslator
     ) {
         super();
         this._translator = translator || nullTranslator;
         this._trans = this._translator.load('jupyterlab');
-        this._xircuitFactory = xircuitFactory;
+        this._XircuitsFactory = XircuitsFactory;
         this.addClass(PANEL_CLASS);
         this.id = 'xircuit-output-panel';
         this.title.label = this._trans.__('Xircuit Output');
@@ -49,10 +60,12 @@ export class OutputPanel extends StackedPanel {
         });
 
         this._outputareamodel = new OutputAreaModel();
-        this._outputarea = new SimplifiedOutputArea({
+        this._outputarea = new CustomOutputArea({
             model: this._outputareamodel,
             rendermime: rendermime,
         });
+
+        this._sessionContextDialogs = new SessionContextDialogs();
 
         this.addWidget(this._outputarea);
 
@@ -60,7 +73,7 @@ export class OutputPanel extends StackedPanel {
             .initialize()
             .then(async (value) => {
                 if (value) {
-                    await sessionContextDialogs.selectKernel(this._sessionContext);
+                    await this._sessionContextDialogs.selectKernel(this._sessionContext);
                     // Dispose panel when no kernel selected
                     if (this._sessionContext.hasNoKernel) {
                         super.dispose();
@@ -81,7 +94,6 @@ export class OutputPanel extends StackedPanel {
     dispose(): void {
         this._sessionContext.sessionManager.shutdown(this._sessionContext.session.id);
         this._sessionContext.dispose();
-        this._xircuitFactory.terminateDebugSignal.emit(this);
         this._sessionContext.sessionManager.refreshRunning();
         super.dispose();
     }
@@ -130,9 +142,10 @@ export class OutputPanel extends StackedPanel {
     }
 
     private _sessionContext: SessionContext;
-    private _outputarea: SimplifiedOutputArea;
+    private _outputarea: CustomOutputArea;
     private _outputareamodel: OutputAreaModel;
-    private _xircuitFactory: XircuitFactory;
+    private _sessionContextDialogs: SessionContextDialogs;
+    private _XircuitsFactory: XircuitsFactory;
 
     private _translator: ITranslator;
     private _trans: TranslationBundle;

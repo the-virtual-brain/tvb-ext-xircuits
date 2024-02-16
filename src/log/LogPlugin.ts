@@ -21,12 +21,14 @@ import {
   ITextLog,
   IOutputLog,
 } from '@jupyterlab/logconsole';
-import { commandIDs } from '../components/xircuitBodyWidget';
+import { commandIDs } from '../components/XircuitsBodyWidget';
+import { requestAPI } from '../server/handler';
+import { DockLayout } from '@lumino/widgets';
 
 /**
  * The command IDs used by the log plugin.
  */
-export namespace CommandIDs {
+export namespace LoggerCommandIDs {
   export const addCheckpoint = 'Xircuit-log:add-checkpoint';
   export const clear = 'Xircuit-log:clear';
   export const openLog = 'Xircuit-log:open';
@@ -62,24 +64,24 @@ export const logPlugin: JupyterFrontEndPlugin<void> = {
 
     if (restorer) {
       void restorer.restore(loggertracker, {
-        command: CommandIDs.openLog,
+        command: LoggerCommandIDs.openLog,
         name: () => 'Xircuit-log'
       });
     }
   
-    app.commands.addCommand(CommandIDs.addCheckpoint, {
+    app.commands.addCommand(LoggerCommandIDs.addCheckpoint, {
       execute: () => logConsolePanel?.logger?.checkpoint(),
       icon: addIcon,
       isEnabled: () => !!logConsolePanel && logConsolePanel.source !== null,
       label: 'Add Checkpoint',
     });
-    app.commands.addCommand(CommandIDs.clear, {
+    app.commands.addCommand(LoggerCommandIDs.clear, {
       execute: () => logConsolePanel?.logger?.clear(),
       icon: clearIcon,
       isEnabled: () => !!logConsolePanel && logConsolePanel.source !== null,
       label: 'Clear Log',
     });
-    app.commands.addCommand(CommandIDs.setLevel, {
+    app.commands.addCommand(LoggerCommandIDs.setLevel, {
       execute: (args: any) => {
         if (logConsolePanel?.logger) {
           logConsolePanel.logger.level = args.level;
@@ -89,7 +91,7 @@ export const logPlugin: JupyterFrontEndPlugin<void> = {
       label: (args) => `Set Log Level to ${args.level as string}`,
     });
 
-    const createLogConsoleWidget = (): void => {
+    const createLogConsoleWidget = async (): Promise<void> => {
       logConsolePanel = new LogConsolePanel(
         new LoggerRegistry({
           defaultRendermime: rendermime,
@@ -111,14 +113,14 @@ export const logPlugin: JupyterFrontEndPlugin<void> = {
         'checkpoint',
         new CommandToolbarButton({
           commands: app.commands,
-          id: CommandIDs.addCheckpoint,
+          id: LoggerCommandIDs.addCheckpoint,
         })
       );
       logConsoleWidget.toolbar.addItem(
         'clear',
         new CommandToolbarButton({
           commands: app.commands,
-          id: CommandIDs.clear,
+          id: LoggerCommandIDs.clear,
         })
       );
       logConsoleWidget.toolbar.addItem(
@@ -132,14 +134,24 @@ export const logPlugin: JupyterFrontEndPlugin<void> = {
         app.commands.notifyCommandChanged();
       });
 
-      app.shell.add(logConsoleWidget, 'main', { mode: 'split-bottom' });
+      let splitMode: DockLayout.InsertMode = 'split-bottom' as DockLayout.InsertMode; // default value
+        
+      try {
+        const data = await requestAPI<any>('config/split_mode');
+        splitMode = data.splitMode as DockLayout.InsertMode;
+      } catch (err) {
+        console.error('Error fetching split mode from server:', err);
+      }
+    
+      app.shell.add(logConsoleWidget, 'main', { mode: splitMode });
+
       loggertracker.add(logConsoleWidget);
 
       logConsoleWidget.update();
       app.commands.notifyCommandChanged();
     };
 
-    app.commands.addCommand(CommandIDs.openLog, {
+    app.commands.addCommand(LoggerCommandIDs.openLog, {
       label: 'Open Xircuits Log Console',
       caption: 'Xircuits log console',
       icon: listIcon,
@@ -154,7 +166,7 @@ export const logPlugin: JupyterFrontEndPlugin<void> = {
     });
 
     palette.addItem({
-      command: CommandIDs.openLog,
+      command: LoggerCommandIDs.openLog,
       category: 'Examples',
     });
 

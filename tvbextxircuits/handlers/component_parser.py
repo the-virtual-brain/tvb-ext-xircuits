@@ -19,7 +19,7 @@ DEFAULT_COMPONENTS_PATHS = [
     os.path.join(os.path.dirname(__file__), "..", "..", "xai_components"),
     "xai_components",
     os.path.expanduser("~/xai_components"),
-    os.environ.get("XPIPES_COMPONENTS_DIR")
+    os.environ.get("XIRCUITS_COMPONENTS_DIR")
 ]
 
 # Get the default components from here for now
@@ -27,19 +27,22 @@ DEFAULT_COMPONENTS_PATHS = [
 # A good point in time to do that, would be when the python compilation step
 # gets refactored
 DEFAULT_COMPONENTS = {
-    # 1: {"name": "Get Argument String Name", "returnType": "string", "color": "lightpink"},
-    # 2: {"name": "Get Argument Integer Name", "returnType": "int", "color": "blue"},
-    # 3: {"name": "Get Argument Float Name", "returnType": "float", "color": "green"},
-    # 4: {"name": "Get Argument Boolean Name", "returnType": "boolean", "color": "red"},
-    5: {"name": "Literal String", "returnType": "string", "color": "lightpink"},
-    6: {"name": "Literal Integer", "returnType": "int", "color": "blue"},
-    7: {"name": "Literal Float", "returnType": "float", "color": "green"},
-    8: {"name": "Literal True", "returnType": "boolean", "color": "red"},
-    9: {"name": "Literal False", "returnType": "boolean", "color": "red"},
-    10: {"name": "Literal List", "returnType": "list", "color": "yellow"},
-    11: {"name": "Literal Tuple", "returnType": "tuple", "color": "purple"},
-    12: {"name": "Literal Dict", "returnType": "dict", "color": "orange"},
-    13: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
+    # 1: { "name": "Get Argument String Name", "returnType": "string","color":"lightpink"},
+    # 2: { "name": "Get Argument Integer Name", "returnType": "int","color":"blue"},
+    # 3: { "name": "Get Argument Float Name", "returnType": "float","color":"green"},
+    # 4: { "name": "Get Argument Boolean Name", "returnType": "boolean","color":"red"},
+    5: { "name": "Literal String", "returnType": "string","color":"lightpink"},
+    6:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
+    7:{ "name": "Literal Float", "returnType": "float","color":"green"},
+    8:{ "name": "Literal True", "returnType": "boolean","color":"red"},
+    9:{ "name": "Literal False", "returnType": "boolean","color":"red"},
+    10:{ "name": "Literal List", "returnType": "list","color":"yellow"},
+    11:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
+    12:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
+    13:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
+    14:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
+    15: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
+
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
     # 2: { "name": "Convert to Aurora", "returnType": "convert"},

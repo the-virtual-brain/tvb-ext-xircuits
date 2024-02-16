@@ -1,4 +1,4 @@
-import { CustomNodeModel } from "../components/CustomNodeModel";
+import { CustomNodeModel } from "../components/node/CustomNodeModel";
 import ComponentList from "./Component";
 
 interface AdvancedComponentLibraryProps {
@@ -34,12 +34,16 @@ export function AdvancedComponentLibrary(props: AdvancedComponentLibraryProps) {
             "description": nodeData["json_description"]["description"] || nodeData.docstring,
             "argumentDescriptions" : nodeData["json_description"]["arguments"],
             "lineNo": nodeData.lineno,
-            "has_widget": nodeData.has_widget
+            "has_widget": nodeData.has_widget,
+            "template": nodeData.template,
+            "options": nodeData.options
         }
     });
 
-    node.addInPortEnhance('▶', 'in-0');
-    node.addOutPortEnhance('▶', 'out-0');
+    if(node.extras.type != "Start"){
+        node.addInPortEnhance({label: '▶', name: 'in-0'});
+    }
+    node.addOutPortEnhance({label: '▶', name: 'out-0'});
 
     // TODO: Get rid of the remapping by using compatible type names everywhere
     let type_name_remappings = {
@@ -54,7 +58,7 @@ export function AdvancedComponentLibrary(props: AdvancedComponentLibraryProps) {
         let name = variable["name"];
         let type = type_name_remappings[variable["type"]] || variable["type"];
         // if node type includes comma, then multiple types are accepted for that node (ex: str,float; str,int; etc.)
-        if (type.includes(',')) {
+        if (type && type.includes(',')) {
             // take care of remapping, even when multiple types are accepted for the node
             for (let mapping in type_name_remappings) {
                 type = type.replace(mapping, type_name_remappings[mapping]);
@@ -68,16 +72,16 @@ export function AdvancedComponentLibrary(props: AdvancedComponentLibraryProps) {
 
         switch (variable["kind"]) {
             case "InCompArg":
-                node.addInPortEnhance(`★${name}`, `parameter-${type}-${name}`, true, null, description);
+                node.addInPortEnhance({ label: `★${name}`, name: `parameter-${type}-${name}`, dataType: `${type}`, description: description});
                 break;
             case "InArg":
-                node.addInPortEnhance(name, `parameter-${type}-${name}`, true, null, description);
+                node.addInPortEnhance({ label: name, name: `parameter-${type}-${name}`, dataType: `${type}`, description: description});
                 break;
             case "OutArg":
-                node.addOutPortEnhance(name, `parameter-out-${type}-${name}`, true, null, description);
+                node.addOutPortEnhance({ label: name, name: `parameter-out-${type}-${name}`, dataType: `${type}`, description: description});
                 break;
             case "BaseComponent":
-                node.addOutPortEnhance(`${name} ▶`, `out-flow-${name}`);
+                node.addOutPortEnhance({ label: `${name} ▶`, name: `out-flow-${name}`});
                 break;
             default:
                 console.warn("Unknown variable kind for variable", variable)

@@ -1,12 +1,15 @@
 from tqdm import tqdm
 import os
 from urllib import request, parse
-from github import Github
+from github import Github, GithubException
+from typing import Optional
+from .request_submodule import get_submodules
+import subprocess
+import re
 
 from tvbextxircuits.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
-
 
 def request_folder(folder, repo_name="XpressAi/Xircuits", branch="master"):
     LOGGER.info("Downloading " + folder + " from " + repo_name + " branch " + branch)
@@ -15,9 +18,15 @@ def request_folder(folder, repo_name="XpressAi/Xircuits", branch="master"):
     try:
         repo = g.get_repo(repo_name)
         contents = repo.get_contents(folder, ref=branch)
-    except:
-       LOGGER.warn(folder + " from " + repo_name + " branch " + branch + " does not exist!")
-       return 
+    except GithubException as e:
+        if e.status == 403:
+            LOGGER.warn("pyGithub API rate limit exceeded. If you're trying to fetch Xircuits components, you can use `xircuits-components`.")
+        else:
+            LOGGER.warn(folder + " from " + repo_name + " branch " + branch + " does not exist!")
+        return
+    except Exception as e:
+        LOGGER.warn("An error occurred: " + str(e))
+        return
 
     if not os.path.exists(folder):
         os.mkdir(folder)
@@ -38,8 +47,52 @@ def request_folder(folder, repo_name="XpressAi/Xircuits", branch="master"):
             file_url = base_url + "/" + parse.quote(file_content.path)
             urls.update({file_url: file_content.path})
 
+    submodules = get_submodules(repo, branch)
+
     for url in tqdm(urls):
         try:
             request.urlretrieve(url, urls[url])
         except:
-            LOGGER.warn("Unable to retrieve " + urls[url] + ". Skipping...")
+            if urls[url] not in submodules:
+                LOGGER.warn("Unable to retrieve " + urls[url] + ". Skipping...")
+
+
+def extract_library_details_from_url(github_url):
+    """Extract organization and repository name from GitHub URL."""
+    match = re.search(r'github.com/([^/]+)/xai-(.+)$', github_url)
+    if not match:
+        raise ValueError("Invalid GitHub URL format.")
+
+    org_name = match.group(1)
+    repo_name = match.group(2).replace('-', '_')
+    return org_name, repo_name
+
+def clone_repo(github_url, target_path):
+    """Clone a repository from GitHub URL to the specified target path."""
+    try:
+        subprocess.run(["git", "clone", github_url, target_path], check=True)
+    except subprocess.CalledProcessError:
+        print(f"Error: Unable to clone {github_url} into {target_path}. The directory may already exist and is not empty.")
+        return target_path
+
+    return target_path
+
+def clone_from_github_url(github_url: str) -> str:
+    # Create a Github instance
+    g = Github()
+
+    org_name, repo_name = extract_library_details_from_url(github_url)
+    target_path = f"xai_components/xai_{repo_name}"
+
+    # Retrieve the repository
+    try:
+        repo = g.get_repo(f"{org_name}/xai-{repo_name}")
+
+        # Check if repo exists, otherwise GithubException will be raised
+        if repo:
+            return clone_repo(github_url, target_path)
+        else:
+            raise ValueError(f"No repository found at {github_url}")
+
+    except GithubException as e:
+        raise RuntimeError(f"Error accessing the repository: {e}")

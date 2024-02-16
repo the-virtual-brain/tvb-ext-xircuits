@@ -1,0 +1,83 @@
+14-02-2024 09:51:31 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 09:51:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 09:51:31 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 09:51:31 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 09:51:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - "Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 09:51:31 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 09:51:31 - ERROR - tvb_ext_bucket.handlers - Could not get a list of available buckets : Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 10:01:04 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 10:01:04 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 10:01:04 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 10:01:04 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 10:49:33 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 10:49:33 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 10:49:33 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 10:49:33 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 10:52:31 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 10:52:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 10:52:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 10:52:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 11:35:32 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:35:32 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:35:32 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 11:35:32 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 11:35:32 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - "Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:35:32 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 11:35:32 - ERROR - tvb_ext_bucket.handlers - Could not get a list of available buckets : Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 11:39:56 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:39:56 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:39:56 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 11:39:56 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 11:42:22 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:42:22 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:42:22 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 11:42:22 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 11:43:08 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:43:08 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:43:08 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 11:43:08 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 11:45:01 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:45:01 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:45:01 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 11:45:01 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 11:45:01 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - "Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:45:01 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 11:45:01 - ERROR - tvb_ext_bucket.handlers - Could not get a list of available buckets : Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 11:46:16 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:46:16 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:46:16 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 11:46:16 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 11:47:31 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 11:47:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 11:47:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 11:47:31 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 12:12:35 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 12:12:35 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:12:35 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 12:12:35 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 12:12:35 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - "Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:12:35 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 12:12:35 - ERROR - tvb_ext_bucket.handlers - Could not get a list of available buckets : Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 12:15:37 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 12:15:37 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:15:37 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 12:15:37 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 12:41:52 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 12:41:52 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:41:52 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 12:41:52 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 12:41:52 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - "Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:41:52 - ERROR - tvb_ext_bucket.ebrains_drive_wrapper - No auth token defined as environment variable CLB_AUTH! Please define one!
+14-02-2024 12:41:52 - ERROR - tvb_ext_bucket.handlers - Could not get a list of available buckets : Cannot connect to EBRAINS HPC without an auth token! Either run this on Collab, or define the CLB_AUTH environment variable!
+14-02-2024 12:46:26 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 12:46:26 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 12:46:26 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 12:46:26 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 01:58:29 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 01:58:29 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 01:58:29 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 01:58:29 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
+14-02-2024 02:57:40 - WARNING - tvb_ext_bucket.ebrains_drive_wrapper - Could not connect to EBRAINS to retrieve an auth token: No module named 'clb_nb_utils'
+14-02-2024 02:57:40 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Will try to use the auth token defined by environment variable CLB_AUTH...
+14-02-2024 02:57:40 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Successfully retrieved the auth token from environment variable CLB_AUTH!
+14-02-2024 02:57:40 - INFO - tvb_ext_bucket.ebrains_drive_wrapper - Token retrieved successfully!
