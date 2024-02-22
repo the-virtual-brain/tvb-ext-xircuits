@@ -15,13 +15,6 @@
             "status": "remote"
         },
         {
-            "name": "xai_rpa",
-            "library_id": "RPA",
-            "repository": "https://github.com/yuenherny/xai-rpa",
-            "local_path": "xai_components\\xai_rpa",
-            "status": "remote"
-        },
-        {
             "name": "xai_streamlit",
             "library_id": "STREAMLIT",
             "repository": "https://github.com/XpressAI/xai-streamlit",
@@ -245,7 +238,7 @@
             ],
             "local_path": "xai_components\\xai_template",
             "status": "installed",
-            "requirements_path": "xai_components\\xai_template\\requirements.txt",
+            "requirements_path": null,
             "requirements": [],
             "default_example_path": null
         },

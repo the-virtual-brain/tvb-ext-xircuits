@@ -861,7 +861,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		if (portType.slice(0,7) === "Literal"){
 			let enumTitle = 'Select the value: ';
 			const possibleValues = eval(portType.slice(7))
-			const dialogOptions = inputDialog(enumTitle, "", 'Enum', null, null, possibleValues);
+			const dialogOptions = inputDialog({title: enumTitle, oldValue: '', type: 'Enum', possibleValues: possibleValues});
 			const dialogResult = await showFormDialog(dialogOptions);
 			if (cancelDialog(dialogResult)) return;
 			nodeType = "String";
@@ -874,7 +874,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					break;
 				case 'boolean':{
 					let boolTitle = 'Enter boolean value: ';
-					const dialogOptions = inputDialog({title:boolTitle, oldValue:"", type:'boolean'});
+					const dialogOptions = inputDialog({title:boolTitle, oldValue:'', type:'boolean'});
 					const dialogResult = await showFormDialog(dialogOptions);
 					if (cancelDialog(dialogResult)) return;
 					let boolValue = dialogResult["value"][boolTitle];
@@ -886,7 +886,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					break;
 				}
 				case 'numpy.ndarray': {
-					const dialogOptions = inputDialog('Numpy Array', "", 'Numpy Array', false, 'textarea');
+					const dialogOptions = inputDialog({title:'Numpy Array', oldValue: '', type:'Numpy Array', inputType: 'textarea'});
 					const dialogResult = await showFormDialog(dialogOptions);
 					if (cancelDialog(dialogResult)) return;
 					nodeType = 'Numpy Array'
@@ -899,7 +899,6 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					if (portAnyType == undefined) return;
 					nodeType = portAnyType.nodeType;
 					varInput = portAnyType.varInput;
-					errorMsg = portAnyType.errorMsg;
 					break;
 				default:
 					nodeType = portType.charAt(0).toUpperCase() + portType.slice(1);

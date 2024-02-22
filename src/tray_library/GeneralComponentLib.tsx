@@ -57,6 +57,7 @@ async function handleArgumentInput(nodeData, argumentTitle) {
 export async function GeneralComponentLibrary(props: GeneralComponentLibraryProps){
 
     let node = null;
+    let inputValue;
     const nodeData = props.model;
     const variableValue = props.variableValue || '';
     const nodeName = nodeData.task;
@@ -71,7 +72,7 @@ export async function GeneralComponentLibrary(props: GeneralComponentLibraryProp
         return node;
     } else if (nodeData.type === 'numpy.ndarray') {
         if (variableValue == '' || variableValue == undefined) {
-            const dialogOptions = inputDialog('Numpy Array', "", 'Numpy Array', false ,'textarea');
+            const dialogOptions = inputDialog({title:'Numpy Array', oldValue:'', type:'Numpy Array', inputType: 'textarea'});
             const dialogResult = await showFormDialog(dialogOptions);
             if (cancelDialog(dialogResult)) return;
             console.log(dialogResult)

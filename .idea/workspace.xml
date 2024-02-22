@@ -5,7 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2acf9b96-f5c5-4d77-aa1a-c3ad732c8803" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/xircuits/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/xircuits/_version.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tvb-ext-xircuits.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tvb-ext-xircuits.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.tvb_ext_bucket.log.2024-02-14" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.xircuits/component_library_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.xircuits/component_library_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/XircuitsWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/XircuitsWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/commands/NodeActionCommands.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/commands/NodeActionCommands.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/CustomNodeModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/XircuitsBodyWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/XircuitsBodyWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/node/CustomNodeModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/node/CustomNodeModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context-menu/CanvasContextMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context-menu/CanvasContextMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context-menu/NodeActionsPanel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/LiteralInputDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/LiteralInputDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/GeneralComponentLib.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/GeneralComponentLib.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/_version.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/compiler/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/compiler/generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/handlers/request_library.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/handlers/request_library.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_toolbelt_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_toolbelt_components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +54,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,22 +69,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "mergeWithRominaFromMaster",
-    "last_opened_file_path": "C:/Users/teodora.misan/Documents/tvb-widgets",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;mergeWithRominaFromMaster&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/teodora.misan/Documents/tvb-widgets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\teodora.misan\\Documents\\tvb-ext-xircuits\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -90,7 +114,13 @@
       <workItem from="1707905347386" duration="13844000" />
       <workItem from="1707982688157" duration="10673000" />
       <workItem from="1707997883350" duration="703000" />
-      <workItem from="1707998602454" duration="4406000" />
+      <workItem from="1707998602454" duration="26264000" />
+      <workItem from="1708088258658" duration="140000" />
+      <workItem from="1708088409107" duration="10385000" />
+      <workItem from="1708337315210" duration="12561000" />
+      <workItem from="1708412346414" duration="20700000" />
+      <workItem from="1708508230727" duration="7265000" />
+      <workItem from="1708583465490" duration="1870000" />
     </task>
     <servers />
   </component>
@@ -139,7 +169,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="mergeWithRominaFromMaster" />
+                        <option value="dev" />
                       </list>
                     </value>
                   </entry>

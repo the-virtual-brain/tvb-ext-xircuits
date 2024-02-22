@@ -4,7 +4,7 @@ import traceback
 import tornado
 import posixpath
 from jupyter_server.base.handlers import APIHandler
-from xircuits.library import install_library, build_library_file_path_from_config, save_component_library_config
+from tvbextxircuits.library import install_library, build_library_file_path_from_config, save_component_library_config
 
 class InstallLibraryRouteHandler(APIHandler):
     @tornado.web.authenticated

@@ -7,7 +7,7 @@ import React from 'react';
 import { ServiceManager } from '@jupyterlab/services';
 import { XircuitsApplication } from './components/XircuitsApp';
 import {requestAPI} from "./server/handler";
-import {CustomNodeModel} from "./components/CustomNodeModel";
+import {CustomNodeModel} from "./components/node/CustomNodeModel";
 import {DefaultLinkModel, NodeModel} from "@projectstorm/react-diagrams";
 import {PortModel} from "@projectstorm/react-diagrams-core";
 
@@ -161,7 +161,7 @@ export class XircuitsPanel extends ReactWidget {
       extras: { type: type }
     });
 
-    node.addOutPortEnhance(value, out_port_name);
+    node.addOutPortEnhance({ label: value, name: out_port_name });
     node.setPosition(position_x, position_y);
     this.getDiagramModel().addNode(node);
     return node.getPorts()[out_port_name];

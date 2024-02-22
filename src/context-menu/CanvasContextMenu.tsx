@@ -37,6 +37,7 @@ export class CanvasContextMenu extends React.Component<CanvasContextMenuProps> {
                 {visibility.showEdit && (
                     <div className="context-menu-option" onClick={() => this.props.app.commands.execute(commandIDs.editNode)}>Edit</div>
                 )}
+                <div className="context-menu-option" onClick={() => this.props.app.commands.execute(commandIDs.openViewer)}>Open Viewer</div>
                 {visibility.showOpenScript && (
                     <div className="context-menu-option" onClick={() => this.props.app.commands.execute(commandIDs.openScript)}>Open Script</div>
                 )}

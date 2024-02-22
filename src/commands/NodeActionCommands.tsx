@@ -79,7 +79,7 @@ export function addNodeActionCommands(
     //Add command to open node's viewer in notebook
     commands.addCommand(commandIDs.openViewer, {
         execute: async (args) => {
-            const node = selectedNode();
+            const node = getLastSelectedNode();
             if (node.extras["has_widget"] === false) {
                 showDialog({
                     title: `${node.name} does not have a widget assigned!`,

@@ -156,7 +156,7 @@ class %s(Component):
                     # Literal
                     assignment_target += ".value"
                     tpl = ast.parse("%s = 1" % (assignment_target))
-                    if port.source.type in ("string", "np.ndarray"):
+                    if port.source.type in ("string", "numpy.ndarray"):
                         value = port.sourceLabel
                     elif port.source.type == "list":
                         value = json.loads("[" + port.sourceLabel + "]")
