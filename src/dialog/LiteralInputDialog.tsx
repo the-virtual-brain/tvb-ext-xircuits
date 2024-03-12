@@ -12,7 +12,7 @@ import { ChatInput } from './input-dialogues/ChatInput';
 import { SecretInput } from './input-dialogues/SecretInput';
 import { VariableInput } from './input-dialogues/VariableInput';
 import { ArgumentInput } from './input-dialogues/ArgumentInput';
-import Dropdown from '../components/common/Dropdown';
+import { EnumInput } from './input-dialogues/EnumInput';
 
 export interface InputDialogueProps {
   title: string;
@@ -67,7 +67,8 @@ export const LiteralInputDialog = ({
     variable: VariableInput,
     secret: SecretInput,
     chat: ChatInput,
-    argument: ArgumentInput
+    argument: ArgumentInput,
+    enum: EnumInput
   };
 
   const InputValueDialog = () => {
@@ -77,7 +78,7 @@ export const LiteralInputDialog = ({
       ];
 
     // The `type` prop is now passed to all components
-    const extraProps = { type, inputType };
+    const extraProps = { type, inputType, possibleValues };
 
     return InputComponent ? (
       <InputComponent title={title} oldValue={oldValue} {...extraProps} />

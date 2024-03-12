@@ -861,7 +861,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		if (portType.slice(0,7) === "Literal"){
 			let enumTitle = 'Select the value: ';
 			const possibleValues = eval(portType.slice(7))
-			const dialogOptions = inputDialog({title: enumTitle, oldValue: '', type: 'Enum', possibleValues: possibleValues});
+			const dialogOptions = inputDialog({title: enumTitle, oldValue: '', type: 'enum', inputType: null, possibleValues: possibleValues});
 			const dialogResult = await showFormDialog(dialogOptions);
 			if (cancelDialog(dialogResult)) return;
 			nodeType = "String";
