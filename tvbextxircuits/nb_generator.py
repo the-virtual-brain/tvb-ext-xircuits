@@ -15,6 +15,7 @@ from tvb.simulator.models.oscillator import Generic2dOscillator
 from xai_components.base_tvb import ComponentWithWidget
 
 from xai_components.logger.builder import get_logger
+from xai_components.xai_storage.store_results import StoreResultsToDrive
 
 LOGGER = get_logger(__name__)
 IS_WINDOWS = sys.platform.startswith('win')
@@ -149,7 +150,7 @@ class TimeSeriesNotebookGenerator(NotebookGenerator):
         self.add_markdown_cell(title)
 
         intro = f"#### Run the cell below in order to display the TimeSeriesBrowser widget\n" \
-                f"#### It will allow you to browse through the EBRAINS Drive and view the time series from there\n" \
+                f"#### It will allow you to browse through the EBRAINS {'Drive' if self.is_drive_class() else 'Bucket'} and view the time series from there\n" \
                 f"*This widget supports the display of a single time series at a time. If you want to visualize more " \
                 f"time series in parallel, please duplicate the cell below to generate new widgets"
 
@@ -176,10 +177,13 @@ class TimeSeriesNotebookGenerator(NotebookGenerator):
     def _prepare_component_inputs(self):
         collab_name = self.component_inputs.get('collab_name')
         if collab_name is None:
-            return ''
+            return f"selected_storage={2}"
 
         folder_path = self.component_inputs.get('folder_path')
         return f"'{collab_name}', '{folder_path}'"
+
+    def is_drive_class(self):
+        return isinstance(self.component_class, StoreResultsToDrive)
 
 
 class PhasePlaneNotebookGenerator(NotebookGenerator):

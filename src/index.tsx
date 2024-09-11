@@ -261,12 +261,12 @@ const xircuits: JupyterFrontEndPlugin<void> = {
 
       try {
         let command_str = cfg['command'] + " " + path + " " + cfg['run_config_name']
-            + " " + "'" + cfg['project'] + "'"
+            + " " + cfg['project']
             + " " + cfg['stage-out']
-            + " " + "'" + cfg['filesystem'] + "'"
-            + " " + "'" + cfg['python'] + "'"
-            + " " + "'" + cfg['modules'] + "'"
-            + " " + "'" + cfg['libraries'] + "'" ;
+            + " " + cfg['filesystem']
+            + " " + cfg['python']
+            + " " + cfg['modules']
+            + " " + cfg['libraries'];
         let code_str = "\nfrom subprocess import Popen, PIPE\n\n";
 
         code_str += `command_str= "${command_str}"\n`;
@@ -300,15 +300,14 @@ const xircuits: JupyterFrontEndPlugin<void> = {
           await createPanel();
         }
 
-        // Convert the model_path to be bash aware
-        model_path = `"${model_path}"`
-
         outputPanel.session.ready.then(async () => {
           let code = startRunOutputStr();
           if (runType == 'remote-run') {
             // Run subprocess when run type is Remote Run
             code += doRemoteRun(model_path, config);
           } else {
+            // Convert the model_path to be bash aware
+            model_path = `"${model_path}"`
             code += `%run ${model_path} ${message} ${debug_mode}`
           }
 

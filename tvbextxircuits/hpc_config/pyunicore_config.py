@@ -13,8 +13,8 @@ from io import BytesIO
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
 import requests
-from pyunicore.helpers.jobs import Status as unicore_status
-from pyunicore.credentials import AuthenticationFailedException
+from pyunicore.client import JobStatus as unicore_status
+from pyunicore.credentials import AuthenticationFailedException, OIDCToken
 from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
 from tvb_ext_bucket.exceptions import CollabAccessError
 from tvbwidgets.core.auth import get_current_token
@@ -74,7 +74,7 @@ class PyunicoreSubmitter(object):
 
     def connect_client(self):
         LOGGER.info(f"Connecting to {self.site}...")
-        token = get_current_token()
+        token = OIDCToken(get_current_token())
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
 
