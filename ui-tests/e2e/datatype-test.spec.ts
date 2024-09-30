@@ -82,8 +82,8 @@ test('Test editing literal nodes', async ({ page, browserName }) => {
 
   const updateParamsList = [
     { type: "Literal String",   updateValue: "Updated String" },
-    { type: "Literal Integer",  updateValue: "456" },
-    { type: "Literal Float",    updateValue: "4.56" },
+    { type: "Literal Integer",  updateValue: "456e1" },
+    { type: "Literal Float",    updateValue: "456e-1" },
     { type: "Literal Boolean",  updateValue: false },
     { type: "Literal List",     updateValue: '"d", "e", "f"' },
     { type: "Literal Tuple",    updateValue: '"g", "h", "i"' },
@@ -103,7 +103,7 @@ test('Test editing literal nodes', async ({ page, browserName }) => {
   await page.locator('div').filter({ hasText: /^Select a rolesystemuserassistantfunctionRemovedef$/ }).getByRole('button').click();
   await page.locator('select[name="role"]').selectOption('user');
   await page.locator('select[name="role"]').click();
-  await page.getByText('abc', { exact: true }).fill('updated user message');
+  await page.locator('textarea[name="content"]').filter({ hasText: 'abc' }).fill('updated user message');
   await page.getByRole('button', { name: 'Add Message' }).click();
   await page.getByRole('combobox').nth(2).selectOption('assistant');
   await page.getByRole('textbox').nth(2).click();

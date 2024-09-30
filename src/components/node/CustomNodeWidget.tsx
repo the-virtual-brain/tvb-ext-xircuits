@@ -1,489 +1,535 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
-import { DefaultNodeModel } from '@projectstorm/react-diagrams';
+import { DefaultNodeModel, DefaultPortModel } from '@projectstorm/react-diagrams';
 import styled from '@emotion/styled';
-import Toggle from 'react-toggle'
+import Toggle from 'react-toggle';
 import { ILabShell, JupyterFrontEnd } from '@jupyterlab/application';
-import { commandIDs } from '../XircuitsBodyWidget';
 import { CustomPortLabel } from '../port/CustomPortLabel';
 import { Dialog } from '@jupyterlab/apputils';
 import { formDialogWidget } from '../../dialog/formDialogwidget';
 import { showFormDialog } from '../../dialog/FormDialog';
 import { CommentDialog } from '../../dialog/CommentDialog';
-import ReactTooltip from "react-tooltip"
+import ReactTooltip from 'react-tooltip';
 import { marked } from 'marked';
 import Color from 'colorjs.io';
+import { commandIDs } from '../../commands/CommandIDs';
+import {
+    componentLibIcon,
+    branchComponentIcon,
+    workflowComponentIcon,
+    functionComponentIcon,
+    startFinishComponentIcon,
+    variableComponentIcon,
+    setVariableComponentIcon,
+    getVariableComponentIcon } from '../../ui-components/icons';
+import  circuitBoardSvg from '../../../style/icons/circuit-board-bg.svg';
+import { LegacyRef, MutableRefObject } from "react";
 
-var S;
-(function (S) {
-    S.Node = styled.div<{ borderColor:string,background: string; selected: boolean;  }>`
-		background-color: ${(p) => {
-        const color = new Color(p.background);
-        color.alpha = 0.75;
-        color.oklch.c *= 1.2;
-        return color.to('oklch').toString();
-    }};
-    box-shadow: 1px 1px 10px ${(p) => p.selected ? '3px rgb(0 192 255 / 0.5)' : '0px rgb(0 0 0 / 0.5)'};    
-		border-radius: 5px;
-		font-family: sans-serif;
-		color: white;
-		overflow: visible;
-		font-size: 11px;
-		border: solid 1px ${(p) => (p.selected ? (p.borderColor==undefined? 'rgb(0,192,255)': p.borderColor ):'black')};
-	`;
 
-    S.Title = styled.div`
-		background: rgba(0, 0, 0, 0.3);
-		display: flex;
-		white-space: nowrap;
-		justify-items: center;
-    box-shadow: inset 0 -2px 4px 0 rgb(0 0 0 / 0.05);  
-	`;
 
-    S.TitleName = styled.div`
-		flex-grow: 1;
-		padding: 5px 5px;
-	`;
+export namespace S {
+    export const Node = styled.div<{ borderColor: string, background: string; selected: boolean; }>`
+        box-shadow: 1px 1px 10px ${(p) => p.selected ? '3px rgb(0 192 255 / 0.5)' : '0px rgb(0 0 0 / 0.5)'};
+        cursor: grab;
+        border-radius: 5px;
+        font-family: sans-serif;
+        color: white;
+        overflow: visible;
+        font-size: 11px;
+        border: solid 1px ${(p) => (p.selected ? (p.borderColor == undefined ? 'rgb(0,192,255)' : p.borderColor) : 'black')};
+        & .grabbing {
+            cursor: grabbing;
+        }
+    `;
 
-    S.CommentContainer = styled.div<{ selected: boolean;  }>`
+    export const Title = styled.div<{ background: string; }>`
+        background-image: ${(p) => {
+            const color = new Color(p.background);
+            color.alpha = 0.75;
+            color.oklch.c *= 1.2;
+            const color1 = color.to('oklch').toString()
+            color.oklch.c *= 1.2;
+            color.oklch.l /= 2;
+            const color2 = color.to('oklch').toString()
+            return `linear-gradient(${color1}, ${color2})`
+        }};
+        font-weight: 500;
+        letter-spacing: 0.025rem;
+        display: flex;
+        white-space: nowrap;
+        justify-items: center;
+        box-shadow: inset 0 -2px 4px 0 rgb(0 0 0 / 0.05);
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    `;
+
+    export const TitleName = styled.div`
+        flex-grow: 1;
+        padding: 5px 5px 5px 5px;
+    `;
+
+    export const IconContainer = styled.div`
+        padding: 5px 5px 5px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    `;
+
+    export const CommentContainer = styled.div<{ selected: boolean; }>`
         background: rgba(0, 0, 0, 0.3);
         border-radius: 5px;
-		font-family: sans-serif;
-		color: rgb(255, 255, 255);
-		border: solid 2px black;
-		font-size: 12px;
-        border: solid 2px ${(p) => p.selected ? 'rgb(0,192,255)':'black'};
+        font-family: sans-serif;
+        color: rgb(255, 255, 255);
+        border: solid 2px black;
+        font-size: 12px;
+        border: solid 2px ${(p) => p.selected ? 'rgb(0,192,255)' : 'black'};
         padding: 5px;
     `;
 
-    S.DescriptionName = styled.div<{ color:string }>`
+    export const DescriptionName = styled.div<{ color: string }>`
         color: ${(p) => p.color ?? 'rgb(0, 0, 0)'};
         text-align: justify;
         font-family: 'Roboto', sans-serif;
         font-weight: 700;
         font-size: 13px;
-	`;
+    `;
 
-    S.Ports = styled.div`
-		display: flex;
-		background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
-	`;
+    export const Ports = styled.div`
+        display: flex;
+        background-image: linear-gradient(oklch(10% 0 0 / 0.7), oklch(10% 0 0 / 0.9));
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        
+        .workflow-node & {
+            background: linear-gradient(oklch(10% 0 0 / 0.7), oklch(10% 0 0 / 0.9)), url("data:image/svg+xml;base64,${btoa(circuitBoardSvg)}") no-repeat right 10px;
+        }
+    `;
 
-    S.PortsContainer = styled.div`
+    export const PortsContainer = styled.div`
         max-width: 640px;
+        min-width: 0;
         white-space: pre;
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
 
-		&:first-of-type {
-			margin-right: 10px;
-		}
+        &:first-of-type {
+            margin-right: 10px;
+        }
 
-		&:only-child {
-			margin-right: 0px;
-		}
-	`;
+        &:only-child {
+            margin-right: 0px;
+        }
+    `;
 
-})(S || (S = {}));
-
+    export const WorkflowNode = styled(S.Node)`
+    `;
+}
 export interface DefaultNodeProps {
     node: DefaultNodeModel;
     engine: DiagramEngine;
     app: JupyterFrontEnd;
-    shell : ILabShell;
+    shell: ILabShell;
 }
 
-/**
- * Default node that models the DefaultNodeModel. It creates two columns
- * for both all the input ports on the left, and the output ports on the right.
- */
-export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
+export const getNodeIcon = (type) => {
+    switch (type) {
+        case 'Start':
+        case 'startFinish':
+            return <startFinishComponentIcon.react />;
+        case 'workflow':
+        case 'xircuits_workflow':
+            return <workflowComponentIcon.react />;
+        case 'branch':
+            return <branchComponentIcon.react />;
+        case 'function':
+            return <functionComponentIcon.react />;
+        case 'context_set':
+            return <setVariableComponentIcon.react />;
+        case 'context_get':
+            return <getVariableComponentIcon.react />;
+        case 'variable':
+            return <variableComponentIcon.react />;
+        // component libraries were typed as 'debug' before v1.12.
+        case 'debug':
+        case 'library_component':
+            return <componentLibIcon.react />;
+        default:
+            return null;
+    }
+};
 
-    portsNo = this.props.node.getInPorts().length + this.props.node.getOutPorts().length;
+function addGrabbing(e){
+  e.target.classList.add('grabbing');
+}
 
-    tooltipDescriptionRef = React.createRef<HTMLDivElement>();
+function removeGrabbing(e){
+  e.target.classList.remove('grabbing');
+}
 
-    element:Object;
-    state = {
+const CommentNode = ({ node }) => {
+    const [commentInput, setCommentInput] = React.useState(node['extras']['commentInput']);
 
-        isTooltipActive: false,
-        nodeDeletable: false,
-        commentInput: this.props.node['extras']['commentInput'],
-        showDescription: false,
-        descriptionStr: "",
+    const handleEditComment = async () => {
+        let dialogResult = await showFormDialog({
+            body: formDialogWidget(<CommentDialog commentInput={commentInput} />),
+            buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Submit' })],
+            focusNodeSelector: 'textarea'
+        });
 
-        showParamDescriptionList: new Array(this.portsNo).fill(false),
-        paramName: ""
+        if (dialogResult["button"]["label"] === 'Cancel') {
+            return false;
+        }
+
+        const newVal = dialogResult["value"][''];
+        setCommentInput(newVal);
+        node['extras']['commentInput'] = newVal;
     };
+
+    return (
+        <S.CommentContainer onDoubleClick={handleEditComment} selected={node.isSelected()} onMouseDown={addGrabbing} onMouseUp={removeGrabbing}>
+            <S.TitleName><b>{node.getOptions().name}</b></S.TitleName>
+            <div className='comment-component-content'>
+                {commentInput}
+            </div>
+        </S.CommentContainer>
+    );
+};
+
+interface PortsComponentProps {
+    node: DefaultNodeModel;
+    engine: DiagramEngine;
+    app: JupyterFrontEnd;
+    showDescription?: boolean[];
+    setShowDescription?: (id: number) => (newShowDescription: boolean) => void;
+    setDescriptionStr?: (desc: string) => void;
+    description?: string; // Optional
+}
+
+const PortsComponent: React.FC<PortsComponentProps> = ({
+    node,
+    engine,
+    app,
+    showDescription,
+    setShowDescription,
+    setDescriptionStr,
+}) => {
+  const renderPort = (port, index) => {
+    const argumentDescriptions = node['extras']['argumentDescriptions'];
+
+    // remove the ☆ from the beginning of the label
+		const name = port.getOptions().label[0] === "★" ? port.getOptions().label.slice(1) : port.getOptions().label;
+
+    const description = argumentDescriptions && (name in argumentDescriptions) ? argumentDescriptions[name] : "";
+
+    const isOutPort = port.getOptions().name.includes('parameter-out');
+    const idx = isOutPort ? index + node.getInPorts().length: index;
+
+    return <CustomPortLabel engine={engine}
+                            port={port}
+                            key={port.getID()}
+                            node={node}
+                            app={app}
+                            showDescription={showDescription[idx]}
+                            setShowDescription={setShowDescription(idx)}
+                            setDescriptionStr={setDescriptionStr}
+                            description={description}/>
+  };
+  return (
+    <S.Ports>
+      <S.PortsContainer>{_.map(node.getInPorts(), renderPort)}</S.PortsContainer>
+      <S.PortsContainer>{_.map(node.getOutPorts(), renderPort)}</S.PortsContainer>
+    </S.Ports>
+  )
+}
+
+const ParameterNode = ({ node, engine, app }) => {
+    const handleEditParameter = () => {
+        const nodeName = node.getOptions()["name"];
+        if (!nodeName.startsWith("Literal ") && !nodeName.startsWith("Argument ")) {
+            return;
+        }
+        app.commands.execute(commandIDs.editNode);
+    };
+
+    if(node.getOptions().extras['attached']){
+      return <></>;
+    }
+
+    return (
+        <S.Node
+            onMouseDown={addGrabbing} onMouseUp={removeGrabbing}
+            borderColor={node.getOptions().extras["borderColor"]}
+            data-default-node-name={node.getOptions().name}
+            selected={node.isSelected()}
+            background={node.getOptions().color}
+            onDoubleClick={handleEditParameter}
+        >
+            <S.Title background={node.getOptions().color}
+>
+                {/* <S.IconContainer>{getNodeIcon('parameter')}</S.IconContainer> */}
+                <S.TitleName>{node.getOptions().name}</S.TitleName>
+            </S.Title>
+            <PortsComponent node={node} engine={engine} app={app}/>
+        </S.Node>
+    );
+};
+
+const StartFinishNode = ({ node, engine, handleDeletableNode, app }) => (
+    <S.Node
+        onMouseDown={addGrabbing} onMouseUp={removeGrabbing}
+        borderColor={node.getOptions().extras["borderColor"]}
+        data-default-node-name={node.getOptions().name}
+        selected={node.isSelected()}
+        background={node.getOptions().color}
+    >
+        <S.Title background={node.getOptions().color}
+>
+            <S.IconContainer>{getNodeIcon('startFinish')}</S.IconContainer>
+            <S.TitleName>{node.getOptions().name}</S.TitleName>
+            <label data-no-drag>
+                <Toggle className='lock' checked={node.isLocked() ?? false} onChange={event => handleDeletableNode('nodeDeletable', event)} />
+            </label>
+        </S.Title>
+        <PortsComponent node={node} engine={engine} app={app}/>
+    </S.Node>
+);
+
+const WorkflowNode = ({ node, engine, app, handleDeletableNode }) => {
+    return (
+        <div style={{ position: "relative" }}>
+            <S.WorkflowNode
+                onMouseDown={addGrabbing} onMouseUp={removeGrabbing}
+                data-tip data-for={node.getOptions().id}
+                borderColor={node.getOptions().extras["borderColor"]}
+                data-default-node-name={node.getOptions().name}
+                selected={node.isSelected()}
+                background={node.getOptions().color}
+                className="workflow-node"
+            >
+                <S.Title background={node.getOptions().color}
+>
+                    <S.IconContainer>{getNodeIcon('workflow')}</S.IconContainer>
+                    <S.TitleName>{node.getOptions().name}</S.TitleName>
+                    <label data-no-drag>
+                        <Toggle className='lock' checked={node.isLocked() ?? false} onChange={event => handleDeletableNode('nodeDeletable', event)} />
+                    </label>
+                </S.Title>
+                <PortsComponent node={node} engine={engine}  app={app}/>
+            </S.WorkflowNode>
+        </div>
+    );
+};
+
+const ComponentLibraryNode = ({ node, engine, shell, app, handleDeletableNode }) => {
+    // from them
+    const [showDescription, setShowDescription] = React.useState(false);
+    const [descriptionStr, updateDescriptionStrState] = React.useState("");
+    const elementRef = React.useRef<HTMLElement>(null);
+
+    // from us
+    const portsNo = node.getInPorts().length + node.getOutPorts().length;
+    const tooltipDescriptionRef = React.useRef<HTMLDivElement>(null);
+    const [showParamDescriptionList, setShowParamDescriptionList] =  React.useState<boolean[]>(
+        new Array(portsNo).fill(false)
+    );
+    const [paramName, setParamName] = React.useState("");
+
 
     /**
      * creates a particular function for each component so that it can set only it's state
      * @param id
      */
-    setShowParamDescription = (id : number) => {
-        const _setShowParamDescription = (newShowDescription : boolean) => {
-            this.setState({
-                showParamDescriptionList: this.state.showParamDescriptionList.map((value, index) => (
-                        id === index ? newShowDescription : false
-                    )
-                ),
-                showDescription: false
-            })
+    const setShowParamDescription = (id: number) => {
+      return (newShowDescription: boolean) => {
+          setShowParamDescriptionList(prevList =>
+              prevList.map((value, index) => index === id ? newShowDescription : false)
+          );
+          setShowDescription(false);
+      };
+    };
+
+    const setDescriptionStr = (paramName: string) => {
+      return async (newDescriptionStr: string) => {
+        updateDescriptionStrState(newDescriptionStr);
+        setParamName(paramName);
+
+        if (elementRef.current) {
+          ReactTooltip.show(elementRef.current as Element);
         }
-        return _setShowParamDescription;
-    }
-
-    setDescriptionStr = (paramName: string) => {
-        const _setDescriptionStr = async (descriptionStr : string) => {
-            await this.setState({
-                descriptionStr : descriptionStr,
-                paramName: paramName
-            });
-            ReactTooltip.show(this.element as Element);
-        }
-        return _setDescriptionStr;
-    }
-
-    generatePort = (port, index) => {
-        const argumentDescriptions = this.props.node['extras']['argumentDescriptions'];
-
-        // remove the ☆ from the beginning of the label
-		const name = port.getOptions().label[0] === "★" ? port.getOptions().label.slice(1) : port.getOptions().label;
-
-        const description = argumentDescriptions && (name in argumentDescriptions) ? argumentDescriptions[name] : "";
-
-        const isOutPort = port.getOptions().name.includes('parameter-out');
-
-        index = isOutPort ? index + this.props.node.getInPorts().length: index;
-
-        return (
-            <CustomPortLabel
-                engine={this.props.engine}
-                port={port}
-                key={port.getID()}
-                node={this.props.node}
-                showDescription={this.state.showParamDescriptionList[index]}
-                setShowDescription={this.setShowParamDescription(index)}
-                setDescriptionStr = {this.setDescriptionStr}
-                description={description}
-            />
-        );
+      };
     };
 
-    showTooltip() {
-        this.setState({isTooltipActive: true})
-    }
-    hideTooltip() {
-        this.setState({isTooltipActive: false})
-    }
-    handleClose() {
-        this.hideTooltip();
+    const handleDescription = async () => {
+      setShowDescription(prevShowDescription => !prevShowDescription);
+      setShowParamDescriptionList(new Array(portsNo).fill(false));
+      setParamName("");
+
+      getDescriptionStr();
+      if (elementRef.current) {
+          ReactTooltip.show(elementRef.current);
+      }
+   };
+
+    const getDescriptionStr = () => {
+        let dscrptStr = node['extras']['description'] ?? '***No description provided***';
+        setDescriptionStr(dscrptStr);
     };
 
-    /**
-     * load more data from server when page changed
-     * @param e
-     */
-    onPageChanged = e => {
-        console.log(e.currentPage);
+    const hideErrorTooltip = () => {
+        delete node.getOptions().extras["tip"];
+        node.getOptions().extras["borderColor"] = "rgb(0,192,255)";
     };
 
-    handleDeletableNode(key, event) {
+    return (
+        <div style={{ position: "relative" }}>
+            {(showDescription || showParamDescriptionList.reduce((prev, cur) => prev || cur, false)) && <div className="description-tooltip">
+                <div data-no-drag style={{ cursor: "default" }} ref={tooltipDescriptionRef}>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                            onClick={async () => {
+                                setShowDescription(false);
+                                setShowParamDescriptionList(new Array(portsNo).fill(false));
+                                await handleDescription();
+                            }}
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <S.DescriptionName color={node.getOptions().color}>{node.getOptions().name + " " + paramName }</S.DescriptionName>
+                    <div className="scrollable" onWheel={(e) => { e.stopPropagation(); e.currentTarget.scrollBy(e.deltaX, e.deltaY); }}>
+                        <p className="description-title">Description:</p>
+                        <div className="description-container">
+                            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: marked(descriptionStr ?? '') }} />
+                        </div>
+                    </div>
+                </div>
+            </div>}
+            <S.Node
+                onMouseDown={addGrabbing} onMouseUp={removeGrabbing}
+                ref={(elementRef as LegacyRef<HTMLDivElement>)}
+                data-tip data-for={node.getOptions().id}
+                borderColor={node.getOptions().extras["borderColor"]}
+                data-default-node-name={node.getOptions().name}
+                selected={node.isSelected()}
+                background={node.getOptions().color}
+            >
+                <S.Title background={node.getOptions().color}
+>
+                    <S.IconContainer>{getNodeIcon(node['extras']['type'])}</S.IconContainer>
+                    <S.TitleName>{node.getOptions().name}</S.TitleName>
+                    <label data-no-drag>
+                        <Toggle className='lock' checked={node.isLocked() ?? false} onChange={event => handleDeletableNode('nodeDeletable', event)} />
+                        <Toggle className='description' name='Description' checked={showDescription ?? false} onChange={handleDescription} />
+                    </label>
+                </S.Title>
+                <PortsComponent node={node} engine={engine} app={app}
+                                showDescription={showParamDescriptionList}  // inside PortsComponent there is the index used to get value from this array
+                                setShowDescription={setShowParamDescription}  // pass method
+                                setDescriptionStr={setDescriptionStr} />
+            </S.Node>
+            {(node.getOptions().extras["tip"] != undefined && node.getOptions().extras["tip"] != "") ?
+                <ReactTooltip
+                    id={node.getOptions().id}
+                    clickable
+                    place="bottom"
+                    className="error-tooltip"
+                    arrowColor="rgba(255, 0, 0, .9)"
+                    delayHide={100}
+                    delayUpdate={50}
+                    getContent={() =>
+                        <div data-no-drag className="error-container">
+                            <p className="error-title">Error</p>
+                            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: marked(node.getOptions().extras["tip"] ?? '') }} />
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={hideErrorTooltip}>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                    overridePosition={({ left, top }) => {
+                        const currentNode = node;
+                        const nodeDimension = { x: currentNode.width, y: currentNode.height };
+                        const nodePosition = { x: currentNode.getX(), y: currentNode.getY() };
+                        let newPositionX = nodePosition.x;
+                        let newPositionY = nodePosition.y;
+                        let offset = 0;
+
+                        if (!shell.leftCollapsed) {
+                            let leftSidebar = document.getElementById('jp-left-stack');
+                            offset = leftSidebar.clientWidth + 2;
+                        }
+
+                        newPositionX = newPositionX - 184 + offset + (nodeDimension.x / 2);
+                        newPositionY = newPositionY + 90 + nodeDimension.y;
+
+                        const tooltipPosition = engine.getRelativePoint(newPositionX, newPositionY);
+
+                        left = tooltipPosition.x;
+                        top = tooltipPosition.y;
+                        return { top, left };
+                    }}
+                />
+                : null}
+        </div>
+    );
+};
+
+export class CustomNodeWidget extends React.Component<DefaultNodeProps> {
+
+  portsNo = this.props.node.getInPorts().length + this.props.node.getOutPorts().length;
+
+  tooltipDescriptionRef = React.createRef<HTMLDivElement>();
+
+  handleDeletableNode = (key, event) => {
         this.setState({
-            [key]: event.target.checked
-                ? this.props.node.setLocked(true)
-                : this.props.node.setLocked(false),
-        })
-    }
-
-    handleOnChangeCanvas(){
-        this.props.engine.fireEvent({}, 'onChange');
-    }
-
-    /**
-     * Allow to edit Literal Component
-     */
-    handleEditLiteral() {
-        if (!this.props.node.getOptions()["name"].startsWith("Literal")) {
-            return;
-        }
-        this.props.app.commands.execute(commandIDs.editNode)
-    }
-
-    dialogOptions: Partial<Dialog.IOptions<any>> = {
-        body: formDialogWidget(
-                <CommentDialog commentInput={this.state.commentInput}/>
-        ),
-        buttons: [Dialog.cancelButton(), Dialog.okButton({ label: ('Submit') })],
-	focusNodeSelector: 'textarea'
+            [key]: event.target.checked ? this.props.node.setLocked(true) : this.props.node.setLocked(false),
+        });
     };
 
-    /**
-     * Allow to edit Comment Component
-     */
-    async handleEditComment(){
-        let dialogResult = await showFormDialog(this.dialogOptions)
-
-        if (dialogResult["button"]["label"] == 'Cancel') {
-			// When Cancel is clicked on the dialog, just return
-			return false;
-		}
-        const newVal = dialogResult["value"]['']
-        //  update value both in internal component state
-        this.setState({ commentInput: newVal });
-        // and in model object
-        this.props.node['extras']['commentInput'] = newVal;
-        this.handleOnChangeCanvas();
-    }
-
-    /**
-     * Show/Hide Component's Description Tooltip
-     */
-    async handleDescription() {
-        await this.setState({
-            showDescription: !this.state.showDescription,
-            showParamDescriptionList: new Array(this.portsNo).fill(false),
-            paramName: ""
-        });
-        await this.getDescriptionStr();
-        ReactTooltip.show(this.element as Element);
-    }
-
-    renderText = text => {
-        var renderer = new marked.Renderer();
-        renderer.link = function(href, title, text) {
-            var link = marked.Renderer.prototype.link.apply(this, arguments);
-            return link.replace("<a","<a target='_blank'");
-        };
-        marked.setOptions({
-            renderer: renderer
-        });
-        const __html = marked(text ?? '')
-        return { __html }
-    }
-
-    getDescriptionStr() {
-        let dscrptStr = this.props.node['extras']['description'] ?? '***No description provided***';
-        this.setState({ descriptionStr: dscrptStr });
-    }
-
-    // Hide Error Tooltip
-    hideErrorTooltip(){
-        delete this.props.node.getOptions().extras["tip"];
-        this.props.node.getOptions().extras["borderColor"]="rgb(0,192,255)";
-    }
+    handleOnChangeCanvas = () => {
+        this.props.engine.fireEvent({}, 'onChange');
+    };
 
     render() {
+        const { node, engine, app, shell } = this.props;
 
-        const isCommentNode = this.props.node['extras']['type'] == 'comment';
-        const isLiteralNode = this.props.node.getOptions()["name"].startsWith('Literal');
-        const isArgumentNode = this.props.node.getOptions()["name"].startsWith('Argument');
-
-        if (isCommentNode) {
-            return (
-                <S.CommentContainer
-                    onDoubleClick={this.handleEditComment.bind(this)}
-                    selected={this.props.node.isSelected()}>
-                    <S.TitleName><b>{this.props.node.getOptions().name}</b></S.TitleName>
-                    <div className='comment-component-content'>
-                        {this.state.commentInput}
-                    </div>
-                </S.CommentContainer>
-            );
-        } 
-        else if (isLiteralNode) {
-            return (
-                <S.Node
-                    borderColor={this.props.node.getOptions().extras["borderColor"]}
-                    data-default-node-name={this.props.node.getOptions().name}
-                    selected={this.props.node.isSelected()}
-                    background={this.props.node.getOptions().color}
-                    onDoubleClick={this.handleEditLiteral.bind(this)}>
-                    <S.Title>
-                        <S.TitleName>{this.props.node.getOptions().name}</S.TitleName>
-                    </S.Title>
-                    <S.Ports>
-                        <S.PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</S.PortsContainer>
-                        <S.PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</S.PortsContainer>
-                    </S.Ports>
-                </S.Node>
-            );
+        if (node['extras']['type'] === 'comment') {
+            return <CommentNode node={node} />;
         }
-        else if (this.props.node.getOptions()["name"] !== 'Start' && this.props.node.getOptions()["name"] !== 'Finish') {
-            return (
-                <>
-                    <S.Node
-                        onMouseEnter={this.showTooltip.bind(this)}
-                        onMouseLeave={this.hideTooltip.bind(this)}
-                        ref={(element) => { this.element = element }}
-                        data-tip data-for={this.props.node.getOptions().id} // Data for tooltip
-                        borderColor={this.props.node.getOptions().extras["borderColor"]}
-                        data-default-node-name={this.props.node.getOptions().name}
-                        selected={this.props.node.isSelected()}
-                        background={this.props.node.getOptions().color}
-                        onDoubleClick={this.handleEditLiteral.bind(this)}>
-                        <S.Title>
-                            <S.TitleName>{this.props.node.getOptions().name}</S.TitleName>
-                            <label data-no-drag>
-                                <Toggle
-                                    className='lock'
-                                    checked={this.props.node.isLocked()}
-                                    onChange={this.handleDeletableNode.bind(this, 'nodeDeletable')}
-                                />
-                                {!isArgumentNode && (
-                                    <Toggle
-                                        className='description'
-                                        name='Description'
-                                        checked={this.state.showDescription}
-                                        onChange={this.handleDescription.bind(this)}
-                                    />
-                                )}
-                            </label>
-                        </S.Title>
-                        <S.Ports>
-                            <S.PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</S.PortsContainer>
-                            <S.PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</S.PortsContainer>
-                        </S.Ports>
-                    </S.Node>
-                    {/** Description Tooltip */}
-                    {(this.state.showDescription || this.state.showParamDescriptionList.reduce((prev, cur) => prev || cur, false)) && <ReactTooltip
-                        id={this.props.node.getOptions().id}
-                        className='description-tooltip'
-                        arrowColor='rgb(255, 255, 255)'
-                        clickable
-                        delayHide={60000}
-                        delayUpdate={0}
-                        getContent={() =>
-                            <div data-no-drag style={{ cursor: 'default' }} ref={this.tooltipDescriptionRef}>
-                                <button
-                                    type="button"
-                                    className="close"
-                                    data-dismiss="modal"
-                                    aria-label="Close"
-                                    onClick={() => { this.setState({
-                                        showDescription: false,
-                                        showParamDescriptionList: new Array(this.portsNo).fill(false)
-                                    }); }}
-                                >
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <S.DescriptionName color={this.props.node.getOptions().color}>{this.props.node.getOptions()["name"] + " " + this.state.paramName}</S.DescriptionName>
-                                <p className='description-title'>Description:</p>
-                                <div
-                                    onWheel={(e) => e.stopPropagation()}
-                                    className='description-container'>
-                                    <div className='markdown-body' dangerouslySetInnerHTML = {{__html : this.state.descriptionStr}}/>
-                                </div>
-                            </div>}
-                        overridePosition={(
-                            { left, top },
-                            currentEvent, currentTarget, node, refNode) => {
 
-                            const currentNode = this.props.node;
-                            const nodeDimension = { x: currentNode.width, y: currentNode.height };
-                            const nodePosition = { x: currentNode.getX(), y: currentNode.getY() };
-
-                            let newPositionX = nodePosition.x;
-                            let newPositionY = nodePosition.y;
-                            let offset = 0;
-
-                            if (!this.props.shell.leftCollapsed) {
-                                // Some weird offset happened when left sidebar opened, need to add this
-                                let leftSidebar = document.getElementById('jp-left-stack');
-                                offset = leftSidebar.clientWidth + 2;
-                            }
-
-                            if (refNode == 'top') {
-                                newPositionX = newPositionX - 208 + offset + (nodeDimension.x / 2);
-                                newPositionY = newPositionY + 66 - this.tooltipDescriptionRef.current.clientHeight;
-                            }
-                            else if (refNode == 'bottom') {
-                                newPositionX = newPositionX - 208 + offset + (nodeDimension.x / 2);
-                                newPositionY = newPositionY + 85 + nodeDimension.y;
-                            }
-                            else if (refNode == 'right') {
-                                newPositionX = newPositionX + 40 + offset + nodeDimension.x;
-                                newPositionY = newPositionY - 66 + (nodeDimension.y / 2);
-                            }
-                            else if (refNode == 'left') {
-                                newPositionX = newPositionX - 450 + offset;
-                                newPositionY = newPositionY - 66 + (nodeDimension.y / 2);
-                            }
-                            const tooltipPosition = this.props.engine.getRelativePoint(newPositionX, newPositionY);
-
-                            left = tooltipPosition.x;
-                            top = tooltipPosition.y;
-                            return { top, left }
-                        }}
-                    />}
-                    {/** Error Tooltip */}
-                    {(this.props.node.getOptions().extras["tip"] != undefined && this.props.node.getOptions().extras["tip"] != "") ?
-                        <ReactTooltip
-                            id={this.props.node.getOptions().id}
-                            clickable
-                            place='bottom'
-                            className='error-tooltip'
-                            arrowColor='rgba(255, 0, 0, .9)'
-                            delayHide={100}
-                            delayUpdate={50}
-                            getContent={() =>
-                                <div data-no-drag className='error-container'>
-                                    <p className='error-title'>Error</p>
-                                    <div className='markdown-body' dangerouslySetInnerHTML={this.renderText(this.props.node.getOptions().extras["tip"])} />
-                                    <button
-                                        type="button"
-                                        className="close"
-                                        data-dismiss="modal"
-                                        aria-label="Close"
-                                        onClick={this.hideErrorTooltip.bind(this)}>
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            }
-                            overridePosition={({ left, top }) => {
-                                const currentNode = this.props.node;
-                                const nodeDimension = { x: currentNode.width, y: currentNode.height };
-                                const nodePosition = { x: currentNode.getX(), y: currentNode.getY() };
-                                let newPositionX = nodePosition.x;
-                                let newPositionY = nodePosition.y;
-                                let offset = 0;
-
-                                if (!this.props.shell.leftCollapsed) {
-                                    // Some weird offset happened when left sidebar opened, need to add this
-                                    let leftSidebar = document.getElementById('jp-left-stack');
-                                    offset = leftSidebar.clientWidth + 2;
-                                }
-
-                                newPositionX = newPositionX - 184 + offset + (nodeDimension.x / 2);
-                                newPositionY = newPositionY + 90 + nodeDimension.y;
-
-                                const tooltipPosition = this.props.engine.getRelativePoint(newPositionX, newPositionY);
-
-                                left = tooltipPosition.x;
-                                top = tooltipPosition.y;
-                                return { top, left }
-                            }}
-                        />
-                        : null}
-                </>
-            );
+        if (node.getOptions()["name"].startsWith('Literal') || node.getOptions()["name"].startsWith('Argument')) {
+            return <ParameterNode node={node} engine={engine} app={app} />;
         }
-        return (
-            <S.Node
-                borderColor={this.props.node.getOptions().extras["borderColor"]}
-                data-default-node-name={this.props.node.getOptions().name}
-                selected={this.props.node.isSelected()}
-                background={this.props.node.getOptions().color}>
-                <S.Title>
-                    <S.TitleName>{this.props.node.getOptions().name}</S.TitleName>
-                </S.Title>
-                <S.Ports>
-                    <S.PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</S.PortsContainer>
-                    <S.PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</S.PortsContainer>
-                </S.Ports>
-            </S.Node>
-        );
+
+        if (node['extras']['type'] === 'xircuits_workflow') {
+            return <WorkflowNode
+                node={node}
+                engine={engine}
+                app={app}
+                handleDeletableNode={this.handleDeletableNode}
+            />;
+        }
+
+        if (node.getOptions()["name"] === 'Start' || node.getOptions()["name"] === 'Finish') {
+            return <StartFinishNode
+                node={node}
+                engine={engine}
+                app={app}
+                handleDeletableNode={this.handleDeletableNode}
+            />;
+        }
+
+        return <ComponentLibraryNode
+            node={node}
+            engine={engine}
+            shell={shell}
+            app={app}
+            handleDeletableNode={this.handleDeletableNode}
+        />;
     }
 }

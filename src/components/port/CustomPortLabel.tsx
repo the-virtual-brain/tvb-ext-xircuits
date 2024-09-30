@@ -2,6 +2,9 @@ import * as React from 'react';
 import { DiagramEngine, PortWidget } from '@projectstorm/react-diagrams-core';
 import { DefaultNodeModel, DefaultPortModel } from "@projectstorm/react-diagrams";
 import styled from '@emotion/styled';
+import { JupyterFrontEnd } from "@jupyterlab/application";
+import { commandIDs } from "../../commands/CommandIDs";
+import Color from "colorjs.io";
 import WithToggle from "./WithToggle";
 
 
@@ -9,13 +12,14 @@ export interface CustomPortLabelProps {
 	port: DefaultPortModel;
 	engine: DiagramEngine;
 	node: DefaultNodeModel;
-	showDescription: boolean;
-	setShowDescription: any;
-	setDescriptionStr: (string: any) => any;
-	description : string;
+	app: JupyterFrontEnd;
+	showDescription?: boolean;
+	setShowDescription?: any;
+	setDescriptionStr?: (string: any) => any;
+	description?: string;
 }
 
-namespace S {
+export namespace S {
 	export const PortLabel = styled.div`
 		display: flex;
 		margin-top: 1px;
@@ -27,13 +31,14 @@ namespace S {
 		flex-grow: 1;
 		white-space: pre-wrap; // Preserve line breaks and wrap text to the next line
 		overflow:hidden;
+		text-overflow: ellipsis;
 		max-width: 40ch;
 	`;
 
-	export const SymbolContainer = styled.div<{ symbolType: string; selected: boolean; isOutPort: boolean }>`
+	export const SymbolContainer = styled.div<{ symbolType: string; selected: boolean; isOutPort: boolean; attachedColor?: string }>`
 		width: 15px;
 		height: 15px;
-		background: ${(p) => (p.selected ? 'oklch(1 0 0 / 0.5)' : 'rgba(0, 0, 0, 0.2)')};
+		background: ${(p) => (p.selected ? 'oklch(1 0 0 / 0.5)' : 'oklch(50% 0 0 / 0.2)')};
 		border-radius: ${(p) => (p.isOutPort ? '20px 0px 0px 20px' : '0px 20px 20px 0px')} ;
 		display: ${(p) => p.symbolType == null ? 'none' : 'visible'};
 		text-align: center;
@@ -45,21 +50,33 @@ namespace S {
 			background: rgb(192, 255, 0);
 			box-shadow:  ${(p) => p.selected ? '' : 'inset'} 0 4px 8px rgb(0 0 0 / 0.5);
 		}
+		
+		&.attached {
+			padding: 0 2px 0 3px;
+			border-radius: 20px;
+			border: 0;
+			background: ${(p) => p.attachedColor};
+			
+			&:hover, &.hover {
+				background: rgb(192, 255, 0);
+				box-shadow:  ${(p) => p.selected ? '' : 'inset'} 0 4px 8px rgb(0 0 0 / 0.5);
+			}
+		}
 	`;
 
-	export const Symbol = styled.div<{ isOutPort: boolean }>`
-		color: black;
+	export const Symbol = styled.div<{ selected: boolean; isOutPort: boolean }>`
+		color: ${(p) => (p.selected ? 'black' : 'grey')};
 		font-weight: bold;
 		font-size: 9px;
 		font-family: Helvetica, Arial, sans-serif;
 		padding:${(p) => (p.isOutPort ? '2px 0px 0px 2px' : '2px 2px 0px 0px')};
 	`;
 
-	export const Port = styled.div<{ isOutPort: boolean, hasLinks: boolean }>`
+	export const Port = styled.div<{ isOutPort: boolean, hasLinks: boolean; attachedColor?: string}>`
 		width: 15px;
 		height: 15px;
-		background: ${(p) => p.hasLinks ? 'oklch(1 0 0 / 0.5)' : 'oklch(0 0 0 / 0.2)'};
-		color: ${(p) => p.hasLinks ? 'oklch(0 0 0 / 0.8)' : 'oklch(1 0 0 / 0.8)'};
+		background: ${(p) => p.hasLinks ? 'oklch(1 0 0 / 0.5)' : 'oklch(50% 0 0 / 0.2)'};
+		color: ${(p) => p.hasLinks ? 'oklch(0% 0 0 / 0.8)' : 'oklch(1 0 0 / 0.8)'};
 		border: 1px solid oklch(0 0 0 / 0.2);
 		border-radius: ${(p) => (p.isOutPort ? '20px 0px 0px 20px' : '0px 20px 20px 0px')} ;
 		box-shadow: ${(p) => p.hasLinks ? '' : 'inset'}  0 2px 4px ${(p) => (p.hasLinks ? 'rgb(0 0 0 / 0.1)' : 'rgb(0 0 0 / 0.05)')} ;
@@ -79,27 +96,51 @@ namespace S {
 			stroke-linecap: round;
 			stroke-linejoin: round;
 		}
+		&.attached {
+			padding: 0 2px 0 3px;
+			border-radius: 20px;
+			border: 0;
+			background: ${(p) => p.attachedColor};
+			&:hover, &.hover {
+				background: rgb(192, 255, 0);
+				box-shadow:  ${(p) => p.hasLinks ? '' : 'inset'} 0 4px 8px rgb(0 0 0 / 0.5);
+			}
+		}
 	`;
 }
 
-export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
-	render() {
-		let portName = this.props.port.getOptions().name;
-		let portType;
-		let symbolLabel;
-		let isOutPort;
-		if(portName.includes('parameter-out')){
-			portType = portName.split("-")[2];
-			isOutPort = true;
-		} else {
-			portType = portName.split("-")[1];
-		}
-		// if multiple types provided, show the symbol for the first provided type
-		if (portType.includes(',')) {
-			portType = 'union';
-		}
+const PortLabel = ({nodeType, port, description,  setDescriptionStr, showDescription, setShowDescription}) => {
+	const LITERAL_SECRET = "Literal Secret";
 
-		const symbolMap = {
+	let labelText = port.getOptions().label.replace('▶', '').trim();
+
+	let attached = false;
+	if(port.getOptions().in){
+		Object.values(port.links).forEach(link => {
+			if(link['sourcePort']['parent']['name'].startsWith('Literal ') && link['sourcePort']['parent']['extras']['attached']){
+				attached = true;
+				const label = link['sourcePort']['parent']['name'] === LITERAL_SECRET ? "*****" : link['sourcePort']['options']['label']
+				labelText += ": "+(label.length > 18 ? label.substring(0, 15)+"..." : label)
+			}
+		})
+	}
+
+	return (
+			<S.Label style={{ textAlign: (!port.getOptions().in && port.getOptions().label === '▶') ? 'right' : 'left', cursor: attached ? 'pointer' : 'inherit' }}>
+				<WithToggle
+					renderToggleBeforeChildren={!port.getOptions().in}
+					showDescription={showDescription}
+					setShowDescription={setShowDescription}
+					description={description}
+					setDescriptionStr={setDescriptionStr(port.getOptions().label)}
+				>
+          {nodeType === LITERAL_SECRET ? "*****" : labelText}
+        </WithToggle>
+			</S.Label>
+	);
+}
+
+export const symbolMap = {
 			"string": '" "',
 			"int": ' 1',
 			"float": '1.0',
@@ -118,6 +159,22 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 			"flow": null
 		};
 
+export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
+	render() {
+		let portName = this.props.port.getOptions().name;
+		let portType;
+		let symbolLabel;
+		let isOutPort;
+		if(portName.includes('parameter-out')){
+			portType = portName.split("-")[2];
+			isOutPort = true;
+		} else {
+			portType = portName.split("-")[1];
+		}
+		if (portType.includes('Union')) {
+			portType = 'union';
+		}
+
 		if (portType in symbolMap) {
 			symbolLabel = symbolMap[portType];
 		} else {
@@ -130,8 +187,36 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 			/* Workaround for Arguments being set up as triangle ports in other places */
 			!this.props.node['name'].match('Argument \(.+?\):');
 
+		let dblClickHandler = () => {};
+		let attachedColor = null;
+		if(this.props.port.getOptions().in){
+			Object.values(this.props.port.links).forEach(link => {
+				if(link['sourcePort']['parent']['name'].startsWith('Literal ') && link['sourcePort']['parent']['extras']['attached']){
+					attachedColor = link['sourcePort']['parent']['options']['color'];
+
+					dblClickHandler = () => {
+						this.props.engine.getModel().clearSelection();
+						link['sourcePort']['parent'].setSelected(true);
+						this.props.app.commands.execute(commandIDs.editNode);
+					}
+				}
+			})
+		}
+
+		if(attachedColor != null){
+			const color = new Color(attachedColor);
+			color.alpha = 0.75;
+			color.oklch.c *= 1.2;
+			const color1 = color.to('oklch').toString()
+			color.oklch.c *= 1.2;
+			color.oklch.l /= 2;
+			const color2 = color.to('oklch').toString()
+
+			attachedColor = `linear-gradient(${color1}, ${color2})`;
+		}
+
 		const port = (
-			<S.Port isOutPort={!isIn} hasLinks={hasLinks}>
+			<S.Port isOutPort={!isIn} hasLinks={hasLinks} className={attachedColor ? 'attached' : null} attachedColor={attachedColor}>
 				{!isTrianglePort ? null : (isIn ?
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" >
 						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -155,32 +240,74 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 
 
 		const symbol = (
-			<S.SymbolContainer symbolType={symbolLabel} selected={portHasLink} isOutPort={isOutPort}>
-				<S.Symbol isOutPort={isOutPort}>
+			<S.SymbolContainer symbolType={symbolLabel} selected={portHasLink} isOutPort={isOutPort} className={attachedColor ? 'attached' : null}  attachedColor={attachedColor}>
+				<S.Symbol isOutPort={isOutPort} selected={portHasLink}>
 					{symbolLabel}
 				</S.Symbol>
 			</S.SymbolContainer>);
-
+		
 		const nodeType = this.props.node.getOptions().name
 
-		const label = (
-			<S.Label style={{textAlign: (!this.props.port.getOptions().in && this.props.port.getOptions().label === '▶') ? 'right': 'left'}}>
-				<WithToggle
-					renderToggleBeforeChildren={!this.props.port.getOptions().in}
-					showDescription={this.props.showDescription}
-					setShowDescription={this.props.setShowDescription}
-					description={this.props.description}
-					setDescriptionStr={this.props.setDescriptionStr(this.props.port.getOptions().label)}
-				>
-					{nodeType === "Literal Secret" ? "*****" : this.props.port.getOptions().label.replace('▶', '').trim()}
-				</WithToggle>
-			</S.Label>);
+		function addHover(port: DefaultPortModel) {
+			return (() => {
+				for (let linksKey in port.getLinks()) {
+					document.querySelector(`g[data-linkid='${linksKey}']`)?.classList.add("hover");
+					const model = port.getLinks()[linksKey]
+					if(model.getSourcePort() != null)
+						document.querySelector(`div.port[data-nodeid="${model.getSourcePort().getNode().getID()}"][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList.add("hover");
+					if(model.getTargetPort() != null)
+						document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList.add("hover");
+					if(attachedColor != null){
+						if(model.getSourcePort() != null){
+							Object.values(model.getSourcePort().getNode().getPorts()).forEach(p => {
+								Object.values(p.getLinks()).forEach(l => {
+									if(model.getTargetPort() != null)
+										document.querySelector(`div.port[data-nodeid="${l.getTargetPort().getNode().getID()}"][data-name='${l.getTargetPort().getName()}']>div>div`)?.classList.add("hover");
+								})
+							})
+						}
+					}
+				}
+			});
+		}
+
+		function removeHover(port: DefaultPortModel) {
+			return () => {
+				for (let linksKey in port.getLinks()) {
+					document.querySelector(`g[data-linkid='${linksKey}']`)?.classList.remove("hover");
+					const model = port.getLinks()[linksKey]
+					if(model.getSourcePort() != null)
+						document.querySelector(`div.port[data-nodeid="${model.getSourcePort().getNode().getID()}"][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList.remove("hover");
+					if(model.getTargetPort() != null)
+						document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList.remove("hover");
+					if(attachedColor != null){
+						if(model.getSourcePort() != null){
+							Object.values(model.getSourcePort().getNode().getPorts()).forEach(p => {
+								Object.values(p.getLinks()).forEach(l => {
+									if(model.getTargetPort() != null)
+										document.querySelector(`div.port[data-nodeid="${l.getTargetPort().getNode().getID()}"][data-name='${l.getTargetPort().getName()}']>div>div`)?.classList.remove("hover");
+								})
+							})
+						}
+					}
+				}
+			};
+		}
+
+		const label = <PortLabel port={this.props.port} nodeType={nodeType}
+														 showDescription={this.props.showDescription} setShowDescription={this.props.setShowDescription}
+														 setDescriptionStr={this.props.setDescriptionStr} description={this.props.description}/>
 
 		return (
-			<S.PortLabel>
+			<S.PortLabel onMouseOver={addHover(this.props.port)}
+									 onMouseOut={removeHover(this.props.port)}
+									 onDoubleClick={dblClickHandler}
+			>
 				{this.props.port.getOptions().in ? null : label}
 				<PortWidget engine={this.props.engine} port={this.props.port}>
-					{symbolLabel == null ? port : symbol}
+					<div>
+						{symbolLabel == null ? port : symbol}
+					</div>
 				</PortWidget>
 				{this.props.port.getOptions().in ? label : null}
 			</S.PortLabel>

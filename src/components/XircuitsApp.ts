@@ -1,14 +1,21 @@
 import * as SRD from '@projectstorm/react-diagrams';
 import { CustomNodeFactory } from "./node/CustomNodeFactory";
 import { CustomNodeModel } from './node/CustomNodeModel';
-import { ZoomCanvasAction } from '@projectstorm/react-canvas-core';
 import { CustomActionEvent } from '../commands/CustomActionEvent';
 import { ILabShell, JupyterFrontEnd } from '@jupyterlab/application';
 import { CustomDiagramState } from './state/CustomDiagramState'
 import { ParameterLinkModel, TriangleLinkModel } from './link/CustomLinkModel';
 import { ParameterLinkFactory, TriangleLinkFactory } from './link/CustomLinkFactory';
-import { PointModel } from '@projectstorm/react-diagrams';
+import {
+        DefaultLabelFactory, DefaultLinkFactory, DefaultPortFactory,
+        LinkLayerFactory,
+        NodeLayerFactory,
+        PointModel,
+        SelectionBoxLayerFactory
+} from "@projectstorm/react-diagrams";
 import { Point } from '@projectstorm/geometry';
+import { BaseComponentLibrary } from '../tray_library/BaseComponentLib';
+import { CustomPanAndZoomCanvasAction } from "./actions/CustomPanAndZoomCanvasAction";
 
 export class XircuitsApplication {
 
@@ -16,27 +23,34 @@ export class XircuitsApplication {
 
         protected diagramEngine: SRD.DiagramEngine;
 
-        constructor(app: JupyterFrontEnd, shell: ILabShell) {
+        constructor(app: JupyterFrontEnd, shell: ILabShell, getWidgetId: () => string) {
+                this.diagramEngine = new SRD.DiagramEngine({ registerDefaultZoomCanvasAction: false, registerDefaultDeleteItemsAction: false });
 
-                this.diagramEngine = SRD.default({ registerDefaultZoomCanvasAction: false, registerDefaultDeleteItemsAction: false });
-                this.activeModel = new SRD.DiagramModel();
+                // Default Factories
+                this.diagramEngine.getLayerFactories().registerFactory(new NodeLayerFactory());
+	              this.diagramEngine.getLayerFactories().registerFactory(new LinkLayerFactory());
+	              this.diagramEngine.getLayerFactories().registerFactory(new SelectionBoxLayerFactory());
+	              this.diagramEngine.getLabelFactories().registerFactory(new DefaultLabelFactory());
+                this.diagramEngine.getLinkFactories().registerFactory(new DefaultLinkFactory());
+	              this.diagramEngine.getPortFactories().registerFactory(new DefaultPortFactory());
+
+                // Custom Factories, Actions & State
                 this.diagramEngine.getNodeFactories().registerFactory(new CustomNodeFactory(app, shell));
                 this.diagramEngine.getLinkFactories().registerFactory(new ParameterLinkFactory());
                 this.diagramEngine.getLinkFactories().registerFactory(new TriangleLinkFactory());
-                this.diagramEngine.getActionEventBus().registerAction(new ZoomCanvasAction({ inverseZoom: true }))
-                this.diagramEngine.getActionEventBus().registerAction(new CustomActionEvent({ app }));
+                this.diagramEngine.getActionEventBus().registerAction(new CustomPanAndZoomCanvasAction())
+                this.diagramEngine.getActionEventBus().registerAction(new CustomActionEvent({ app, getWidgetId }));
                 this.diagramEngine.getStateMachine().pushState(new CustomDiagramState());
 
-                let startNode = new CustomNodeModel({ name: 'Start', color: 'rgb(255,102,102)', extras: { "type": "Start" } });
-                startNode.addOutPortEnhance({label: '▶', name: 'out-0'});
+
+                
+                let startNode = BaseComponentLibrary('Start')
                 startNode.setPosition(100, 100);
+                let finishNode = BaseComponentLibrary('Finish')
+                finishNode.setPosition(700, 100);
 
-                let finishedNode = new CustomNodeModel({ name: 'Finish', color: 'rgb(255,102,102)', extras: { "type": "Finish" } });
-                finishedNode.addInPortEnhance({label: '▶', name: 'in-0'});
-                finishedNode.addInPortEnhance({label: 'outputs', name: 'parameter-dynalist-outputs', varName: 'outputs', dataType: 'dynalist'});
-                finishedNode.setPosition(700, 100);
-
-                this.activeModel.addAll(startNode, finishedNode);
+                this.activeModel = new SRD.DiagramModel();
+                this.activeModel.addAll(startNode, finishNode);
                 this.diagramEngine.setModel(this.activeModel);
         }
 
@@ -74,11 +88,13 @@ export class XircuitsApplication {
 
                         for (let portID of node.portsInOrder) {
                                 const port = node.ports.find(p => p.id === portID);
-                                newNode.addInPortEnhance({label: port.label, name: port.name, varName: port.varName, id: port.id, dataType: port.dataType, dynaPortOrder: port.dynaPortOrder, dynaPortRef: port.dynaPortRef});
+                                const position = new Point(port.x, port.y);
+                                newNode.addInPortEnhance({label: port.label, name: port.name, varName: port.varName, id: port.id, dataType: port.dataType, dynaPortOrder: port.dynaPortOrder, dynaPortRef: port.dynaPortRef, position});
                         }
                         for (let portID of node.portsOutOrder) {
                                 const port = node.ports.find(p => p.id === portID);
-                                newNode.addOutPortEnhance({label: port.label, name: port.name, id: port.id});
+                                const position = new Point(port.x, port.y);
+                                newNode.addOutPortEnhance({label: port.label, name: port.name, id: port.id, position, dataType: port.dataType});
                         }
                         tempModel.addNode(newNode);
                 }
@@ -115,6 +131,9 @@ export class XircuitsApplication {
                                         // When source port is '▶', use triangle animation link
                                         // Also, use triangle animation link when the source port is a flowport
                                         newLink = newTriangleLink;
+                                        if(sourceNode['name'].startsWith("Argument ")){
+                                                newLink.getOptions()['__sub-type__'] = 'argument';
+                                        }
                                 }
 
                                 const targetPort = targetNode.getPortFromID(link.targetPort);

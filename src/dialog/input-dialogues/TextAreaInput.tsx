@@ -1,7 +1,47 @@
 import React, { useEffect, useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
-export const TextAreaInput = ({ title, oldValue }): JSX.Element => {
+const getHeaderContent = (type) => {
+    switch(type) {
+      case 'string':
+        return <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                  Enter String Value (Without Quotes):
+               </h3>;
+      case 'dict':
+        return <>
+                 <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                   Enter Dict Value (Without Brackets):
+                 </h3>
+                 <h5 style={{ marginTop: 0, marginBottom: 5 }}>
+                   For Example: "a": "apple", "b": "banana", "c": 2022
+                 </h5>
+               </>;
+      case 'tuple':
+        return <>
+                 <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                   Enter Tuple Value (Without Brackets):
+                 </h3>
+                 <h5 style={{ marginTop: 0, marginBottom: 5 }}>
+                   For Example: "a", "b", "c"
+                 </h5>
+               </>;
+      case 'list':
+        return <>
+                 <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                   Enter List Value (Without Brackets):
+                 </h3>
+                 <h5 style={{ marginTop: 0, marginBottom: 5 }}>
+                   For Example: "a", "b", "c"
+                 </h5>
+               </>;
+      default:
+        return <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                  Enter Value:
+               </h3>;
+    }
+  }
+
+export const TextAreaInput = ({ title, oldValue, type, inputType }): JSX.Element => {
 	const textAreaRef = useRef(null);
 
     // auto focus selector for text area
@@ -22,10 +62,8 @@ export const TextAreaInput = ({ title, oldValue }): JSX.Element => {
     
 
 	return (
-        <form>
-            <h3 style={{ marginTop: 0, marginBottom: 5 }}>
-                Enter String Value (Without Quotes):
-            </h3>
+        <>
+            {getHeaderContent(type)}
             <div>
                 <TextareaAutosize
                     defaultValue={oldValue}
@@ -34,6 +72,6 @@ export const TextAreaInput = ({ title, oldValue }): JSX.Element => {
                     style={{ width: 400, height: 200, fontSize: 12 }}
                     ref={textAreaRef} />
             </div>
-        </form>
-	);
+        </>
+    );
 }

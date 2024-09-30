@@ -5,27 +5,127 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2acf9b96-f5c5-4d77-aa1a-c3ad732c8803" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/commands/CommandIDs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/commands/LibraryActionCommands.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/actions/CustomPanAndZoomCanvasAction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dialog/LocalRunDialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dialog/NewLibraryDialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dialog/RemoteRunDialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dialog/RunDialogComponents.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/CanvasInitializer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/HelpResources.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tray_library/BaseComponentLib.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tray_library/ComponentLibraryConfig.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tray_library/NodePreview.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/branch-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/circuit-board-bg.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/function-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/get-variable-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/set-variable-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/start-finish-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/variable-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/icons/workflow-component.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tvbextxircuits/library/create_library.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_agent" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_controlflow/ExceptionHandlerExample.xircuits" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_converse" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_google_gemini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_gradio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_mongodb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_ms_graph" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_multion" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_stability_ai" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_template/HelloTutorial.xircuits" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_utils/RunParallelExample.xircuits" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/xai_components/xai_utils/UtilsZipDirectory.xircuits" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2_15_2024_10_55_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2_15_2024_10_55_AM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/tvb-ext-xircuits.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tvb-ext-xircuits.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.tvb_ext_bucket.log.2024-02-14" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.xircuits/component_library_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.xircuits/component_library_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/binder/postBuild" beforeDir="false" afterPath="$PROJECT_DIR$/binder/postBuild" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/XircuitsFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/XircuitsFactory.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/XircuitsWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/XircuitsWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/commands/CustomActionEvent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/commands/CustomActionEvent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/commands/NodeActionCommands.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/commands/NodeActionCommands.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CustomNodeModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/XircuitsApp.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/XircuitsApp.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/XircuitsBodyWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/XircuitsBodyWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/link/CustomLinkFactory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/link/CustomLinkFactory.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/node/CustomNodeModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/node/CustomNodeModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/node/CustomNodeWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/node/CustomNodeWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/port/CustomDynaPortModel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/port/CustomDynaPortModel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/port/CustomPortLabel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/port/CustomPortLabel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/port/CustomPortModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/port/CustomPortModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/runner/RemoteRun.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/runner/RemoteRun.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context-menu/CanvasContextMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context-menu/CanvasContextMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context-menu/NodeActionsPanel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context-menu/ComponentsPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context-menu/ComponentsPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context-menu/TrayContextMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context-menu/TrayContextMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context-menu/TrayItemPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context-menu/TrayItemPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/FormDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/FormDialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dialog/LiteralInputDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/LiteralInputDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/RunDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/RunDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/formDialogwidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/formDialogwidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/ArgumentInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/ArgumentInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/BooleanInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/BooleanInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/ChatInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/NumberInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/NumberInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/SecretInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/SecretInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/TextAreaInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/TextAreaInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dialog/input-dialogues/VariableInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialog/input-dialogues/VariableInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/InputSanitizer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/InputSanitizer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/LogPlugin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPlugin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/AdvanceComponentLib.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/AdvanceComponentLib.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/Component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/Component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tray_library/GeneralComponentLib.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/GeneralComponentLib.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tvbextxircuits/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/_version.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/TrayItemWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/TrayItemWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tray_library/TrayWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/tray_library/TrayWidget.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui-components/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui-components/icons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/ComponentInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/ComponentInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/ContextMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/ContextMenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/Sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/Sidebar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/base.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/description-markdown.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/description-markdown.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/.xircuits/.gitmodules" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/tvbextxircuits/compiler/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/compiler/generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/handlers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/handlers/component_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/handlers/component_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/handlers/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/handlers/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tvbextxircuits/handlers/request_library.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/handlers/request_library.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_components.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_toolbelt_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vecto/vecto_toolbelt_components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/library/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/library/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/library/generate_component_library_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/library/generate_component_library_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/library/install_fetch_library.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/library/install_fetch_library.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/start_xircuits.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/start_xircuits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tvbextxircuits/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/tvbextxircuits/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui-tests/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/ui-tests/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui-tests/e2e/datatype-test.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui-tests/e2e/datatype-test.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui-tests/e2e/expected_outputs/01_datatypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui-tests/e2e/expected_outputs/01_datatypes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui-tests/xircuits_test_utils.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui-tests/xircuits_test_utils.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_anthropic" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_anthropic" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowBranch.xircuits" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowBranch.xircuits" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowCounterLoop.xircuits" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowCounterLoop.xircuits" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowLoop.xircuits" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_controlflow/ControlflowLoop.xircuits" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_controlflow/branches.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_controlflow/branches.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_discord" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_discord" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_events/Events.xircuits" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_events/Events.xircuits" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_events/event_components.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_events/event_components.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_flask" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_flask" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_gpt_agent_toolkit" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_gpt_agent_toolkit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_openai" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_openai" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_pytorch" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_pytorch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_template/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_template/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_tests" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_tests" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_utils/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xai_components/xai_vertexai" beforeDir="false" afterPath="$PROJECT_DIR$/xai_components/xai_vertexai" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,30 +164,50 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2c29Yrg2ssISCLJK4QIEgnyeygm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;mergeWithRominaFromMaster&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/teodora.misan/Documents/tvb-widgets&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\teodora.misan\\Documents\\tvb-ext-xircuits\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "mergeWithRominaFromMaster",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/teodora.misan/Documents/tvb-widgets",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.stylelint": "C:\\Work\\TVB\\tvb-ext-xircuits\\node_modules\\stylelint",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "C:\\Work\\TVB\\tvb-ext-xircuits\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Work\TVB\tvb-ext-xircuits\tvbextxircuits\library" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.18034.82" />
+        <option value="bundled-python-sdk-975db3bf15a3-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.18034.82" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -121,6 +241,10 @@
       <workItem from="1708412346414" duration="20700000" />
       <workItem from="1708508230727" duration="7265000" />
       <workItem from="1708583465490" duration="1870000" />
+      <workItem from="1727441096120" duration="915000" />
+      <workItem from="1727442033264" duration="12000" />
+      <workItem from="1727442057870" duration="7345000" />
+      <workItem from="1727679887284" duration="9612000" />
     </task>
     <servers />
   </component>
@@ -134,7 +258,7 @@
         <option value="Default.Author" />
         <option value="Default.Date" />
         <option value="Default.Subject" />
-        <option value="Space.CommitStatus" />
+        <option value="GitHub.CommitStatus" />
       </list>
     </option>
   </component>

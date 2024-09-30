@@ -31,17 +31,18 @@ DEFAULT_COMPONENTS = {
     # 2: { "name": "Get Argument Integer Name", "returnType": "int","color":"blue"},
     # 3: { "name": "Get Argument Float Name", "returnType": "float","color":"green"},
     # 4: { "name": "Get Argument Boolean Name", "returnType": "boolean","color":"red"},
-    5: { "name": "Literal String", "returnType": "string","color":"lightpink"},
-    6:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
-    7:{ "name": "Literal Float", "returnType": "float","color":"green"},
-    8:{ "name": "Literal True", "returnType": "boolean","color":"red"},
-    9:{ "name": "Literal False", "returnType": "boolean","color":"red"},
-    10:{ "name": "Literal List", "returnType": "list","color":"yellow"},
-    11:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
-    12:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
-    13:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
-    14:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
-    15: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
+    # 5: { "name": "Get Argument Any Name", "returnType": "any","color":"red"},
+    6: { "name": "Literal String", "returnType": "string","color":"lightpink"},
+    7:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
+    8:{ "name": "Literal Float", "returnType": "float","color":"green"},
+    9:{ "name": "Literal True", "returnType": "boolean","color":"red"},
+    10:{ "name": "Literal False", "returnType": "boolean","color":"red"},
+    11:{ "name": "Literal List", "returnType": "list","color":"yellow"},
+    12:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
+    13:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
+    14:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
+    15:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
+    16: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
 
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
@@ -119,7 +120,7 @@ class ComponentsParser:
                 "category": GROUP_GENERAL,
                 "variables": [],
                 "type": c["returnType"],
-                "color": c.get('color') or None
+                "color":c.get('color') or None    
             })
 
         default_paths = set(pathlib.Path(p).expanduser().resolve() for p in sys.path)
@@ -140,14 +141,13 @@ class ComponentsParser:
                         python_path = None
 
                     try:
-                        components.extend(chain.from_iterable(
-                            self.extract_components(f, directory, python_path) for f in python_files))
+                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files if not f.name.startswith(".")))
                     except Exception:
                         error_msg = traceback.format_exc()
                         pass
                     finally:
-                        components.extend(chain.from_iterable(
-                            self.extract_components(f, directory, python_path) for f in python_files))
+                        components.extend(chain.from_iterable(self.extract_components(f, directory, python_path) for f in python_files if not f.name.startswith(".")))
+
 
         components = list({(c["header"], c["task"]): c for c in components}.values())
 
@@ -157,9 +157,9 @@ class ComponentsParser:
                 c["color"] = COLOR_PALETTE[idx % len(COLOR_PALETTE)]
 
         data = {"components": components,
-                "error_msg": error_msg}
+                "error_msg" : error_msg}
 
-        return data
+        self.finish(json.dumps(data))
 
     def generate_doc_files(self):
         from tvbextxircuits.handlers.json_parser import save_json_description
@@ -291,7 +291,6 @@ class ComponentsParser:
             "lineno": lineno,
             "has_widget": has_widget
         }
-
         output.update(keywords)
 
         return output

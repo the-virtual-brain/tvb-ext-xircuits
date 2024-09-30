@@ -1,9 +1,5 @@
-import ComponentList from '../tray_library/Component';
-
 import React, { useEffect, useState } from 'react';
-
 import styled from '@emotion/styled';
-
 import { JupyterFrontEnd } from '@jupyterlab/application';
 
 import {
@@ -17,6 +13,7 @@ import {
 import { DefaultLinkModel, DiagramEngine } from '@projectstorm/react-diagrams';
 import { TrayPanel } from './TrayPanel';
 import { TrayItemPanel } from './TrayItemPanel';
+import { ComponentList } from '../tray_library/Component';
 
 export const Body = styled.div`
   display: flex;
@@ -124,7 +121,6 @@ export default function ComponentsPanel(props: ComponentsPanelProps) {
     const [componentList, setComponentList] = React.useState([]);
     const [category, setCategory] = React.useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [runOnce, setRunOnce] = useState(false);
     const [allowableComponents, setAllowableComponents] = useState([]);
 
     let handleOnChange = (event) => {
@@ -154,12 +150,8 @@ export default function ComponentsPanel(props: ComponentsPanelProps) {
     }
 
     useEffect(() => {
-        if (!runOnce) {
-            fetchComponentList();
-            setRunOnce(true);
-        }
-
-    }, [category, componentList]);
+        fetchComponentList();
+    }, []);
 
     function focusInput() {
         document.getElementById("add-component-input").focus();
@@ -176,7 +168,7 @@ export default function ComponentsPanel(props: ComponentsPanelProps) {
                         </div>
                         {
                             allowableComponents.filter((val) => {
-                                if (searchTerm != "" && val.task.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                if (searchTerm != "" && (val.task.toLowerCase().includes(searchTerm.toLowerCase()) || (val.docstring && val.docstring.toLowerCase().includes(searchTerm.toLowerCase())))) {
                                     return val
                                 }
                             }).map((val, i) => {

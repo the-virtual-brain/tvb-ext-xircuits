@@ -20,6 +20,28 @@ else:
         return f.getvalue()
 
 
+def _get_value_from_literal_port(port):
+    if port.source.type == "string" or port.source.type == "secret" or port.source.type == "numpy.ndarray":
+        value = port.sourceLabel
+    elif port.source.type == "list":
+        value = json.loads("[" + port.sourceLabel + "]")
+    elif port.source.type == "dict":
+        value = json.loads("{" + port.sourceLabel + "}")
+    elif port.source.type == "chat":
+        value = json.loads(port.sourceLabel)
+    elif port.source.type == "tuple":
+        if port.sourceLabel == "":
+            value = ()
+        else:
+            value = eval(port.sourceLabel)
+            if not isinstance(value, tuple):
+                # Handler for single entry tuple
+                value = (value,)
+    else:
+        value = eval(port.sourceLabel)
+
+    return value
+
 class CodeGenerator:
     def __init__(self, graph, component_python_paths):
         self.graph = graph
@@ -65,7 +87,7 @@ import sys
     def _generate_fixed_imports(self):
         fixed_imports = """
 from argparse import ArgumentParser
-from xai_components.base import SubGraphExecutor, InArg, OutArg, Component, xai_component
+from xai_components.base import SubGraphExecutor, InArg, OutArg, Component, xai_component, parse_bool
 
 """
         return ast.parse(fixed_imports).body
@@ -88,7 +110,7 @@ from xai_components.base import SubGraphExecutor, InArg, OutArg, Component, xai_
 
     def _generate_flows(self, flow_name):
         mainFlowCls = ast.parse("""
-@xai_component        
+@xai_component(type="xircuits_workflow")
 class %s(Component):
     def __init__(self):
         super().__init__()
@@ -108,6 +130,8 @@ class %s(Component):
         exec_code = []
         args_code = []
 
+        existing_args = set()
+
         # Instantiate all components
         init_code.extend([
             ast.parse("%s = %s()" % (named_nodes[n.id], n.name)) for n in component_nodes
@@ -117,9 +141,14 @@ class %s(Component):
             "int": "int",
             "string": "str",
             "boolean": "bool",
-            "float": "float"
+            "float": "float",
+            "any": "any"
         }
 
+        def connect_args(target, source):
+            return ast.parse("%s.connect(%s)" % (target, source))
+
+        set_value = lambda target, v: ast.parse("%s.value = %s" % (target, v))
 
         # Set up component argument links
         for node in component_nodes:
@@ -139,9 +168,12 @@ class %s(Component):
                     port.targetLabel
                 )
                 assignment_source = "self.%s" % arg_name
-                tpl = ast.parse("%s = %s" % (assignment_target, assignment_source))
+                tpl = connect_args(assignment_target, assignment_source)
                 init_code.append(tpl)
-                args_code.append(ast.parse("%s: InArg[%s]" % (arg_name, arg_type)).body[0])
+                if arg_name not in existing_args:
+                    in_arg_def = ast.parse("%s: InArg[%s]" % (arg_name, arg_type)).body[0]
+                    args_code.append(in_arg_def)
+                    existing_args.add(arg_name)
 
             # Handle regular connections
             for port in (p for p in node.ports if
@@ -152,34 +184,15 @@ class %s(Component):
                 )
 
                 if port.source.id not in named_nodes:
-
                     # Literal
-                    assignment_target += ".value"
-                    tpl = ast.parse("%s = 1" % (assignment_target))
-                    if port.source.type in ("string", "numpy.ndarray"):
-                        value = port.sourceLabel
-                    elif port.source.type == "list":
-                        value = json.loads("[" + port.sourceLabel + "]")
-                    elif port.source.type == "dict":
-                        value = json.loads("{" + port.sourceLabel + "}")
-                    elif port.source.type == "secret":
-                        value = port.sourceLabel
-                    elif port.source.type == "chat":
-                        value = json.loads(port.sourceLabel)
-                    elif port.source.type == "tuple":
-                        value = eval(port.sourceLabel)
-                        if not isinstance(value, tuple):
-                            # handler for single entry tuple
-                            value = (value,)
-                    else:
-                        value = eval(port.sourceLabel)
-                    tpl.body[0].value.value = value
+                    tpl = set_value(assignment_target, '1')
+                    tpl.body[0].value.value = _get_value_from_literal_port(port)
                 else:
                     assignment_source = "%s.%s" % (
                         named_nodes[port.source.id],
                         port.sourceLabel
                     )
-                    tpl = ast.parse("%s = %s" % (assignment_target, assignment_source))
+                    tpl = connect_args(assignment_target, assignment_source)
                 init_code.append(tpl)
 
             # Handle dynamic connections
@@ -200,24 +213,12 @@ class %s(Component):
 
                 for port in ports:
                     if port.source.id not in named_nodes:
-                        # Handle Literals
-                        if port.source.type in ("string","np.ndarray"):
-                            value = port.sourceLabel
-                        elif port.source.type == "list":
-                            value = json.loads("[" + port.sourceLabel + "]")
-                        elif port.source.type == "dict":
-                            value = json.loads("{" + port.sourceLabel + "}")
-                        elif port.source.type == "tuple":
-                            value = tuple(eval(port.sourceLabel))
-                        else:
-                            value = eval(port.sourceLabel)
+                        value = _get_value_from_literal_port(port)
                         dynaport_values.append(RefOrValue(value, False))
                     else:
                         # Handle named node references
                         value = "%s.%s" % (named_nodes[port.source.id], port.sourceLabel)  # Variable reference
                         dynaport_values.append(RefOrValue(value, True))
-
-                assignment_target = "%s.%s.value" % (named_nodes[ports[0].target.id], ports[0].varName)
 
                 if ports[0].dataType == 'dynatuple':
                     tuple_elements = [item.value if item.is_ref else repr(item.value) for item in dynaport_values]
@@ -229,7 +230,8 @@ class %s(Component):
                     list_elements = [item.value if item.is_ref else repr(item.value) for item in dynaport_values]
                     assignment_value = '[' + ', '.join(list_elements) + ']'
 
-                tpl = ast.parse("%s = %s" % (assignment_target, assignment_value))
+                assignment_target = "%s.%s" % (named_nodes[ports[0].target.id], ports[0].varName)
+                tpl = set_value(assignment_target, assignment_value)
                 init_code.append(tpl)
 
         # Handle output connections
@@ -241,25 +243,8 @@ class %s(Component):
             assignment_target = "self.%s" % port_name
             if port.source.id not in named_nodes:
                 # Literal
-                assignment_target += ".value"
-                tpl = ast.parse("%s = 1" % (assignment_target))
-                if port.source.type == "string":
-                    value = port.sourceLabel
-                elif port.source.type == "list":
-                    value = json.loads("[" + port.sourceLabel + "]")
-                elif port.source.type == "dict":
-                    value = json.loads("{" + port.sourceLabel + "}")
-                elif port.source.type == "secret":
-                    value = port.sourceLabel
-                elif port.source.type == "chat":
-                    value = json.loads(port.sourceLabel)
-                elif port.source.type == "tuple":
-                    value = eval(port.sourceLabel)
-                    if not isinstance(value, tuple):
-                        # handler for single entry tuple
-                        value = (value,)
-                else:
-                    value = eval(port.sourceLabel)
+                tpl = set_value(assignment_target, '1')
+                value = _get_value_from_literal_port(port)
                 tpl.body[0].value.value = value
                 port_type = type(value).__name__
             else:
@@ -268,18 +253,16 @@ class %s(Component):
                     named_nodes[port.source.id],
                     port.sourceLabel
                 )
-                tpl = ast.parse("%s = %s" % (assignment_target, assignment_source))
+                tpl = connect_args(assignment_target, assignment_source)
             args_code.append(ast.parse("%s: OutArg[%s]" % (port_name, port_type)).body[0])
             init_code.append(tpl)
-
-
 
         # Set up control flow
         for node in component_nodes:
             has_next = False
             for port in (p for p in node.ports if p.direction == "out" and p.type == "triangle-link"):
-                has_next = True
                 if port.name == "out-0":
+                    has_next = True
                     assignment_target = "%s.next" % named_nodes[port.source.id]
                     assignment_source = named_nodes[port.target.id] if port.target.id in named_nodes else None
                     init_code.append(
@@ -377,8 +360,9 @@ pprint.pprint(flow.%s.value)
     def _generate_trailer(self):
         code = """
 if __name__ == '__main__':
-    main(parser.parse_args())
-    print("\\nFinished Executing")        
+    args, _ = parser.parse_known_args()
+    main(args)
+    print("\\nFinished Executing")
         """
         body = ast.parse(code).body[0]
         arg_parsing = self._generate_argument_parsing()
@@ -393,8 +377,8 @@ if __name__ == '__main__':
         type_mapping = {
             "int": "int",
             "string": "str",
-            "boolean": "bool",
-            "float": "float"
+            "float": "float",
+            "any": "any"
         }
 
         code = """
@@ -408,7 +392,10 @@ parser.add_argument('--is_hpc_launch', default=False, type=bool)
         for arg in argument_nodes:
             m = pattern.match(arg.name)
             arg_name = m.group(1)
-            tpl = "parser.add_argument('--%s', type=%s)" % (arg_name, type_mapping[arg.type])
+            if arg.type == "boolean":
+                tpl = "parser.add_argument('--%s', type=parse_bool, default=None, nargs='?', const=True)" % arg_name
+            else:
+                tpl = "parser.add_argument('--%s', type=%s)" % (arg_name, type_mapping[arg.type])
             body.extend(ast.parse(tpl).body)
 
         return body

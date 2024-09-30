@@ -1,12 +1,3 @@
-[submodule "xai_components/xai_pycaret"]
-	path = xai_components/xai_pycaret
-	url = https://github.com/XpressAI/xai-pycaret
-[submodule "xai_components/xai_modelstash"]
-	path = xai_components/xai_modelstash
-	url = https://github.com/XpressAI/xai-modelstash
-[submodule "xai_components/xai_streamlit"]
-	path = xai_components/xai_streamlit
-	url = https://github.com/XpressAI/xai-streamlit
 [submodule "xai_components/xai_rabbitmq"]
 	path = xai_components/xai_rabbitmq
 	url = https://github.com/XpressAI/xai-rabbitmq
@@ -70,3 +61,27 @@
 [submodule "xai_components/xai_pytorch"]
 	path = xai_components/xai_pytorch
 	url = https://github.com/XpressAI/xai-pytorch
+[submodule "xai_components/xai_agent"]
+	path = xai_components/xai_agent
+	url = https://github.com/XpressAI/xai-agent
+[submodule "xai_components/xai_converse"]
+	path = xai_components/xai_converse
+	url = https://github.com/XpressAI/xai-converse
+[submodule "xai_components/xai_stability_ai"]
+	path = xai_components/xai_stability_ai
+	url = https://github.com/XpressAI/xai-stability-ai
+[submodule "xai_components/xai_google_gemini"]
+	path = xai_components/xai_google_gemini
+	url = https://github.com/XpressAI/xai-google-gemini
+[submodule "xai_components/xai_mongodb"]
+	path = xai_components/xai_mongodb
+	url = https://github.com/XpressAI/xai-mongodb
+[submodule "xai_components/xai_multion"]
+	path = xai_components/xai_multion
+	url = https://github.com/XpressAI/xai-multion
+[submodule "xai_components/xai_gradio"]
+	path = xai_components/xai_gradio
+	url = https://github.com/XpressAI/xai-gradio
+[submodule "xai_components/xai_ms_graph"]
+	path = xai_components/xai_ms_graph
+	url = https://github.com/XpressAI/xai-ms-graph

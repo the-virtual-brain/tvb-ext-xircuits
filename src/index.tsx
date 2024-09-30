@@ -5,7 +5,6 @@ import {
   ILayoutRestorer
 } from '@jupyterlab/application';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import { commandIDs } from './components/XircuitsBodyWidget';
 import {
   WidgetTracker,
   ReactWidget,
@@ -14,7 +13,7 @@ import {
 import { ILauncher } from '@jupyterlab/launcher';
 import { XircuitsFactory } from './XircuitsFactory';
 import Sidebar from './tray_library/Sidebar';
-import { IDocumentManager } from '@jupyterlab/docmanager';
+import { IDocumentManager, renameDialog } from '@jupyterlab/docmanager';
 import { ITranslator } from '@jupyterlab/translation';
 import { Log, logPlugin } from './log/LogPlugin';
 import { requestAPI } from './server/handler';
@@ -23,10 +22,17 @@ import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { DocumentWidget } from '@jupyterlab/docregistry';
 import { runIcon, saveIcon } from '@jupyterlab/ui-components';
 import { addNodeActionCommands } from './commands/NodeActionCommands';
+import { addLibraryActionCommands } from './commands/LibraryActionCommands';
 import { Token } from '@lumino/coreutils';
 import { DockLayout } from '@lumino/widgets';
 import { xircuitsIcon, componentLibIcon, changeFavicon, xircuitsFaviconLink } from './ui-components/icons';
-
+import { createInitXircuits } from './helpers/CanvasInitializer';
+import { addHelpResources } from './helpers/HelpResources';
+import type { CommandRegistry } from "@lumino/commands/src";
+import type { Signal } from "@lumino/signaling";
+import { commandIDs } from "./commands/CommandIDs";
+import { IEditorTracker } from '@jupyterlab/fileeditor';
+import { IMainMenu } from '@jupyterlab/mainmenu';
 
 const FACTORY = 'Xircuits editor';
 
@@ -53,7 +59,9 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     ILayoutRestorer,
     IRenderMimeRegistry,
     IDocumentManager,
-    ITranslator
+    IMainMenu,
+    ITranslator,
+    IEditorTracker,
   ],
   provides: IXircuitsDocTracker,
   activate: async (
@@ -63,7 +71,9 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     restorer: ILayoutRestorer,
     rendermime: IRenderMimeRegistry,
     docmanager: IDocumentManager,
-    translator?: ITranslator
+    mainMenu?: IMainMenu,
+    translator?: ITranslator,
+    editorTracker?: IEditorTracker,
   ) => {
 
     console.log('Xircuits is activated!');
@@ -151,6 +161,35 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     // Additional commands for node action
     addNodeActionCommands(app, tracker, translator);
 
+    // Additional commands for chat actions
+    addLibraryActionCommands(app, tracker, translator, widgetFactory);
+
+    // Additional main menu options for help resources
+    addHelpResources(app, mainMenu, translator);
+
+    // Commands to emit WidgetFactory signals
+    const emitSignal = (signal: Signal<unknown, unknown>) =>  (args: unknown) => signal.emit(args);
+    const signalConnections: [string, CommandRegistry.ICommandOptions][] = [
+      [commandIDs.saveXircuit,
+        {label: "Save", icon: saveIcon, execute: emitSignal(widgetFactory.saveXircuitSignal)}],
+      [commandIDs.runXircuit,
+        {label: "Run Xircuits", icon: runIcon, execute: emitSignal(widgetFactory.runXircuitSignal)}],
+      [commandIDs.compileXircuit,
+        {execute: emitSignal(widgetFactory.compileXircuitSignal)}],
+      [commandIDs.fetchRemoteRunConfig,
+        {execute: emitSignal(widgetFactory.fetchRemoteRunConfigSignal)}],
+        [commandIDs.lockXircuit,
+        {execute: emitSignal(widgetFactory.lockNodeSignal)}],
+      [commandIDs.triggerLoadingAnimation,
+        {execute: emitSignal(widgetFactory.triggerLoadingAnimationSignal)}],
+      [commandIDs.reloadAllNodes,
+        {execute: emitSignal(widgetFactory.reloadAllNodesSignal)}],
+      [commandIDs.toggleAllLinkAnimation,
+        {execute: emitSignal(widgetFactory.toggleAllLinkAnimationSignal)}]
+    ]
+    signalConnections.forEach(([cmdId, def]) => app.commands.addCommand(cmdId, def))
+
+
     // Add a command for creating a new xircuits file.
     app.commands.addCommand(commandIDs.createNewXircuit, {
       label: (args) => (args['isLauncher'] ? 'Xircuits File' : 'Create New Xircuits'),
@@ -168,17 +207,24 @@ const xircuits: JupyterFrontEndPlugin<void> = {
             type: "file",
             ext: ".xircuits"
           });
-        const newWidget = await app.commands.execute(
+
+          // get init SRD json
+          const fileContent = createInitXircuits(app, app.shell);
+
+          // Use the document manager to write to the file
+          await app.serviceManager.contents.save(model.path, {
+            type: 'file',
+            format: 'text',
+            content: fileContent
+          });
+
+        await app.commands.execute(
           commandIDs.openDocManager,
           {
             path: model.path,
             factory: FACTORY
           }
         );
-        await newWidget.content.renderPromise;
-        await app.commands.execute(commandIDs.saveXircuit, {
-            path: model.path
-        });
       }
     });
 
@@ -217,13 +263,40 @@ const xircuits: JupyterFrontEndPlugin<void> = {
         if (request["message"] == "completed") {
           const model_path = path.split(".xircuits")[0] + ".py";
           docmanager.closeFile(model_path);
+
           if (showOutput) {
             alert(`${model_path} successfully compiled!`);
+          }
+          if(model_path.startsWith("xai_components/")){
+             console.info(`File ${model_path} changed. Reloading components...`);
+             await app.commands.execute(commandIDs.refreshComponentList);
           }
         } else {
           console.log(request["message"])
           alert("Failed to generate compiled code. Please check console logs for more details.");
         }
+      }
+    });
+
+    // Auto-reload components when a component file changes
+    editorTracker.widgetAdded.connect((sender, widget) => {
+      const context = widget.context;
+
+      if (context.path.endsWith('.py')) {
+        context.fileChanged.connect(async () => {
+          if(context.path.startsWith("xai_components/")){
+            console.info(`File ${context.path} changed. Reloading components...`);
+            await app.commands.execute(commandIDs.refreshComponentList);
+          }
+        });
+      }
+
+      if (context.path.endsWith('config.ini')) {
+        context.fileChanged.connect(async () => {
+          if(context.path.startsWith(".xircuits/")){
+            await app.commands.execute(commandIDs.fetchRemoteRunConfig);
+          }
+        });
       }
     });
 
@@ -253,23 +326,6 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       outputPanel.dispose();
     });
 
-    async function requestToSparkSubmit(path: string, addCommand: string) {
-      const dataToSend = { "currentPath": path, "addArgs": addCommand };
-
-      try {
-        const server_reply = await requestAPI<any>('spark/submit', {
-          body: JSON.stringify(dataToSend),
-          method: 'POST',
-        });
-
-        return server_reply;
-      } catch (reason) {
-        console.error(
-          `Error on POST /xircuits/spark/submit ${dataToSend}.\n${reason}`
-        );
-      }
-    };
-
     // Execute command and display at output panel
     app.commands.addCommand(commandIDs.executeToOutputPanel, {
       execute: async args => {
@@ -287,51 +343,69 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       },
     });
 
-    // Add command signal to save xircuits
-    app.commands.addCommand(commandIDs.saveXircuit, {
-      label: "Save",
-      icon: saveIcon,
-      execute: args => {
-        widgetFactory.saveXircuitSignal.emit(args);
+    app.commands.addCommand(commandIDs.copyXircuitsToRoot, {
+      label: 'Copy To Root Directory',
+      isVisible: () => [...browserFactory.tracker.currentWidget.selectedItems()].length > 0,
+      icon: xircuitsIcon,
+      execute: async () => {
+        const selectedItems = Array.from(browserFactory.tracker.currentWidget.selectedItems());
+    
+        for (const xircuitsFile of selectedItems) {
+          const path = xircuitsFile.path;
+          const fileName = path.split('/').pop();
+          const rootPath = `/${fileName}`;
+    
+          try {
+            await app.serviceManager.contents.copy(path, rootPath);
+            await app.commands.execute('filebrowser:go-to-path', { path: '/' });
+    
+            // Open the file if needed, then prompt for renaming
+            const openedWidget = await app.commands.execute(commandIDs.openDocManager, { path: rootPath, factory: FACTORY });
+            const fileContext = docmanager.contextForWidget(openedWidget);
+            if (fileContext) {
+              await renameDialog(docmanager, fileContext);
+            }
+          } catch (err) {
+            if (err.response && err.response.status === 400) {
+              alert(`Error: The file '${fileName}' already exists in the root directory.`);
+            } else {
+              alert(`Error copying file '${fileName}': ${err.message || err}`);
+            }
+          }
+        }
       }
     });
 
-    // Add command signal to compile xircuits
-    app.commands.addCommand(commandIDs.compileXircuit, {
-      execute: args => {
-        widgetFactory.compileXircuitSignal.emit(args);
+    app.contextMenu.addItem({
+      command: commandIDs.copyXircuitsToRoot,
+      selector: '.jp-DirListing-item[data-file-type="xircuits"]',
+    });
+
+    app.commands.addCommand(commandIDs.openXircuitsConfiguration, {
+      label: 'Open Xircuits Configurations',
+      icon: xircuitsIcon,
+      execute: async () => {
+        const configPath = `.xircuits/config.ini`;
+        try {
+          // Check if the file exists first
+          await app.serviceManager.contents.get(configPath);
+          // If we reach here, the file exists, so we can try to open it
+          await docmanager.openOrReveal(configPath);
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            alert('Xircuits configuration file not found. Check if it exists or enable hidden files when you launch Jupyter Lab.');
+          } else {
+            alert(`Error accessing Xircuits configuration: ${error.message}`);
+          }
+        }
       }
     });
 
-    // Add command signal to run xircuits
-    app.commands.addCommand(commandIDs.runXircuit, {
-      label: "Run Xircuits",
-      icon: runIcon,
-      execute: args => {
-        widgetFactory.runXircuitSignal.emit(args);
-      }
-    });
-
-    // Add command signal to lock xircuits
-    app.commands.addCommand(commandIDs.lockXircuit, {
-      execute: args => {
-        widgetFactory.lockNodeSignal.emit(args);
-      }
-    });
-
-    // Add command signal to reloadAllNodes
-    app.commands.addCommand(commandIDs.reloadAllNodes, {
-      execute: args => {
-        widgetFactory.reloadAllNodesSignal.emit(args);
-      }
-    });
-
-    // Add command signal to toggle all link animations.
-    app.commands.addCommand(commandIDs.toggleAllLinkAnimation, {
-      execute: args => {
-        widgetFactory.toggleAllLinkAnimationSignal.emit(args);
-      }
-    });
+    mainMenu.settingsMenu.addGroup([
+      {
+        command: commandIDs.openXircuitsConfiguration,
+      },
+    ], -1);
 
     // Add a launcher item if the launcher is available.
     if (launcher) {

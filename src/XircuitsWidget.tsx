@@ -22,11 +22,13 @@ export class XircuitsPanel extends ReactWidget {
   xircuitsApp: XircuitsApplication;
   serviceManager: ServiceManager;
   fetchComponentsSignal: Signal<this,any>;
+  fetchRemoteRunConfigSignal: Signal<this,any>;
   saveXircuitSignal: Signal<this, any>;
   compileXircuitSignal: Signal<this, any>;
   runXircuitSignal: Signal<this, any>;
   runTypeXircuitSignal: Signal<this, any>;
   lockNodeSignal: Signal<this, any>;
+  triggerLoadingAnimationSignal: Signal<this, any>;
   reloadAllNodesSignal: Signal<this, any>;
   toggleAllLinkAnimationSignal: Signal<this, any>;
 
@@ -41,14 +43,16 @@ export class XircuitsPanel extends ReactWidget {
     this.context = options.context;
     this.serviceManager = options.serviceManager;
     this.fetchComponentsSignal = options.fetchComponentsSignal;
+    this.fetchRemoteRunConfigSignal = options.fetchRemoteRunConfigSignal;
     this.saveXircuitSignal = options.saveXircuitSignal;
     this.compileXircuitSignal = options.compileXircuitSignal;
     this.runXircuitSignal = options.runXircuitSignal;
     this.runTypeXircuitSignal = options.runTypeXircuitSignal;
     this.lockNodeSignal = options.lockNodeSignal;
+    this.triggerLoadingAnimationSignal = options.triggerLoadingAnimationSignal;
     this.reloadAllNodesSignal = options.reloadAllNodesSignal;
     this.toggleAllLinkAnimationSignal = options.toggleAllLinkAnimationSignal;
-    this.xircuitsApp = new XircuitsApplication(this.app, this.shell);
+    this.xircuitsApp = new XircuitsApplication(this.app, this.shell, () => this.parent?.id);
   }
 
   handleEvent(event: Event): void {
@@ -185,11 +189,13 @@ export class XircuitsPanel extends ReactWidget {
         widgetId={this.parent?.id}
         serviceManager={this.serviceManager}
         fetchComponentsSignal={this.fetchComponentsSignal}
+        fetchRemoteRunConfigSignal={this.fetchRemoteRunConfigSignal}
         saveXircuitSignal={this.saveXircuitSignal}
         compileXircuitSignal={this.compileXircuitSignal}
         runXircuitSignal={this.runXircuitSignal}
         runTypeXircuitSignal={this.runTypeXircuitSignal}
         lockNodeSignal={this.lockNodeSignal}
+        triggerLoadingAnimationSignal={this.triggerLoadingAnimationSignal}
         reloadAllNodesSignal={this.reloadAllNodesSignal}
         toggleAllLinkAnimationSignal={this.toggleAllLinkAnimationSignal}
       />
