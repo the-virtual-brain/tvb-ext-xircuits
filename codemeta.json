@@ -41,43 +41,13 @@
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
-                "name": "Jülich"
-            },
-            "familyName": "Diaz",
-            "givenName": "Sandra"
-        },
-        {
-            "id": "_:author_2",
-            "type": "Person",
-            "affiliation": {
-                "type": "Organization",
-                "name": "INS"
-            },
-            "familyName": "Fousek",
-            "givenName": "Jan"
-        },
-        {
-            "id": "_:author_3",
-            "type": "Person",
-            "affiliation": {
-                "type": "Organization",
-                "name": "Codemart"
-            },
-            "familyName": "Domide",
-            "givenName": "Lia"
-        },
-        {
-            "id": "_:author_4",
-            "type": "Person",
-            "affiliation": {
-                "type": "Organization",
                 "name": "Codemart"
             },
             "familyName": "Prodan",
             "givenName": "Paula"
         },
         {
-            "id": "_:author_5",
+            "id": "_:author_2",
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
@@ -87,7 +57,7 @@
             "givenName": "Romina"
         },
         {
-            "id": "_:author_6",
+            "id": "_:author_3",
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
@@ -97,7 +67,7 @@
             "givenName": "Rares"
         },
         {
-            "id": "_:author_7",
+            "id": "_:author_4",
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
@@ -107,7 +77,7 @@
             "givenName": "David"
         },
         {
-            "id": "_:author_8",
+            "id": "_:author_5",
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
@@ -115,6 +85,36 @@
             },
             "familyName": "Misan",
             "givenName": "Teodora"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/7dcbd8d3-2b6d-4f32-9e1e-dd83887324c4",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Domide",
+            "givenName": "Lia"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/0d44cb56-2fed-40a1-9c19-3f5b511f8c0c",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "INS"
+            },
+            "familyName": "Fousek",
+            "givenName": "Jan"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/99910490-5cb9-4933-b99d-7a492198c66b",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Jülich"
+            },
+            "familyName": "Diaz",
+            "givenName": "Sandra"
         }
     ],
     "isPartOf": "https://lab.ch.ebrains.eu/"
