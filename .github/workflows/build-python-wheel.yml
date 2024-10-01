@@ -69,5 +69,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: tvb-ext-xircuits-wheel-${{ env.branch_name }}-${{ env.git_hash }}
+        name: tvb-ext-xircuits-wheel-${{ env.branch_name }}-${{ env.git_hash }}-${{ matrix.python-version }}
         path: dist

@@ -1,29 +1,121 @@
 {
     "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
     "type": "SoftwareSourceCode",
-        "author": [
-        {
-            "id": "_:author_1",
-            "type": "Person",
-            "email": "science@codemart.ro",
-            "givenName": "TVB-Xircuits Team"
-        }
-    ],
-    "codeRepository": "https://github.com/the-virtual-brain/tvb-ext-xircuits.git",
-    "dateCreated": "2022-09-15",
-    "dateModified": "2023-08-08",
-    "datePublished": "2022-10-17",
-    "description": "This is a jupyterlab extension built as a prototype for building EBRAINS (including TVB simulator, Siibra API) workflows in a visual and interactive manner. It extends the already existent Xircuits jupyterlab extension by adding new components and new features on top.",
-    "downloadUrl": "https://files.pythonhosted.org/packages/71/de/038362d074c57e02ab7c402ac96e2fb89aabb116994ab5645f14e0616b01/tvb-ext-xircuits-1.1.0.tar.gz",
-    "isPartOf": "https://lab.ch.ebrains.eu/",
-    "license": "https://spdx.org/licenses/Apache-2.0",
     "name": "tvb-ext-xircuits",
+    "license": "https://spdx.org/licenses/Apache-2.0",
     "copyrightYear": "2024",
+    "codeRepository": "https://github.com/the-virtual-brain/tvb-ext-xircuits.git",
+    "documentation": "https://wiki.ebrains.eu/bin/view/Collabs/tvb-widgets/Extension%20tvb-ext-xircuits/",
+    "downloadUrl": "https://files.pythonhosted.org/packages/71/de/038362d074c57e02ab7c402ac96e2fb89aabb116994ab5645f14e0616b01/tvb-ext-xircuits-1.1.0.tar.gz",
+    "datePublished": "2022-10-17",
+    "dateModified": "2023-08-08",
+    "version": "1.1.0",
+    "releaseNotes": "https://github.com/the-virtual-brain/tvb-ext-xircuits/releases/tag/1.1.0",
+    "description": "This is a jupyterlab extension built as a prototype for building EBRAINS (including TVB simulator, Siibra API) workflows in a visual and interactive manner. It extends the already existent Xircuits jupyterlab extension by adding new components and new features on top.",
+    "funding": "101147319 (EBRAINS 2.0 Project)",
+    "funder": {
+        "type": "Organization",
+        "name": "EU"
+    },
+    "keywords": [
+        "jupyterlab",
+        "extension",
+        "tvb",
+        "workflow",
+        "simulation",
+        "xircuits"
+    ],
+    "operatingSystem": [
+        "Windows",
+        "MacOS",
+        "Linux"
+    ],
     "programmingLanguage": [
         "Python",
         "TypeScript"
     ],
-    "schema:releaseNotes": "https://github.com/the-virtual-brain/tvb-ext-xircuits/releases/tag/1.1.0",
-    "version": "1.1.0",
-    "developmentStatus": "active"
+    "developmentStatus": "active",
+    "author": [
+        {
+            "id": "_:author_1",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Jülich"
+            },
+            "familyName": "Diaz",
+            "givenName": "Sandra"
+        },
+        {
+            "id": "_:author_2",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "INS"
+            },
+            "familyName": "Fousek",
+            "givenName": "Jan"
+        },
+        {
+            "id": "_:author_3",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Domide",
+            "givenName": "Lia"
+        },
+        {
+            "id": "_:author_4",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Prodan",
+            "givenName": "Paula"
+        },
+        {
+            "id": "_:author_5",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Baila",
+            "givenName": "Romina"
+        },
+        {
+            "id": "_:author_6",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Horge",
+            "givenName": "Rares"
+        },
+        {
+            "id": "_:author_7",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Bacter",
+            "givenName": "David"
+        },
+        {
+            "id": "_:author_8",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Misan",
+            "givenName": "Teodora"
+        }
+    ],
+    "isPartOf": "https://lab.ch.ebrains.eu/"
 }
