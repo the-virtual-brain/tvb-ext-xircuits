@@ -66,12 +66,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
     - name: Setup Build Env
       run: |
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-        . ~/.nvm/nvm.sh
-        nvm install 14.15.3
-        nvm use 14.15.3
         npm install --global yarn
         npm install react-collapsed
 
