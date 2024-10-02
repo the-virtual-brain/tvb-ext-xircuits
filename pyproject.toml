@@ -29,6 +29,18 @@ dependencies = [
     "pygithub",
     "tqdm",
     "toml",
+    "docutils",
+    "ipykernel",
+    "packaging",
+    "tornado",
+    "jupyter-core",
+    "jupyter-packaging",
+    "jupyterlab-server",
+    "notebook_shim",
+    "jupyterlab-widgets",
+    "nbformat",
+    "jupyter-core",
+    "numpy<2.0.2",
     "pyunicore",
     "siibra",
     "tvb-library",
@@ -37,6 +49,7 @@ dependencies = [
     "tvb-ext-bucket",
     "tvb-ext-unicore",
     "tvb-widgets>=1.0",
+    "importlib_resources",
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 

@@ -159,7 +159,7 @@ class ComponentsParser:
         data = {"components": components,
                 "error_msg" : error_msg}
 
-        self.finish(json.dumps(data))
+        return data
 
     def generate_doc_files(self):
         from tvbextxircuits.handlers.json_parser import save_json_description

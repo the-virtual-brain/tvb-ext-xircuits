@@ -237,9 +237,9 @@ const PortsComponent: React.FC<PortsComponentProps> = ({
                             key={port.getID()}
                             node={node}
                             app={app}
-                            showDescription={showDescription[idx]}
-                            setShowDescription={setShowDescription(idx)}
-                            setDescriptionStr={setDescriptionStr}
+                            showDescription={showDescription?.[idx] || false}
+                            setShowDescription={setShowDescription ? setShowDescription(idx) : () => {}}
+                            setDescriptionStr={setDescriptionStr || (() => {})}
                             description={description}/>
   };
   return (
