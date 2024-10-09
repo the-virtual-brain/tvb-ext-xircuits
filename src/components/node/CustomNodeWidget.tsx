@@ -380,7 +380,7 @@ const ComponentLibraryNode = ({ node, engine, shell, app, handleDeletableNode })
 
     const getDescriptionStr = () => {
         let dscrptStr = node['extras']['description'] ?? '***No description provided***';
-        setDescriptionStr(dscrptStr);
+        setDescriptionStr("")(dscrptStr);
     };
 
     const hideErrorTooltip = () => {
@@ -396,7 +396,6 @@ const ComponentLibraryNode = ({ node, engine, shell, app, handleDeletableNode })
                             onClick={async () => {
                                 setShowDescription(false);
                                 setShowParamDescriptionList(new Array(portsNo).fill(false));
-                                await handleDescription();
                             }}
                     >
                         <span aria-hidden="true">&times;</span>
