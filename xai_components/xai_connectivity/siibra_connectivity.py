@@ -5,15 +5,13 @@
 # (c) 2022-2023, TVB Widgets Team
 #
 
-import os
-
 from typing import Literal
 from siibra.retrieval import SiibraHttpRequestError
 from tvb.adapters.creators import siibra_base as sb
 from tvb.datatypes.connectivity import Connectivity
-from tvbwidgets.core.auth import get_current_token
 from xai_components.base import InArg, OutArg, Component, xai_component
 from xai_components.utils import print_component_summary
+
 
 @xai_component(color='rgb(85, 37, 130)')
 class ConnectivityFromSiibra(Component):
@@ -26,9 +24,9 @@ class ConnectivityFromSiibra(Component):
 
     def __init__(self):
         self.done = False
-        self.atlas = InArg(sb.DEFAULT_ATLAS)
-        self.parcellation = InArg(sb.DEFAULT_PARCELLATION)
-        self.cohort = InArg(sb.DEFAULT_COHORT)
+        self.atlas = InArg(sb.HUMAN_ATLAS)
+        self.parcellation = InArg(sb.JULICH_3_0)
+        self.cohort = InArg(sb.HCP_COHORT)
         self.subject_id = InArg('000')
         self.connectivity = OutArg(None)
 
@@ -39,11 +37,7 @@ class ConnectivityFromSiibra(Component):
         atlas = self.atlas.value
         parcellation = self.parcellation.value
         cohort = self.cohort.value
-
         subject_id = self.subject_id.value
-
-        token = get_current_token()
-        os.environ['HBP_AUTH_TOKEN'] = token
 
         try:
             sc_dict, _ = sb.get_connectivities_from_kg(atlas=atlas, parcellation=parcellation, cohort=cohort,
