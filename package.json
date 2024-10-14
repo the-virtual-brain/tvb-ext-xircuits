@@ -128,6 +128,7 @@
     "schemaDir": "schema"
   },
   "eslintIgnore": [
+    "src",
     "node_modules",
     "dist",
     "coverage",

@@ -6,11 +6,12 @@ import {
   NumberInput,
   TextAreaInput
 } from './RunDialogComponents';
+import { useCollapse } from "react-collapsed";
 
 interface RemoteRunDialogProps {
   remoteRunTypes;
-  remoteRunConfigs: { id: string; run_type: string; run_config_name: string; command: string }[];
-  lastConfig: { run_type: string; run_config_name: string; command: string } | null;
+  remoteRunConfigs: { id: string; run_type: string; run_config_name: string; command: string; project: string}[];
+  lastConfig: { run_type: string; run_config_name: string; command: string; project: string } | null;
   childStringNodes: string[];
   childBoolNodes: string[];
   childIntNodes: string[];
@@ -31,6 +32,12 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
   const [remoteRunType, setRemoteRunType] = useState("");
   const [remoteRunConfig, setRemoteRunConfig] = useState("");
   const [command, setCommand] = useState("");
+  const [project, setProject] = useState("");
+  const [isMonitoringEnabled, setIsMonitoringEnabled] = useState(false);
+  const [isStageOutEnabled, setIsStageOutEnabled] = useState(false);
+  const [filesystem, setFilesystem] = useState('HOME');
+  const [python, setPython] = useState('python3.10');
+  const [modules, setModules] = useState('Python');
   const [placeholders, setPlaceholders] = useState<string[]>([]);
   const [formattedCommand, setFormattedCommand] = useState("");
   const [sectionsCollapsed, setSectionsCollapsed] = useState({
@@ -51,6 +58,9 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
       setRemoteRunType(lastConfig.run_type);
       setRemoteRunConfig(lastConfig.run_config_name);
       setCommand(lastConfig.command);
+      setProject(lastConfig.project);
+      setIsMonitoringEnabled(false);
+      setIsStageOutEnabled(false);
       const extractedPlaceholders = extractPlaceholders(lastConfig.command);
       setPlaceholders(extractedPlaceholders);
       setInputValues(prefillInputValues(lastConfig, extractedPlaceholders));
@@ -70,6 +80,9 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
     setRemoteRunType(type);
     setRemoteRunConfig("-");
     setCommand("");
+    setProject("");
+    setIsMonitoringEnabled(false);
+    setIsStageOutEnabled(false);
     setPlaceholders([]);
     setInputValues({});
   };
@@ -79,6 +92,9 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
     setRemoteRunConfig(configName);
     if (configName === "-") {
       setCommand("");
+      setProject("");
+      setIsMonitoringEnabled(false);
+      setIsStageOutEnabled(false);
       setPlaceholders([]);
       setInputValues({});
     } else {
@@ -89,6 +105,14 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
         setPlaceholders(extractedPlaceholders);
         setInputValues(prefillInputValues(selectedConfig, extractedPlaceholders));
       }
+      if (configName === 'JUWELS') {
+        setFilesystem('HOME');
+			  setPython('python3.11');
+		  } else {
+			  setFilesystem('PROJECT');
+			  setPython('python3.10');
+		  }
+      setModules('Python');
     }
   };
 
@@ -167,11 +191,61 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
   const hasArguments = childStringNodes.length > 0 || childBoolNodes.length > 0 || 
                        childIntNodes.length > 0 || childFloatNodes.length > 0;
 
+  	function Collapsible() {
+    	const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
+		return (
+		<div className="collapsible">
+			<div className="header" {...getToggleProps()}>
+				{isExpanded ? 'Advanced setup' : 'Advanced setup'}
+				<div className="icon">
+                	<i className={'fas fa-chevron-circle-' + (isExpanded ? 'up' : 'down')}></i>
+            </div>
+			</div>
+			<div {...getCollapseProps()}>
+				<div>
+					Filesystem:
+					<div>
+						<input
+							name='filesystem'
+							defaultValue={filesystem}
+							title={'Filesystem to use on HPC for preparing the environment'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Python dir:
+					<div>
+						<input
+							name='python'
+							defaultValue={python}
+							title={'Python directory to use on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Modules to load:
+					<div>
+						<input
+							name='modules'
+							defaultValue={modules}
+							title={'Modules to load on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+					Libraries to install:
+					<div>
+						<input
+							name='libraries'
+							defaultValue={'tvb-ext-xircuits,tvb-data'}
+							title={'Libraries to install on HPC'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
+				</div>
+			</div>
+		</div>
+		);
+	}
+
   return (
     <form>
       <h2>Remote Run</h2>
       
-      {renderCollapsibleSection("Available Run Type", (
+      {renderCollapsibleSection('Available Run Type', (
         <div style={styles.select}>
           <HTMLSelect
             onChange={(e) => handleTypeChange(e)}
@@ -187,9 +261,9 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
             ))}
           </HTMLSelect>
         </div>
-      ), "runType")}
+      ), 'runType')}
 
-      {renderCollapsibleSection("Available Run Config", (
+      {renderCollapsibleSection('Available Run Config', (
         <div style={styles.select}>
           <HTMLSelect
             onChange={(e) => handleConfigChange(e)}
@@ -209,6 +283,41 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
           </HTMLSelect>
         </div>
       ), "runConfig")}
+
+      {renderCollapsibleSection("Project", (
+        <TextAreaInput
+          name="project"
+          title=""
+          oldValue={project}
+          onChange={() => {}}
+        />
+      ), "project")}
+
+      {renderCollapsibleSection("Launch Monitoring HPC", (
+        <div>
+						<input type={'checkbox'}
+							title={'If checked, the HPC monitoring widget is opened up automatically in a new tab. This can be accessed from the Monitor HPC button as well.'}
+							name='monitoring'
+              checked={isMonitoringEnabled}
+              onChange={(e) => setIsMonitoringEnabled(e.target.checked)}
+						>
+						</input>
+        </div>
+      ), "launchHPC")}
+
+      {renderCollapsibleSection("Stage-out results", (
+        <div>
+						<input type={'checkbox'}
+							title={'If checked, the workflow waits for all HPC jobs to finish and stages-out the results. Otherwise, they can be downloaded manually from the HPC monitoring widget.'}
+							name='stage_out'
+              checked={isStageOutEnabled}
+              onChange={(e) => setIsStageOutEnabled(e.target.checked)}
+						>
+						</input>
+        </div>
+      ), "launchHPC")}
+
+      <Collapsible/>
 
       {renderCollapsibleSection("Command Template", (
         <TextAreaInput
