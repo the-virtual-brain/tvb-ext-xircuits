@@ -13,8 +13,8 @@ from io import BytesIO
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
 import requests
-from pyunicore.helpers.jobs import Status as unicore_status
-from pyunicore.credentials import AuthenticationFailedException
+from pyunicore.client import JobStatus as unicore_status
+from pyunicore.credentials import AuthenticationFailedException, OIDCToken
 from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
 from tvb_ext_bucket.exceptions import CollabAccessError
 from tvbwidgets.core.auth import get_current_token
@@ -74,7 +74,7 @@ class PyunicoreSubmitter(object):
 
     def connect_client(self):
         LOGGER.info(f"Connecting to {self.site}...")
-        token = get_current_token()
+        token = OIDCToken(get_current_token())
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
 
@@ -363,7 +363,7 @@ if __name__ == '__main__':
         python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
         modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
         libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
-        do_stage_out = True if stage_out_arg == 'true' else False
+        do_stage_out = True if stage_out_arg == 'on' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
                    workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
                    filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
