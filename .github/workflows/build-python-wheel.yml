@@ -26,24 +26,12 @@ jobs:
       run: |
         echo "branch_name=${GITHUB_HEAD_REF##*/}" >> $GITHUB_ENV               
 
-    - name: Check Branch
-      run: echo "$env.branch_name"
-
-    - name: Get Hash
-      id: hash
-      run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-
-    - name: Check Hash
-      run: echo "$env.git_hash"
-
-    - name: Setup Build Env
+    - name: Sanitize Branch Name and Git Hash
       run: |
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-        . ~/.nvm/nvm.sh
-        nvm install 14.15.3
-        nvm use 14.15.3
-        npm install --global yarn
-        npm install react-collapsed
+        sanitized_branch_name=$(echo "$branch_name" | sed 's/[^a-zA-Z0-9_-]/_/g')  # Preserving hyphens
+        sanitized_git_hash=$(git rev-parse --short "$GITHUB_SHA" | sed 's/[^a-zA-Z0-9_-]/_/g')  # Preserving hyphens
+        echo "sanitized_branch_name=$sanitized_branch_name" >> $GITHUB_ENV
+        echo "sanitized_git_hash=$sanitized_git_hash" >> $GITHUB_ENV
 
     - name: Check Branch and Hash
       run: |
@@ -55,12 +43,13 @@ jobs:
       with:
         node-version: 18
 
-    - name: Install Yarn
-      run: npm install --global yarn
+    - name: Install Yarn and React-collapsed
+      run:  |
+        npm install --global yarn
+        npm install react-collapsed
 
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
-           pip install -r requirements.txt
            pip install allensdk
 
     - name: Build Extension in Dev Mode
