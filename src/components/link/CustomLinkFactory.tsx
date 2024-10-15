@@ -44,18 +44,34 @@ namespace S {
 	`;
 }
 
+function escapeSelector(selector) {
+		return selector.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1');
+}
+
 function addHover(model: TriangleLinkModel | ParameterLinkModel){
 	return (() => {
-					document.querySelector(`div.port[data-nodeid='${model.getSourcePort().getNode().getID()}'][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList?.add("hover");
-					document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList?.add("hover");
-				});
+		const sourceNodeId = model.getSourcePort().getNode().getID();
+		const sourcePortName = escapeSelector(model.getSourcePort().getName());
+
+		const targetNodeId = model.getTargetPort().getNode().getID();
+		const targetPortName = escapeSelector(model.getTargetPort().getName());
+
+		document.querySelector(`div.port[data-nodeid='${sourceNodeId}'][data-name='${sourcePortName}']>div>div`)?.classList?.add("hover");
+		document.querySelector(`div.port[data-nodeid="${targetNodeId}"][data-name='${targetPortName}']>div>div`)?.classList?.add("hover");
+	});
 }
 
 function removeHover(model: TriangleLinkModel | ParameterLinkModel){
 	return () => {
-					document.querySelector(`div.port[data-nodeid='${model.getSourcePort().getNode().getID()}'][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList?.remove("hover");
-					document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList?.remove("hover");
-				}
+		const sourceNodeId = model.getSourcePort().getNode().getID();
+    const sourcePortName = escapeSelector(model.getSourcePort().getName());
+
+    const targetNodeId = model.getTargetPort().getNode().getID();
+    const targetPortName = escapeSelector(model.getTargetPort().getName());
+
+		document.querySelector(`div.port[data-nodeid='${sourceNodeId}'][data-name='${sourcePortName}']>div>div`)?.classList?.remove("hover");
+		document.querySelector(`div.port[data-nodeid="${targetNodeId}"][data-name='${targetPortName}']>div>div`)?.classList?.remove("hover");
+	}
 }
 
 class SelectOnClickLinkWidget extends DefaultLinkWidget {

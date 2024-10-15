@@ -4,7 +4,6 @@ import Dropdown from '../../components/common/Dropdown';
 export const EnumInput = ({ title, possibleValues }): JSX.Element => {
 
   return (
-    <form>
       <div
         style={{
           paddingLeft: 5,
@@ -15,6 +14,5 @@ export const EnumInput = ({ title, possibleValues }): JSX.Element => {
       >
         <Dropdown name={title} types={possibleValues} />
       </div>
-    </form>
   );
 };

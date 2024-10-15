@@ -245,24 +245,37 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 					{symbolLabel}
 				</S.Symbol>
 			</S.SymbolContainer>);
-		
+
 		const nodeType = this.props.node.getOptions().name
+
+		function escapeSelector(selector: string): string {
+			return selector.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1');
+		}
 
 		function addHover(port: DefaultPortModel) {
 			return (() => {
 				for (let linksKey in port.getLinks()) {
 					document.querySelector(`g[data-linkid='${linksKey}']`)?.classList.add("hover");
 					const model = port.getLinks()[linksKey]
-					if(model.getSourcePort() != null)
-						document.querySelector(`div.port[data-nodeid="${model.getSourcePort().getNode().getID()}"][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList.add("hover");
-					if(model.getTargetPort() != null)
-						document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList.add("hover");
+					if(model.getSourcePort() != null) {
+						const sourceNodeId = model.getSourcePort().getNode().getID();
+        		const sourcePortName = escapeSelector(model.getSourcePort().getName());
+						document.querySelector(`div.port[data-nodeid="${sourceNodeId}"][data-name='${sourcePortName}']>div>div`)?.classList.add("hover");
+					}
+					if(model.getTargetPort() != null) {
+						const targetNodeId = model.getTargetPort().getNode().getID();
+        		const targetPortName = escapeSelector(model.getTargetPort().getName());
+						document.querySelector(`div.port[data-nodeid="${targetNodeId}"][data-name='${targetPortName}']>div>div`)?.classList.add("hover");
+					}
 					if(attachedColor != null){
 						if(model.getSourcePort() != null){
 							Object.values(model.getSourcePort().getNode().getPorts()).forEach(p => {
 								Object.values(p.getLinks()).forEach(l => {
-									if(model.getTargetPort() != null)
-										document.querySelector(`div.port[data-nodeid="${l.getTargetPort().getNode().getID()}"][data-name='${l.getTargetPort().getName()}']>div>div`)?.classList.add("hover");
+									if(model.getTargetPort() != null) {
+										const linkedTargetNodeId = l.getTargetPort().getNode().getID();
+                		const linkedTargetPortName = escapeSelector(l.getTargetPort().getName());
+										document.querySelector(`div.port[data-nodeid="${linkedTargetNodeId}"][data-name='${linkedTargetPortName}']>div>div`)?.classList.add("hover");
+									}
 								})
 							})
 						}
@@ -276,16 +289,25 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 				for (let linksKey in port.getLinks()) {
 					document.querySelector(`g[data-linkid='${linksKey}']`)?.classList.remove("hover");
 					const model = port.getLinks()[linksKey]
-					if(model.getSourcePort() != null)
-						document.querySelector(`div.port[data-nodeid="${model.getSourcePort().getNode().getID()}"][data-name='${model.getSourcePort().getName()}']>div>div`)?.classList.remove("hover");
-					if(model.getTargetPort() != null)
-						document.querySelector(`div.port[data-nodeid="${model.getTargetPort().getNode().getID()}"][data-name='${model.getTargetPort().getName()}']>div>div`)?.classList.remove("hover");
+					if(model.getSourcePort() != null) {
+						const sourceNodeId = model.getSourcePort().getNode().getID();
+						const sourcePortName = escapeSelector(model.getSourcePort().getName());
+						document.querySelector(`div.port[data-nodeid="${sourceNodeId}"][data-name='${sourcePortName}']>div>div`)?.classList.remove("hover");
+					}
+					if(model.getTargetPort() != null) {
+						const targetNodeId = model.getTargetPort().getNode().getID();
+						const targetPortName = escapeSelector(model.getTargetPort().getName());
+						document.querySelector(`div.port[data-nodeid="${targetNodeId}"][data-name='${targetPortName}']>div>div`)?.classList.remove("hover");
+					}
 					if(attachedColor != null){
 						if(model.getSourcePort() != null){
 							Object.values(model.getSourcePort().getNode().getPorts()).forEach(p => {
 								Object.values(p.getLinks()).forEach(l => {
-									if(model.getTargetPort() != null)
-										document.querySelector(`div.port[data-nodeid="${l.getTargetPort().getNode().getID()}"][data-name='${l.getTargetPort().getName()}']>div>div`)?.classList.remove("hover");
+									if(model.getTargetPort() != null) {
+										const linkedTargetNodeId = l.getTargetPort().getNode().getID();
+                		const linkedTargetPortName = escapeSelector(l.getTargetPort().getName());
+										document.querySelector(`div.port[data-nodeid="${linkedTargetNodeId}"][data-name='${linkedTargetPortName}']>div>div`)?.classList.remove("hover");
+									}
 								})
 							})
 						}
