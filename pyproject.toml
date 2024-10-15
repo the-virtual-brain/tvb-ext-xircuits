@@ -3,7 +3,7 @@ requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version>=0
 build-backend = "hatchling.build"
 
 [project]
-name = "tvbextxircuits"
+name = "tvb-ext-xircuits"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
@@ -65,6 +65,7 @@ test = [
 [tool.hatch.version]
 source = "nodejs"
 
+
 [tool.hatch.metadata.hooks.nodejs]
 fields = ["description", "authors", "urls"]
 
@@ -77,8 +78,8 @@ artifacts = ["tvbextxircuits/labextension"]
 exclude = [".github", "binder", "node_modules", "lib", ".yarn"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"tvbextxircuits/labextension" = "share/jupyter/labextensions/tvbextxircuits"
-"install.json" = "share/jupyter/labextensions/tvbextxircuits/install.json"
+"tvbextxircuits/labextension" = "share/jupyter/labextensions/tvb-ext-xircuits"
+"install.json" = "share/jupyter/labextensions/tvb-ext-xircuits/install.json"
 "jupyter-config/server-config" = "etc/jupyter/jupyter_server_config.d"
 
 [tool.hatch.build.hooks.version]
