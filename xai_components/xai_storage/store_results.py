@@ -38,6 +38,7 @@ class StoreResultsToDrive(ComponentWithWidget):
     def __init__(self):
         self.done = False
         self.is_hpc_launch = False
+        self.data_to_store = InCompArg([])
         self.collab_name = InArg('')
         self.folder_path = InArg('')
         self.format = InArg('npz')
@@ -122,6 +123,7 @@ class StoreResultsToBucket(ComponentWithWidget):
     def __init__(self):
         self.done = False
         self.is_hpc_launch = False
+        self.data_to_store = InCompArg([])
         self.bucket_name = InArg('')
         self.folder_path = InArg('')
         self.format = InArg('npz')
