@@ -53,6 +53,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install allensdk
           pip install -U pytest pytest-cov pytest-mock
+          jlpm add react react-dom webpack prop-types @emotion/react @emotion/styled
 
     - name: Build Extension in Dev Mode
       run: |
