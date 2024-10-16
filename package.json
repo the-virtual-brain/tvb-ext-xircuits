@@ -77,11 +77,11 @@
     "react-textarea-autosize": "^8.5.3",
     "react-toggle": "^4.1.3",
     "react-tooltip": "^4.2.21",
-    "typescript": "~5.0.2"
+    "typescript": "~5.0.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0"
   },
   "devDependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
     "@jupyterlab/builder": "^4.0.0",
     "@jupyterlab/testutils": "^4.0.0",
     "@types/jest": "^29.2.0",
@@ -112,7 +112,11 @@
   },
   "resolutions": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@jupyterlab/services/react": "^18.2.0",
+    "@jupyterlab/settingregistry/react": "^18.2.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0"
   },
   "sideEffects": [
     "style/*.css",
