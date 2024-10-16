@@ -51,7 +51,7 @@ jobs:
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
            pip install allensdk "jupyterlab>=4.0.0,<5"
-           jlpm add react react-dom webpack prop-types @emotion/react @emotion/styled
+           jlpm add react react-dom typescript webpack prop-types @emotion/react @emotion/styled
 
     - name: Build Extension in Dev Mode
       run: |
