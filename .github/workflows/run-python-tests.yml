@@ -54,6 +54,9 @@ jobs:
           pip install allensdk
           pip install -U pytest pytest-cov pytest-mock
 
+    - name: Install Node.js dependencies
+      run: jlpm install
+
     - name: Build Extension in Dev Mode
       run: |
           pip install -e .

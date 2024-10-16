@@ -52,6 +52,9 @@ jobs:
       run: python -m pip install --upgrade pip
            pip install allensdk
 
+    - name: Install Node.js dependencies
+      run: jlpm install
+
     - name: Build Extension in Dev Mode
       run: |
         pip install -e .
