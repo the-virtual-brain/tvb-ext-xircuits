@@ -68,7 +68,7 @@
     "@jupyterlab/services": "^7.2.0",
     "@jupyterlab/settingregistry": "^4.0.0",
     "@projectstorm/geometry": "^7.0.2",
-    "@projectstorm/react-diagrams": "^7.0.3",
+    "@projectstorm/react-diagrams": "7.0.2",
     "colorjs.io": "^0.4.5",
     "marked": "^11.0.0",
     "react": "^18.2.0",
