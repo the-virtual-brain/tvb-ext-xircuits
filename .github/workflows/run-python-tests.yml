@@ -47,7 +47,9 @@ jobs:
       run: npm install react-collapsed
 
     - name: Install Yarn
-      run: npm install --global yarn --frozen-lockfile
+      run: |
+        npm install --global yarn --frozen-lockfile
+        yarn -v
 
     - name: Install dependencies
       run: |
