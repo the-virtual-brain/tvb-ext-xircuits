@@ -24,7 +24,7 @@ import {
     setVariableComponentIcon,
     getVariableComponentIcon } from '../../ui-components/icons';
 import  circuitBoardSvg from '../../../style/icons/circuit-board-bg.svg';
-import { LegacyRef, MutableRefObject } from "react";
+import { LegacyRef, useEffect } from 'react';
 
 
 
@@ -329,12 +329,10 @@ const WorkflowNode = ({ node, engine, app, handleDeletableNode }) => {
 };
 
 const ComponentLibraryNode = ({ node, engine, shell, app, handleDeletableNode }) => {
-    // from them
     const [showDescription, setShowDescription] = React.useState(false);
     const [descriptionStr, updateDescriptionStrState] = React.useState("");
     const elementRef = React.useRef<HTMLElement>(null);
 
-    // from us
     const portsNo = node.getInPorts().length + node.getOutPorts().length;
     const tooltipDescriptionRef = React.useRef<HTMLDivElement>(null);
     const [showParamDescriptionList, setShowParamDescriptionList] =  React.useState<boolean[]>(
@@ -377,6 +375,17 @@ const ComponentLibraryNode = ({ node, engine, shell, app, handleDeletableNode })
           ReactTooltip.show(elementRef.current);
       }
    };
+
+    // force MathJax to rescan DOM whenever the description changes and a description box is opened
+    useEffect(() => {
+      if (showDescription) {
+        if ((window as any).MathJax) {
+          (window as any).MathJax.typesetPromise()
+            .then(() => {})
+            .catch((err: any) => console.error("MathJax typeset failed: ", err));
+        }
+      }
+    }, [showDescription]);
 
     const getDescriptionStr = () => {
         let dscrptStr = node['extras']['description'] ?? '***No description provided***';

@@ -78,6 +78,33 @@ const xircuits: JupyterFrontEndPlugin<void> = {
 
     console.log('Xircuits is activated!');
 
+    // define MathJax configuration before loading the script
+    if (!(window as any).MathJax) {
+      (window as any).MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+          typeset: false, // DO NOT REMOVE: disables automatic typesetting after loading;
+          ready: () => {
+            console.log('MathJax is ready.');
+            (window as any).MathJax.startup.defaultReady(); // ensure default settings are used in our custom ready method
+            (window as any).MathJax.typesetPromise()
+              .then(() => {console.log('MathJax typesetting complete.');})
+              .catch((err: any) => console.error('MathJax typeset failed: ', err));
+          }
+        }
+      };
+    }
+
+    // load MathJax from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js';
+    script.async = true;
+    script.onload = () => {console.log('MathJax script loaded successfully.');};
+    script.onerror = () => {console.error('Failed to load MathJax.');};
+    document.head.appendChild(script);
+
     // Creating the widget factory to register it so the document manager knows about
     // our new DocumentWidget
     const widgetFactory = new XircuitsFactory({
