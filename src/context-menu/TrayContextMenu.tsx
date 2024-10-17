@@ -19,7 +19,7 @@ export interface TrayContextMenuProps {
     onClose: () => void;
 }
 
-const TrayContextMenu = ({ app, x, y, visible, libraryName, status, refreshTrigger, onClose }: TrayContextMenuProps) => {
+const TrayContextMenu: React.FC<TrayContextMenuProps> = ({ app, x, y, visible, libraryName, status, refreshTrigger, onClose }: TrayContextMenuProps) => {
     const trayContextMenuRef = useRef<HTMLDivElement>(null);
     const [validOptions, setValidOptions] = useState({
         showInFileBrowser: false,
