@@ -55,8 +55,8 @@ jobs:
           pip install allensdk
           pip install "jupyterlab>=4.0.0,<5" -U pytest pytest-cov pytest-mock
 
-#    - name: Install Node.js dependencies
-#      run: jlpm install
+    - name: Install Node.js dependencies
+      run: jlpm install
 
     - name: Install Node.js dependencies
       run: jlpm install
