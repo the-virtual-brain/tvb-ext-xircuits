@@ -43,10 +43,8 @@ jobs:
       with:
         node-version: 20
 
-    - name: Install Yarn and React-collapsed
-      run:  |
-        npm install --global yarn
-        npm install react-collapsed
+    - name: Install React-collapsed
+      run: npm install react-collapsed
 
     - name: Install dependencies
       run: |
