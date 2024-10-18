@@ -60,9 +60,6 @@ jobs:
     - name: Install Node.js dependencies
       run: jlpm install
 
-    - name: Install Node.js dependencies
-      run: jlpm install
-
     - name: Build Extension in Dev Mode
       run: |
           pip install -e .

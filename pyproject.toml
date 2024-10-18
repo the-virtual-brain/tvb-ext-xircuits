@@ -36,7 +36,7 @@ dependencies = [
     "jupyter-core",
     "jupyterlab-server",
     "notebook_shim",
-    "jupyterlab-widgets==1.1.0",
+    "jupyterlab-widgets",
     "nbformat",
     "jupyter-core",
     "numpy<2.0.2",
