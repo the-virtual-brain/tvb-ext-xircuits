@@ -15,8 +15,8 @@ from xai_components.utils import print_component_summary
 
 @xai_component(color='rgb(85, 37, 130)')
 class ConnectivityFromSiibra(Component):
-    atlas: InArg[str]
-    parcellation: InArg[str]
+    atlas: InArg[Literal['Multilevel Human Atlas']]
+    parcellation: InArg[Literal['Julich-Brain Cytoarchitectonic Atlas (v3.0.3)', 'Julich-Brain Cytoarchitectonic Atlas (v2.9)']]
     subject_id: InArg[str]
     cohort: InArg[Literal['HCP', '1000BRAINS']]
 
@@ -25,7 +25,7 @@ class ConnectivityFromSiibra(Component):
     def __init__(self):
         self.done = False
         self.atlas = InArg(sb.HUMAN_ATLAS)
-        self.parcellation = InArg(sb.JULICH_3_0)
+        self.parcellation = InArg(sb.JULICH_3_0_3)
         self.cohort = InArg(sb.HCP_COHORT)
         self.subject_id = InArg('000')
         self.connectivity = OutArg(None)

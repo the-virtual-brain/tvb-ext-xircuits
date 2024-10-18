@@ -907,7 +907,10 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 
 	const connectLinkToItsLiteral = async (linkName, event) => {
-		let portType = linkName.split("-")[1];
+		// this part is necessary for enum options that have "-" in them
+		const firstDashIdx = linkName.indexOf("-");
+		const lastDashIndex = linkName.lastIndexOf("-");
+		let portType = linkName.substring(firstDashIdx + 1, lastDashIndex);
 		// if multiple types provided, Use the first type.
 		if (portType.startsWith("Union")) {
 			portType = portType.replace('Union', '');
