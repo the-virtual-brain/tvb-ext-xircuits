@@ -45,6 +45,7 @@ function checkInput(input: any, dataType: string): boolean {
             break;
 
         case "string":
+        case "numpy":
         case "secret":
         case "chat":
             processedInput = JSON.stringify(input);

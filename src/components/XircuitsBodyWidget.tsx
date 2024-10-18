@@ -944,14 +944,6 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				  nodeType = boolValue === 'false' ? 'False' : 'True';
 					break;
 				}
-				case 'numpy.ndarray': {
-					const dialogOptions = inputDialog({title:'Numpy Array', oldValue: '', type:'Numpy Array', inputType: 'textarea'});
-					const dialogResult = await showFormDialog(dialogOptions);
-					if (cancelDialog(dialogResult)) return;
-					nodeType = 'Numpy Array'
-					varInput = dialogResult["value"]['Numpy Array'];
-					break;
-				}
 				case 'any':
         case 'dynalist':
 			  case 'dynatuple':

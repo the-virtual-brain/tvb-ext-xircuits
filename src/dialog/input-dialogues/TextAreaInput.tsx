@@ -34,6 +34,15 @@ const getHeaderContent = (type) => {
                    For Example: "a", "b", "c"
                  </h5>
                </>;
+      case 'numpy':
+        return <>
+                 <h3 style={{ marginTop: 0, marginBottom: 5 }}>
+                   Enter Numpy Array Value:
+                 </h3>
+                 <h5 style={{ marginTop: 0, marginBottom: 5 }}>
+                   For Example: np.array([2,3])
+                 </h5>
+               </>;
       default:
         return <h3 style={{ marginTop: 0, marginBottom: 5 }}>
                   Enter Value:

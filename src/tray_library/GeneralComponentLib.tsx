@@ -16,7 +16,7 @@ export function cancelDialog(dialogResult) {
     return false
 }
 
-const TYPE_LITERALS = ['string', 'int', 'float', 'boolean', 'list', 'tuple', 'dict', 'secret', 'chat'];
+const TYPE_LITERALS = ['string', 'int', 'float', 'boolean', 'list', 'tuple', 'dict', 'secret', 'chat', 'numpy.ndarray'];
 const TYPE_ARGUMENTS = ['string', 'int', 'float', 'boolean', 'any'];
 const SPECIAL_LITERALS = ['chat'];
 
@@ -25,6 +25,7 @@ export async function handleLiteralInput(nodeName, nodeData, inputValue = "", ty
 
     do {
         const isCreatingNewNode = nodeConnections === 0;
+        type = type === 'numpy.ndarray' ? 'numpy' : type;
         let dialogOptions = inputDialog({ title, oldValue: inputValue, type, attached: (nodeData.extras?.attached || false ), showAttachOption: !isCreatingNewNode});
         let dialogResult = await showFormDialog(dialogOptions);
         if (cancelDialog(dialogResult)) return;
@@ -75,18 +76,6 @@ export async function GeneralComponentLibrary(props: GeneralComponentLibraryProp
         node = new CustomNodeModel({ name: "Literal Boolean", color: nodeData.color, extras: { "type": nodeData.type } });
         node.addOutPortEnhance({ label: portLabel, name: 'out-0', dataType: nodeData.type });
         return node;
-    } else if (nodeData.type === 'numpy.ndarray') {
-        if (variableValue == '' || variableValue == undefined) {
-            const dialogOptions = inputDialog({title:'Numpy Array', oldValue:'', type:'Numpy Array', inputType: 'textarea'});
-            const dialogResult = await showFormDialog(dialogOptions);
-            if (cancelDialog(dialogResult)) return;
-            console.log(dialogResult)
-            inputValue = dialogResult["value"]['Numpy Array'];
-        }
-
-        node = new CustomNodeModel({ name: nodeName, color: nodeData.color, extras: { "type": nodeData.type } });
-        node.addOutPortEnhance(inputValue, 'out-0');
-
     }
     
     // handler for Any

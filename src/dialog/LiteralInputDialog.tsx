@@ -60,7 +60,8 @@ export const LiteralInputDialog = ({ title, oldValue, type, inputType, attached,
 		secret: SecretInput,
 		chat: ChatInput,
 		argument: ArgumentInput,
-    enum: EnumInput
+    enum: EnumInput,
+		numpy: TextAreaInput,
 	};
 
 	const InputValueDialog = () => {
