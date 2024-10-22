@@ -25,8 +25,16 @@ class LoggerBuilder(object):
         :param: config_file_name - name of the logging configuration relative to the current package
         """
         current_folder = os.path.dirname(inspect.getfile(self.__class__))
+
+        # TODO: name the log package after the xircuits file
+        log_package = os.path.join(os.getcwd(), 'log_files')
+
+        if not os.path.exists(log_package):
+            os.makedirs(log_package)
+
         config_file_path = os.path.join(current_folder, config_file_name)
-        logging.config.fileConfig(config_file_path, disable_existing_loggers=False)
+        logging.config.fileConfig(config_file_path, defaults={'package': log_package},
+                                  disable_existing_loggers=False)
         self._loggers = weakref.WeakValueDictionary()
 
     def build_logger(self, parent_module):

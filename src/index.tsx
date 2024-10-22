@@ -300,15 +300,15 @@ const xircuits: JupyterFrontEndPlugin<void> = {
           await createPanel();
         }
 
-        // Convert the model_path to be bash aware
-        model_path = `"${model_path}"`
-
         outputPanel.session.ready.then(async () => {
           let code = startRunOutputStr();
           if (runType == 'remote-run') {
             // Run subprocess when run type is Remote Run
             code += doRemoteRun(model_path, config);
           } else {
+            // Convert the model_path to be bash aware
+            model_path = `"${model_path}"`
+
             code += `%run ${model_path} ${message} ${debug_mode}`
           }
 
