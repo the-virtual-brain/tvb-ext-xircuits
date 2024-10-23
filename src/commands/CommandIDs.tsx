@@ -39,6 +39,6 @@ export const commandIDs = {
   helpOpenResource: "xircuits-help:open-resource",
   openXircuitsConfiguration: "xircuits-config:open-config",
   fetchRemoteRunConfig: "xircuits-config:fetch-remote-config",
-  openTvbExtUnicore: 'tvbextunicore:open',
+  openTvbExtUnicore: 'tvb_ext_unicore:open',
   openViewer: 'Xircuit-editor:open-node-viewer'
 };
