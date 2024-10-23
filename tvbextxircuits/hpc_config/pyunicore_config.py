@@ -29,11 +29,11 @@ LOGGER = get_logger('tvbextxircuits.hpc_config.pyunicore_config')
 
 
 class PyunicoreSubmitter(object):
-    storage_name = {'DAINT-CSCS': 'HOME', 'JUSUF': 'PROJECT'}
+    storage_name = {'JUWELS': 'HOME', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    python_dir = {'DAINT-CSCS': 'python3.9', 'JUSUF': 'python3.10'}
-    modules = {'DAINT-CSCS': 'cray-python', 'JUSUF': 'Python'}
+    python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
+    modules = {'JUWELS': 'Python', 'JUDAC': 'Python'}
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
@@ -43,6 +43,10 @@ class PyunicoreSubmitter(object):
     def __init__(self, site, project):
         self.site = site
         self.project = project
+        LOGGER.info("-----pyunicore submitter: ----------")
+        LOGGER.info(self.site)
+        LOGGER.info(self.project)
+        LOGGER.info("-------------")
 
     def set_hpc_settings(self, filesystem, python, libraries, modules):
         if filesystem:
@@ -53,6 +57,12 @@ class PyunicoreSubmitter(object):
             self.pip_libraries = libraries
         if modules:
             self.modules[self.site] = modules
+        LOGGER.info("-----set hpc settings----------")
+        LOGGER.info(filesystem)
+        LOGGER.info(python)
+        LOGGER.info(libraries)
+        LOGGER.info(modules)
+        LOGGER.info("--------------")
 
     @property
     def _activate_command(self):
@@ -364,6 +374,6 @@ if __name__ == '__main__':
         modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
         libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
         do_stage_out = True if stage_out_arg == 'on' else False
-        launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
-                   workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
-                   filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
+        # launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
+        #            workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
+        #            filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
