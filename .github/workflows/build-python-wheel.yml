@@ -2,9 +2,10 @@ name: Python Package Builder
 
 on:
   push:
-    branches: [ dev ]
+    branches:
+    - 'main'
   pull_request:
-    branches: [ dev ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -71,5 +72,5 @@ jobs:
     - name: Upload Dist Directory Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: tvb-ext-xircuits-wheel-${{ env.branch_name }}-${{ env.git_hash }}
+        name: tvb-ext-xircuits-wheel-${{ env.branch_name }}-${{ env.git_hash }}-${{ matrix.python-version }}
         path: dist

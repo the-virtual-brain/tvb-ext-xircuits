@@ -1,0 +1,121 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "type": "SoftwareSourceCode",
+    "name": "tvb-ext-xircuits",
+    "license": "https://spdx.org/licenses/Apache-2.0",
+    "copyrightYear": "2024",
+    "codeRepository": "https://github.com/the-virtual-brain/tvb-ext-xircuits.git",
+    "documentation": "https://wiki.ebrains.eu/bin/view/Collabs/tvb-widgets/Extension%20tvb-ext-xircuits/",
+    "downloadUrl": "https://files.pythonhosted.org/packages/71/de/038362d074c57e02ab7c402ac96e2fb89aabb116994ab5645f14e0616b01/tvb-ext-xircuits-1.1.0.tar.gz",
+    "datePublished": "2022-10-17",
+    "dateModified": "2023-08-08",
+    "version": "1.1.0",
+    "releaseNotes": "https://github.com/the-virtual-brain/tvb-ext-xircuits/releases/tag/1.1.0",
+    "description": "This is a jupyterlab extension built as a prototype for building EBRAINS (including TVB simulator, Siibra API) workflows in a visual and interactive manner. It extends the already existent Xircuits jupyterlab extension by adding new components and new features on top.",
+    "funding": "101147319 (EBRAINS 2.0 Project)",
+    "funder": {
+        "type": "Organization",
+        "name": "EU"
+    },
+    "keywords": [
+        "jupyterlab",
+        "extension",
+        "tvb",
+        "workflow",
+        "simulation",
+        "xircuits"
+    ],
+    "operatingSystem": [
+        "Windows",
+        "MacOS",
+        "Linux"
+    ],
+    "programmingLanguage": [
+        "Python",
+        "TypeScript"
+    ],
+    "developmentStatus": "active",
+    "author": [
+        {
+            "id": "_:author_1",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Prodan",
+            "givenName": "Paula"
+        },
+        {
+            "id": "_:author_2",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Baila",
+            "givenName": "Romina"
+        },
+        {
+            "id": "_:author_3",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Horge",
+            "givenName": "Rares"
+        },
+        {
+            "id": "_:author_4",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Bacter",
+            "givenName": "David"
+        },
+        {
+            "id": "_:author_5",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Misan",
+            "givenName": "Teodora"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/7dcbd8d3-2b6d-4f32-9e1e-dd83887324c4",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Codemart"
+            },
+            "familyName": "Domide",
+            "givenName": "Lia"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/0d44cb56-2fed-40a1-9c19-3f5b511f8c0c",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "INS"
+            },
+            "familyName": "Fousek",
+            "givenName": "Jan"
+        },
+        {
+            "id": "https://search.kg.ebrains.eu/instances/99910490-5cb9-4933-b99d-7a492198c66b",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Jülich"
+            },
+            "familyName": "Diaz",
+            "givenName": "Sandra"
+        }
+    ],
+    "isPartOf": "https://lab.ch.ebrains.eu/"
+}
