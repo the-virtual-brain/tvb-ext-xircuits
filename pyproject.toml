@@ -43,7 +43,7 @@ dependencies = [
     "pyunicore",
     "siibra",
     "tvb-library",
-    "tvb-gdist==2.1.0",
+    "tvb-gdist",
     "tvb-framework",
     "tvb-ext-bucket",
     "tvb-ext-unicore",
