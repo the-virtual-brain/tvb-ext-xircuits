@@ -11,7 +11,13 @@ export function buildRemoteRunCommand(path: string, config: { formattedCommand: 
           '$XIRCUITS_PATH': path
       };
 
-      let command_str = command;
+      let command_str = command + " " + path + " " + config['run_config_name']
+            + " " + config['project']
+            + " " + config['stage_out']
+            + " " + config['filesystem']
+            + " " + config['python']
+            + " " + config['modules']
+            + " " + config['libraries'];
       Object.keys(envVariables).forEach(key => {
           command_str = command_str.replace(new RegExp(`\\${key}`, 'g'), envVariables[key]);
       });

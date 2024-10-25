@@ -147,6 +147,7 @@ export class XircuitsFactory extends ABCWidgetFactory<DocumentWidget> {
     widget.toolbar.insertItem(11, 'xircuits-add-compile', compileButton);
     widget.toolbar.insertItem(12, 'xircuits-add-run', compileAndRunButton);
     widget.toolbar.insertItem(13, 'xircuits-run-type', new RunSwitcher(this));
+    widget.toolbar.insertItem(14, 'xircuits-add-monitor', monitoringButton);
 
     return widget;
   }
