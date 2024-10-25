@@ -298,6 +298,7 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
 							title={'If checked, the HPC monitoring widget is opened up automatically in a new tab. This can be accessed from the Monitor HPC button as well.'}
 							name='monitoring'
               checked={isMonitoringEnabled}
+              value={isMonitoringEnabled ? 'on': 'off'}
               onChange={(e) => setIsMonitoringEnabled(e.target.checked)}
 						>
 						</input>
@@ -310,6 +311,7 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
 							title={'If checked, the workflow waits for all HPC jobs to finish and stages-out the results. Otherwise, they can be downloaded manually from the HPC monitoring widget.'}
 							name='stage_out'
               checked={isStageOutEnabled}
+              value={isStageOutEnabled  ? 'on': 'off'}
               onChange={(e) => setIsStageOutEnabled(e.target.checked)}
 						>
 						</input>

@@ -20,7 +20,7 @@ import {
   runIcon,
   saveIcon,
   undoIcon,
-  type LabIcon,
+  type LabIcon
 } from "@jupyterlab/ui-components";
 import { ToolbarButton } from '@jupyterlab/apputils';
 import { LoggerCommandIDs } from './log/LogPlugin';
