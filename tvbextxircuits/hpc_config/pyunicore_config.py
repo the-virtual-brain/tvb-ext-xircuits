@@ -29,7 +29,7 @@ LOGGER = get_logger('tvbextxircuits.hpc_config.pyunicore_config')
 
 
 class PyunicoreSubmitter(object):
-    storage_name = {'JUWELS': 'HOME', 'JUDAC': 'PROJECT'}
+    storage_name = {'JUWELS': 'PROJECT', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
     python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
@@ -70,7 +70,7 @@ class PyunicoreSubmitter(object):
 
     @property
     def _install_dependencies_command(self):
-        return f'pip install -U pip && pip install allensdk && pip install {self.pip_libraries}'
+        return f'pip install -U pip && pip install {self.pip_libraries}'
 
     def connect_client(self):
         LOGGER.info(f"Connecting to {self.site}...")
@@ -363,7 +363,8 @@ if __name__ == '__main__':
         python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
         modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
         libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
+        libraries = libraries_arg.replace(",", " ")
         do_stage_out = True if stage_out_arg == 'on' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
                    workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
-                   filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
+                   filesystem=filesystem_arg, python=python_arg, libraries=libraries, modules=modules_arg)

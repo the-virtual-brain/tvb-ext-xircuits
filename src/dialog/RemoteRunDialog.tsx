@@ -35,8 +35,8 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
   const [project, setProject] = useState("");
   const [isMonitoringEnabled, setIsMonitoringEnabled] = useState(false);
   const [isStageOutEnabled, setIsStageOutEnabled] = useState(false);
-  const [filesystem, setFilesystem] = useState('HOME');
-  const [python, setPython] = useState('python3.10');
+  const [filesystem, setFilesystem] = useState('PROJECT');
+  const [python, setPython] = useState('python3.11');
   const [modules, setModules] = useState('Python');
   const [placeholders, setPlaceholders] = useState<string[]>([]);
   const [formattedCommand, setFormattedCommand] = useState("");
@@ -106,12 +106,11 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
         setInputValues(prefillInputValues(selectedConfig, extractedPlaceholders));
       }
       if (configName === 'JUWELS') {
-        setFilesystem('HOME');
-			  setPython('python3.11');
-		  } else {
-			  setFilesystem('PROJECT');
-			  setPython('python3.10');
-		  }
+        setPython('python3.11');
+      } else {
+        setPython('python3.10');
+      }
+      setFilesystem('PROJECT');
       setModules('Python');
     }
   };
