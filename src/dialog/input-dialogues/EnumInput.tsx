@@ -8,8 +8,7 @@ export const EnumInput = ({ title, possibleValues }): JSX.Element => {
         style={{
           paddingLeft: 5,
           paddingTop: 5,
-          height: '10rem',
-          width: '10rem'
+          height: '10rem'
         }}
       >
         <Dropdown name={title} types={possibleValues} />
