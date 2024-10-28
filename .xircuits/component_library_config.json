@@ -335,6 +335,12 @@
             "status": "installed"
         },
         {
+            "name": "xai_tvb_region_mapping",
+            "library_id": "TVB_REGION_MAPPING",
+            "local_path": "xai_components/xai_tvb_region_mapping",
+            "status": "installed"
+        },
+        {
             "name": "xai_tvb_sensors",
             "library_id": "TVB_SENSORS",
             "local_path": "xai_components/xai_tvb_sensors",
