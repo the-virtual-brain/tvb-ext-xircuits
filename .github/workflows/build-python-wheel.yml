@@ -52,7 +52,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install allensdk "jupyterlab>=4.0.0,<5"
+        pip install setuptools allensdk "jupyterlab>=4.0.0,<5"
 
     - name: Install Node.js dependencies
       run: jlpm install
