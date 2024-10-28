@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools wheel allensdk
+        pip install setuptools wheel
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
