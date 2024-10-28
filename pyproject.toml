@@ -7,6 +7,7 @@ name = "tvb-ext-xircuits"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
+version = "2.0a1"
 classifiers = [
     "Framework :: Jupyter",
     "Framework :: Jupyter :: JupyterLab",
@@ -50,7 +51,7 @@ dependencies = [
     "tvb-widgets>=1.0",
     "importlib_resources",
 ]
-dynamic = ["version", "description", "authors", "urls", "keywords"]
+dynamic = ["description", "authors", "urls", "keywords"]
 
 [project.optional-dependencies]
 test = [
@@ -60,9 +61,6 @@ test = [
     "pytest-cov",
     "pytest-jupyter[server]>=0.6.0"
 ]
-
-[tool.hatch.version]
-source = "nodejs"
 
 
 [tool.hatch.metadata.hooks.nodejs]
