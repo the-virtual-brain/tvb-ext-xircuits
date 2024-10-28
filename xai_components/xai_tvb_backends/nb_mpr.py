@@ -2,7 +2,7 @@
 #
 # "TheVirtualBrain - Widgets" package
 #
-# (c) 2022-2023, TVB Widgets Team
+# (c) 2022-2024, TVB Widgets Team
 from tvb.simulator.backend.templates import MakoUtilMix
 from xai_components.base import xai_component, OutArg
 from xai_components.base_tvb import TVBComponent
