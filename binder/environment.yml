@@ -5,7 +5,7 @@ channels:
 
 dependencies:
   # Runtime dependencies installed through conda
-  - python >=3.8,<3.11
+  - python >=3.8,<3.12
   - pip
   - nodejs >=18,<19
 

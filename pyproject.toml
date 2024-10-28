@@ -39,7 +39,7 @@ dependencies = [
     "jupyterlab-widgets",
     "nbformat",
     "jupyter-core",
-    "numpy<2.0.2",
+    "numpy<2",
     "pyunicore",
     "siibra",
     "tvb-library",
