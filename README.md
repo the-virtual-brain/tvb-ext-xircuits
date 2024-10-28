@@ -58,7 +58,7 @@ Notebooks generated can be found at `TVB_generated_notebooks/<xircuits_id>`
 
 ##  Acknowledgments
 
-Copyright (c) 2022-2023 to Xircuits Team See: https://github.com/XpressAI/xircuits
+Copyright (c) 2022-2024 to Xircuits Team See: https://github.com/XpressAI/xircuits
 
 Copyright (c) 2022-2023 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
 
