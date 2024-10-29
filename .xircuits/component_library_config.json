@@ -347,6 +347,12 @@
             "status": "installed"
         },
         {
+            "name": "xai_tvb_simulation_cortex",
+            "library_id": "TVB_SIMULATION_CORTEX",
+            "local_path": "xai_components/xai_tvb_simulation_cortex",
+            "status": "installed"
+        },
+        {
             "name": "xai_tvb_simulator",
             "library_id": "TVB_SIMULATOR",
             "local_path": "xai_components/xai_tvb_simulator",

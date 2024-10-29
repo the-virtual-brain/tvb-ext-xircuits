@@ -4,7 +4,6 @@
 #
 # (c) 2022-2024, TVB Widgets Team
 #
-
 from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
