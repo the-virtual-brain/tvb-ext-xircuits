@@ -41,7 +41,7 @@ dependencies = [
     "nbformat",
     "jupyter-core",
     "numpy<2",
-    "pyunicore<=1.0.1",
+    "pyunicore",
     "siibra",
     "tvb-library",
     "tvb-gdist",
