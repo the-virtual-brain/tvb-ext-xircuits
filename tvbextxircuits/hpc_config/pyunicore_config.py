@@ -363,8 +363,9 @@ if __name__ == '__main__':
         python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
         modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
         libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
-        libraries = libraries_arg.replace(",", " ")
+        if libraries_arg is not None:
+            libraries_arg = libraries_arg.replace(",", " ")
         do_stage_out = True if stage_out_arg == 'on' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
                    workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
-                   filesystem=filesystem_arg, python=python_arg, libraries=libraries, modules=modules_arg)
+                   filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
