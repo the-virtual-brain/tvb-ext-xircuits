@@ -1,3 +1,7 @@
+<p>
+    <img src="style/icons/TVB_logo.svg" alt="TVB logo" title="TVB" align="right" height="100" />
+</p>
+
 # tvb-ext-xircuits
 
 This is a jupyterlab extension built as a prototype for building EBRAINS 
