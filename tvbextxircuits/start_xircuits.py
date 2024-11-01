@@ -12,7 +12,7 @@ from .logger.builder import get_logger
 LOGGER = get_logger(__name__)
 
 def init_xircuits():
-    package_name = 'xircuits'
+    package_name = 'tvbextxircuits'
     copy_from_installed_wheel(package_name, resource='.xircuits', dest_path='.xircuits')
     component_library_path = Path(os.getcwd()) / "xai_components"
     if not component_library_path.exists():
