@@ -34,7 +34,7 @@ For dev mode setup there are 2 alternatives:
     ```
     conda activate [my-env]
     pip install --upgrade pip
-    pip install -e .
+    pip install -e .[full]
     jupyter labextension develop . --overwrite  # Link your development version of the extension with JupyterLab
     jupyter server extension enable tvbextxircuits  # Enable the server extension
     tvbextxircuits
@@ -47,7 +47,7 @@ For dev mode setup there are 2 alternatives:
     ```
     conda activate [my-env]
     pip install --upgrade pip
-    pip install -e .
+    pip install -e .[full]
     yarn install
     yarn install:extension
     tvbextxircuits

@@ -59,7 +59,7 @@ jobs:
 
     - name: Build Extension in Dev Mode
       run: |
-        pip install -e .
+        pip install -e .[full]
 
     - name: Generate description files
       run: |
