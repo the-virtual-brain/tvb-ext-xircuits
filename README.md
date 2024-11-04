@@ -9,7 +9,19 @@ This is a jupyterlab extension built as a prototype for building EBRAINS
 extends the already existent [Xircuits](https://xircuits.io/) jupyterlab extension 
 by adding new components and new features on top.
 
-For installing in a Jupyter Lab environment:
+Starting with version 2.0.0, tvb-ext-xircuits can be installed in **lightweight** mode or in **full** mode.
+
+**Full** mode means that the extension will be fully working and able to run workflows.
+
+**Lightweight** mode means that only the front-end part of the extension will be available, meaning that the users will 
+be able to see all the extension's components, but running workflows will not work.
+
+To install the extension locally and in full mode (recommended):
+
+    pip install tvb-ext-xircuits[full]
+
+
+To install the extension in lightweight mode (only for specialized users):
 
     pip install tvb-ext-xircuits
 

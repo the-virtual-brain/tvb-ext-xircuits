@@ -42,13 +42,9 @@ dependencies = [
     "jupyter-core",
     "numpy<2",
     "pyunicore",
-    "siibra",
     "tvb-library",
-    "tvb-gdist",
-    "tvb-framework",
     "tvb-ext-bucket",
     "tvb-ext-unicore",
-    "tvb-widgets>=1.0",
     "importlib_resources",
 ]
 dynamic = ["description", "authors", "urls", "keywords"]
@@ -60,6 +56,12 @@ test = [
     "pytest-asyncio",
     "pytest-cov",
     "pytest-jupyter[server]>=0.6.0"
+]
+full = [
+    "siibra",
+    "tvb-gdist",
+    "tvb-framework",
+    "tvb-widgets>=1.0",
 ]
 
 
