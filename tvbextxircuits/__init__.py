@@ -3,6 +3,7 @@ from pathlib import Path
 
 from .handlers import setup_handlers
 from ._version import __version__
+from .start_xircuits import main
 
 HERE = Path(__file__).parent.resolve()
 
@@ -30,6 +31,9 @@ def _load_jupyter_server_extension(server_app):
     server_app.log.info(
         f"Registered tvbextxircuits extension at URL path /{url_path}"
     )
+
+    # Call the main function to initialize the extension when starting it with 'jupyter lab' command
+    main()
 
 # For backward compatibility with the classical notebook
 load_jupyter_server_extension = _load_jupyter_server_extension
