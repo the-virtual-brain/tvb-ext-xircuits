@@ -1,8 +1,9 @@
 import os
-from git import Repo
-from git.remote import RemoteProgress
 from pathlib import Path
 
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
+from git import Repo
+from git.remote import RemoteProgress
 from tvbextxircuits.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
