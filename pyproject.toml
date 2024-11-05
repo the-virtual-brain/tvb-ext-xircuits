@@ -74,7 +74,7 @@ include-only = [
     "tvbextxircuits/",
 ]
 artifacts = ["tvbextxircuits/labextension"]
-exclude = [".github", "binder", "node_modules", "lib", ".yarn"]
+exclude = [".github", "node_modules", "lib", ".yarn"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "tvbextxircuits/labextension" = "share/jupyter/labextensions/tvb-ext-xircuits"
