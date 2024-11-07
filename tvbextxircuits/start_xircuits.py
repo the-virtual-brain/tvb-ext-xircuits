@@ -96,7 +96,6 @@ def main():
     list_parser = subparsers.add_parser('list', help='List available component libraries for Xircuits.')
     list_parser.set_defaults(func=cmd_list_libraries)
 
-
     args, unknown_args = parser.parse_known_args()
 
     if hasattr(args, 'func'):
@@ -111,24 +110,26 @@ def main():
 
     return 0
 
+def init_configs():
+    LOGGER.info(
+        '''
+        ======================================
+        __   __  ___                _ _       
+        \ \  \ \/ (_)_ __ ___ _   _(_) |_ ___ 
+         \ \  \  /| | '__/ __| | | | | __/ __|
+         / /  /  \| | | | (__| |_| | | |_\__ \\
+        /_/  /_/\_\_|_|  \___|\__,_|_|\__|___/
+
+        ======================================
+        '''
+    )
+
+    config_path = Path(os.getcwd()) / ".xircuits"
+    if not config_path.exists():
+        init_xircuits()
+
+    save_component_library_config()
+
+
 if __name__ == '__main__':
     main()
-
-LOGGER.info(
-'''
-======================================
-__   __  ___                _ _       
-\ \  \ \/ (_)_ __ ___ _   _(_) |_ ___ 
- \ \  \  /| | '__/ __| | | | | __/ __|
- / /  /  \| | | | (__| |_| | | |_\__ \\
-/_/  /_/\_\_|_|  \___|\__,_|_|\__|___/
-                                      
-======================================
-'''
-)
-
-config_path = Path(os.getcwd()) / ".xircuits"
-if not config_path.exists():
-    init_xircuits()
-
-save_component_library_config()
