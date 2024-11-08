@@ -3,7 +3,7 @@ name: Python Package Builder
 on:
   push:
     branches:
-    - 'main'
+    - 'dev'
   pull_request:
     types: [opened, synchronize, reopened]
 

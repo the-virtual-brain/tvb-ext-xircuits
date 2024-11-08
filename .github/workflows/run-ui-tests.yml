@@ -2,7 +2,8 @@ name: Run UI E2E Test
 
 on:
   push:
-    branches: master
+    branches:
+    - "dev"
   pull_request:
     branches: "*"
 
