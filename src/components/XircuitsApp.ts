@@ -1,14 +1,21 @@
 import * as SRD from '@projectstorm/react-diagrams';
-import { CustomNodeFactory } from "./CustomNodeFactory";
-import { CustomNodeModel } from './CustomNodeModel';
-import { ZoomCanvasAction } from '@projectstorm/react-canvas-core';
+import { CustomNodeFactory } from "./node/CustomNodeFactory";
+import { CustomNodeModel } from './node/CustomNodeModel';
 import { CustomActionEvent } from '../commands/CustomActionEvent';
 import { ILabShell, JupyterFrontEnd } from '@jupyterlab/application';
 import { CustomDiagramState } from './state/CustomDiagramState'
-import { CustomLinkModel, TriangleLinkModel } from './link/CustomLinkModel';
-import { CustomLinkFactory, TriangleLinkFactory } from './link/CustomLinkFactory';
-import { PointModel } from '@projectstorm/react-diagrams';
+import { ParameterLinkModel, TriangleLinkModel } from './link/CustomLinkModel';
+import { ParameterLinkFactory, TriangleLinkFactory } from './link/CustomLinkFactory';
+import {
+        DefaultLabelFactory, DefaultLinkFactory, DefaultPortFactory,
+        LinkLayerFactory,
+        NodeLayerFactory,
+        PointModel,
+        SelectionBoxLayerFactory
+} from "@projectstorm/react-diagrams";
 import { Point } from '@projectstorm/geometry';
+import { BaseComponentLibrary } from '../tray_library/BaseComponentLib';
+import { CustomPanAndZoomCanvasAction } from "./actions/CustomPanAndZoomCanvasAction";
 
 export class XircuitsApplication {
 
@@ -16,26 +23,34 @@ export class XircuitsApplication {
 
         protected diagramEngine: SRD.DiagramEngine;
 
-        constructor(app: JupyterFrontEnd, shell: ILabShell) {
+        constructor(app: JupyterFrontEnd, shell: ILabShell, getWidgetId: () => string) {
+                this.diagramEngine = new SRD.DiagramEngine({ registerDefaultZoomCanvasAction: false, registerDefaultDeleteItemsAction: false });
 
-                this.diagramEngine = SRD.default({ registerDefaultZoomCanvasAction: false, registerDefaultDeleteItemsAction: false });
-                this.activeModel = new SRD.DiagramModel();
+                // Default Factories
+                this.diagramEngine.getLayerFactories().registerFactory(new NodeLayerFactory());
+	              this.diagramEngine.getLayerFactories().registerFactory(new LinkLayerFactory());
+	              this.diagramEngine.getLayerFactories().registerFactory(new SelectionBoxLayerFactory());
+	              this.diagramEngine.getLabelFactories().registerFactory(new DefaultLabelFactory());
+                this.diagramEngine.getLinkFactories().registerFactory(new DefaultLinkFactory());
+	              this.diagramEngine.getPortFactories().registerFactory(new DefaultPortFactory());
+
+                // Custom Factories, Actions & State
                 this.diagramEngine.getNodeFactories().registerFactory(new CustomNodeFactory(app, shell));
-                this.diagramEngine.getLinkFactories().registerFactory(new CustomLinkFactory());
+                this.diagramEngine.getLinkFactories().registerFactory(new ParameterLinkFactory());
                 this.diagramEngine.getLinkFactories().registerFactory(new TriangleLinkFactory());
-                this.diagramEngine.getActionEventBus().registerAction(new ZoomCanvasAction({ inverseZoom: true }))
-                this.diagramEngine.getActionEventBus().registerAction(new CustomActionEvent({ app }));
+                this.diagramEngine.getActionEventBus().registerAction(new CustomPanAndZoomCanvasAction())
+                this.diagramEngine.getActionEventBus().registerAction(new CustomActionEvent({ app, getWidgetId }));
                 this.diagramEngine.getStateMachine().pushState(new CustomDiagramState());
 
-                let startNode = new CustomNodeModel({ name: 'Start', color: 'rgb(255,102,102)', extras: { "type": "Start" } });
-                startNode.addOutPortEnhance('▶', 'out-0');
+
+                
+                let startNode = BaseComponentLibrary('Start')
                 startNode.setPosition(100, 100);
+                let finishNode = BaseComponentLibrary('Finish')
+                finishNode.setPosition(700, 100);
 
-                let finishedNode = new CustomNodeModel({ name: 'Finish', color: 'rgb(255,102,102)', extras: { "type": "Finish" } });
-                finishedNode.addInPortEnhance('▶', 'in-0');
-                finishedNode.setPosition(700, 100);
-
-                this.activeModel.addAll(startNode, finishedNode);
+                this.activeModel = new SRD.DiagramModel();
+                this.activeModel.addAll(startNode, finishNode);
                 this.diagramEngine.setModel(this.activeModel);
         }
 
@@ -71,12 +86,15 @@ export class XircuitsApplication {
                         newNode.setPosition(node.x, node.y);
                         newNode.setSelected(node.selected);
 
-                        for (let portID in node.ports) {
-
-                                let port = node.ports[portID];
-                                if (port.alignment == "right") newNode.addOutPortEnhance(port.label, port.name, true, port.id);
-                                if (port.alignment == "left") newNode.addInPortEnhance(port.label, port.name, true, port.id);
-
+                        for (let portID of node.portsInOrder) {
+                                const port = node.ports.find(p => p.id === portID);
+                                const position = new Point(port.x, port.y);
+                                newNode.addInPortEnhance({label: port.label, name: port.name, varName: port.varName, id: port.id, dataType: port.dataType, dynaPortOrder: port.dynaPortOrder, dynaPortRef: port.dynaPortRef, position});
+                        }
+                        for (let portID of node.portsOutOrder) {
+                                const port = node.ports.find(p => p.id === portID);
+                                const position = new Point(port.x, port.y);
+                                newNode.addOutPortEnhance({label: port.label, name: port.name, id: port.id, position, dataType: port.dataType});
                         }
                         tempModel.addNode(newNode);
                 }
@@ -87,24 +105,45 @@ export class XircuitsApplication {
 
                         if (link.sourcePort && link.targetPort) {
 
-                                let newLink = new CustomLinkModel({ id: link.id });
+                                let newLink = new ParameterLinkModel({ id: link.id });
                                 const newTriangleLink = new TriangleLinkModel({ id: link.id });
                                 const sourceNode = tempModel.getNode(link.source);
                                 const targetNode = tempModel.getNode(link.target);
+
+                                if(!sourceNode || !targetNode) {
+                                        const missingNodeId = !sourceNode ? link.source : link.target;
+                                        const missingNodeType = !sourceNode ? 'Source' : 'Target';
+                                        console.error(`${missingNodeType} node with id ${missingNodeId} not found!`);
+                                        continue; // Skip to the next iteration of the loop.
+                                }
+
                                 const linkPoints = link.points;
 
                                 const sourcePort = sourceNode.getPortFromID(link.sourcePort);
                                 const sourcePortName = sourcePort.getOptions()['name'];
-                                const sourcePortLabel = sourceNode.getPorts()[sourcePortName].getOptions()['label'];
+                                const sourcePortOptions = sourceNode.getPorts()[sourcePortName]?.getOptions()
+                                if(!sourcePortOptions){
+                                        console.error(`${sourcePortName} port not found!`);
+                                        continue
+                                }
+                                const sourcePortLabel = sourcePortOptions['label'];
                                 if (sourcePortLabel == '▶' || sourcePortName.includes('out-flow')) {
                                         // When source port is '▶', use triangle animation link
                                         // Also, use triangle animation link when the source port is a flowport
                                         newLink = newTriangleLink;
+                                        if(sourceNode['name'].startsWith("Argument ")){
+                                                newLink.getOptions()['__sub-type__'] = 'argument';
+                                        }
                                 }
 
                                 const targetPort = targetNode.getPortFromID(link.targetPort);
                                 const targetPortName = targetPort.getOptions()['name'];
-                                const targetPortLabel = targetNode.getPorts()[targetPortName].getOptions()['label'];
+                                const targetPortOptions = targetNode.getPorts()[targetPortName]?.getOptions();
+                                if(!targetPortOptions){
+                                        console.error(`${targetPortName} port not found!`);
+                                        continue
+                                }
+                                const targetPortLabel = targetPortOptions['label'];
                                 if (targetPortLabel == '▶'){
                                         // When target port is '▶', use triangle animation link
                                         newLink = newTriangleLink;
@@ -113,7 +152,9 @@ export class XircuitsApplication {
                                 // Set points on link if exist
                                 const points = [];
                                 linkPoints.map((point)=> {
-                                        points.push(new PointModel({ id:point.id, link: link, position: new Point(point.x, point.y) }));
+                                        let newPoint = new PointModel({ id:point.id, link: link, position: new Point(point.x, point.y) })
+                                        if (point.selected) { newPoint.setSelected(true) };
+                                        points.push(newPoint)
                                 })
 
                                 newLink.setSourcePort(sourcePort);

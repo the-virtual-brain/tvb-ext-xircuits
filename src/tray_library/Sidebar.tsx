@@ -1,25 +1,31 @@
-import ComponentList from './Component';
-
-import React, { useEffect, useState } from 'react';
-
-import styled from '@emotion/styled';
-
-import { TrayItemWidget } from './TrayItemWidget';
-
-import { TrayWidget } from './TrayWidget';
-
-import { JupyterFrontEnd } from '@jupyterlab/application';
+import { ComponentList, refreshComponentListCache } from "./Component";
+import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from 'react-dom';
+import styled from "@emotion/styled";
+import { TrayItemWidget } from "./TrayItemWidget";
+import { TrayWidget } from "./TrayWidget";
+import { JupyterFrontEnd } from "@jupyterlab/application";
 
 import {
     Accordion,
     AccordionItem,
-    AccordionItemHeading,
     AccordionItemButton,
+    AccordionItemHeading,
     AccordionItemPanel
 } from "react-accessible-accordion";
 
-import { requestAPI } from '../server/handler';
-import { XircuitFactory } from '../xircuitFactory';
+import { XircuitsFactory } from "../XircuitsFactory";
+import TrayContextMenu from "../context-menu/TrayContextMenu";
+
+import "../../style/ContextMenu.css";
+import { ComponentLibraryConfig, refreshComponentLibraryConfigCache } from "./ComponentLibraryConfig";
+import ReactTooltip from "react-tooltip";
+import { marked } from "marked";
+import { MenuSvg } from "@jupyterlab/ui-components";
+import { commandIDs } from "../commands/CommandIDs";
+import { NodePreview } from "./NodePreview";
+import { ellipsesIcon } from "@jupyterlab/ui-components";
+
 
 export const Body = styled.div`
   flex-grow: 1;
@@ -39,128 +45,113 @@ export const Content = styled.div`
     'border-top': '4px solid #dfe2e5'
 `;
 
-const headerList = [
-    { task: 'GENERAL', id: 1 }
-];
-
-const advancedList = [
-    { task: 'ADVANCED', id: 1 }
-];
-
-const colorList_adv = [
-    { task: "rgb(192,255,0)", id: 1 },
-    { task: "rgb(0,102,204)", id: 2 },
-    { task: "rgb(255,153,102)", id: 3 },
-    { task: "rgb(255,102,102)", id: 4 },
-    { task: "rgb(15,255,255)", id: 5 },
-    { task: "rgb(255,204,204)", id: 6 },
-    { task: "rgb(153,204,51)", id: 7 },
-    { task: "rgb(255,153,0)", id: 8 },
-    { task: "rgb(255,204,0)", id: 9 },
-    { task: "rgb(204,204,204)", id: 10 },
-    { task: "rgb(153,204,204)", id: 11 },
-    { task: "rgb(153,0,102)", id: 12 },
-    { task: "rgb(102,51,102)", id: 13 },
-    { task: "rgb(153,51,204)", id: 14 },
-    { task: "rgb(102,102,102)", id: 15 },
-    { task: "rgb(255,102,0)", id: 16 },
-    { task: "rgb(51,51,51)", id: 17 },
-];
-
-const colorList_general = [
-    { task: "rgb(21,21,51)", id: 1 }
-];
-
 export interface SidebarProps {
-    lab: JupyterFrontEnd;
-    factory: XircuitFactory;
+    app: JupyterFrontEnd;
+    factory: XircuitsFactory;
 }
 
-async function fetchComponent(componentList: string[]) {
-    let component_root = componentList.map(x => x["category"]);
-
-    let headers = Array.from(new Set(component_root));
-    let headerList: any[] = [];
-    let headerList2: any[] = [];
-    let displayHeaderList: any[] = [];
+async function fetchComponent(componentList) {
+    let headers = Array.from(new Set(componentList.map(x => x.category)));
+    let parameterComponentList = [];
+    let libraryComponentList = [];
+    let displayHeaderList = [];
 
     for (let headerIndex = 0; headerIndex < headers.length; headerIndex++) {
-        if (headers[headerIndex] == 'ADVANCED' || headers[headerIndex] == 'GENERAL') {
-            headerList.push(headers[headerIndex]);
+        const currentHeader = headers[headerIndex];
+        if (currentHeader === 'ADVANCED' || currentHeader === 'GENERAL') {
+            parameterComponentList.push(currentHeader);
         } else {
-            headerList2.push(headers[headerIndex]);
+            libraryComponentList.push(currentHeader);
         }
     }
 
-    if (headerList.length != 0) {
-        headerList = headerList.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
-        headers = [...headerList, ...headerList2];
-        for (let headerIndex2 = 0; headerIndex2 < headers.length; headerIndex2++) {
-            displayHeaderList.push({
-                "task": headers[headerIndex2],
-                "id": headerIndex2 + 1
-            });
-        }
+    libraryComponentList.sort();
+
+    if (parameterComponentList.length !== 0) {
+        parameterComponentList.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
+        headers = [...parameterComponentList, ...libraryComponentList];
+    }
+
+    for (const header of headers) {
+        const componentsUnderHeader = componentList.filter(component => component.category === header);
+        const headerDetails = componentsUnderHeader.map(component => ({
+            category: component.category,
+            file_path: component.file_path,
+            package_name: component.package_name
+        }));
+
+        displayHeaderList.push({
+            task: header,
+            id: displayHeaderList.length + 1,
+            components: headerDetails
+        });
     }
 
     return displayHeaderList;
 }
 
 export default function Sidebar(props: SidebarProps) {
+    const app = props.app
+    const factory = props.factory
+
     const [componentList, setComponentList] = React.useState([]);
     const [category, setCategory] = React.useState([]);
+    const [remoteLibList, setRemoteLibList] = React.useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [runOnce, setRunOnce] = useState(false);
+    const [displayNodesInLibrary, setDisplayNodesInLibrary] = React.useState(() => {
+        const initial = localStorage.getItem("displayNodesInLibrary");
+        if(initial){
+            return JSON.parse(initial);
+        }else{
+            return true;
+        }
+    });
 
+    let searchDelay = useRef(null);
     let handleOnChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-        setSearchTerm("");
-        setSearchTerm(event.target.value);
+        if(searchDelay.current != null){
+            clearTimeout(searchDelay.current);
+        }
+        searchDelay.current = setTimeout(() => {
+            searchDelay.current = null;
+            setSearchTerm(event.target.value);
+        }, 150)
     }
 
     function handleSearchOnClick() {
-        setSearchTerm("");
         setSearchTerm(searchTerm);
     }
 
-    async function getConfig(request: string) {
-        const dataToSend = { "config_request": request };
-
-        try {
-            const server_reply = await requestAPI<any>('get/config', {
-                body: JSON.stringify(dataToSend),
-                method: 'POST',
-            });
-
-            return server_reply;
-        } catch (reason) {
-            console.error(
-                `Error on POST get/config ${dataToSend}.\n${reason}`
-            );
-        }
-    };
-
     const fetchComponentList = async () => {
-          // get the component list 
-        let response_1 = await ComponentList();
+
+        await refreshComponentLibraryConfigCache();
+
+          // get the component list
+        let component_list = await ComponentList();
 
         // get the header from the components
-        let response_2 = await fetchComponent(response_1);
+        let component_library_name = await fetchComponent(component_list);
 
         // to ensure the component list is empty before setting the component list
-        if (response_1.length > 0) {
+        if (component_list.length > 0) {
             setComponentList([]);
             setCategory([]);
         }
 
         const comparisonFunction = (a,b) => a.task.toUpperCase() > b.task.toUpperCase() ? 1 : -1;
 
-        // this is needed because the linter sees response_1 as a string[], but it is not
+        // this is needed because the linter sees component_list as a string[], but it is not
         // @ts-ignore
-        response_1 = response_1.sort(comparisonFunction);
-        response_2 = response_2.sort(comparisonFunction);
+        component_list = component_list.sort(comparisonFunction);
+        component_library_name = component_library_name.sort(comparisonFunction);
 
-        setComponentList(response_1);
-        setCategory(response_2);
+        setComponentList(component_list);
+        setCategory(component_library_name);
+
+        const libraryConfig = await ComponentLibraryConfig();
+        const remoteLibraries = libraryConfig.filter(library => library.status === "remote");
+        setRemoteLibList(remoteLibraries);
     }
 
     useEffect(() => {
@@ -172,8 +163,33 @@ export default function Sidebar(props: SidebarProps) {
     }, [category, componentList]);
 
     function handleRefreshOnClick() {
+        refreshComponentListCache();
         fetchComponentList();
     }
+
+    useEffect(() => {
+        const refreshComponents = () => {
+            handleRefreshOnClick();
+        };
+
+        factory.refreshComponentsSignal.connect(refreshComponents);
+
+        const toggleDisplayNodes = () => {
+            setDisplayNodesInLibrary((prevState) => {
+                const newState = !prevState;
+                localStorage.setItem("displayNodesInLibrary", JSON.stringify(newState));
+                return newState;
+            })
+        }
+        factory.toggleDisplayNodesInLibrary.connect(toggleDisplayNodes);
+
+        // Return a cleanup function to unsubscribe
+        return () => {
+            factory.refreshComponentsSignal.disconnect(refreshComponents);
+            factory.toggleDisplayNodesInLibrary.disconnect(toggleDisplayNodes);
+        };
+    }, []);
+
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -189,94 +205,236 @@ export default function Sidebar(props: SidebarProps) {
         return () => clearInterval(intervalId);
     },[componentList, handleRefreshOnClick]);
 
+    useEffect(() => {
+        ReactTooltip.rebuild();
+    }, [componentList, searchTerm, {displayNodesInLibrary}])
+
+    const menu = new MenuSvg({ commands: app.commands });
+    // Add commands to the menu
+    menu.addItem({ command: commandIDs.refreshComponentList });
+    menu.addItem({
+        command: commandIDs.createNewComponentLibrary,
+        args: { componentCode: exampleComponent }
+    });
+    menu.addItem({ type: "separator" });
+    menu.addItem({ command: commandIDs.toggleDisplayNodesInLibrary });
+
+    function showMenu(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+      const bbox = e.currentTarget.getBoundingClientRect();
+      menu.open(bbox.x, bbox.bottom);
+    }
+
+    function matchesHeader(componentVal, searchTerm){
+        return componentVal.task.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+
+    function matchesDocString(componentVal, searchTerm){
+        return componentVal.docstring && componentVal.docstring.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+
+    // Function to map components
+    const mapComponents = (components, searchTerm) => {
+        let found = components;
+        if(searchTerm !== ""){
+            found = components.filter((componentVal) => {
+                if (searchTerm === "") {
+                    return componentVal;
+                } else if (matchesHeader(componentVal, searchTerm) || matchesDocString(componentVal, searchTerm)) {
+                    return componentVal;
+                }
+            })
+            found.sort((a, b) => {
+                const aHeader = matchesHeader(a, searchTerm);
+                const bHeader = matchesHeader(b, searchTerm);
+                if(aHeader && bHeader){ return 0; }
+                if(aHeader){ return -1; }
+                if(bHeader){ return 1; }
+                return 0;
+            })
+        }
+        return found.map((componentVal, i) => (
+            <div key={`component-${i}`}>
+                <TrayItemWidget
+                    model={{ 
+                        type: componentVal.type, 
+                        name: componentVal.task,
+                        color: componentVal.color,
+                        path: componentVal.file_path,
+                        docstring: componentVal.docstring,
+                        lineNo: componentVal.lineno,
+                        variables: componentVal.variables
+                    }}
+                    name={componentVal.task}
+                    color={componentVal.color}
+                    app={props.app}
+                    path={componentVal.file_path}
+                    lineNo={componentVal.lineno}
+                    displayNode={displayNodesInLibrary}
+                />
+            </div>
+        ));
+    }
+
+    // Function to map categories
+    const mapCategories = (categories, components) => {
+        return categories.map((libraryName, i) => (
+            <AccordionItem key={`category-${i}`}>
+                <AccordionItemHeading>
+                    <AccordionItemButton>
+                        <span>{libraryName["task"]}</span>
+                        {libraryName['task'] !== 'GENERAL' && <a
+                          title="More actions..."
+                          className="button"
+                          onClick={(event) => showContextMenu(event, libraryName["task"], "installed")}>
+                            <ellipsesIcon.react />
+                        </a>}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                    {mapComponents(components.filter(component => component["category"].toString().toUpperCase() === libraryName["task"].toString()), "")}
+                </AccordionItemPanel>
+            </AccordionItem>
+        ));
+    }
+
+    const mapRemoteLibraries = () => {
+        const sortedRemoteLibList = remoteLibList.sort((a, b) => a.library_id.localeCompare(b.library_id));
+
+        return sortedRemoteLibList.map((lib, i) => (
+            <AccordionItem key={`remote-lib-${i}`}>
+                <AccordionItemHeading>
+                    <AccordionItemButton className="accordion__button accordion__button--remote">
+                            <span>{lib.library_id}</span>
+                            <a className="button"
+                               title="More actions..."
+                               onClick={(event) => showContextMenu(event, lib.library_id, 'remote')}>
+                                <ellipsesIcon.react />
+                            </a>
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+            </AccordionItem>
+        ));
+    };
+
+    const [contextMenuState, setContextMenuState] = useState({
+        visible: false,
+        x: 0,
+        y: 0,
+        libraryName: null,
+        status: 'installed'
+    });
+
+    const showContextMenu = (e, libraryName, status) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Prevent context menu from appearing for GENERAL component library
+        if (libraryName === 'GENERAL') {
+            return;
+        }
+
+        const rect = e.target.getBoundingClientRect();
+        setContextMenuState({
+            visible: true,
+            x: rect.right,
+            y: rect.top,
+            libraryName: libraryName,
+            status: status
+        });
+    };
+
+    const closeContextMenu = () => {
+        setContextMenuState({ ...contextMenuState, visible: false });
+    };
+
     return (
-        <Body>
-            <Content>
-                <TrayWidget>
-                    <div>
-                        <div className="search-input">
-                            <input type="text" name="" value={searchTerm} placeholder="SEARCH" className="search-input__text-input" style={{ width: "75%" }} onChange={handleOnChange} />
-                            <a onClick={handleSearchOnClick} className="search-input__button"><i className="fa fa-search "></i></a>
-                            <a onClick={handleRefreshOnClick} className="search-input__button"><i className="fa fa-refresh "></i></a>
+      <Body>
+          <Content>
+              <TrayWidget>
+                  <div>
+                      <div className="sidebar-header">
+                          <div className="search-input">
+                              <a onClick={handleSearchOnClick} className="search-input__button"><i
+                                className="fa fa-search "></i></a>
+                              <input type="text" name="" placeholder="SEARCH"
+                                     className="search-input__text-input" style={{ width: "75%" }}
+                                     onChange={handleOnChange} />
+                          </div>
+                          <a onClick={showMenu} className="button" title="More actions...">
+                              <ellipsesIcon.react />
+                          </a>
+                      </div>
+                      {searchTerm === "" ? (
+                        <>
+                            <Accordion allowMultipleExpanded={true} allowZeroExpanded={true}>
+                                {mapCategories(category, componentList)}
+                            </Accordion>
+
+                            <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
+                            <h6 style={{ paddingLeft: "10px", margin: "0px", marginBottom: "8px" }}>AVAILABLE FOR
+                                INSTALLATION</h6>
+                            <Accordion>
+                                {mapRemoteLibraries()}
+                            </Accordion>
+                        </>
+                      ) : (
+                        <div style={{margin: "10px"}}>
+                            {mapComponents(componentList, searchTerm)}
                         </div>
+                      )}
+                  </div>
+              </TrayWidget>
+          </Content>
+          <TrayContextMenu
+            app={app}
+            x={contextMenuState.x}
+            y={contextMenuState.y}
+            visible={contextMenuState.visible}
+            libraryName={contextMenuState.libraryName}
+            status={contextMenuState.status}
+            refreshTrigger={handleRefreshOnClick}
+            onClose={closeContextMenu}
+          />
+          {ReactDOM.createPortal(
+              <ReactTooltip id="sidebar-tooltip" type="dark" place="right" effect="solid"
+                        delayShow={300}
+                        getContent={toolTipStr => {
+                            if (toolTipStr) {
+                                const model = JSON.parse(toolTipStr).model;
+                                if(!model.docstring && displayNodesInLibrary) return null;
 
-                        <Accordion allowZeroExpanded>
-                            {
-                                category.filter((val) => {
-                                    if (searchTerm == "") {
-                                        return val;
-                                    }
-                                }).map((val, i) => {
-                                    return (
-                                        <AccordionItem key={`index-1-${val["task"].toString()}`}>
-                                            <AccordionItemHeading>
-                                                <AccordionItemButton>{val["task"]}</AccordionItemButton>
-                                            </AccordionItemHeading>
-                                            <AccordionItemPanel>
-                                                {
-                                                    componentList.filter((componentVal) => {
-                                                        if (searchTerm == "") {
-                                                            return componentVal;
-                                                        }
-                                                    }).map((componentVal, i2) => {
-                                                        if (componentVal["category"].toString().toUpperCase() == val["task"].toString()) {
-                                                            return (
-                                                                <div key={`index-1-${i2}`}>
-                                                                    <TrayItemWidget
-                                                                        model={{
-                                                                            type: componentVal.type,
-                                                                            name: componentVal.task,
-                                                                            color: componentVal.color,
-                                                                            path: componentVal.file_path,
-                                                                            docstring: componentVal.docstring,
-                                                                            lineNo: componentVal.lineno
-                                                                        }}
-                                                                        name={componentVal.task}
-                                                                        color={componentVal.color}
-                                                                        app={props.lab}
-                                                                        path={componentVal.file_path}
-                                                                        lineNo= {componentVal.lineno}/>
-                                                                </div>
-                                                            );
-                                                        }
-                                                    })
-                                                }
-                                            </AccordionItemPanel>
-                                        </AccordionItem>
-                                    );
-                                })
+                                return <div style={{ maxWidth: "50vw", marginBottom: "20px" }}>
+                                    {model.docstring ?
+                                      <div dangerouslySetInnerHTML={{ __html: marked(model.docstring) }} /> : null}
+                                    {displayNodesInLibrary ? null : <NodePreview model={model} />}
+                                </div>;
                             }
-
-                        </Accordion>
-                        {
-                            componentList.filter((val) => {
-                                if (searchTerm != "" && val.task.toLowerCase().includes(searchTerm.toLowerCase())) {
-                                    return val
-                                }
-                            }).map((val, i) => {
-                                return (
-                                    <div key={`index-3-${i}`}>
-                                        <TrayItemWidget
-                                            model={{ 
-                                                type: val.type, 
-                                                name: val.task,
-                                                color: val.color,
-                                                path: val.file_path,
-                                                docstring: val.docstring,
-                                                lineNo: val.lineno
-                                            }}
-                                            name={val.task}
-                                            color={val.color}
-                                            app={props.lab}
-                                            path={val.file_path}
-                                            lineNo= {val.lineno} />
-                                    </div>
-                                );
-                            })
-                        }
-                    </div>
-                </TrayWidget>
-            </Content>
-        </Body>
+                        }}
+          />,
+            document.body
+          )}
+      </Body>
     )
 };
+
+const exampleComponent = `from xai_components.base import InArg, OutArg, InCompArg, Component, BaseComponent, xai_component, dynalist
+
+@xai_component(color='blue')
+class ExampleComponent(Component):
+    """Brief description of the component.
+    
+    ##### inPorts:
+    - input_port (type): Description of input_port.
+
+    ##### outPorts:
+    - output_port (type): Description of output_port.
+
+    """
+    input_port: InArg[type]
+    output_port: OutArg[type]
+    
+    def execute(self, ctx) -> None:
+        input_port = self.input_port.value
+        print(f'The input_port value is {input_port}.')
+        self.output_port.value = input_port
+`

@@ -2,7 +2,7 @@
 #
 # "TheVirtualBrain - Widgets" package
 #
-# (c) 2022-2023, TVB Widgets Team
+# (c) 2022-2024, TVB Widgets Team
 #
 
 from tvb.datatypes.projections import ProjectionSurfaceEEG, ProjectionSurfaceMEG, ProjectionSurfaceSEEG
@@ -37,7 +37,7 @@ class ProjectionSurfaceEEG(Component):
         file_path = self.file_path.value
         if not file_path:
             file_path = 'projection_eeg_65_surface_16k.npy'  # default from tvb_data
-        projectionSurfaceEEG = self.ProjectionSurfaceEEG.from_file(source_file=file_path)
+        projectionSurfaceEEG = self.tvb_ht_class.from_file(source_file=file_path)
 
         projectionSurfaceEEG.sources = self.sources.value
         projectionSurfaceEEG.sensors = self.sensors.value

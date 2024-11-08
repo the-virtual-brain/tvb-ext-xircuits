@@ -12,22 +12,25 @@ export const formDialogWidget = (
   MessageLoop.sendMessage(widget, Widget.Msg.UpdateRequest);
 
   widget.getValue = (): any => {
-    const form = widget.node.querySelector('form');
-    const formValues: { [key: string]: any } = {};
-    for (const element of Object.values(
-      form?.elements ?? []
-    ) as HTMLInputElement[]) {
-      switch (element.type) {
-        case 'checkbox':
-          formValues[element.name] = element.checked;
-          break;
-        default:
-          formValues[element.name] = element.value;
-          break;
+      const form = widget.node.querySelector('form');
+      let formValues: { [key: string]: any } = {};
+      for (const element of Object.values(
+        form?.elements ?? []
+      ) as HTMLInputElement[]) {
+        switch (element.name) {
+          case 'messages':
+            formValues = JSON.parse(element.value);
+            break;
+          case 'checkbox':
+            formValues[element.name] = element.checked;
+            break;
+          default:
+            formValues[element.name] = element.value;
+            break;
+        }
       }
-    }
-    return formValues;
-  };
+      return formValues;
+    };
 
-  return widget;
+    return widget;
 };

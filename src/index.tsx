@@ -5,17 +5,15 @@ import {
   ILayoutRestorer
 } from '@jupyterlab/application';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import { commandIDs } from './components/xircuitBodyWidget';
 import {
   WidgetTracker,
   ReactWidget,
   IWidgetTracker
 } from '@jupyterlab/apputils';
 import { ILauncher } from '@jupyterlab/launcher';
-import { XircuitFactory } from './xircuitFactory';
+import { XircuitsFactory } from './XircuitsFactory';
 import Sidebar from './tray_library/Sidebar';
-import { IDocumentManager } from '@jupyterlab/docmanager';
-import { XircuitsDebugger } from './debugger/SidebarDebugger';
+import { IDocumentManager, renameDialog } from '@jupyterlab/docmanager';
 import { ITranslator } from '@jupyterlab/translation';
 import { Log, logPlugin } from './log/LogPlugin';
 import { requestAPI } from './server/handler';
@@ -24,10 +22,17 @@ import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { DocumentWidget } from '@jupyterlab/docregistry';
 import { runIcon, saveIcon } from '@jupyterlab/ui-components';
 import { addNodeActionCommands } from './commands/NodeActionCommands';
+import { addLibraryActionCommands } from './commands/LibraryActionCommands';
 import { Token } from '@lumino/coreutils';
-import { xircuitsIcon, debuggerIcon, componentLibIcon } from './ui-components/icons';
-import { startRunOutputStr } from './kernel/RunOutput';
-
+import { DockLayout } from '@lumino/widgets';
+import { xircuitsIcon, componentLibIcon, changeFavicon, xircuitsFaviconLink } from './ui-components/icons';
+import { createInitXircuits } from './helpers/CanvasInitializer';
+import { addHelpResources } from './helpers/HelpResources';
+import type { CommandRegistry } from "@lumino/commands/src";
+import type { Signal } from "@lumino/signaling";
+import { commandIDs } from "./commands/CommandIDs";
+import { IEditorTracker } from '@jupyterlab/fileeditor';
+import { IMainMenu } from '@jupyterlab/mainmenu';
 
 const FACTORY = 'Xircuits editor';
 
@@ -54,7 +59,9 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     ILayoutRestorer,
     IRenderMimeRegistry,
     IDocumentManager,
-    ITranslator
+    IMainMenu,
+    ITranslator,
+    IEditorTracker,
   ],
   provides: IXircuitsDocTracker,
   activate: async (
@@ -64,14 +71,43 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     restorer: ILayoutRestorer,
     rendermime: IRenderMimeRegistry,
     docmanager: IDocumentManager,
-    translator?: ITranslator
+    mainMenu?: IMainMenu,
+    translator?: ITranslator,
+    editorTracker?: IEditorTracker,
   ) => {
 
     console.log('Xircuits is activated!');
 
+    // define MathJax configuration before loading the script
+    if (!(window as any).MathJax) {
+      (window as any).MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+          typeset: false, // DO NOT REMOVE: disables automatic typesetting after loading;
+          ready: () => {
+            console.log('MathJax is ready.');
+            (window as any).MathJax.startup.defaultReady(); // ensure default settings are used in our custom ready method
+            (window as any).MathJax.typesetPromise()
+              .then(() => {console.log('MathJax typesetting complete.');})
+              .catch((err: any) => console.error('MathJax typeset failed: ', err));
+          }
+        }
+      };
+    }
+
+    // load MathJax from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js';
+    script.async = true;
+    script.onload = () => {console.log('MathJax script loaded successfully.');};
+    script.onerror = () => {console.error('Failed to load MathJax.');};
+    document.head.appendChild(script);
+
     // Creating the widget factory to register it so the document manager knows about
     // our new DocumentWidget
-    const widgetFactory = new XircuitFactory({
+    const widgetFactory = new XircuitsFactory({
       name: FACTORY,
       fileTypes: ['xircuits'],
       defaultFor: ['xircuits'],
@@ -96,7 +132,6 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       namespace: "Xircuits Tracker"
     });
 
-
     // Add the widget to the tracker when it's created
     widgetFactory.widgetCreated.connect((sender, widget) => {
       // Notify the instance tracker if restore data needs to update.
@@ -119,7 +154,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     });
 
     // Creating the sidebar widget for the xai components
-    const sidebarWidget = ReactWidget.create(<Sidebar lab={app} factory={widgetFactory}/>);
+    const sidebarWidget = ReactWidget.create(<Sidebar app={app} factory={widgetFactory}/>);
     sidebarWidget.id = 'xircuits-component-sidebar';
     sidebarWidget.title.icon = componentLibIcon;
     sidebarWidget.title.caption = "Xircuits Component Library";
@@ -127,52 +162,73 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     restorer.add(sidebarWidget, sidebarWidget.id);
     app.shell.add(sidebarWidget, "left");
 
-    // Creating the sidebar debugger
-    // const sidebarDebugger = new XircuitsDebugger.Sidebar({ app, translator, widgetFactory })
-    // sidebarDebugger.id = 'xircuits-debugger-sidebar';
-    // sidebarDebugger.title.icon = debuggerIcon;
-    // sidebarDebugger.title.caption = "Xircuits Debugger";
-    // restorer.add(sidebarDebugger, sidebarDebugger.id);
-    // app.shell.add(sidebarDebugger, 'right', { rank: 1001 });
-
     // Additional commands for node action
     addNodeActionCommands(app, tracker, translator);
 
-    // // Add a command to open xircuits sidebar debugger
-    // app.commands.addCommand(commandIDs.openDebugger, {
-    //   execute: () => {
-    //     if (sidebarDebugger.isHidden) {
-    //       app.shell.activateById(sidebarDebugger.id);
-    //     }
-    //   },
-    // });
+    // Additional commands for chat actions
+    addLibraryActionCommands(app, tracker, translator, widgetFactory);
+
+    // Additional main menu options for help resources
+    addHelpResources(app, mainMenu, translator);
+
+    // Commands to emit WidgetFactory signals
+    const emitSignal = (signal: Signal<unknown, unknown>) =>  (args: unknown) => signal.emit(args);
+    const signalConnections: [string, CommandRegistry.ICommandOptions][] = [
+      [commandIDs.saveXircuit,
+        {label: "Save", icon: saveIcon, execute: emitSignal(widgetFactory.saveXircuitSignal)}],
+      [commandIDs.runXircuit,
+        {label: "Run Xircuits", icon: runIcon, execute: emitSignal(widgetFactory.runXircuitSignal)}],
+      [commandIDs.compileXircuit,
+        {execute: emitSignal(widgetFactory.compileXircuitSignal)}],
+      [commandIDs.fetchRemoteRunConfig,
+        {execute: emitSignal(widgetFactory.fetchRemoteRunConfigSignal)}],
+        [commandIDs.lockXircuit,
+        {execute: emitSignal(widgetFactory.lockNodeSignal)}],
+      [commandIDs.triggerLoadingAnimation,
+        {execute: emitSignal(widgetFactory.triggerLoadingAnimationSignal)}],
+      [commandIDs.reloadAllNodes,
+        {execute: emitSignal(widgetFactory.reloadAllNodesSignal)}],
+      [commandIDs.toggleAllLinkAnimation,
+        {execute: emitSignal(widgetFactory.toggleAllLinkAnimationSignal)}]
+    ]
+    signalConnections.forEach(([cmdId, def]) => app.commands.addCommand(cmdId, def))
+
 
     // Add a command for creating a new xircuits file.
     app.commands.addCommand(commandIDs.createNewXircuit, {
       label: (args) => (args['isLauncher'] ? 'Xircuits File' : 'Create New Xircuits'),
       icon: xircuitsIcon,
       caption: 'Create a new xircuits file',
-      execute: () => {
-        app.commands
+      execute: async () => {
+        const currentBrowser = browserFactory.tracker.currentWidget;
+        if (!currentBrowser) {
+          console.error("No active file browser found.");
+          return;
+        }
+        const model = await app.commands
           .execute(commandIDs.newDocManager, {
-            path: browserFactory.defaultBrowser.model.path,
-            type: 'file',
-            ext: '.xircuits'
-          })
-          .then(async model => {
-            const newWidget = await app.commands.execute(
-              commandIDs.openDocManager,
-              {
-                path: model.path,
-                factory: FACTORY
-              }
-            );
-            newWidget.context.ready.then(() => {
-              app.commands.execute(commandIDs.saveXircuit, {
-                path: model.path
-              });
-            });
+            path: currentBrowser.model.path,
+            type: "file",
+            ext: ".xircuits"
           });
+
+          // get init SRD json
+          const fileContent = createInitXircuits(app, app.shell);
+
+          // Use the document manager to write to the file
+          await app.serviceManager.contents.save(model.path, {
+            type: 'file',
+            format: 'text',
+            content: fileContent
+          });
+
+        await app.commands.execute(
+          commandIDs.openDocManager,
+          {
+            path: model.path,
+            factory: FACTORY
+          }
+        );
       }
     });
 
@@ -211,13 +267,40 @@ const xircuits: JupyterFrontEndPlugin<void> = {
         if (request["message"] == "completed") {
           const model_path = path.split(".xircuits")[0] + ".py";
           docmanager.closeFile(model_path);
+
           if (showOutput) {
             alert(`${model_path} successfully compiled!`);
+          }
+          if(model_path.startsWith("xai_components/")){
+             console.info(`File ${model_path} changed. Reloading components...`);
+             await app.commands.execute(commandIDs.refreshComponentList);
           }
         } else {
           console.log(request["message"])
           alert("Failed to generate compiled code. Please check console logs for more details.");
         }
+      }
+    });
+
+    // Auto-reload components when a component file changes
+    editorTracker.widgetAdded.connect((sender, widget) => {
+      const context = widget.context;
+
+      if (context.path.endsWith('.py')) {
+        context.fileChanged.connect(async () => {
+          if(context.path.startsWith("xai_components/")){
+            console.info(`File ${context.path} changed. Reloading components...`);
+            await app.commands.execute(commandIDs.refreshComponentList);
+          }
+        });
+      }
+
+      if (context.path.endsWith('config.ini')) {
+        context.fileChanged.connect(async () => {
+          if(context.path.startsWith(".xircuits/")){
+            await app.commands.execute(commandIDs.fetchRemoteRunConfig);
+          }
+        });
       }
     });
 
@@ -228,10 +311,17 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       * @returns The panel
       */
     async function createPanel(): Promise<OutputPanel> {
+      let splitMode: DockLayout.InsertMode = 'split-bottom' as DockLayout.InsertMode; // default value
+
+      try {
+        const data = await requestAPI<any>('config/split_mode');
+          splitMode = data.splitMode as DockLayout.InsertMode;
+      } catch (err) {
+        console.error('Error fetching split mode from server:', err);
+      }
+
       outputPanel = new OutputPanel(app.serviceManager, rendermime, widgetFactory, translator);
-      app.shell.add(outputPanel, 'main', {
-        mode: 'split-bottom'
-      });
+      app.shell.add(outputPanel, 'main', { mode: splitMode });
       return outputPanel;
     }
 
@@ -240,128 +330,86 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       outputPanel.dispose();
     });
 
-    async function requestToSparkSubmit(path: string, addCommand: string) {
-      const dataToSend = { "currentPath": path, "addArgs": addCommand };
-
-      try {
-        const server_reply = await requestAPI<any>('spark/submit', {
-          body: JSON.stringify(dataToSend),
-          method: 'POST',
-        });
-
-        return server_reply;
-      } catch (reason) {
-        console.error(
-          `Error on POST /xircuits/spark/submit ${dataToSend}.\n${reason}`
-        );
-      }
-    };
-
-    function doRemoteRun(path: string, cfg){
-
-      try {
-        let command_str = cfg['command'] + " " + path + " " + cfg['run_config_name']
-            + " " + "'" + cfg['project'] + "'"
-            + " " + cfg['stage-out']
-            + " " + "'" + cfg['filesystem'] + "'"
-            + " " + "'" + cfg['python'] + "'"
-            + " " + "'" + cfg['modules'] + "'"
-            + " " + "'" + cfg['libraries'] + "'" ;
-        let code_str = "\nfrom subprocess import Popen, PIPE\n\n";
-
-        code_str += `command_str= "${command_str}"\n`;
-        code_str += "p=Popen(command_str, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)\n";
-        code_str += "print('Remote Execution in process...\\n')\n";
-        code_str += `print('${cfg['msg']}\\n')\n`;
-        code_str += "for line in p.stdout:\n";
-        code_str += "    " + "print(line.rstrip())\n\n";
-        code_str += "if p.returncode != 0:\n";
-        code_str += "    " + "print(p.stderr.read())";
-
-        return code_str;
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    // Execute xircuits python script and display at output panel
+    // Execute command and display at output panel
     app.commands.addCommand(commandIDs.executeToOutputPanel, {
       execute: async args => {
         const xircuitsLogger = new Log(app);
-        const current_path = tracker.currentWidget.context.path;
-        let model_path = current_path.split(".xircuits")[0] + ".py";
-        const message = typeof args['runCommand'] === 'undefined' ? '' : (args['runCommand'] as string);
-        const debug_mode = typeof args['debug_mode'] === 'undefined' ? '' : (args['debug_mode'] as string);
-        const runType = typeof args['runType'] === 'undefined' ? '' : (args['runType'] as string);
-        const config = typeof args['config'] === 'undefined' ? '' : (args['config'] as string);
-        
+
         // Create the panel if it does not exist
         if (!outputPanel || outputPanel.isDisposed) {
           await createPanel();
         }
 
-        // Convert the model_path to be bash aware
-        model_path = `"${model_path}"`
-
         outputPanel.session.ready.then(async () => {
-          let code = startRunOutputStr();
-          if (runType == 'remote-run') {
-            // Run subprocess when run type is Remote Run
-            code += doRemoteRun(model_path, config);
-          } else {
-            code += `%run ${model_path} ${message} ${debug_mode}`
-          }
-
+          const code = args['code'] as string;
           outputPanel.execute(code, xircuitsLogger);
         });
       },
     });
 
-    // Add command signal to save xircuits
-    app.commands.addCommand(commandIDs.saveXircuit, {
-      label: "Save",
-      icon: saveIcon,
-      execute: args => {
-        widgetFactory.saveXircuitSignal.emit(args);
+    app.commands.addCommand(commandIDs.copyXircuitsToRoot, {
+      label: 'Copy To Root Directory',
+      isVisible: () => [...browserFactory.tracker.currentWidget.selectedItems()].length > 0,
+      icon: xircuitsIcon,
+      execute: async () => {
+        const selectedItems = Array.from(browserFactory.tracker.currentWidget.selectedItems());
+    
+        for (const xircuitsFile of selectedItems) {
+          const path = xircuitsFile.path;
+          const fileName = path.split('/').pop();
+          const rootPath = `/${fileName}`;
+    
+          try {
+            await app.serviceManager.contents.copy(path, rootPath);
+            await app.commands.execute('filebrowser:go-to-path', { path: '/' });
+    
+            // Open the file if needed, then prompt for renaming
+            const openedWidget = await app.commands.execute(commandIDs.openDocManager, { path: rootPath, factory: FACTORY });
+            const fileContext = docmanager.contextForWidget(openedWidget);
+            if (fileContext) {
+              await renameDialog(docmanager, fileContext);
+            }
+          } catch (err) {
+            if (err.response && err.response.status === 400) {
+              alert(`Error: The file '${fileName}' already exists in the root directory.`);
+            } else {
+              alert(`Error copying file '${fileName}': ${err.message || err}`);
+            }
+          }
+        }
       }
     });
 
-    // Add command signal to compile xircuits
-    app.commands.addCommand(commandIDs.compileXircuit, {
-      execute: args => {
-        widgetFactory.compileXircuitSignal.emit(args);
+    app.contextMenu.addItem({
+      command: commandIDs.copyXircuitsToRoot,
+      selector: '.jp-DirListing-item[data-file-type="xircuits"]',
+    });
+
+    app.commands.addCommand(commandIDs.openXircuitsConfiguration, {
+      label: 'Open Xircuits Configurations',
+      icon: xircuitsIcon,
+      execute: async () => {
+        const configPath = `.xircuits/config.ini`;
+        try {
+          // Check if the file exists first
+          await app.serviceManager.contents.get(configPath);
+          // If we reach here, the file exists, so we can try to open it
+          await docmanager.openOrReveal(configPath);
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            alert('Xircuits configuration file not found. Check if it exists or enable hidden files when you launch Jupyter Lab.');
+          } else {
+            alert(`Error accessing Xircuits configuration: ${error.message}`);
+          }
+        }
       }
     });
 
-    // Add command signal to run xircuits
-    app.commands.addCommand(commandIDs.runXircuit, {
-      label: "Run Xircuits",
-      icon: runIcon,
-      execute: args => {
-        widgetFactory.runXircuitSignal.emit(args);
-      }
-    });
-
-    // Add command signal to debug xircuits
-    app.commands.addCommand(commandIDs.debugXircuit, {
-      execute: args => {
-        widgetFactory.debugXircuitSignal.emit(args);
-      }
-    });
-
-    // Add command signal to lock xircuits
-    app.commands.addCommand(commandIDs.lockXircuit, {
-      execute: args => {
-        widgetFactory.lockNodeSignal.emit(args);
-      }
-    });
-
-    // Add command signal to test xircuits
-    app.commands.addCommand(commandIDs.testXircuit, {
-      execute: args => {
-        widgetFactory.testXircuitSignal.emit(args);
-      }
-    });
+    mainMenu.settingsMenu.addGroup([
+      {
+        command: commandIDs.openXircuitsConfiguration,
+      },
+    ], -1);
 
     // Add a launcher item if the launcher is available.
     if (launcher) {

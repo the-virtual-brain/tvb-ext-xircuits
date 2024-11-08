@@ -2,7 +2,7 @@
 #
 # "TheVirtualBrain - Widgets" package
 #
-# (c) 2022-2023, TVB Widgets Team
+# (c) 2022-2024, TVB Widgets Team
 #
 
 import json
@@ -13,8 +13,8 @@ from io import BytesIO
 from urllib.error import HTTPError
 import pyunicore.client as unicore_client
 import requests
-from pyunicore.helpers.jobs import Status as unicore_status
-from pyunicore.credentials import AuthenticationFailedException
+from pyunicore.client import JobStatus as unicore_status
+from pyunicore.credentials import AuthenticationFailedException, OIDCToken
 from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
 from tvb_ext_bucket.exceptions import CollabAccessError
 from tvbwidgets.core.auth import get_current_token
@@ -29,11 +29,11 @@ LOGGER = get_logger('tvbextxircuits.hpc_config.pyunicore_config')
 
 
 class PyunicoreSubmitter(object):
-    storage_name = {'DAINT-CSCS': 'HOME', 'JUSUF': 'PROJECT'}
+    storage_name = {'JUWELS': 'PROJECT', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    python_dir = {'DAINT-CSCS': 'python3.9', 'JUSUF': 'python3.10'}
-    modules = {'DAINT-CSCS': 'cray-python', 'JUSUF': 'Python'}
+    python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
+    modules = {'JUWELS': 'Python', 'JUDAC': 'Python'}
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
@@ -70,11 +70,11 @@ class PyunicoreSubmitter(object):
 
     @property
     def _install_dependencies_command(self):
-        return f'pip install -U pip && pip install allensdk && pip install {self.pip_libraries}'
+        return f'pip install -U pip && pip install {self.pip_libraries}'
 
     def connect_client(self):
         LOGGER.info(f"Connecting to {self.site}...")
-        token = get_current_token()
+        token = OIDCToken(get_current_token())
         transport = unicore_client.Transport(token)
         registry = unicore_client.Registry(transport, unicore_client._HBP_REGISTRY_URL)
 
@@ -363,7 +363,9 @@ if __name__ == '__main__':
         python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
         modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
         libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
-        do_stage_out = True if stage_out_arg == 'true' else False
+        if libraries_arg is not None:
+            libraries_arg = libraries_arg.replace(",", " ")
+        do_stage_out = True if stage_out_arg == 'on' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
                    workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
                    filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
