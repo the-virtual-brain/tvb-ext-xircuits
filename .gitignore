@@ -143,7 +143,11 @@ tsconfig.tsbuildinfo
 
 # .py files compiled by Xircuits
 examples/*.py
+!examples/__init__.py
 
 /.idea/
 
 xai_components/*/arguments
+
+.yarn/
+tvbextxircuits/_version.py

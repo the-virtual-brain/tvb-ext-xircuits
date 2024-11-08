@@ -2,10 +2,8 @@
 #
 # "TheVirtualBrain - Widgets" package
 #
-# (c) 2022-2023, TVB Widgets Team
+# (c) 2022-2024, TVB Widgets Team
 #
-
-from tvb.simulator.backend.templates import MakoUtilMix
 from tvb.datatypes.connectivity import Connectivity
 from tvb.datatypes.cortex import Cortex
 from tvb.datatypes.patterns import SpatioTemporalPattern
@@ -30,13 +28,11 @@ class Simulator(TVBComponent):
     initial_conditions: InArg[list]
     monitors: InArg[list]
     simulation_length: InArg[float]
-    backend: InArg[MakoUtilMix]
 
     time_series_list: OutArg[list]
 
     def __init__(self):
         set_defaults(self, self.tvb_ht_class)
-        self.backend = InArg(None)
         self.time_series_list = OutArg(None)
 
     @property
@@ -45,9 +41,6 @@ class Simulator(TVBComponent):
         return Simulator
 
     def execute(self, ctx) -> None:
-        # imports
-        from tvb.simulator.backend.nb_mpr import NbMPRBackend
-
         simulator = self.tvb_ht_class()
         set_values(self, simulator)
         simulator.configure()
@@ -55,11 +48,7 @@ class Simulator(TVBComponent):
         print_component_summary(simulator)
 
         # run simulation
-        backend = self.backend.value
-        if isinstance(backend, NbMPRBackend):
-            result = backend.run_sim(simulator, simulation_length=simulator.simulation_length)
-        else:
-            result = simulator.run()
+        result = simulator.run()
 
         # create TS
         self.time_series_list.value = []
