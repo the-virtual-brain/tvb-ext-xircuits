@@ -11,7 +11,7 @@ LOGGER = get_logger(__name__)
 
 class Progress(RemoteProgress):
     def update(self, *args):
-        LOGGER.info(self._cur_line, end='\r')
+        LOGGER.info(self._cur_line)
 
 def get_submodule_config(user_query):
     
