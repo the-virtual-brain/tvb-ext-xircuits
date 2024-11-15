@@ -113,7 +113,13 @@ class NotebookFactory(object):
         if IS_WINDOWS:
             return NOTEBOOKS_DIR + '/' + xircuits_id + '/' + file_name
 
-        return os.path.join(notebook_dir, file_name)
+        x = os.path.join(notebook_dir, file_name)
+        # TODO: temporary hack for debug purposes on juwels
+        # if juwels:
+        #     return os.relativeto(os.abspath(x), 'juwels')
+        return os.path.expanduser(os.path.join('~',  x))
+        # else:
+        #     return x
 
 
 class NotebookGenerator(object):
