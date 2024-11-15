@@ -26,6 +26,7 @@ def test_notebook_generator():
         notebook_generator.get_notebook()
 
 
+@pytest.mark.skip(reason="Skip the test until store functionality is tested on juwels")
 def test_widget_code_generator():
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('Simulator', 'sim_id',
