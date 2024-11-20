@@ -166,9 +166,7 @@ class TimeSeriesNotebookGenerator(NotebookGenerator):
         return self.notebook
 
     def time_series_widget(self):
-        code = "%load_ext autoreload\n" \
-               "%autoreload 2\n" \
-               "%matplotlib widget\n" \
+        code = "%matplotlib widget\n" \
                "\n" \
                "from tvbwidgets.api import TimeSeriesBrowser\n" \
                "from IPython.core.display_functions import display\n" \
