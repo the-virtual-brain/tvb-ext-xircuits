@@ -72,7 +72,6 @@ fields = ["description", "authors", "urls"]
 include-only = [
     "xai_components/",
     "tvbextxircuits/",
-    "xai_components/**/*.json",
 ]
 artifacts = ["tvbextxircuits/labextension"]
 exclude = [".github", "node_modules", "lib", ".yarn"]
@@ -127,7 +126,6 @@ path = "tvbextxircuits/hatch_build_hook.py"
 [tool.hatch.build.targets.wheel]
 include = [
     "xai_components/",
-    "xai_components/**/*.json",
     "tvbextxircuits/",
     "examples/",
 ]
