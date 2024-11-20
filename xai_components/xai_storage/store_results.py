@@ -6,18 +6,12 @@
 #
 
 import json
-import os
-import shutil
 from datetime import datetime
 import ebrains_drive
 import numpy
 from ebrains_drive.exceptions import DoesNotExist
-from tvb.config.init.datatypes_registry import populate_datatypes_registry
-from tvb.core.neocom import h5
-from tvb.storage.storage_interface import StorageInterface
 from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
 from tvb_ext_bucket.exceptions import CollabAccessError
-from tvbwidgets.core.auth import get_current_token
 
 from tvbextxircuits.utils import *
 from xai_components.base import xai_component, InArg, InCompArg
@@ -71,6 +65,8 @@ class StoreResultsToDrive(ComponentWithWidget):
 
     @staticmethod
     def connect_to_drive():
+        from tvbwidgets.core.auth import get_current_token
+
         bearer_token = get_current_token()
         client = ebrains_drive.connect(token=bearer_token)
         return client
@@ -203,6 +199,10 @@ class StoreFactory(object):
 
     @staticmethod
     def store_time_series(time_series, output_directory, save_format):
+        from tvb.config.init.datatypes_registry import populate_datatypes_registry
+        from tvb.storage.storage_interface import StorageInterface
+        from tvb.core.neocom import h5
+
         if save_format == 'h5':
             ts_file_name = StorageInterface.FILE_NAME_STRUCTURE.format(type(time_series).__name__, time_series.gid.hex)
             ts_file_path = os.path.join(output_directory, ts_file_name)
