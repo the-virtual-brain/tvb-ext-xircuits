@@ -127,6 +127,7 @@ path = "tvbextxircuits/hatch_build_hook.py"
 [tool.hatch.build.targets.wheel]
 include = [
     "xai_components/",
+    "xai_components/**/*.json",
     "tvbextxircuits/",
     "examples/",
 ]
