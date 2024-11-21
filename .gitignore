@@ -147,7 +147,5 @@ examples/*.py
 
 /.idea/
 
-xai_components/*/arguments
-
 .yarn/
 tvbextxircuits/_version.py
