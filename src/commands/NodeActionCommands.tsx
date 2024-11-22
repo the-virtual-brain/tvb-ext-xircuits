@@ -138,13 +138,15 @@ export function addNodeActionCommands(
                 return;
             }
 
+            const dataToSend = {
+                'node_path': nodePath
+            };
             const response = await requestAPI<any>('config/home_directory/', {
-				        method: 'GET',
+                body: JSON.stringify(dataToSend),
+				        method: 'POST',
 			      });
-
-            const extendedPath = `${response.homeDirectory}/${nodePath}`;
             // Open node's file name
-            const newWidget = await app.commands.execute(commandIDs.openDocManager, { path: extendedPath });
+            const newWidget = await app.commands.execute(commandIDs.openDocManager, { path: response['homeDirectory'] });
             await newWidget.context.ready;
 
             // Go to end of node's line first before go to its class
