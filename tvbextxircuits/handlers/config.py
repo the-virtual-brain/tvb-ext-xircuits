@@ -73,7 +73,7 @@ class SplitModeConfigHandler(APIHandler):
 class HomeDirectory(APIHandler):
 
     @tornado.web.authenticated
-    def post(self):
+    def get(self):
         # get user's home directory
         home_directory = os.path.expanduser("~")
         self.finish(json.dumps({"homeDirectory": home_directory}))

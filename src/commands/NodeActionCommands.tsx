@@ -139,7 +139,7 @@ export function addNodeActionCommands(
             }
 
             const response = await requestAPI<any>('config/home_directory/', {
-				        method: 'POST',
+				        method: 'GET',
 			      });
 
             const extendedPath = `${response.homeDirectory}/${nodePath}`;
