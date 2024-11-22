@@ -68,3 +68,12 @@ class SplitModeConfigHandler(APIHandler):
             self.finish(json.dumps({"splitMode": split_mode}))
         except Exception as e:
             self.finish(json.dumps({"error": str(e)}))
+
+
+class HomeDirectory(APIHandler):
+
+    @tornado.web.authenticated
+    def post(self):
+        # get user's home directory
+        home_directory = os.path.expanduser("~")
+        self.finish(json.dumps({"homeDirectory": home_directory}))
