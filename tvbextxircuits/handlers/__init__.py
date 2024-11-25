@@ -6,6 +6,7 @@ from .config import RunConfigRouteHandler, SplitModeConfigHandler
 from .debugger import DebuggerRouteHandler
 from .spark_submit import SparkSubmitRouteHandler
 from .request_library import InstallLibraryRouteHandler, FetchLibraryRouteHandler, GetLibraryDirectoryRouteHandler, GetLibraryReadmeRouteHandler, GetLibraryExampleRouteHandler, ReloadComponentLibraryConfigHandler, GetComponentLibraryConfigHandler, CreateNewLibraryHandler
+from .user_config import HomeDirectoryHandler
 
 
 def setup_handlers(web_app, url_path):
@@ -25,6 +26,10 @@ def setup_handlers(web_app, url_path):
         (
             url_path_join(base_url, url_path, "config/split_mode"),
             SplitModeConfigHandler
+        ),
+        (
+            url_path_join(base_url, url_path, "home_directory/"),
+            HomeDirectoryHandler
         ),
         (
             url_path_join(base_url, url_path, "components/"),

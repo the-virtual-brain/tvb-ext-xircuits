@@ -138,6 +138,18 @@ export function addNodeActionCommands(
                 return;
             }
 
+            const dataToSend = {
+                'node_path': nodePath
+            };
+            const response = await requestAPI<any>('home_directory/', {
+                body: JSON.stringify(dataToSend),
+				        method: 'POST',
+			      });
+            try {
+                nodePath = response['homeDirectory']
+            } catch (error){
+                 console.log(`Error retrieving node's path. Error: ${response['error_msg']}`);
+            }
             // Open node's file name
             const newWidget = await app.commands.execute(commandIDs.openDocManager, { path: nodePath });
             await newWidget.context.ready;

@@ -6,6 +6,7 @@ import traceback
 import os
 from configparser import ConfigParser
 
+
 def get_config():
     config = ConfigParser()
     config.optionxform = str  # Make option names case-sensitive
@@ -68,3 +69,4 @@ class SplitModeConfigHandler(APIHandler):
             self.finish(json.dumps({"splitMode": split_mode}))
         except Exception as e:
             self.finish(json.dumps({"error": str(e)}))
+
