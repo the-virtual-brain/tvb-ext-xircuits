@@ -1,3 +1,4 @@
+import filecmp
 from pathlib import Path
 
 STORAGE_CONFIG_FILE = 'storage_config.json'  # To be used only for HPC runs
@@ -23,6 +24,13 @@ def is_valid_url(url):
     except ValueError:
         return False
 
+def are_folders_identical(resource_path, dest_path):
+    """
+    Check if two folders are identical.
+    """
+    comparison_dir = filecmp.dircmp(resource_path, dest_path)
+    return not (comparison_dir.left_only or comparison_dir.right_only or comparison_dir.diff_files)
+
 def copy_from_installed_wheel(package_name, resource="", dest_path=None):
     if dest_path is None:
         dest_path = package_name
@@ -31,9 +39,10 @@ def copy_from_installed_wheel(package_name, resource="", dest_path=None):
     ref = importlib_resources.files(package_name) / resource
 
     config_path = Path(os.getcwd()) / dest_path
-    # If the path already exists it means a new version of the package is available, so a cleanup need to be done
-    if config_path.exists():
-        shutil.rmtree(config_path)
     # Create the temporary file context
     with importlib_resources.as_file(ref) as resource_path:
-        shutil.copytree(resource_path, dest_path)
+        if config_path.exists() and not are_folders_identical(resource_path, dest_path):
+            shutil.rmtree(config_path)
+            shutil.copytree(resource_path, dest_path, dirs_exist_ok=True)
+        elif not config_path.exists():
+            shutil.copytree(resource_path, dest_path)
