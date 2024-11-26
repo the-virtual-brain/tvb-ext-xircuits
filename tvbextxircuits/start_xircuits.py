@@ -11,15 +11,19 @@ from .logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
 
-def init_xircuits():
+def init_xircuits(vers_changed=False):
     package_name = 'tvbextxircuits'
-    copy_from_installed_wheel(package_name, resource='.xircuits', dest_path='.xircuits')
-    copy_from_installed_wheel('xai_components', '', 'xai_components')
+    copy_from_installed_wheel(package_name, resource='.xircuits', dest_path='.xircuits', version_changed=vers_changed)
+    copy_from_installed_wheel('xai_components', '', 'xai_components', version_changed=vers_changed)
 
     # Create a version file for keeping generated folders in sync after a new release is installed
-    version_file = Path(os.getcwd()) / '.version'
-    current_version = get_extension_version()
-    version_file.write_text(current_version)
+    try:
+        version_file = Path(os.getcwd()) / '.version'
+        current_version = get_extension_version()
+        version_file.write_text(current_version)
+        LOGGER.info("Create version file.")
+    except Exception as e:
+        LOGGER.error(f"Error handling version file: {e}")
 
 
 def version_changed():
@@ -35,8 +39,8 @@ def version_changed():
         return
 
     if not version_file.exists():
-        LOGGER.error("Version file not found.")
-        return
+        LOGGER.info("Version file not found.")
+        return True
 
     try:
         stored_version = version_file.read_text().strip()
@@ -163,10 +167,10 @@ def init_configs():
         ======================================
         '''
     )
-
+    vers_changed = version_changed()
     config_path = Path(os.getcwd()) / ".xircuits"
-    if not config_path.exists() or version_changed():
-        init_xircuits()
+    if not config_path.exists() or vers_changed:
+        init_xircuits(vers_changed)
 
     save_component_library_config()
 
