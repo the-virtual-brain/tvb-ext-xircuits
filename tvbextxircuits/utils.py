@@ -1,4 +1,3 @@
-import filecmp
 from pathlib import Path
 
 STORAGE_CONFIG_FILE = 'storage_config.json'  # To be used only for HPC runs
