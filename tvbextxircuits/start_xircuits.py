@@ -40,7 +40,7 @@ def version_changed():
 
     if not version_file.exists():
         LOGGER.info("Version file not found.")
-        return True
+        return False
 
     try:
         stored_version = version_file.read_text().strip()
