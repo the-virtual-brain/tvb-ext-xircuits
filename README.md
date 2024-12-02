@@ -1,5 +1,6 @@
 <p>
-    <img src="style/icons/TVB_logo.svg" alt="TVB logo" title="TVB" align="right" height="100" />
+    <img src="style/icons/TVB_logo.svg" alt="TVB logo" title="TVB" height="100" style="padding: 15px"/>
+    <img src="style/icons/VBT_logo.svg" alt="VBT logo" title="VBT" height="100"  />
 </p>
 
 # tvb-ext-xircuits
