@@ -32,15 +32,15 @@ def version_changed():
     If they differ, a new version is available.
     """
     version_file = Path(os.getcwd()) / '.version'
-    installed_version = get_extension_version()
+    running_version = get_extension_version()
 
-    if not installed_version:
+    if not running_version:
         LOGGER.error("Not able to retrieve the installed version.")
         return
 
     if not version_file.exists():
         LOGGER.info("Version file not found.")
-        return False
+        return True
 
     try:
         stored_version = version_file.read_text().strip()
@@ -48,7 +48,7 @@ def version_changed():
         LOGGER.error(f"Error reading version file: {e}")
         stored_version = None
 
-    return stored_version != installed_version
+    return stored_version != running_version
 
 def get_extension_version():
     """

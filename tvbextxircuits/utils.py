@@ -33,7 +33,9 @@ def copy_from_installed_wheel(package_name, resource="", dest_path=None, version
     config_path = Path(os.getcwd()) / dest_path
     # Create the temporary file context
     with importlib_resources.as_file(ref) as resource_path:
-        if not config_path.exists() or version_changed:
-            if config_path.exists():
-                shutil.rmtree(config_path)
-            shutil.copytree(resource_path, dest_path)
+        dest_path_abs = os.path.abspath(dest_path)
+        if str(resource_path) != dest_path_abs:
+            if not config_path.exists() or version_changed:
+                if config_path.exists():
+                    shutil.rmtree(config_path)
+                shutil.copytree(resource_path, dest_path)
