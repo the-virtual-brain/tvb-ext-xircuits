@@ -1,5 +1,6 @@
 <p>
-    <img src="style/icons/TVB_logo.svg" alt="TVB logo" title="TVB" align="right" height="100" />
+    <img src="style/icons/TVB_logo.svg" alt="TVB logo" title="TVB" height="100" style="padding: 15px"/>
+    <img src="style/icons/VBT_logo.svg" alt="VBT logo" title="VBT" height="100"  />
 </p>
 
 # tvb-ext-xircuits
@@ -85,3 +86,5 @@ This extension is build on top of the Xircuits https://xircuits.io Jupyter exten
 This project has received funding from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3).
 
 This project has received funding from the European Union’s Horizon Europe Programme under the Specific Grant Agreement No. 101147319 (EBRAINS 2.0 Project).
+
+This project has received funding from the European Union’s Research and Innovation Program Horizon Europe under Grant Agreement No. 101137289 (Virtual Brain Twin Project).
