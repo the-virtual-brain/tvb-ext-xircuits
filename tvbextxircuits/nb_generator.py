@@ -12,6 +12,8 @@ import nbformat
 import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
+
+from tvbextxircuits.utils import get_base_dir
 from xai_components.base_tvb import ComponentWithWidget
 
 from xai_components.logger.builder import get_logger
@@ -101,23 +103,34 @@ class NotebookFactory(object):
     def store(notebook, component_name, xircuits_id):
         file_name = f'{component_name}_widget.ipynb'
 
-        notebook_dir = os.path.join(NOTEBOOKS_DIR, xircuits_id)
+        base_dir = get_base_dir()
+        expanded_path = os.path.expanduser(base_dir)
+
+        notebook_dir = os.path.join(expanded_path, NOTEBOOKS_DIR, xircuits_id)
         if not os.path.exists(notebook_dir):
-            os.mkdir(notebook_dir)
+            os.makedirs(notebook_dir, exist_ok=True)
 
         path = os.path.join(notebook_dir, file_name)
 
         with open(path, 'w') as f:
             nbformat.write(notebook, f)
+            
+        LOGGER.info(f'Writing notebook complete at path: {path}')
 
         if IS_WINDOWS:
-            return NOTEBOOKS_DIR + '/' + xircuits_id + '/' + file_name
+            windows_expanded_path = expanded_path.replace("\\", "/")
+            windows_notebook_path = windows_expanded_path + '/' + NOTEBOOKS_DIR + '/' + xircuits_id + '/' + file_name
+            LOGGER.info(f'Storing notebook on Windows at path: {windows_notebook_path}')
+            return windows_notebook_path
 
         x = os.path.join(notebook_dir, file_name)
         # TODO: temporary hack for debug purposes on juwels
         # if juwels:
         #     return os.relativeto(os.abspath(x), 'juwels')
-        return os.path.expanduser(os.path.join('~',  x))
+
+        notebook_path = os.path.join(expanded_path, x)
+        LOGGER.info(f'Storing notebook at path: {notebook_path}')
+        return notebook_path
         # else:
         #     return x
 

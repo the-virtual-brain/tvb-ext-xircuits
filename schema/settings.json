@@ -1,0 +1,15 @@
+{
+  "title": "Base Directory Setting",
+  "description": "Setting to define the base directory.",
+  "type": "object",
+  "properties": {
+    "baseDirectory": {
+      "type": "string",
+      "title": "Base Directory",
+      "description": "The base directory path.",
+      "default": "~"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
