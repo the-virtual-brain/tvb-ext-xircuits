@@ -51,8 +51,7 @@ def copy_from_installed_wheel(package_name, resource="", dest_path=None, version
 def get_user_settings():
     data_dir = jupyter_config_dir()   # path to jupyter configs folder; usually it's $HOME/.jupyter
     # path to user-settings for this extension
-    settings_path = os.path.join(data_dir, 'lab', 'user-settings', 'xircuits', 'settings.jupyterlab-settings')
-
+    settings_path = os.path.join(data_dir, 'lab', 'user-settings', 'tvb-ext-xircuits', 'settings.jupyterlab-settings')
     if os.path.exists(settings_path):
         with open(settings_path, 'r', encoding='utf-8') as f:
             settings = json.load(f)

@@ -131,7 +131,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     // Load settings
     console.log('SettingRegistry:', settingRegistry);
     const settings = await settingRegistry
-      .load('xircuits:settings')
+      .load('tvb-ext-xircuits:settings')
       .then(settings => {
         console.log('Settings loaded:', settings.composite);
 
