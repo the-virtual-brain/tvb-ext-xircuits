@@ -61,8 +61,17 @@ def get_user_settings():
     return settings
 
 
-def get_base_dir():
+def get_base_dir_web():
     user_settings = get_user_settings()
-    base_dir = user_settings.get('baseDirectory', '~')  # if baseDirectory is not set, use a default value
-    LOGGER.info(f'Base directory set in user settings is: {base_dir}')
+    base_dir = user_settings.get('baseDirectoryWeb', '.')  # if baseDirectory is not set, use a default value
+    LOGGER.info(f'Base directory Web in user settings is: {base_dir}')
+    base_dir = os.path.abspath(os.path.expanduser(base_dir))
+    return base_dir
+
+
+def get_base_dir_kernel():
+    user_settings = get_user_settings()
+    base_dir = user_settings.get('baseDirectoryKernel', '.')  # if baseDirectory is not set, use a default value
+    LOGGER.info(f'Base directory Kernel in user settings is: {base_dir}')
+    base_dir = os.path.abspath(os.path.expanduser(base_dir))
     return base_dir

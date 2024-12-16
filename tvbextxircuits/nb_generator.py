@@ -13,7 +13,7 @@ import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 
-from tvbextxircuits.utils import get_base_dir
+from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
 from xai_components.base_tvb import ComponentWithWidget
 
 from xai_components.logger.builder import get_logger
@@ -103,10 +103,9 @@ class NotebookFactory(object):
     def store(notebook, component_name, xircuits_id):
         file_name = f'{component_name}_widget.ipynb'
 
-        base_dir = get_base_dir()
-        expanded_path = os.path.expanduser(base_dir)
+        base_dir_web = get_base_dir_web()
 
-        notebook_dir = os.path.join(expanded_path, NOTEBOOKS_DIR, xircuits_id)
+        notebook_dir = os.path.join(base_dir_web, NOTEBOOKS_DIR, xircuits_id)
         if not os.path.exists(notebook_dir):
             os.makedirs(notebook_dir, exist_ok=True)
 
@@ -117,21 +116,16 @@ class NotebookFactory(object):
             
         LOGGER.info(f'Writing notebook complete at path: {path}')
 
+        base_dir_kernel = get_base_dir_kernel()
+
+        return_path = str(path).replace(base_dir_kernel, '')
+
         if IS_WINDOWS:
-            windows_expanded_path = expanded_path.replace("\\", "/")
-            windows_notebook_path = windows_expanded_path + '/' + NOTEBOOKS_DIR + '/' + xircuits_id + '/' + file_name
-            LOGGER.info(f'Storing notebook on Windows at path: {windows_notebook_path}')
-            return windows_notebook_path
+            windows_expanded_path = return_path.replace("\\", "/")
+            LOGGER.info(f'Storing notebook on Windows at path: {windows_expanded_path}')
+            return windows_expanded_path
 
-        notebook_path = os.path.join(notebook_dir, file_name)
-        # TODO: temporary hack for debug purposes on juwels
-        # if juwels:
-        #     return os.relativeto(os.abspath(x), 'juwels')
-
-        LOGGER.info(f'Storing notebook at path: {notebook_path}')
-        return notebook_path
-        # else:
-        #     return x
+        return return_path
 
 
 class NotebookGenerator(object):

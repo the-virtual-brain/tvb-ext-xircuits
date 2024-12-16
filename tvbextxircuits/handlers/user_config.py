@@ -3,7 +3,7 @@ import tornado
 from jupyter_server.base.handlers import APIHandler
 import os
 from tvbextxircuits.nb_generator import IS_WINDOWS
-from tvbextxircuits.utils import get_base_dir
+from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
 
 
 class HomeDirectoryHandler(APIHandler):
@@ -21,14 +21,15 @@ class HomeDirectoryHandler(APIHandler):
             # TODO: temporary hack for debug purposes on juwels, also handle the other operating systems(not just
             #  windows)
             path = input_data["node_path"]
-            get_base_dir()  # TODO: remove; just for logging on windows
+
             if IS_WINDOWS:
                 self.finish(json.dumps({"homeDirectory": path}))
             else:
-                base_dir = get_base_dir()
-                expanded_path = os.path.expanduser(base_dir)
-                home_directory = os.path.join(expanded_path, path)
-                self.finish(json.dumps({"homeDirectory": home_directory}))
+                base_dir_web = get_base_dir_web()
+                home_directory = os.path.join(base_dir_web, path)
+                base_dir_kernel = get_base_dir_kernel()
+                return_path = str(home_directory).replace(base_dir_kernel, '')
+                self.finish(json.dumps({"homeDirectory": return_path}))
         except KeyError:
             data = {"error_msg": "Could not determine path from POST params!"}
             self.finish(json.dumps(data))
