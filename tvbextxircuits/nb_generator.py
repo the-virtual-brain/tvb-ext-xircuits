@@ -123,12 +123,11 @@ class NotebookFactory(object):
             LOGGER.info(f'Storing notebook on Windows at path: {windows_notebook_path}')
             return windows_notebook_path
 
-        x = os.path.join(notebook_dir, file_name)
+        notebook_path = os.path.join(notebook_dir, file_name)
         # TODO: temporary hack for debug purposes on juwels
         # if juwels:
         #     return os.relativeto(os.abspath(x), 'juwels')
 
-        notebook_path = os.path.join(expanded_path, x)
         LOGGER.info(f'Storing notebook at path: {notebook_path}')
         return notebook_path
         # else:
