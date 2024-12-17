@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import tornado
 from jupyter_server.base.handlers import APIHandler
 import os
@@ -28,7 +29,7 @@ class HomeDirectoryHandler(APIHandler):
                 base_dir_web = get_base_dir_web()
                 home_directory = os.path.join(base_dir_web, path)
                 base_dir_kernel = get_base_dir_kernel()
-                return_path = str(home_directory).replace(base_dir_kernel, '')
+                return_path = str(Path(home_directory).relative_to(Path(base_dir_kernel)))
                 self.finish(json.dumps({"homeDirectory": return_path}))
         except KeyError:
             data = {"error_msg": "Could not determine path from POST params!"}

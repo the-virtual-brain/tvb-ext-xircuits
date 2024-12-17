@@ -17,6 +17,7 @@ from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
 from xai_components.base_tvb import ComponentWithWidget
 
 from xai_components.logger.builder import get_logger
+from pathlib import Path
 
 LOGGER = get_logger(__name__)
 IS_WINDOWS = sys.platform.startswith('win')
@@ -118,7 +119,7 @@ class NotebookFactory(object):
 
         base_dir_kernel = get_base_dir_kernel()
 
-        return_path = str(path).replace(base_dir_kernel, '')
+        return_path = str(Path(path).relative_to(Path(base_dir_kernel)))
 
         if IS_WINDOWS:
             windows_expanded_path = return_path.replace("\\", "/")
