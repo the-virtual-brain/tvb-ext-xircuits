@@ -135,13 +135,13 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       .then(settings => {
         console.log('Settings loaded:', settings.composite);
 
-        const baseDir = settings.get('baseDirectory').composite as string;
-        console.log(`Base Directory: ${baseDir}`);
+        const baseDirWeb = settings.get('baseDirectoryWeb').composite as string;
+        const baseDirKernel = settings.get('baseDirectoryKernel').composite as string;
+        console.log(`Base Directory Web: ${baseDirWeb} & Base Directory Kernel: ${baseDirKernel}`);
       })
       .catch(reason => {
         console.error('Failed to load settings:', reason);
       });
-
 
     // Registering the widget factory
     app.docRegistry.addWidgetFactory(widgetFactory);
