@@ -1,4 +1,9 @@
+import json
 from pathlib import Path
+
+from jupyter_core.paths import jupyter_config_dir
+
+from tvbextxircuits.logger.builder import get_logger
 
 STORAGE_CONFIG_FILE = 'storage_config.json'  # To be used only for HPC runs
 COLLAB_NAME_KEY = 'collab_name'  # Used only for HPC runs
@@ -6,6 +11,8 @@ BUCKET_NAME_KEY = 'bucket_name'  # Used only for HPC runs
 FOLDER_PATH_KEY = 'folder_path'  # Used only for HPC runs
 STORE_RESULTS_DIR = 'results'  # Used by component that takes care of storing data and stage-out from HPC
 DIR_TIME_STAMP_FRMT = '%Y.%m.%d_%H_%M_%S'
+
+LOGGER = get_logger(__name__)
 
 import os
 import urllib.parse
@@ -39,3 +46,32 @@ def copy_from_installed_wheel(package_name, resource="", dest_path=None, version
                 if config_path.exists():
                     shutil.rmtree(config_path)
                 shutil.copytree(resource_path, dest_path)
+
+
+def get_user_settings():
+    data_dir = jupyter_config_dir()   # path to jupyter configs folder; usually it's $HOME/.jupyter
+    # path to user-settings for this extension
+    settings_path = os.path.join(data_dir, 'lab', 'user-settings', 'tvb-ext-xircuits', 'settings.jupyterlab-settings')
+    if os.path.exists(settings_path):
+        with open(settings_path, 'r', encoding='utf-8') as f:
+            settings = json.load(f)
+    else:
+        settings = {}
+
+    return settings
+
+
+def get_base_dir_web():
+    user_settings = get_user_settings()
+    base_dir = user_settings.get('baseDirectoryWeb', '.')  # if baseDirectory is not set, use a default value
+    LOGGER.info(f'Base directory Web in user settings is: {base_dir}')
+    base_dir = os.path.abspath(os.path.expanduser(base_dir))
+    return base_dir
+
+
+def get_base_dir_kernel():
+    user_settings = get_user_settings()
+    base_dir = user_settings.get('baseDirectoryKernel', '.')  # if baseDirectory is not set, use a default value
+    LOGGER.info(f'Base directory Kernel in user settings is: {base_dir}')
+    base_dir = os.path.abspath(os.path.expanduser(base_dir))
+    return base_dir

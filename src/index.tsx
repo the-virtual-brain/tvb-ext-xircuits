@@ -33,6 +33,7 @@ import type { Signal } from "@lumino/signaling";
 import { commandIDs } from "./commands/CommandIDs";
 import { IEditorTracker } from '@jupyterlab/fileeditor';
 import { IMainMenu } from '@jupyterlab/mainmenu';
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
 const FACTORY = 'Xircuits editor';
 
@@ -59,6 +60,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     ILayoutRestorer,
     IRenderMimeRegistry,
     IDocumentManager,
+    ISettingRegistry,
     IMainMenu,
     ITranslator,
     IEditorTracker,
@@ -71,6 +73,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     restorer: ILayoutRestorer,
     rendermime: IRenderMimeRegistry,
     docmanager: IDocumentManager,
+    settingRegistry: ISettingRegistry,
     mainMenu?: IMainMenu,
     translator?: ITranslator,
     editorTracker?: IEditorTracker,
@@ -124,6 +127,21 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       extensions: ['.xircuits'],
       icon: xircuitsIcon
     });
+
+    // Load settings
+    console.log('SettingRegistry:', settingRegistry);
+    await settingRegistry
+      .load('tvb-ext-xircuits:settings')
+      .then(settings => {
+        console.log('Settings loaded:', settings.composite);
+
+        const baseDirWeb = settings.get('baseDirectoryWeb').composite as string;
+        const baseDirKernel = settings.get('baseDirectoryKernel').composite as string;
+        console.log(`Base Directory Web: ${baseDirWeb} & Base Directory Kernel: ${baseDirKernel}`);
+      })
+      .catch(reason => {
+        console.error('Failed to load settings:', reason);
+      });
 
     // Registering the widget factory
     app.docRegistry.addWidgetFactory(widgetFactory);

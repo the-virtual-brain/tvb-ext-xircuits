@@ -1,0 +1,21 @@
+{
+  "title": "Base Directory Setting",
+  "description": "Setting to define the base directory.",
+  "type": "object",
+  "properties": {
+    "baseDirectoryWeb": {
+      "type": "string",
+      "title": "Base Directory Web",
+      "description": "for web",
+      "default": "."
+    },
+    "baseDirectoryKernel": {
+      "type": "string",
+      "title": "Base Directory Kernel",
+      "description": "for kernel",
+      "default": "."
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
