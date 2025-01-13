@@ -75,11 +75,11 @@ Notebooks generated can be found at `TVB_generated_notebooks/<xircuits_id>`
 
 ##  Acknowledgments
 
-Copyright (c) 2022-2024 to Xircuits Team See: https://github.com/XpressAI/xircuits
+Copyright (c) 2022-2025 to Xircuits Team See: https://github.com/XpressAI/xircuits
 
 Copyright (c) 2022-2023 to TVB-Xircuits team (SDL Neuroscience Juelich, INS Marseille, Codemart) for changes in this fork.
 
-Copyright (c) 2024 to Codemart - Brainiacs team for further changes in this fork.
+Copyright (c) 2025 to Codemart - Brainiacs team for further changes in this fork.
 
 This extension is build on top of the Xircuits https://xircuits.io Jupyter extension, and it adds custom features, tailored for EBRAINS env.
 
