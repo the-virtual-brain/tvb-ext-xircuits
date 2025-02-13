@@ -7,7 +7,7 @@ name = "tvb-ext-xircuits"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
-version = "2.0.1a2"
+version = "2.0.1a3"
 classifiers = [
     "Framework :: Jupyter",
     "Framework :: Jupyter :: JupyterLab",
