@@ -32,7 +32,7 @@ class PyunicoreSubmitter(object):
     storage_name = {'JUWELS': 'PROJECT', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
+    python_dir = {'JUWELS': 'python3.12', 'JUDAC': 'python3.10'}
     modules = {'JUWELS': 'Python', 'JUDAC': 'Python'}
     pip_libraries = 'tvb-ext-xircuits tvb-data'
     EXECUTABLE_KEY = 'Executable'
@@ -171,7 +171,7 @@ class PyunicoreSubmitter(object):
             self.PROJECT_KEY: self.project,
             self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
         job_env_prep = client.new_job(job_description, inputs=[])
-        LOGGER.info(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
+        LOGGER.info(f"Job is running at {self.site}."
                     f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
                     f"Waiting for job to finish..."
                     f"It can also be monitored interactively with the Monitor HPC button.")
@@ -205,7 +205,7 @@ class PyunicoreSubmitter(object):
                 self.PROJECT_KEY: self.project,
                 self.JOB_TYPE_KEY: self.INTERACTIVE_KEY}
             job_env_prep = client.new_job(job_description, inputs=[])
-            LOGGER.info(f"Job is running at {self.site}: {job_env_prep.working_dir.properties['mountPoint']}. "
+            LOGGER.info(f"Job is running at {self.site}."
                         f"Submission time is: {self._format_date_for_job(job_env_prep)}. "
                         f"Waiting for job to finish..."
                         f"It can also be monitored interactively with the Monitor HPC button.")
@@ -221,7 +221,7 @@ class PyunicoreSubmitter(object):
                                  f"python {executable} --is_hpc_launch=True",
             self.PROJECT_KEY: self.project}
         job_workflow = client.new_job(job_description, inputs=inputs)
-        LOGGER.info(f"Job is running at {self.site}: {job_workflow.working_dir.properties['mountPoint']}. "
+        LOGGER.info(f"Job is running at {self.site}."
                     f"Submission time is: {self._format_date_for_job(job_workflow)}.")
         LOGGER.info('Finished remote launch.')
 
