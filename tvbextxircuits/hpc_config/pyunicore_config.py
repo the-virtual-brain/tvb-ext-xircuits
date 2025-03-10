@@ -32,9 +32,9 @@ class PyunicoreSubmitter(object):
     storage_name = {'JUWELS': 'PROJECT', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    python_dir = {'JUWELS': 'python3.12', 'JUDAC': 'python3.10'}
-    modules = {'JUWELS': 'Python', 'JUDAC': 'Python'}
-    pip_libraries = 'tvb-ext-xircuits tvb-data'
+    python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
+    modules = {'JUWELS': 'Stages/2024 GCCcore/.12.3.0 Python/3.11', 'JUDAC': 'Python'}
+    pip_libraries = 'tvb-ext-xircuits[full] tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
     JOB_TYPE_KEY = 'Job type'
@@ -44,9 +44,11 @@ class PyunicoreSubmitter(object):
         self.site = site
         self.project = project
 
-    def set_hpc_settings(self, filesystem, python, libraries, modules):
+    def set_hpc_settings(self, filesystem, env_name, python, libraries, modules):
         if filesystem:
             self.storage_name[self.site] = filesystem
+        if env_name:
+            self.env_name = env_name
         if python:
             self.python_dir[self.site] = python
         if libraries:
@@ -60,7 +62,10 @@ class PyunicoreSubmitter(object):
 
     @property
     def _module_load_command(self):
-        return f'module load {self.modules.get(self.site, "")}'
+        modules_to_load = self.modules.get(self.site, "").split()
+        load_commands = " && ".join(f"module load {module}" for module in modules_to_load)
+
+        return f"module purge && {load_commands}"
 
     @property
     def _create_env_command(self):
@@ -265,6 +270,7 @@ class PyunicoreSubmitter(object):
                         "Please download your results manually using the Monitor HPC button.")
             return
         else:
+            LOGGER.info(f"Storage config file: {storage_config_file}")
             storage_config_file.download(STORAGE_CONFIG_FILE)
             with open(STORAGE_CONFIG_FILE) as f:
                 storage_config = json.load(f)
@@ -331,7 +337,7 @@ def get_xircuits_file():
 
 
 def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_upload, do_stage_out=False,
-               filesystem=None, python=None, libraries=None, modules=None):
+               filesystem=None, env_name=None, python=None, libraries=None, modules=None):
     """
     Submit a job to a EBRAINS HPC site
     :param site: unicore site
@@ -345,7 +351,7 @@ def launch_job(site, project, workflow_file_name, workflow_file_path, files_to_u
         inputs.extend(files_to_upload)
 
     submitter = PyunicoreSubmitter(site, project)
-    submitter.set_hpc_settings(filesystem, python, libraries, modules)
+    submitter.set_hpc_settings(filesystem, env_name, python, libraries, modules)
     submitter.submit_job(workflow_file_name, inputs, do_stage_out)
 
 
@@ -360,12 +366,15 @@ if __name__ == '__main__':
         site_arg = sys.argv[2]
         stage_out_arg = sys.argv[4]
         filesystem_arg = sys.argv[5] if sys.argv[5] != 'NONE' else None
-        python_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
-        modules_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
-        libraries_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
+        env_name_arg = sys.argv[6] if sys.argv[6] != 'NONE' else None
+        python_arg = sys.argv[7] if sys.argv[7] != 'NONE' else None
+        modules_arg = sys.argv[8] if sys.argv[8] != 'NONE' else None
+        if modules_arg is not None:
+            modules_arg = modules_arg.replace(",", " ")
+        libraries_arg = sys.argv[9] if sys.argv[9] != 'NONE' else None
         if libraries_arg is not None:
             libraries_arg = libraries_arg.replace(",", " ")
         do_stage_out = True if stage_out_arg == 'on' else False
         launch_job(site=site_arg, project=project_arg, workflow_file_name=workflow_name,
                    workflow_file_path=workflow_path, files_to_upload=files_to_upload, do_stage_out=do_stage_out,
-                   filesystem=filesystem_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)
+                   filesystem=filesystem_arg, env_name=env_name_arg, python=python_arg, libraries=libraries_arg, modules=modules_arg)

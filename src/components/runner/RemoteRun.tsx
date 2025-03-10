@@ -15,6 +15,7 @@ export function buildRemoteRunCommand(path: string, config: { formattedCommand: 
             + " " + config['project']
             + " " + config['stage_out']
             + " " + config['filesystem']
+            + " " + config['envName']
             + " " + config['python']
             + " " + config['modules']
             + " " + config['libraries'];
