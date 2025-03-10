@@ -42,14 +42,10 @@ class StoreResultsToDrive(ComponentWithWidget):
         if args is not None:
             self.is_hpc_launch = args.is_hpc_launch
         if self.is_hpc_launch:
-            home_directory = os.path.expanduser('~')
-
-            storage_config_file = os.path.join(home_directory, STORAGE_CONFIG_FILE)
-
             # Save the config in json format for stage-out step
             json_config = {COLLAB_NAME_KEY: self.collab_name.value,
                            FOLDER_PATH_KEY: self.folder_path.value}
-            with open(storage_config_file, 'w') as f:
+            with open(STORAGE_CONFIG_FILE, 'w') as f:
                 json.dump(json_config, f)
         self._store_to_drive()
 
@@ -133,14 +129,10 @@ class StoreResultsToBucket(ComponentWithWidget):
         if args is not None:
             self.is_hpc_launch = args.is_hpc_launch
         if self.is_hpc_launch:
-            home_directory = os.path.expanduser('~')
-
-            storage_config_file = os.path.join(home_directory, STORAGE_CONFIG_FILE)
-
             # Save the config in json format for stage-out step
             json_config = {BUCKET_NAME_KEY: self.bucket_name.value,
                            FOLDER_PATH_KEY: self.folder_path.value}
-            with open(storage_config_file, 'w') as f:
+            with open(STORAGE_CONFIG_FILE, 'w') as f:
                 json.dump(json_config, f)
         self._store_to_bucket()
 

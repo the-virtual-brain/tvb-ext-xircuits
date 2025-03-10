@@ -36,8 +36,9 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
   const [isMonitoringEnabled, setIsMonitoringEnabled] = useState(false);
   const [isStageOutEnabled, setIsStageOutEnabled] = useState(false);
   const [filesystem, setFilesystem] = useState('PROJECT');
+  const [envName, setEnvName] = useState('venv');
   const [python, setPython] = useState('python3.11');
-  const [modules, setModules] = useState('Python');
+  const [modules, setModules] = useState('Stages/2024,GCCcore/.12.3.0,Python/3.11');
   const [placeholders, setPlaceholders] = useState<string[]>([]);
   const [formattedCommand, setFormattedCommand] = useState("");
   const [sectionsCollapsed, setSectionsCollapsed] = useState({
@@ -111,7 +112,8 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
         setPython('python3.10');
       }
       setFilesystem('PROJECT');
-      setModules('Python');
+      setEnvName("venv")
+      setModules('Stages/2024,GCCcore/.12.3.0,Python/3.11');
     }
   };
 
@@ -210,6 +212,14 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
 							title={'Filesystem to use on HPC for preparing the environment'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
+                    Environment Name:
+					<div>
+						<input
+							name='envName'
+							defaultValue={envName}
+							title={'The environment name to be created'}
+							style={{ width: 300, fontSize: 13 }}/>
+					</div>
 					Python dir:
 					<div>
 						<input
@@ -230,7 +240,7 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
 					<div>
 						<input
 							name='libraries'
-							defaultValue={'tvb-ext-xircuits,tvb-data'}
+							defaultValue={'tvb-ext-xircuits[full],tvb-data'}
 							title={'Libraries to install on HPC'}
 							style={{ width: 300, fontSize: 13 }}/>
 					</div>
