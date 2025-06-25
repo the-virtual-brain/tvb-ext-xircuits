@@ -750,7 +750,7 @@ class RunParallelProcess(Component):
         # Serialize the work
         payload = dill.dumps((copy.deepcopy(self.body), copy.deepcopy(ctx)))
         future = executor.submit(run_body_serialized, payload)
-        LOGGER.info(f'Parallel process running...')
+        LOGGER.info('Parallel process running...')
         future.add_done_callback(lambda x: x.result())
 
         self.futures.value.append(future)
