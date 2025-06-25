@@ -11,12 +11,14 @@ import weakref
 import logging
 import logging.config
 
+HOME_DIRECTORY = os.path.expanduser('~')
+LOG_FILE_PATH = os.path.join(HOME_DIRECTORY, '.tvb_ext_xircuits.log')
 
 class LoggerBuilder(object):
     """
     Class taking care of uniform Python logger initialization.
     It uses the Python native logging package.
-    It's purpose is just to offer a common mechanism for initializing all modules in a package.
+    Its purpose is just to offer a common mechanism for initializing all modules in a package.
     """
 
     def __init__(self, config_file_name='logging.conf'):
@@ -27,10 +29,7 @@ class LoggerBuilder(object):
         current_folder = os.path.dirname(inspect.getfile(self.__class__))
         config_file_path = os.path.join(current_folder, config_file_name)
 
-        home_directory = os.path.expanduser('~')
-        log_file_path = os.path.join(home_directory, '.tvb_ext_xircuits.log')
-
-        logging.config.fileConfig(config_file_path, disable_existing_loggers=False, defaults={'logfilename': log_file_path})
+        logging.config.fileConfig(config_file_path, disable_existing_loggers=False, defaults={'logfilename': LOG_FILE_PATH})
         self._loggers = weakref.WeakValueDictionary()
 
     def build_logger(self, parent_module):
