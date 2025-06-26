@@ -12,7 +12,7 @@ from pathlib import Path
 import dill
 
 from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, dynalist, dynatuple, BaseComponent, SubGraphExecutor
-from xai_components.logger.builder import get_logger, LOG_FILE_PATH
+from xai_components.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
 
@@ -767,5 +767,6 @@ class AwaitFutures(Component):
     def execute(self, ctx) -> None:
         from concurrent.futures import wait
         wait(self.futures.value)
-        LOGGER.info(f'Parallel execution finished. For more details check the log file: {LOG_FILE_PATH}')
+        log_file_path = LOGGER.parent.handlers[1].baseFilename
+        LOGGER.info(f'Parallel execution finished. For more details check the log file: {log_file_path}')
 
