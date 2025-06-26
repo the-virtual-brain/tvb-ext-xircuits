@@ -16,7 +16,7 @@ class LoggerBuilder(object):
     """
     Class taking care of uniform Python logger initialization.
     It uses the Python native logging package.
-    It's purpose is just to offer a common mechanism for initializing all modules in a package.
+    Its purpose is just to offer a common mechanism for initializing all modules in a package.
     """
 
     def __init__(self, config_file_name='logging.conf'):

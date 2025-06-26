@@ -1,12 +1,21 @@
-from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, dynalist, dynatuple, BaseComponent, SubGraphExecutor
-
-import os
-import sys
-from pathlib import Path
-import time
+import copy
 import datetime
 import json
+import os
 import random
+import sys
+import time
+from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import get_context
+from pathlib import Path
+
+import dill
+
+from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, dynalist, dynatuple, BaseComponent, SubGraphExecutor
+from xai_components.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 @xai_component
 class GetCurrentTime(Component):
@@ -697,6 +706,55 @@ class RunParallelThread(Component):
 
         self.futures.value.append(x)
 
+
+def run_body_serialized(payload):
+    """
+    Unpickles and runs a body (subgraph) with its context.
+
+    Parameters:
+        payload (bytes): Pickled tuple of (body, ctx)
+    """
+    body, ctx = dill.loads(payload)
+    pid = os.getpid()
+    LOGGER.info(f"Running in process with PID: {pid}")
+    SubGraphExecutor(body).do(ctx)
+
+
+@xai_component(color='blue')
+class RunParallelProcess(Component):
+    """
+    Executes a given body in separate processes using multiprocessing and dill.
+
+    ##### inPorts:
+    - n_workers (int): Number of worker processes to use for executing the body in parallel.
+
+    ##### outPorts:
+    - futures (list): Futures representing parallel executions.
+
+    ##### Branches:
+    - body: The body (subgraph) to be run in each process.
+    """
+    n_workers: InArg[int]
+    futures: OutArg[list]
+    body: BaseComponent
+
+    def __init__(self):
+        super().__init__()
+        self.futures.value = []
+
+    def execute(self, ctx) -> None:
+
+        ctx_mp = get_context("spawn")
+        executor = ProcessPoolExecutor(max_workers=self.n_workers.value, mp_context=ctx_mp)
+
+        # Serialize the work
+        payload = dill.dumps((copy.deepcopy(self.body), copy.deepcopy(ctx)))
+        future = executor.submit(run_body_serialized, payload)
+        LOGGER.info('Parallel process running...')
+        future.add_done_callback(lambda x: x.result())
+
+        self.futures.value.append(future)
+
 @xai_component(color='blue')
 class AwaitFutures(Component):
     """Waits for a list of futures to complete.
@@ -709,3 +767,6 @@ class AwaitFutures(Component):
     def execute(self, ctx) -> None:
         from concurrent.futures import wait
         wait(self.futures.value)
+        log_file_path = LOGGER.parent.handlers[1].baseFilename
+        LOGGER.info(f'Parallel execution finished. For more details check the log file: {log_file_path}')
+

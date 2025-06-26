@@ -27,11 +27,11 @@ DEFAULT_COMPONENTS_PATHS = [
 # A good point in time to do that, would be when the python compilation step
 # gets refactored
 DEFAULT_COMPONENTS = {
-    # 1: { "name": "Get Argument String Name", "returnType": "string","color":"lightpink"},
-    # 2: { "name": "Get Argument Integer Name", "returnType": "int","color":"blue"},
-    # 3: { "name": "Get Argument Float Name", "returnType": "float","color":"green"},
-    # 4: { "name": "Get Argument Boolean Name", "returnType": "boolean","color":"red"},
-    # 5: { "name": "Get Argument Any Name", "returnType": "any","color":"red"},
+    1: { "name": "Get Argument String Name", "returnType": "string","color":"lightpink"},
+    2: { "name": "Get Argument Integer Name", "returnType": "int","color":"blue"},
+    3: { "name": "Get Argument Float Name", "returnType": "float","color":"green"},
+    4: { "name": "Get Argument Boolean Name", "returnType": "boolean","color":"red"},
+    5: { "name": "Get Argument Any Name", "returnType": "any","color":"red"},
     6: { "name": "Literal String", "returnType": "string","color":"lightpink"},
     7:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
     8:{ "name": "Literal Float", "returnType": "float","color":"green"},

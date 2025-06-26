@@ -45,6 +45,7 @@ dependencies = [
     "tvb-ext-bucket",
     "tvb-ext-unicore",
     "importlib_resources",
+    "dill",
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 
