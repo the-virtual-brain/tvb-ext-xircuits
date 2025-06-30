@@ -24,17 +24,23 @@ import ComponentsPanel from "../context-menu/ComponentsPanel";
 import {
 	CanvasContextMenu,
 	countVisibleMenuOptions,
-	getMenuOptionsVisibility
+	getMenuOptionsVisibility,
 } from "../context-menu/CanvasContextMenu";
+import { delayedZoomToFit, zoomIn, zoomOut } from '../helpers/zoom';
 import { cancelDialog, GeneralComponentLibrary } from "../tray_library/GeneralComponentLib";
 import { AdvancedComponentLibrary, fetchNodeByName } from "../tray_library/AdvanceComponentLib";
 import { lowPowerMode, setLowPowerMode } from "./state/powerModeState";
+import { lightMode, setLightMode } from "./state/lightModeState";
 import { startRunOutputStr } from "./runner/RunOutput";
 import { buildRemoteRunCommand } from "./runner/RemoteRun";
 import { readDefaultSite } from "../siteUtils";
 
 import styled from "@emotion/styled";
 import { commandIDs } from "../commands/CommandIDs";
+import { Notification } from '@jupyterlab/apputils';
+import { SplitLinkCommand } from './link/SplitLinkCommand';
+import { LinkSplitManager } from './link/LinkSplitManager';
+import { fitIcon, zoomInIcon, zoomOutIcon } from '../ui-components/icons';
 
 export interface BodyWidgetProps {
 	context: DocumentRegistry.Context;
@@ -51,9 +57,11 @@ export interface BodyWidgetProps {
 	runXircuitSignal: Signal<XircuitsPanel, any>;
 	runTypeXircuitSignal: Signal<XircuitsPanel, any>;
 	lockNodeSignal: Signal<XircuitsPanel, any>;
+	triggerCanvasUpdateSignal: Signal<XircuitsPanel, any>;
 	triggerLoadingAnimationSignal: Signal<XircuitsPanel, any>;
 	reloadAllNodesSignal: Signal<XircuitsPanel, any>;
 	toggleAllLinkAnimationSignal: Signal<XircuitsPanel, any>;
+	toggleLightModeSignal: Signal<XircuitsPanel, any>;
 }
 
 export const Body = styled.div`
@@ -74,6 +82,56 @@ export const Layer = styled.div`
 		flex-grow: 1;
 	`;
 
+export const FixedZoomButton = styled.button`
+	background: rgba(255, 255, 255, 0.1);        
+	border: 1px solid rgba(255,255,255,0.2);
+	width: 26px;
+	height: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	cursor: pointer;
+	color: white;
+
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+	transition: all .3s ease;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: white;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	svg { width: 12px; height: 12px; color: inherit; }
+
+	/* Light theme override */
+	body.light-mode & {
+		background: rgba(0, 0, 0, 0.05);
+		border-color: rgba(0, 0, 0, 0.1);
+		color: black;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.1);
+			border-color: black;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		}
+	}
+	`;
+
+const ZoomControls = styled.div<{visible: boolean}>`
+	position: fixed;
+	bottom: 12px;
+	right: 12px;
+	z-index: 9999;
+	display: flex;
+	gap: 0px;
+	flex-direction: column;
+	opacity: ${({visible}) => (visible ? 1 : 0)};
+	pointer-events: ${({visible}) => (visible ? 'auto' : 'none')};
+	transition: opacity 0.5s ease;
+	
+	`;
 
 export const BodyWidget: FC<BodyWidgetProps> = ({
 	context,
@@ -89,9 +147,11 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	runXircuitSignal,
 	runTypeXircuitSignal,
 	lockNodeSignal,
+	triggerCanvasUpdateSignal,
 	triggerLoadingAnimationSignal,
 	reloadAllNodesSignal,
 	toggleAllLinkAnimationSignal,
+	toggleLightModeSignal
 }) => {
 	const xircuitLogger = new Log(app);
 
@@ -100,11 +160,6 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	const [initialize, setInitialize] = useState(true);
 	const [remoteRunConfigs, setRemoteRunConfigs] = useState<any>("");
 	const [lastConfig, setLastConfigs] = useState<any>("");
-	const [stringNodes, setStringNodes] = useState<string[]>([]);
-	const [intNodes, setIntNodes] = useState<string[]>([]);
-	const [floatNodes, setFloatNodes] = useState<string[]>([]);
-	const [boolNodes, setBoolNodes] = useState<string[]>([]);
-	const [anyNodes, setAnyNodes] = useState<string[]>([]);
 	const [componentList, setComponentList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [loadingMessage, setLoadingMessage] = useState('Xircuits loading...');
@@ -116,6 +171,39 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	const initialRender = useRef(true);
 	const contextRef = useRef(context);
 	const notInitialRender = useRef(false);
+	const [showZoom, setShowZoom] = useState(true);
+	const hideTimeout = useRef<ReturnType<typeof setTimeout>>();
+	const [isHoveringControls, setIsHoveringControls] = useState(false);
+
+	const isHoveringControlsRef = useRef(false);
+
+	useEffect(() => {
+	isHoveringControlsRef.current = isHoveringControls;
+	}, [isHoveringControls]);
+
+	const handleMouseMoveCanvas = useCallback(() => {
+	setShowZoom(true);
+	if (hideTimeout.current) clearTimeout(hideTimeout.current);
+
+	hideTimeout.current = setTimeout(() => {
+		if (!isHoveringControlsRef.current) {
+		setShowZoom(false);
+		}
+	}, 1500);
+	}, []);
+
+	// handler to trigger the zoom functions
+	const handleZoomToFit = useCallback(() => {
+	delayedZoomToFit(xircuitsApp.getDiagramEngine(), /* optional padding */);
+	}, [xircuitsApp]);
+
+	const handleZoomIn = useCallback(() => {
+		zoomIn(xircuitsApp.getDiagramEngine());
+	}, [xircuitsApp]);
+
+	const handleZoomOut = useCallback(() => {
+		zoomOut(xircuitsApp.getDiagramEngine());
+		}, [xircuitsApp]);
 
 	const onChange = useCallback(
 		(): void => {
@@ -490,30 +578,30 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	}
 
 	const triggerLoadingAnimation = async (
-		operationPromise,
-		{ 	loadingMessage = 'Xircuits loading...',
-			loadingDisplayDuration = 1000,
+		operationPromise, 
+		{ 	loadingMessage = 'Xircuits loading...', 
+			loadingDisplayDuration = 1000, 
 			showLoadingAfter = 100 } = {}
 	  ) => {
 		if (shell.currentWidget?.id !== widgetId) {
 		  return;
 		}
-
+	  
 		let shouldSetLoading = false;
-
+	  
 		setLoadingMessage(loadingMessage);
-
+	  
 		// Start a timer that will check if the operation exceeds showLoadingAfter
 		const startTimer = setTimeout(() => {
 		  shouldSetLoading = true;
 		  setIsLoading(true);
 		}, showLoadingAfter);
-
+	  
 		await operationPromise;
-
+	  
 		// Clear the start timer as the operation has completed
 		clearTimeout(startTimer);
-
+	  
 		if (shouldSetLoading) {
 		  // If loading was started, ensure it stays for the minimum loading time
 		  const minTimer = setTimeout(() => setIsLoading(false), loadingDisplayDuration);
@@ -535,9 +623,10 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		setInitialize(true);
 		setSaved(true);
 		await commands.execute(commandIDs.saveDocManager);
+		Notification.success("Workflow saved successfully.", { autoClose: 3000 });
 	}
 
-	const handleCompileClick = () => {
+	const handleCompileClick = async() => {
 		// Only compile xircuit if it is currently in focus
 		// This must be first to avoid unnecessary complication
 		if (shell.currentWidget?.id !== widgetId) {
@@ -546,20 +635,19 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 		let allNodesConnected = checkAllNodesConnected();
 
-		if (!saved) {
-			alert("Please save before compiling.");
-			return;
-		}
-
 		if (!allNodesConnected) {
-			alert("Please connect all the nodes before compiling.");
+			Notification.error("Please connect all the nodes before compiling.", { autoClose: 3000 });
 			return;
 		}
+		const success = await commands.execute(commandIDs.compileFile, { componentList });
 
-		let showOutput = true;
-		setCompiled(true);
-		commands.execute(commandIDs.compileFile, { showOutput, componentList });
-	}
+		if (success) {
+			setCompiled(true);
+			Notification.success("Workflow compiled successfully.", { autoClose: 3000 });
+		} else {
+			Notification.error("Failed to generate compiled code. Please check console logs for more details.", { autoClose: 5000 });
+		}
+	};
 
 	const saveAndCompileAndRun = async () => {
 
@@ -588,45 +676,55 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let allCompulsoryNodesConnected = checkAllCompulsoryInPortsConnected();
 
 		if (!allNodesConnected) {
-			alert("Please connect all the nodes before running.");
+			Notification.error("Please connect all the nodes before running.", { autoClose: 3000 });
+			return;
 		}
 		if (!allCompulsoryNodesConnected) {
-			alert("Please connect all [★]COMPULSORY InPorts.");
+			Notification.error("Please connect all [★]COMPULSORY InPorts.", { autoClose: 3000 });
 			return;
 		}
 
-		let showOutput = false;
-
 		// Only compile when 'Run' is chosen
 		if (runType !== 'run-dont-compile') {
-			commands.execute(commandIDs.compileFile, { showOutput, componentList });
+			commands.execute(commandIDs.compileFile, { componentList });
 			setCompiled(true);
 		}
 
 		// Run Mode
 		context.ready.then(async () => {
-			const current_path = context.path;
-			const model_path = current_path.split(".xircuits")[0] + ".py";
+			const workflow_path = context.path;
+			const model_path = workflow_path.split(".xircuits")[0] + ".py";
 			let code = startRunOutputStr();
-
+	
 			let result;
-
+	
 			if (runType == 'run') {
 				result = await handleLocalRunDialog();
 				if (result.status === 'ok') {
-					code += "%run " + model_path + result.args;
+				code += "%run " + model_path + result.args;
+				commands.execute(commandIDs.executeToOutputPanel, { code });
 				}
-			} else if (runType == 'remote-run') {
-				result = await handleRemoteRunDialog();
-				if (result.status === 'ok') {
-					code += buildRemoteRunCommand(model_path, result.args);
+				else if (result.status === 'cancelled') {
+				console.log("Run operation cancelled by user.");
 				}
 			}
 
-			if (result.status === 'ok') {
+			else if (runType == 'remote-run') {
+				result = await handleRemoteRunDialog();
+				if (result.status === 'ok') {
+				code += buildRemoteRunCommand(model_path, result.args);
 				commands.execute(commandIDs.executeToOutputPanel, { code });
-			} else if (result.status === 'cancelled') {
-				console.log("Run operation cancelled by user.");
+				}
+			}
+
+			else if (runType === 'terminal-run') {
+				commands.execute(commandIDs.executeToTerminal, {
+					command: `xircuits run ${workflow_path}`
+				});
+			}
+
+			else {
+				console.log("Unknown runType or user cancelled.");
 			}
 		})
 	}
@@ -661,6 +759,12 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 			}
 		});
 	}
+	const handleTriggerCanvasUpdate = async () => {
+		if (shell.currentWidget?.id !== widgetId) {
+		  return;
+		}
+		onChange();
+	};
 
 	const handleReloadAll = async () => {
 		if (shell.currentWidget?.id !== widgetId) {
@@ -671,7 +775,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let allNodes = xircuitsApp.getDiagramEngine().getModel().getNodes();
 		allNodes.forEach(node => node.setSelected(true));
 		const reloadPromise = app.commands.execute(commandIDs.reloadNode);
-
+	
 		// Trigger loading animation
 		await triggerLoadingAnimation(reloadPromise, { loadingMessage: 'Reloading all nodes...'});
 		console.log("Reload all complete.");
@@ -686,6 +790,61 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let powerMode = lowPowerMode;
 		setLowPowerMode(!powerMode)
 	}
+
+	const handleToggleLightMode = () => {
+		// This must be first to avoid unnecessary complication
+		if (shell.currentWidget?.id !== widgetId) {
+			return;
+		}
+
+		const newLightMode = !lightMode;
+
+		const desiredTheme = newLightMode ? 'JupyterLab Light' : 'JupyterLab Dark';
+		void app.commands.execute('apputils:change-theme', { theme: desiredTheme });
+		// Delay to avoid visual mismatch while JupyterLab updates theme
+		setTimeout(() => {
+		setLightMode(newLightMode);
+		}, 120);
+	}
+
+	// Helper function to compute argument nodes on demand
+	const getArgumentNodes = (): {
+		string: string[];
+		int: string[];
+		float: string[];
+		boolean: string[];
+		secret: string[];
+		any: string[];
+	} => {
+		const nodesByType = {
+		string: [] as string[],
+		int: [] as string[],
+		float: [] as string[],
+		boolean: [] as string[],
+		secret: [] as string[],
+		any: [] as string[]
+		};
+
+		const allNodes = xircuitsApp.getDiagramEngine().getModel().getNodes();
+		allNodes.forEach((node) => {
+		const nodeName = node.getOptions()["name"];
+		if (nodeName.startsWith("Argument ")) {
+			const regEx = /\(([^)]+)\)/;
+			const match = nodeName.match(regEx);
+			if (!match) return;
+			const argType = match[1];
+			const parts = nodeName.split(": ");
+			// Use the last part as the argument name (trim if needed)
+			const argValue = parts[parts.length - 1].trim();
+			// Make sure the type exists in our map
+			if (nodesByType[argType] !== undefined) {
+			nodesByType[argType].push(argValue);
+			nodesByType[argType].sort();
+			}
+		}
+		});
+		return nodesByType;
+	};
 
 	async function getRunTypesFromConfig(request: string) {
 		const dataToSend = { "config_request": request };
@@ -716,14 +875,14 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				buttons: [Dialog.warnButton({ label: 'OK' })]
 			});
 		}
-
+	
 		// Compare new configuration with previous
 		if (JSON.stringify(configuration) !== JSON.stringify(prevRemoteConfiguration)) {
 			// Configuration has changed, reset lastConfig
 			setLastConfigs("");
 			setPrevRemoteConfiguration(configuration);
 		}
-
+	
 		setRemoteRunTypesCfg(configuration["run_types"]);
 		setRemoteRunConfigs(configuration["run_types_config"]);
 	};
@@ -733,67 +892,40 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 			getRemoteRunTypeFromConfig();
 	}, [runType]);
 
-	useEffect(() => {
-
-		const setterByType = {
-			'string': setStringNodes,
-			'int': setIntNodes,
-			'float': setFloatNodes,
-			'boolean': setBoolNodes,
-			'any': setAnyNodes
-		}
-
-		Object.values(setterByType).forEach(set => set([]));
-
-		context.ready.then(() => {
-
-			if (initialize) {
-				let allNodes = xircuitsApp.getDiagramEngine().getModel().getNodes();
-				let nodesCount = allNodes.length;
-
-				for (let i = 0; i < nodesCount; i++) {
-					let nodeName = allNodes[i].getOptions()["name"];
-					if (nodeName.startsWith("Argument ")) {
-						let regEx = /\(([^)]+)\)/;
-						let result = nodeName.match(regEx);
-						let nodeText = nodeName.split(": ");
-						setterByType[result[1]](nodes => ([...nodes, nodeText[nodeText.length -1]].sort()));
-					}
-				}
-			}
-		})
-
-	}, [initialize]);
 
 	const handleLocalRunDialog = async () => {
+		// Recalculate argument nodes before showing the dialog
+		const argNodes = getArgumentNodes();
+
 		let title = 'Execute Workflow';
 		const dialogOptions: Partial<Dialog.IOptions<any>> = {
 			title,
 			body: formDialogWidget(
-				<LocalRunDialog
-					childStringNodes={stringNodes}
-					childBoolNodes={boolNodes}
-					childIntNodes={intNodes}
-					childFloatNodes={floatNodes}
-				/>
+			<LocalRunDialog
+				childStringNodes={argNodes.string}
+				childBoolNodes={argNodes.boolean}
+				childIntNodes={argNodes.int}
+				childFloatNodes={argNodes.float}
+				childSecretNodes={argNodes.secret}
+				childAnyNodes={argNodes.any}
+			/>
 			),
 			buttons: [Dialog.cancelButton(), Dialog.okButton({ label: ('Start') })],
-			defaultButton: 1,
 			focusNodeSelector: '#name'
 		};
 		const dialogResult = await showFormDialog(dialogOptions);
-
+	
 		if (dialogResult.button.label === 'Cancel') {
 			// When Cancel is clicked on the dialog, just return
 			return { status: 'cancelled' };
 		}
 
 		const date = new Date();
-		xircuitLogger.info(`experiment name: ${date.toLocaleString()}`)
+		xircuitLogger.info(`experiment name: ${date.toLocaleString()}`);
 
 		const runCommand = [
-			stringNodes.filter(param => param != "experiment name"),
-			boolNodes, intNodes, floatNodes
+			argNodes.string.filter(param => param !== "experiment name"),
+			argNodes.boolean, argNodes.int, argNodes.float, argNodes.secret, argNodes.any
 		].filter(it => !!it).reduce((s, nodes) => {
 			return nodes
 				.filter(param => !!dialogResult.value[param])
@@ -808,21 +940,26 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	};
 
 	const handleRemoteRunDialog = async () => {
+		// Recalculate argument nodes before showing the dialog
+		const argNodes = getArgumentNodes();
+
 		let title = 'Execute Workflow';
 		const dialogOptions: Partial<Dialog.IOptions<any>> = {
 			title,
 			body: formDialogWidget(
-				<RemoteRunDialog
-					remoteRunTypes={remoteRunTypesCfg}
-					remoteRunConfigs={remoteRunConfigs}
-					lastConfig={lastConfig}
-					childStringNodes={stringNodes}
-					childBoolNodes={boolNodes}
-					childIntNodes={intNodes}
-					childFloatNodes={floatNodes}
-				/>
+			<RemoteRunDialog
+				remoteRunTypes={remoteRunTypesCfg}
+				remoteRunConfigs={remoteRunConfigs}
+				lastConfig={lastConfig}
+				childStringNodes={argNodes.string}
+				childBoolNodes={argNodes.boolean}
+				childIntNodes={argNodes.int}
+				childFloatNodes={argNodes.float}
+				childSecretNodes={argNodes.secret}
+				childAnyNodes={argNodes.any}
+			/>
 			),
-			buttons: [Dialog.cancelButton(), Dialog.okButton({ label: ('Start') })],
+			buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Start' })],
 			defaultButton: 1,
 			focusNodeSelector: '#name'
 		};
@@ -833,7 +970,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 			return { status: 'cancelled' };
 		}
 
-		// Remember the last config chose and set the chosen config to output
+		// Remember the last config chosen and set the chosen config to output
 		let config;
 		let remoteRunType = dialogResult["value"]['remoteRunType'] ?? "";
 		let runConfig = dialogResult["value"]['remoteRunConfig'] ?? "";
@@ -844,9 +981,9 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		let runPython = dialogResult["value"]['python'] ?? "";
 		let runModules = dialogResult["value"]['modules'] ?? "";
 		let runLibraries = dialogResult["value"]['libraries'] ?? "";
-		if (remoteRunConfigs.length != 0) {
-			remoteRunConfigs.map(cfg => {
-				if (cfg.run_type == remoteRunType && cfg.run_config_name == runConfig) {
+		if (remoteRunConfigs.length !== 0) {
+			remoteRunConfigs.forEach(cfg => {
+				if (cfg.run_type === remoteRunType && cfg.run_config_name === runConfig) {
 					config = { ...cfg, ...dialogResult["value"] };
 					cfg['project'] = runProject.length > 0 ? runProject : 'NONE';
 					cfg['stage-out'] = runStageOut;
@@ -856,7 +993,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					cfg['libraries'] = runLibraries.length > 0 ? runLibraries : 'NONE';
 					setLastConfigs(cfg);
 				}
-			})
+			});
 		}
 
     if (runType !== '' && runMonitoring === 'on') {
@@ -884,9 +1021,11 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		[runXircuitSignal, handleRunClick],
 		[fetchRemoteRunConfigSignal, getRemoteRunTypeFromConfig],
 		[lockNodeSignal, handleLockClick],
+		[triggerCanvasUpdateSignal, handleTriggerCanvasUpdate],
 		[triggerLoadingAnimationSignal, triggerLoadingAnimation],
 		[reloadAllNodesSignal, handleReloadAll],
 		[toggleAllLinkAnimationSignal, handleToggleAllLinkAnimation],
+		[toggleLightModeSignal, handleToggleLightMode],
 	];
 
 	signalConnections.forEach(connectSignal);
@@ -1005,42 +1144,78 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		return newPanelPosition;
 	}
 
+	function clampToViewport(
+		position: { x: number; y: number },
+		menuDimension: { x: number; y: number }
+	) {
+		const padding = 8; // Some optional padding from the edges
+		const viewportWidth = window.innerWidth;
+		const viewportHeight = window.innerHeight;
+
+		// If the menu extends beyond the right edge, shift it left
+		if (position.x + menuDimension.x > viewportWidth) {
+		position.x = viewportWidth - menuDimension.x - padding;
+		}
+
+		// If the menu extends beyond the bottom edge, shift it upward
+		if (position.y + menuDimension.y > viewportHeight) {
+		position.y = viewportHeight - menuDimension.y - padding;
+		}
+
+		// If the menu goes past the left edge, clamp to 0
+		if (position.x < 0) {
+		position.x = padding;
+		}
+
+		// If the menu goes past the top edge, clamp to 0
+		if (position.y < 0) {
+		position.y = padding;
+		}
+
+		return position;
+	}
+
 	const calculatePanelSpawn = (event, menuDimension) => {
+
 		let newPanelPosition = {
-			x: event.pageX,
-			y: event.pageY,
+		  x: event.pageX,
+		  y: event.pageY
 		};
+
 		const canvas = event.view;
 		const newCenterPosition = {
-			x: canvas.innerWidth / 2,
-			y: canvas.innerHeight / 2,
+		  x: canvas.innerWidth / 2,
+		  y: canvas.innerHeight / 2
 		};
-	
+
 		let fileBrowserWidth = document.getElementsByClassName("jp-SidePanel")[0].parentElement.clientWidth;
 		const tabWidth = document.getElementsByClassName("lm-TabBar")[0].clientWidth;
 		const yOffset = 84;
-	
+
+		// Quadrant-based shift
 		if (newPanelPosition.x > newCenterPosition.x && newPanelPosition.y > newCenterPosition.y) {
-			// Bottom right
-			newPanelPosition.x = newPanelPosition.x - fileBrowserWidth - tabWidth - menuDimension.x;
-			newPanelPosition.y = newPanelPosition.y - menuDimension.y - yOffset;
+		  // Bottom right
+		  newPanelPosition.x -= (fileBrowserWidth + tabWidth + menuDimension.x);
+		  newPanelPosition.y -= (menuDimension.y + yOffset);
 		} else if (newPanelPosition.x > newCenterPosition.x && newPanelPosition.y < newCenterPosition.y) {
-			// Top right
-			newPanelPosition.x = newPanelPosition.x - fileBrowserWidth - tabWidth - menuDimension.x;
-			newPanelPosition.y = newPanelPosition.y - yOffset;
+		  // Top right
+		  newPanelPosition.x -= (fileBrowserWidth + tabWidth + menuDimension.x);
+		  newPanelPosition.y -= yOffset;
 		} else if (newPanelPosition.x < newCenterPosition.x && newPanelPosition.y > newCenterPosition.y) {
-			// Bottom left
-			newPanelPosition.x = newPanelPosition.x - fileBrowserWidth - tabWidth;
-			newPanelPosition.y = newPanelPosition.y - menuDimension.y - yOffset;
+		  // Bottom left
+		  newPanelPosition.x -= (fileBrowserWidth + tabWidth);
+		  newPanelPosition.y -= (menuDimension.y + yOffset);
 		} else {
-			// Top left
-			newPanelPosition.x = newPanelPosition.x - fileBrowserWidth - tabWidth;
-			newPanelPosition.y = newPanelPosition.y - yOffset;
+		  // Top left
+		  newPanelPosition.x -= (fileBrowserWidth + tabWidth);
+		  newPanelPosition.y -= yOffset;
 		}
-	
+
+		// clamp final position so we don't get clipped off-screen
+		newPanelPosition = clampToViewport(newPanelPosition, menuDimension);
+
 		return newPanelPosition;
-	}
-	
+	  };
 
 	// Show the component panel context menu
 	const showComponentPanel = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1058,20 +1233,27 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	const showComponentPanelFromLink = async (event) => {
 		setContextMenuShown(false);
 		setIsComponentPanelShown(false);
-		const linkName:string = event.link.sourcePort.options.name;
+		const sourcePortName:string = event.link.sourcePort.options.name;
+		const sourceNodeName:string = event.link.sourcePort.getParent().name;
 
-		if (linkName.startsWith("parameter")) {
+		// Don't show panel when loose link from Literal Nodes
+		if (sourceNodeName.includes("Literal ")) {
+			return
+		}
+
+		if (sourcePortName.startsWith("parameter")) {
 			// Don't show panel when loose link from parameter outPorts
-			if (linkName.includes("parameter-out")) {
+			if (sourcePortName.includes("parameter-out")) {
 				return
 			}
+
 			// Don't allow linking to a literal if there is already an established connection
 			// checking for > 1 because the link we are connecting also counts
 			if(Object.keys(event.sourcePort.links).length > 1){
 				return;
 			}
 			// When loose link from type InPort, connect to its respective literal node
-			connectLinkToItsLiteral(linkName, event);
+			connectLinkToItsLiteral(sourcePortName, event);
 			return;
 		}
 
@@ -1110,6 +1292,12 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	const preventDefault = (event) => {
 		event.preventDefault();
 	}
+	const updateHoveredLink = (event: React.DragEvent | React.MouseEvent): string | null => {
+		const linkId = LinkSplitManager.detectLinkUnderPointer(event.clientX, event.clientY);
+		const model = xircuitsApp.getDiagramEngine().getModel();
+		LinkSplitManager.setHover(linkId, model);
+		return linkId;
+	};
 
 	const handleDropEvent = async (event) => {
 		let data = JSON.parse(event.dataTransfer.getData("storm-diagram-node"));
@@ -1134,8 +1322,19 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		// note:  can not use the same port name in the same node,or the same name port can not link to other ports
 		if (node != null) {
 			let point = xircuitsApp.getDiagramEngine().getRelativeMousePoint(event);
-			node.setPosition(point);
-			xircuitsApp.getDiagramEngine().getModel().addNode(node);
+			const linkId = updateHoveredLink(event);
+
+			if (linkId) {
+				new SplitLinkCommand(
+					xircuitsApp.getDiagramEngine().getModel(),
+					node,
+					linkId,
+					point
+				).execute();
+				} else {
+				node.setPosition(point);
+				xircuitsApp.getDiagramEngine().getModel().addNode(node);
+				}
 			if (node["name"].startsWith("Argument ")) {
 				setInitialize(true);
 			}
@@ -1158,10 +1357,45 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 	useEffect(() => {
 		const canvas = xircuitsApp.getDiagramEngine().getCanvas()
 		canvas.addEventListener('wheel', preventDefault);
+
 		return () => {
 			canvas.removeEventListener('wheel', preventDefault);
 		}
 	}, [xircuitsApp.getDiagramEngine().getCanvas()])
+
+	useEffect(() => {
+		const handleEscape = (event: KeyboardEvent) => {
+		  if (event.key === "Escape") {
+			hidePanel();
+		  }
+		};
+
+		document.addEventListener("keydown", handleEscape);
+		return () => {
+		  document.removeEventListener("keydown", handleEscape);
+		};
+	}, []);
+
+	const [translate, setTranslate] = useState({ x: 0, y: 0, scale: 1 });
+	useEffect(() => {
+		const canvas = xircuitsApp.getDiagramEngine().getCanvas();
+		const observer = new MutationObserver(function(mutations) {
+			//@ts-ignore
+			const [_, x, y, scale] = canvas.firstChild.style.transform.match(/translate\((.+)px, (.+)px\) scale\((.+)\)/);
+			setTranslate({ x: parseFloat(x), y: parseFloat(y), scale: parseFloat(scale) });
+		});
+		observer.observe(canvas.querySelector("svg"), { attributes: true, attributeFilter: ["style"] });
+
+		// Change the observation target when things change.
+		((new MutationObserver(function() {
+			observer.disconnect();
+			observer.observe(canvas.querySelector("svg"), { attributes: true, attributeFilter: ["style"] });
+		})).observe(canvas, { childList: true }));
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [xircuitsApp.getDiagramEngine().getCanvas()?.firstChild]);
 
 	return (
 		<Body>
@@ -1173,15 +1407,19 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 				</div>
 				)}
 				<Layer
+					onMouseMove={handleMouseMoveCanvas}
 					onDrop={handleDropEvent}
-					onDragOver={preventDefault}
+					onDragOver={(event) => {
+  					event.preventDefault();
+  					updateHoveredLink(event);
+					}}
 					onMouseOver={preventDefault}
 					onMouseUp={preventDefault}
 					onMouseDown={preventDefault}
 					onContextMenu={showCanvasContextMenu}
 					onClick={handleClick}>
-					<XircuitsCanvasWidget>
-						<CanvasWidget engine={xircuitsApp.getDiagramEngine()} />
+					<XircuitsCanvasWidget translate={translate} >
+						<CanvasWidget engine={xircuitsApp.getDiagramEngine()}/>
 						{/* Add Component Panel(ctrl + left-click, dropped link) */}
 						{isComponentPanelShown && (
 							<div
@@ -1189,6 +1427,9 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 								onMouseLeave={()=>setDontHidePanel(false)}
 								id='component-panel'
 								style={{
+									minHeight: 'auto',
+									height: 'auto',
+									boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
 									top: componentPanelPosition.y,
 									left: componentPanelPosition.x
 								}}
@@ -1208,6 +1449,9 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 							<div
 								id='context-menu'
 								style={{
+									minHeight: 'auto',
+									height: 'auto',
+									boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
 									top: contextMenuPosition.y,
 									left: contextMenuPosition.x
 								}}
@@ -1222,6 +1466,23 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 					</XircuitsCanvasWidget>
 				</Layer>
 			</Content>
+
+      <ZoomControls
+				visible={showZoom || isHoveringControls}
+				onMouseEnter={() => setIsHoveringControls(true)}
+				onMouseLeave={() => setIsHoveringControls(false)}
+			>
+				<FixedZoomButton  onClick={handleZoomIn} title="Zoom In">
+					<zoomInIcon.react />
+				</FixedZoomButton >
+				<FixedZoomButton  onClick={handleZoomOut} title="Zoom Out">
+					<zoomOutIcon.react />
+				</FixedZoomButton >
+				<FixedZoomButton onClick={handleZoomToFit} title="Fit all nodes">
+					<fitIcon.react />
+				</FixedZoomButton>
+				</ZoomControls>
 		</Body>
+
 	);
 }

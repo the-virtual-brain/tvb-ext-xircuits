@@ -31,18 +31,19 @@ DEFAULT_COMPONENTS = {
     2: { "name": "Get Argument Integer Name", "returnType": "int","color":"blue"},
     3: { "name": "Get Argument Float Name", "returnType": "float","color":"green"},
     4: { "name": "Get Argument Boolean Name", "returnType": "boolean","color":"red"},
-    5: { "name": "Get Argument Any Name", "returnType": "any","color":"red"},
-    6: { "name": "Literal String", "returnType": "string","color":"lightpink"},
-    7:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
-    8:{ "name": "Literal Float", "returnType": "float","color":"green"},
-    9:{ "name": "Literal True", "returnType": "boolean","color":"red"},
-    10:{ "name": "Literal False", "returnType": "boolean","color":"red"},
-    11:{ "name": "Literal List", "returnType": "list","color":"yellow"},
-    12:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
-    13:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
-    14:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
-    15:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
-    16: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
+    5: { "name": "Get Argument Secret Name", "returnType": "secret","color":"black"},
+    6: { "name": "Get Argument Any Name", "returnType": "any","color":"red"},
+    7: { "name": "Literal String", "returnType": "string","color":"lightpink"},
+    8:{ "name": "Literal Integer", "returnType": "int","color":"blue"},
+    9:{ "name": "Literal Float", "returnType": "float","color":"green"},
+    10:{ "name": "Literal True", "returnType": "boolean","color":"red"},
+    11:{ "name": "Literal False", "returnType": "boolean","color":"red"},
+    12:{ "name": "Literal List", "returnType": "list","color":"yellow"},
+    13:{ "name": "Literal Tuple", "returnType": "tuple","color":"purple"},
+    14:{ "name": "Literal Dict", "returnType": "dict","color":"orange"},
+    15:{ "name": "Literal Secret", "returnType": "secret","color":"black"},
+    16:{ "name": "Literal Chat", "returnType": "chat","color":"green"},
+    17: {"name": "Literal Numpy Array", "returnType": "numpy.ndarray", "color": "lightgreen"},
 
     # Comment this first since we don't use it
     # 1: { "name": "Math Operation", "returnType": "math"},
@@ -133,7 +134,7 @@ class ComponentsParser:
                         and directory.is_dir() \
                         and not any(pathlib.Path.samefile(directory, d) for d in visited_directories):
                     visited_directories.append(directory)
-                    python_files = directory.rglob("xai_*/*.py")
+                    python_files = directory.glob("xai_*/*.py")
 
                     python_path = directory.expanduser().resolve()
 

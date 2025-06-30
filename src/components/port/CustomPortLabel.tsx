@@ -126,7 +126,7 @@ const PortLabel = ({nodeType, port, description,  setDescriptionStr, showDescrip
 	}
 
 	return (
-			<S.Label style={{ textAlign: (!port.getOptions().in && port.getOptions().label === '▶') ? 'right' : 'left', cursor: attached ? 'pointer' : 'inherit' }}>
+			<S.Label style={{ textAlign: (port.getOptions().in && port.getOptions().label === '▶') ? 'left' : 'right', cursor: attached ? 'pointer' : 'inherit' }}>
 				<WithToggle
 					renderToggleBeforeChildren={!port.getOptions().in}
 					showDescription={showDescription}
@@ -174,7 +174,7 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 		if (portType.includes('Union')) {
 			portType = 'union';
 		}
-
+		
 		if (portType in symbolMap) {
 			symbolLabel = symbolMap[portType];
 		} else {
@@ -245,7 +245,7 @@ export class CustomPortLabel extends React.Component<CustomPortLabelProps> {
 					{symbolLabel}
 				</S.Symbol>
 			</S.SymbolContainer>);
-
+		
 		const nodeType = this.props.node.getOptions().name
 
 		function escapeSelector(selector: string): string {

@@ -148,5 +148,12 @@ examples/*.py
 
 /.idea/
 
+# playwright files
+*/test-results/
+*/playwright-report/
+/playwright/.cache/
+
 .yarn/
 tvbextxircuits/_version.py
+
+tests/*/

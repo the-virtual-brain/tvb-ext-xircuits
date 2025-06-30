@@ -2,11 +2,16 @@ from argparse import Namespace
 from typing import TypeVar, Generic, Tuple, NamedTuple, Callable, List
 from copy import deepcopy
 
+import os, json, datetime
+
+from asgiref.sync import async_to_sync, sync_to_async
+
 from xai_components.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
 
 T = TypeVar('T')
+
 
 class OutArg(Generic[T]):
     def __init__(self, value: T = None, getter: Callable[[T], any] = lambda x: x) -> None:
@@ -71,6 +76,7 @@ class InArg(Generic[T]):
             memo[id_self] = _copy
         return _copy
 
+
 class InCompArg(Generic[T]):
     def __init__(self, value: T = None, getter: Callable[[T], any] = lambda x: x) -> None:
         self._value = value
@@ -102,6 +108,7 @@ class InCompArg(Generic[T]):
             memo[id_self] = _copy
         return _copy
 
+
 def xai_component(*args, **kwargs):
     # Passthrough element without any changes.
     # This is used for parser metadata only.
@@ -112,7 +119,9 @@ def xai_component(*args, **kwargs):
         # @xai_components(...) form
         def passthrough(f):
             return f
+
         return passthrough
+
 
 class ExecutionContext:
     args: Namespace
@@ -120,8 +129,10 @@ class ExecutionContext:
     def __init__(self, args: Namespace):
         self.args = args
 
+
 class BaseComponent:
-    def __init__(self):
+    def __init__(self, id: str = None):
+        self.__id__ = id
         all_ports = self.__annotations__
         for key, type_arg in all_ports.items():
             if hasattr(type_arg, '__origin__'):
@@ -169,11 +180,12 @@ class BaseComponent:
                 setattr(_copy, key, deepcopy(getattr(self, key), memo))
         return _copy
 
+
 class Component(BaseComponent):
     next: BaseComponent
 
     def do(self, ctx) -> BaseComponent:
-        LOGGER.info(f"\nExecuting: {self.__class__.__name__}")
+        LOGGER.info(f"\nExecuting: {self.__class__.__name__}", flush=True)
         self.execute(ctx)
 
         return self.next
@@ -182,17 +194,38 @@ class Component(BaseComponent):
         return "<h1>Component</h1>"
 
 
+class AsyncComponent(BaseComponent):
+    next: BaseComponent
+
+    @async_to_sync
+    async def do(self, ctx) -> BaseComponent:
+        print(f"\nExecuting: {self.__class__.__name__}", flush=True)
+        await self.execute(ctx)
+        return self.next
+
+    def debug_repr(self) -> str:
+        return "<h1>AsyncComponent</h1>"
+
+
 class SubGraphExecutor:
-    
+
     def __init__(self, component):
         self.comp = component
-        
+
     def do(self, ctx):
+        logger = StructuredDebugLogger.get_logger()
         comp = self.comp
-        
+
         while comp is not None:
+            orig_comp = comp
+            logger.log_before_execution(orig_comp, ctx)
             comp = comp.do(ctx)
+            logger.log_after_execution(orig_comp, ctx)
         return None
+
+    @sync_to_async
+    def do_async(self, ctx):
+        return self.do(ctx)
 
 
 def execute_graph(args: Namespace, start: BaseComponent, ctx) -> None:
@@ -216,12 +249,15 @@ def execute_graph(args: Namespace, start: BaseComponent, ctx) -> None:
 class secret:
     pass
 
+
 class message(NamedTuple):
     role: str
     content: str
 
+
 class chat(NamedTuple):
     messages: List[message]
+
 
 class dynalist(list):
     def __init__(self, *args):
@@ -233,15 +269,18 @@ class dynalist(list):
             return []
         return [item.value if isinstance(item, (InArg, OutArg)) else item for item in x]
 
+
 class dynatuple(tuple):
     def __init__(self, *args):
         super().__init__(args)
+
     @staticmethod
     def getter(x):
         if x is None:
             return tuple()
+
         def resolve(item):
-            if isinstance(item, (InArg, InCompArg,OutArg)):
+            if isinstance(item, (InArg, InCompArg, OutArg)):
                 return item.value
             else:
                 return item
@@ -254,3 +293,57 @@ def parse_bool(value):
         return True
     elif value.lower() in ('false', 'f', 'no', 'n', '0'):
         return False
+
+
+class StructuredDebugLogger:
+    @classmethod
+    def get_logger(cls):
+        if not hasattr(cls, "logger"):
+            setattr(cls, "logger", StructuredDebugLogger())
+        return cls.logger
+
+    def __init__(self):
+        import sys
+        self.debug = os.getenv("XIRCUITS_DEBUG", None) is not None
+        self.target_file = os.getenv("XIRCUITS_DEBUG_FILE", 'stderr')
+        if self.target_file == 'stderr':
+            self.target = sys.stderr
+        else:
+            self.target = open(self.target_file, 'w')
+
+    def write(self, value):
+        json.dump(value, self.target, default=repr)
+        self.target.write("\n")
+        self.target.flush()
+
+    def get_parameter_state(self, comp, classes):
+        all_ports = comp.__annotations__
+        result = {}
+        for key, type_arg in all_ports.items():
+            if hasattr(type_arg, '__origin__'):
+                port_class = type_arg.__origin__
+                if port_class in classes:
+                    result[key] = getattr(comp, key).value
+        return result
+
+    def _log(self, comp, ctx, type):
+        if self.debug:
+            if isinstance(comp, SubGraphExecutor): return
+
+            component = {
+                'class': comp.__class__.__name__,
+                'id': comp.__id__,
+            }
+            if type == 'before_execution':
+                component['inputs'] = self.get_parameter_state(comp, (InArg, InCompArg))
+            elif type == 'after_execution':
+                component['outputs'] = self.get_parameter_state(comp, (OutArg,))
+            output = {'timestamp': datetime.datetime.now().isoformat(), 'level': 'DEBUG', 'type': type,
+                      'component': component, 'ctx': ctx}
+            self.write(output)
+
+    def log_before_execution(self, comp, ctx):
+        self._log(comp, ctx, 'before_execution')
+
+    def log_after_execution(self, comp, ctx):
+        self._log(comp, ctx, 'after_execution')

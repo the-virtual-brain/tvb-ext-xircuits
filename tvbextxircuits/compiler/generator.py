@@ -112,8 +112,9 @@ from xai_components.base import SubGraphExecutor, InArg, OutArg, Component, xai_
         mainFlowCls = ast.parse("""
 @xai_component(type="xircuits_workflow")
 class %s(Component):
-    def __init__(self):
+    def __init__(self, id: str = None):
         super().__init__()
+        self.__id__ = id
         self.__start_nodes__ = []
     
     def execute(self, ctx):
@@ -134,7 +135,7 @@ class %s(Component):
 
         # Instantiate all components
         init_code.extend([
-            ast.parse("%s = %s()" % (named_nodes[n.id], n.name)) for n in component_nodes
+            ast.parse("%s = %s(); %s.__id__ = '%s';" % (named_nodes[n.id], n.name, named_nodes[n.id], n.id)) for n in component_nodes
         ])
 
         type_mapping = {
@@ -142,6 +143,7 @@ class %s(Component):
             "string": "str",
             "boolean": "bool",
             "float": "float",
+            "secret": "str",
             "any": "any"
         }
 
@@ -290,10 +292,7 @@ class %s(Component):
 for node in self.__start_nodes__:
     if hasattr(node, 'init'):
         node.init(ctx)
-    
-next_component = %s
-while next_component is not None:
-    next_component = next_component.do(ctx)        
+SubGraphExecutor(%s).do(ctx)        
         """ % (named_nodes[self.graph[0].ports[0].target.id])
         exec_code.append(ast.parse(trailer))
 
@@ -378,6 +377,7 @@ if __name__ == '__main__':
             "int": "int",
             "string": "str",
             "float": "float",
+            "secret": "str",
             "any": "any"
         }
 
@@ -394,6 +394,8 @@ parser.add_argument('--is_hpc_launch', default=False, type=bool)
             arg_name = m.group(1)
             if arg.type == "boolean":
                 tpl = "parser.add_argument('--%s', type=parse_bool, default=None, nargs='?', const=True)" % arg_name
+            elif arg.type == "any":
+                tpl = "parser.add_argument('--%s')" % (arg_name)
             else:
                 tpl = "parser.add_argument('--%s', type=%s)" % (arg_name, type_mapping[arg.type])
             body.extend(ast.parse(tpl).body)
