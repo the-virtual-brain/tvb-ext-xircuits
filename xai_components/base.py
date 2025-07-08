@@ -185,7 +185,7 @@ class Component(BaseComponent):
     next: BaseComponent
 
     def do(self, ctx) -> BaseComponent:
-        LOGGER.info(f"\nExecuting: {self.__class__.__name__}", flush=True)
+        LOGGER.info(f"\nExecuting: {self.__class__.__name__}")
         self.execute(ctx)
 
         return self.next
