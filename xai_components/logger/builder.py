@@ -38,6 +38,11 @@ class LoggerBuilder(object):
         Build a logger instance and return it
         """
         self._loggers[parent_module] = logger = logging.getLogger(parent_module)
+
+        for handler in logger.handlers:
+            if isinstance(handler, logging.StreamHandler):
+                handler.flush = handler.stream.flush
+
         return logger
 
     def set_loggers_level(self, level):
