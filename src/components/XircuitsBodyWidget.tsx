@@ -719,7 +719,7 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 
 			else if (runType === 'terminal-run') {
 				commands.execute(commandIDs.executeToTerminal, {
-					command: `xircuits run ${workflow_path}`
+					command: `tvbextxircuits run ${workflow_path}`
 				});
 			}
 

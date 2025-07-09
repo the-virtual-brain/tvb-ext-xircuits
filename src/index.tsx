@@ -484,7 +484,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
         for (const xircuitsFile of selectedItems) {
           if (xircuitsFile.path.endsWith('.xircuits')) {
             await app.commands.execute(commandIDs.executeToTerminal, {
-              command: `xircuits run ${xircuitsFile.path}`
+              command: `tvbextxircuits run ${xircuitsFile.path}`
             });
           }
         }
