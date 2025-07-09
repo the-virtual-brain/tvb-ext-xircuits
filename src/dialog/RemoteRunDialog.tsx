@@ -42,8 +42,8 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
   const [isStageOutEnabled, setIsStageOutEnabled] = useState(false);
   const [filesystem, setFilesystem] = useState('PROJECT');
   const [envName, setEnvName] = useState('venv');
-  const [python, setPython] = useState('python3.11');
-  const [modules, setModules] = useState('Stages/2024,GCCcore/.12.3.0,Python/3.11');
+  const [python, setPython] = useState('python3.12');
+  const [modules, setModules] = useState('Stages/2025,GCCcore/.13.3.0,Python/3.12');
   const [placeholders, setPlaceholders] = useState<string[]>([]);
   const [formattedCommand, setFormattedCommand] = useState("");
   const [sectionsCollapsed, setSectionsCollapsed] = useState({
@@ -112,13 +112,13 @@ export const RemoteRunDialog: React.FC<RemoteRunDialogProps> = ({
         setInputValues(prefillInputValues(selectedConfig, extractedPlaceholders));
       }
       if (configName === 'JUWELS') {
-        setPython('python3.11');
+        setPython('python3.12');
       } else {
         setPython('python3.10');
       }
       setFilesystem('PROJECT');
       setEnvName("venv")
-      setModules('Stages/2024,GCCcore/.12.3.0,Python/3.11');
+      setModules('Stages/2025,GCCcore/.13.3.0,Python/3.12');
     }
   };
 

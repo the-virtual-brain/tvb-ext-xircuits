@@ -32,8 +32,8 @@ class PyunicoreSubmitter(object):
     storage_name = {'JUWELS': 'PROJECT', 'JUDAC': 'PROJECT'}
     env_dir = 'tvb_xircuits'
     env_name = 'venv'
-    python_dir = {'JUWELS': 'python3.11', 'JUDAC': 'python3.10'}
-    modules = {'JUWELS': 'Stages/2024 GCCcore/.12.3.0 Python/3.11', 'JUDAC': 'Python'}
+    python_dir = {'JUWELS': 'python3.12', 'JUDAC': 'python3.10'}
+    modules = {'JUWELS': 'Stages/2025,GCCcore/.13.3.0,Python/3.12', 'JUDAC': 'Python'}
     pip_libraries = 'tvb-ext-xircuits[full] tvb-data'
     EXECUTABLE_KEY = 'Executable'
     PROJECT_KEY = 'Project'
