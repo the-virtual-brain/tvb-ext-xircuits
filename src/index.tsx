@@ -593,7 +593,7 @@ const xircuits: JupyterFrontEndPlugin<void> = {
         command: commandIDs.createNewXircuit,
         rank: 1,
         args: { isLauncher: true },
-        category: 'Xircuits Templates'
+        category: 'Other'
       });
     }
 
@@ -614,62 +614,62 @@ const xircuits: JupyterFrontEndPlugin<void> = {
       }
     }
 
-    function registerTemplateButton(
-      id: string,
-      label: string,
-      examplePath: string,
-      libraries: string[],
-      rank = 1
-    ) {
-      app.commands.addCommand(id, {
-        label: label,
-        caption: `Install ${libraries.join(', ')} and open the example`,
-        icon: xircuitsIcon,
-        execute: async () => {
-          const currentPath = browserFactory.tracker.currentWidget?.model.path ?? '';
-          const installedLibs = await getInstalledLibraries();
-
-          for (const lib of libraries) {
-            if (installedLibs.has(lib)) {
-              console.log(`Library ${lib} already installed. Skipping.`);
-              continue;
-            }
-
-            const ok = await handleInstall(app, lib, () =>
-              app.commands.execute(commandIDs.refreshComponentList)
-            );
-
-              if (!ok) {
-                console.warn(`Aborted: ${lib} not installed.`);
-                return;
-              }
-            installedLibs.add(lib);
-            }
-
-          const model = await app.serviceManager.contents.copy(
-            examplePath,
-            currentPath || ''
-          );
-
-          const finalPath = model.path;
-
-          // small delay to avoid the empty-canvas race
-          await new Promise(res => setTimeout(res, 200));
-
-          // Open the file and refresh the component list
-          await app.commands.execute('docmanager:open', { path: finalPath });
-          await app.commands.execute(commandIDs.refreshComponentList);
-
-        }
-      });
-
-      // Add to Launcher
-      launcher.add({
-        command: id,
-        category: 'Xircuits Templates',
-        rank : rank
-      });
-    }
+    // function registerTemplateButton(
+    //   id: string,
+    //   label: string,
+    //   examplePath: string,
+    //   libraries: string[],
+    //   rank = 1
+    // ) {
+    //   app.commands.addCommand(id, {
+    //     label: label,
+    //     caption: `Install ${libraries.join(', ')} and open the example`,
+    //     icon: xircuitsIcon,
+    //     execute: async () => {
+    //       const currentPath = browserFactory.tracker.currentWidget?.model.path ?? '';
+    //       const installedLibs = await getInstalledLibraries();
+    //
+    //       for (const lib of libraries) {
+    //         if (installedLibs.has(lib)) {
+    //           console.log(`Library ${lib} already installed. Skipping.`);
+    //           continue;
+    //         }
+    //
+    //         const ok = await handleInstall(app, lib, () =>
+    //           app.commands.execute(commandIDs.refreshComponentList)
+    //         );
+    //
+    //           if (!ok) {
+    //             console.warn(`Aborted: ${lib} not installed.`);
+    //             return;
+    //           }
+    //         installedLibs.add(lib);
+    //         }
+    //
+    //       const model = await app.serviceManager.contents.copy(
+    //         examplePath,
+    //         currentPath || ''
+    //       );
+    //
+    //       const finalPath = model.path;
+    //
+    //       // small delay to avoid the empty-canvas race
+    //       await new Promise(res => setTimeout(res, 200));
+    //
+    //       // Open the file and refresh the component list
+    //       await app.commands.execute('docmanager:open', { path: finalPath });
+    //       await app.commands.execute(commandIDs.refreshComponentList);
+    //
+    //     }
+    //   });
+    //
+    //   // Add to Launcher
+    //   launcher.add({
+    //     command: id,
+    //     category: 'Xircuits Templates',
+    //     rank : rank
+    //   });
+    // }
 
 
     /**
@@ -733,20 +733,20 @@ const xircuits: JupyterFrontEndPlugin<void> = {
     }
 
     // Register example buttons
-    registerTemplateButton(
-      'xircuits:open-agent-example',
-      'Agent',
-      'xai_components/xai_agent/examples/agent_example.xircuits',
-      ['AGENT', 'OPENAI'],
-      2
-    );
-        registerTemplateButton(
-      'xircuits:open-flask-example',
-      'Service',
-      'xai_components/xai_flask/examples/InlineExample.xircuits',
-      ['FLASK'],
-      3
-    );
+    // registerTemplateButton(
+    //   'xircuits:open-agent-example',
+    //   'Agent',
+    //   'xai_components/xai_agent/examples/agent_example.xircuits',
+    //   ['AGENT', 'OPENAI'],
+    //   2
+    // );
+    //     registerTemplateButton(
+    //   'xircuits:open-flask-example',
+    //   'Service',
+    //   'xai_components/xai_flask/examples/InlineExample.xircuits',
+    //   ['FLASK'],
+    //   3
+    // );
 
     await registerUserTemplates(launcher, app);
 
