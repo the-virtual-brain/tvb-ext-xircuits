@@ -172,21 +172,21 @@ def run_command(command, timeout=10, input_data=None, expected_output=None, chec
 
 def test_01_help_command():
     """Test that help command works properly"""
-    stdout, stderr, return_code = run_command("xircuits --h")
+    stdout, stderr, return_code = run_command("tvbextxircuits --h")
     assert return_code == 0
     assert "usage:" in stdout
     assert "Xircuits Command Line Interface" in stdout
 
 def test_02_alternative_help_command():
     """Test that help command works properly"""
-    stdout, stderr, return_code = run_command("xircuits --help")
+    stdout, stderr, return_code = run_command("tvbextxircuits --help")
     assert return_code == 0
     assert "usage:" in stdout
     assert "Xircuits Command Line Interface" in stdout
 
 def test_03_init_command():
     """Test that init command creates necessary files"""
-    stdout, stderr, return_code = run_command("xircuits init")
+    stdout, stderr, return_code = run_command("tvbextxircuits init")
     assert return_code == 0
     assert "Xircuits has been initialized" in stdout
     
@@ -197,7 +197,7 @@ def test_03_init_command():
 def test_04_compile_command():
     """Test that the compile command works properly."""
     # Initialize Xircuits
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
     # Search for .xircuits files in the xai_controlflow folder using glob
     xircuits_files = list(Path("xai_components/xai_controlflow").glob("*.xircuits"))
@@ -207,7 +207,7 @@ def test_04_compile_command():
     example_file = str(xircuits_files[0])
 
     # Compile the selected .xircuits file
-    stdout, stderr, return_code = run_command(f"xircuits compile {example_file}")
+    stdout, stderr, return_code = run_command(f"tvbextxircuits compile {example_file}")
     assert return_code == 0, "Compile command failed."
 
     # Verify that the corresponding .py file was created
@@ -217,14 +217,14 @@ def test_04_compile_command():
 def test_05_run_command():
     """Test that run command compiles and executes a workflow"""
     # Initialize and download examples
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     
     # Use a specific workflow to ensure consistency across environments
     example_file = "xai_components/xai_controlflow/ControlflowBranch.xircuits"
     assert os.path.exists(example_file), f"Expected workflow file '{example_file}' not found."
 
     # Compile the selected .xircuits file
-    stdout, stderr, return_code = run_command(f"xircuits run {example_file}")
+    stdout, stderr, return_code = run_command(f"tvbextxircuits run {example_file}")
     assert return_code == 0, "Compile command failed."
 
     # Verify that the corresponding .py file was created
@@ -236,10 +236,10 @@ def test_05_run_command():
 def test_06_list_libraries_command():
     """Test that list command shows available libraries"""
     # Initialize first
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     
     # Run list command
-    stdout, stderr, return_code = run_command("xircuits list")
+    stdout, stderr, return_code = run_command("tvbextxircuits list")
     assert return_code == 0
     
     # Should contain some mention of libraries
@@ -248,22 +248,22 @@ def test_06_list_libraries_command():
 def test_07_install_library_command():
     """Test that install command installs a library"""
     # Initialize first
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     library_name ="flask"
-    stdout, stderr, return_code = run_command(f"xircuits install {library_name}", timeout=60)
+    stdout, stderr, return_code = run_command(f"tvbextxircuits install {library_name}", timeout=60)
     assert f"library {library_name} ready to use" in stdout.lower()
 
 def test_08_working_directory_detection():
     """Test that Xircuits correctly finds the working directory"""
     # Initialize in parent directory
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     
     # Create a subdirectory and run xircuits from there
     os.makedirs("subdir", exist_ok=True)
     os.chdir("subdir")
     
     # Run list command
-    stdout, stderr, return_code = run_command("xircuits list")
+    stdout, stderr, return_code = run_command("tvbextxircuits list")
     
     # Should detect parent directory and run from there
     assert "Xircuits computing from:" in stdout
@@ -271,7 +271,7 @@ def test_08_working_directory_detection():
 
 def test_09_compile_with_custom_output():
     """Test compiling with a custom output file name"""
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     
     # Find an example file in the xai_controlflow folder
     example_files = list(Path("xai_components/xai_controlflow").glob("*.xircuits"))
@@ -280,7 +280,7 @@ def test_09_compile_with_custom_output():
     
     custom_output = "custom_output.py"
     # Compile with the custom output name
-    stdout, stderr, return_code = run_command(f"xircuits compile {example_file} {custom_output}")
+    stdout, stderr, return_code = run_command(f"tvbextxircuits compile {example_file} {custom_output}")
     assert return_code == 0, "Compile command failed."
     
     # Check that the custom named Python file was created
@@ -288,12 +288,12 @@ def test_09_compile_with_custom_output():
 
 def test_10_error_handling_invalid_command():
     """Test that invalid commands are handled gracefully"""
-    stdout, stderr, return_code = run_command("xircuits invalid_command")
+    stdout, stderr, return_code = run_command("tvbextxircuits invalid_command")
     # Should print help or error message, not crash
     assert return_code != 0
 
 def test_11_install_invalid_library():
-    stdout, stderr, return_code = run_command("xircuits install non_existing_library")
+    stdout, stderr, return_code = run_command("tvbextxircuits install non_existing_library")
 
     expected_error_message = "component library submodule not found"
     assert expected_error_message in stdout or expected_error_message in stderr, \
@@ -304,11 +304,11 @@ def test_12_fetch_only_valid_library(tmp_path):
     os.chdir(tmp_path)
 
     # Initialize Xircuits in the temporary directory.
-    stdout, stderr, return_code = run_command("xircuits init", timeout=15)
+    stdout, stderr, return_code = run_command("tvbextxircuits init", timeout=15)
     assert return_code == 0, "Initialization failed."
 
     library_name = "xai_gradio"
-    stdout, stderr, return_code = run_command(f"xircuits fetch-only {library_name}", timeout=60)
+    stdout, stderr, return_code = run_command(f"tvbextxircuits fetch-only {library_name}", timeout=60)
     assert return_code == 0, f"Fetch-only command failed for {library_name}"
     output = stdout + stderr
 
@@ -327,9 +327,9 @@ def test_12_fetch_only_valid_library(tmp_path):
 
 def test_13_install_already_installed_library():
     library_name = "xai_utils"  # Select a library that is already installed
-    run_command(f"xircuits install {library_name}")  # Ensure the library is installed beforehand
+    run_command(f"tvbextxircuits install {library_name}")  # Ensure the library is installed beforehand
 
-    stdout, stderr, return_code = run_command(f"xircuits install {library_name}")
+    stdout, stderr, return_code = run_command(f"tvbextxircuits install {library_name}")
 
     assert return_code == 0, f"Reinstalling {library_name} failed unexpectedly"
 
@@ -345,7 +345,7 @@ def test_14_compile_invalid_xircuits():
         f.write("{invalid_json}")  # Invalid content
 
     try:
-        stdout, stderr, return_code = run_command(f"xircuits compile {invalid_file}")
+        stdout, stderr, return_code = run_command(f"tvbextxircuits compile {invalid_file}")
 
         expected_error_message = "Error reading"
         assert expected_error_message in stdout or expected_error_message in stderr, \
@@ -355,7 +355,7 @@ def test_14_compile_invalid_xircuits():
             os.remove(invalid_file)
 
 def test_15_compile_with_python_paths_file():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
     example_file = "xai_components/xai_template/HelloTutorial.xircuits"
 
@@ -369,7 +369,7 @@ def test_15_compile_with_python_paths_file():
         json.dump(paths_data, f)
 
     try:
-        stdout, stderr, return_code = run_command(f"xircuits compile {example_file} --python-paths-file={json_file}")
+        stdout, stderr, return_code = run_command(f"tvbextxircuits compile {example_file} --python-paths-file={json_file}")
         assert return_code == 0, "Compile command failed when using a python paths file."
 
         assert "Compiled" in stdout, "Expected 'Compiled' in output not found."
@@ -381,13 +381,13 @@ def test_15_compile_with_python_paths_file():
             os.remove(json_file)
 
 def test_16_run_existing_py_file():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
     # Find an example file in the xai_controlflow folder
     example_file = "xai_components/xai_controlflow/WorkflowComponentsExample.py"
     assert os.path.exists(example_file), f"Expected workflow file '{example_file}' not found."
 
-    command = f"xircuits run {example_file} --example_input=Hello_Xircuits!"
+    command = f"tvbextxircuits run {example_file} --example_input=Hello_Xircuits!"
     
     stdout, stderr, return_code = run_command(command)
     assert return_code == 0, "Expected return code 0 for successful execution"
@@ -395,18 +395,18 @@ def test_16_run_existing_py_file():
 
 def test_17_run_with_custom_output():
     """Test run with a custom output file name"""
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
     example_file = "xai_components/xai_controlflow/ControlflowBranch.xircuits"
     custom_output = "custom_output.py"
     # run with the custom output name
-    stdout, stderr, return_code = run_command(f"xircuits run {example_file} {custom_output}")
+    stdout, stderr, return_code = run_command(f"tvbextxircuits run {example_file} {custom_output}")
     assert return_code == 0, "run command failed."
     
     # Check that the custom named Python file was created
     assert os.path.exists(custom_output), f"Expected output file '{custom_output}' not found."
 
 def test_18_run_invalid_xircuits():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
     # Create an invalid Xircuits file in the current directory.
     invalid_file = "invalid_workflow.xircuits"
@@ -414,7 +414,7 @@ def test_18_run_invalid_xircuits():
         f.write("{invalid_json}")  # Invalid content to simulate an error
 
     try:
-        stdout, stderr, return_code = run_command(f"xircuits run {invalid_file}")
+        stdout, stderr, return_code = run_command(f"tvbextxircuits run {invalid_file}")
 
         expected_error_message = "Error reading"
         error_found = expected_error_message in stdout or expected_error_message in stderr
@@ -424,7 +424,7 @@ def test_18_run_invalid_xircuits():
             os.remove(invalid_file)
 
 def test_19_run_with_python_paths_file():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
     example_file = "xai_components/xai_template/HelloTutorial.xircuits"
 
@@ -438,7 +438,7 @@ def test_19_run_with_python_paths_file():
         json.dump(paths_data, f)
 
     try:
-        stdout, stderr, return_code = run_command(f"PYTHONPATH=. xircuits run {example_file} --python-paths-file={json_file}")
+        stdout, stderr, return_code = run_command(f"PYTHONPATH=. tvbextxircuits run {example_file} --python-paths-file={json_file}")
 
         assert return_code == 0, "Run command failed when using a python paths file."
         assert "Finished Executing" in stdout, "Expected 'Finished Executing' in output not found."
@@ -458,11 +458,11 @@ def test_20_run_with_custom_arguments(tmp_path):
     os.chdir(tmp_path)
 
     # Initialize Xircuits.
-    stdout, stderr, return_code = run_command("xircuits init")
+    stdout, stderr, return_code = run_command("tvbextxircuits init")
     assert return_code == 0, "Initialization failed."
 
     # Install the library from GitHub.
-    stdout, stderr, return_code = run_command("xircuits fetch-only https://github.com/XpressAI/xai-tests", timeout=60)
+    stdout, stderr, return_code = run_command("tvbextxircuits fetch-only https://github.com/XpressAI/xai-tests", timeout=60)
     assert return_code == 0, "Library installation failed."
 
     # Determine the library directory.
@@ -479,14 +479,14 @@ def test_20_run_with_custom_arguments(tmp_path):
     output_file = tmp_path / "ArgumentParameters.py"
 
     # Run the workflow with custom arguments.
-    cmd = f"xircuits run {example_file} {output_file} -- --str1=Hello_ --str2=Xircuits"
+    cmd = f"tvbextxircuits run {example_file} {output_file} -- --str1=Hello_ --str2=Xircuits"
     stdout, stderr, return_code = run_command(cmd)
     assert return_code == 0, "Run command failed with custom arguments."
     assert "Hello_Xircuits" in stdout, "Expected output 'Hello_Xircuits' not found in run command output."
     assert output_file.exists(), f"Expected output file '{output_file}' not found."
 
 def test_21_no_arguments_starts_jupyter_lab():
-    stdout, stderr, return_code = run_command("xircuits", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits", timeout=5, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert ("jupyter lab" in output.lower() or 
@@ -494,9 +494,9 @@ def test_21_no_arguments_starts_jupyter_lab():
             "jupyterlab" in output), "Expected Jupyter Lab startup message not found in output."
 
 def test_22_start_command():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
-    stdout, stderr, return_code = run_command("xircuits start", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits start", timeout=5, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert ("jupyter lab" in output.lower() or 
@@ -504,9 +504,9 @@ def test_22_start_command():
             "jupyterlab" in output), "Expected Jupyter Lab startup indicators not found in output."
 
 def test_23_start_with_extra_arguments():
-    run_command("xircuits init")
+    run_command("tvbextxircuits init")
 
-    stdout, stderr, return_code = run_command("xircuits start --port=8899", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits start --port=8899", timeout=5, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert "8899" in output, "Expected port 8899 to be indicated in the output."
@@ -545,13 +545,13 @@ def test_25_reinit_in_already_initialized_directory():
         shutil.rmtree("xai_components")
 
     # Run the command for the first time.
-    stdout1, stderr1, rc1 = run_command("xircuits init", timeout=15)
+    stdout1, stderr1, rc1 = run_command("tvbextxircuits init", timeout=15)
     assert rc1 == 0, "First initialization failed."
     assert os.path.exists(".xircuits"), "Expected .xircuits directory to be created during first initialization."
     assert os.path.exists("xai_components"), "Expected xai_components directory to be created during first initialization."
 
     # Run the command a second time in the same directory.
-    stdout2, stderr2, rc2 = run_command("xircuits init", timeout=15)
+    stdout2, stderr2, rc2 = run_command("tvbextxircuits init", timeout=15)
     output2 = stdout2 + stderr2
 
     # According to current behavior on re-initialization, the command should return a non-zero exit code or print a message indicating that the directory already exists.
@@ -570,7 +570,7 @@ def test_26_start_in_non_initialized_directory(tmp_path):
     if os.path.exists("xai_components"):
         shutil.rmtree("xai_components")
 
-    stdout, stderr, return_code = run_command("xircuits start --no-browser", timeout=15, input_data="n\n")
+    stdout, stderr, return_code = run_command("tvbextxircuits start --no-browser", timeout=15, input_data="n\n")
 
     expected_prompt = "Would you like to initialize Xircuits in the current directory?"
     output = stdout + stderr
@@ -581,7 +581,7 @@ def test_27_xircuits_missing_xai_components(tmp_path):
     os.chdir(tmp_path)
 
     # Run 'xircuits init' to initialize the environment.
-    stdout, stderr, return_code = run_command("xircuits init", timeout=15)
+    stdout, stderr, return_code = run_command("tvbextxircuits init", timeout=15)
     assert return_code == 0, "Initialization failed."
 
     # Verify that the .xircuits directory exists and xai_components exists.
@@ -592,7 +592,7 @@ def test_27_xircuits_missing_xai_components(tmp_path):
     shutil.rmtree(tmp_path / "xai_components")
     assert not (tmp_path / "xai_components").exists(), "'xai_components' directory should be missing."
 
-    stdout, stderr, return_code = run_command("xircuits", timeout=15, input_data="n\n")
+    stdout, stderr, return_code = run_command("tvbextxircuits", timeout=15, input_data="n\n")
     output = stdout + stderr
 
     # Check that the expected initialization prompt appears.
@@ -600,10 +600,10 @@ def test_27_xircuits_missing_xai_components(tmp_path):
     assert expected_prompt in output, f"Expected prompt '{expected_prompt}' not found in output:\n{output}"
 
 def test_28_run_non_recursive_mode_with_install():
-    stdout, stderr, rc = run_command("xircuits init", timeout=15)
+    stdout, stderr, rc = run_command("tvbextxircuits init", timeout=15)
     assert rc == 0, "Initialization failed."
 
-    install_cmd = "xircuits install https://github.com/XpressAI/xai-tests"
+    install_cmd = "tvbextxircuits install https://github.com/XpressAI/xai-tests"
     stdout, stderr, rc = run_command(install_cmd, timeout=60)
     assert rc == 0, "Library installation failed."
 
@@ -622,7 +622,7 @@ def test_28_run_non_recursive_mode_with_install():
     sub_py = sub_file.replace(".xircuits", ".py")
 
     # Run the command in non-recursive mode to compile only the outer file.
-    run_cmd = f"xircuits run {outer_file} --non-recursive"
+    run_cmd = f"tvbextxircuits run {outer_file} --non-recursive"
     stdout, stderr, rc = run_command(run_cmd, timeout=30)
     assert rc == 0, "Run command in non-recursive mode failed."
 
@@ -631,10 +631,10 @@ def test_28_run_non_recursive_mode_with_install():
     assert not os.path.exists(sub_py), f"Sub-workflow file {sub_py} should not be compiled in non-recursive mode."
 
 def test_29_compile_non_recursive_mode_with_install():
-    stdout, stderr, rc = run_command("xircuits init", timeout=15)
+    stdout, stderr, rc = run_command("tvbextxircuits init", timeout=15)
     assert rc == 0, "Initialization failed."
 
-    install_cmd = "xircuits install https://github.com/XpressAI/xai-tests"
+    install_cmd = "tvbextxircuits install https://github.com/XpressAI/xai-tests"
     stdout, stderr, rc = run_command(install_cmd, timeout=60)
     assert rc == 0, "Library installation failed."
 
@@ -653,7 +653,7 @@ def test_29_compile_non_recursive_mode_with_install():
     sub_py = sub_file.replace(".xircuits", ".py")
 
     # Run the compile command in non-recursive mode to compile only the outer file.
-    compile_cmd = f"xircuits compile {outer_file} --non-recursive"
+    compile_cmd = f"tvbextxircuits compile {outer_file} --non-recursive"
     stdout, stderr, rc = run_command(compile_cmd, timeout=30)
     assert rc == 0, "Compile command in non-recursive mode failed."
 
