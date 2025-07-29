@@ -71,7 +71,7 @@ def run_command(command, timeout=10, input_data=None, expected_output=None, chec
         Tuple of (stdout, stderr, return_code)
     """
     # Add --no-browser to start commands if applicable
-    if no_browser and (('xircuits' in command) or ('start' in command) or ('jupyter' in command)):
+    if no_browser and (('tvbextxircuits' in command) or ('start' in command) or ('jupyter' in command)):
         command = command + " --no-browser"
         
     print(f"Running command: {command}")
@@ -521,7 +521,7 @@ def test_24_auto_initialization(tmp_path):
         shutil.rmtree("xai_components")
 
     process = subprocess.Popen(
-        "XIRCUITS_INIT=1 xircuits --no-browser",
+        "XIRCUITS_INIT=1 tvbextxircuits --no-browser",
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
