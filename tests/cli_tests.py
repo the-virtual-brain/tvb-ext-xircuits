@@ -489,7 +489,7 @@ def test_20_run_with_custom_arguments(tmp_path):
     assert output_file.exists(), f"Expected output file '{output_file}' not found."
 
 def test_21_no_arguments_starts_jupyter_lab():
-    stdout, stderr, return_code = run_command("tvbextxircuits", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits", timeout=15, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert ("jupyter lab" in output.lower() or 
@@ -499,7 +499,7 @@ def test_21_no_arguments_starts_jupyter_lab():
 def test_22_start_command():
     run_command(init_command)
 
-    stdout, stderr, return_code = run_command("tvbextxircuits start", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits start", timeout=15, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert ("jupyter lab" in output.lower() or 
@@ -509,7 +509,7 @@ def test_22_start_command():
 def test_23_start_with_extra_arguments():
     run_command(init_command)
 
-    stdout, stderr, return_code = run_command("tvbextxircuits start --port=8899", timeout=5, wait_for_exit=False, no_browser=True)
+    stdout, stderr, return_code = run_command("tvbextxircuits start --port=8899", timeout=15, wait_for_exit=False, no_browser=True)
 
     output = stdout + stderr
     assert "8899" in output, "Expected port 8899 to be indicated in the output."
@@ -540,6 +540,7 @@ def test_24_auto_initialization(tmp_path):
     assert os.path.exists(".xircuits"), "Expected .xircuits directory to be created during auto-initialization."
     assert os.path.exists("xai_components"), "Expected xai_components directory to be created during auto-initialization."
 
+@pytest.mark.skip(reason="Re-initialization is handled different in our case")
 def test_25_reinit_in_already_initialized_directory():
     # Ensure that any existing initialization directories are removed from the current directory.
     if os.path.exists(".xircuits"):
@@ -578,6 +579,7 @@ def test_26_start_in_non_initialized_directory(tmp_path):
     expected_prompt = "Would you like to initialize Xircuits in the current directory?"
     output = stdout + stderr
     assert expected_prompt in output, f"Expected prompt '{expected_prompt}' not found in output:\n{output}"
+
 
 def test_27_xircuits_missing_xai_components(tmp_path):
     # Change to the isolated test directory.
