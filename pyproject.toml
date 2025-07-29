@@ -40,7 +40,7 @@ dependencies = [
     "jupyterlab-widgets",
     "nbformat",
     "jupyter-core",
-    "numpy<2",
+    "numpy",
     "pyunicore",
     "tvb-library",
     "tvb-ext-bucket",
