@@ -4,6 +4,7 @@ from pathlib import Path
 from jupyter_core.paths import jupyter_config_dir
 
 from tvbextxircuits.logger.builder import get_logger
+from tvbextxircuits.settings_loader import settings_config
 
 STORAGE_CONFIG_FILE = 'storage_config.json'  # To be used only for HPC runs
 COLLAB_NAME_KEY = 'collab_name'  # Used only for HPC runs
@@ -63,7 +64,8 @@ def get_user_settings():
 
 def get_base_dir_web():
     user_settings = get_user_settings()
-    base_dir = user_settings.get('baseDirectoryWeb', '.')  # if baseDirectory is not set, use a default value
+    default_base_dir_web = settings_config.get('base_directory_web')  # get default from settings config
+    base_dir = user_settings.get('baseDirectoryWeb', default_base_dir_web)
     LOGGER.info(f'Base directory Web in user settings is: {base_dir}')
     base_dir = os.path.abspath(os.path.expanduser(base_dir))
     return base_dir
@@ -71,7 +73,8 @@ def get_base_dir_web():
 
 def get_base_dir_kernel():
     user_settings = get_user_settings()
-    base_dir = user_settings.get('baseDirectoryKernel', '.')  # if baseDirectory is not set, use a default value
+    default_base_dir_kernel = settings_config.get('base_directory_kernel')  # get default from settings config
+    base_dir = user_settings.get('baseDirectoryKernel', default_base_dir_kernel)
     LOGGER.info(f'Base directory Kernel in user settings is: {base_dir}')
     base_dir = os.path.abspath(os.path.expanduser(base_dir))
     return base_dir

@@ -371,12 +371,17 @@ export default function Sidebar(props: SidebarProps) {
                                 {mapCategories(category, componentList)}
                             </Accordion>
 
-                            <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
-                            <h6 style={{ paddingLeft: "10px", margin: "0px", marginBottom: "8px" }}>AVAILABLE FOR
-                                INSTALLATION</h6>
-                            <Accordion>
-                                {mapRemoteLibraries()}
-                            </Accordion>
+                            {remoteLibList.length > 0 && (
+                                <>
+                                    <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
+                                    <h6 style={{ paddingLeft: "10px", margin: "0px", marginBottom: "8px" }}>
+                                      AVAILABLE FOR INSTALLATION
+                                    </h6>
+                                    <Accordion>
+                                      {mapRemoteLibraries()}
+                                    </Accordion>
+                                </>
+                            )}
                         </>
                       ) : (
                         <div style={{margin: "10px"}}>
