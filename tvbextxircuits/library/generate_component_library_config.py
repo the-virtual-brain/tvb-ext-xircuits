@@ -3,6 +3,7 @@ import posixpath
 import json
 import toml
 from configparser import ConfigParser
+from tvbextxircuits.settings_loader import settings_config
 
 def parse_gitmodules(gitmodules_path):
     config = ConfigParser()
@@ -124,7 +125,17 @@ def get_component_library_config(filename=".xircuits/component_library_config.js
     if os.path.exists(filename):
         try:
             with open(filename, 'r') as json_file:
-                return json.load(json_file)
+                config = json.load(json_file)
+
+                # Check if remote libraries should be available for installation based on settings config
+                enable_remote = settings_config.get('enable_remote_libraries').lower() == 'true'
+
+                if not enable_remote:
+                    libraries = config.get('libraries', [])
+                    config['libraries'] = [lib for lib in libraries if lib.get('status') != 'remote']
+
+                return config
+
         except Exception as e:
             print(f"Error reading JSON file at {filename}: {e}")
             return None
