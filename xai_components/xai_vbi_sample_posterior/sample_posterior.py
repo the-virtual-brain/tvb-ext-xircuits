@@ -6,17 +6,16 @@ from vbi.inference import Inference
 
 @xai_component(color="rgb(220, 5, 45)")
 class SamplePosterior(Component):
-    inference_obj: InArg[Inference]
     posterior: InArg[any]
     scaler: InArg[StandardScaler]
-    x_obs: InArg[any]
+    X_scaled: InArg[any]
     num_samples: InArg[int]
 
     samples: OutArg[torch.Tensor]
 
     def execute(self, ctx):
 
-        x_np = np.array(self.x_obs.value)
+        x_np = np.array(self.X_scaled.value)
 
         # ensure 2D for scaler, then transform with the SAME scaler
         if x_np.ndim == 1:
@@ -25,6 +24,7 @@ class SamplePosterior(Component):
         xs = torch.tensor(xs_np, dtype=torch.float32)  # shape (B,F)
 
         # Sample Posterior
-        samples = self.inference_obj.value.sample_posterior(xs[0, :], self.num_samples.value, self.posterior.value)
+        obj = Inference()
+        samples = obj.sample_posterior(xs[0, :], self.num_samples.value, self.posterior.value)
         self.samples.value = samples
 

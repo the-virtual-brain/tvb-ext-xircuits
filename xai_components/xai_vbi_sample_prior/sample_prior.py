@@ -6,15 +6,16 @@ import sbi.utils as utils
 class SamplePrior(Component):
     prior: InArg[utils.BoxUniform]
     num_sim: InArg[int]
-    seed: InArg[int]  #optional
+    seed: InArg[int]
 
     theta: OutArg[torch.Tensor]
-    inference_obj: OutArg[any]
+
+    def __init__(self):
+        super().__init__()
+        self.seed.value = None
 
     def execute(self, ctx):
         from vbi.inference import Inference
 
         obj = Inference()
-        seed = None if self.seed.value in (None, "") else int(self.seed.value)
-        self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), seed)
-        self.inference_obj.value = obj
+        self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), self.seed.value)

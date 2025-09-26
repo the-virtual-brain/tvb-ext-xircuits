@@ -7,13 +7,18 @@ from copy import deepcopy
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(Component):
     backend: InArg[str]
-    model: InArg[any]           # union between vbi models
+    model: InArg[any]               # union between vbi models - there is no base class
     theta: InArg[torch.Tensor]
     theta_names: InArg[list]
-    cfg: InArg[object]
+    cfg: InArg[dict]
     num_workers: InArg[int]
 
-    stat_vec: OutArg[np.ndarray]  # (N, F)
+    stat_vec: OutArg[np.ndarray]    # (N, F)
+
+    def __init__(self):
+        super().__init__()
+        self.backend.value = "cupy"
+        self.num_workers.value = 1
 
     def execute(self, ctx):
         import vbi
@@ -28,20 +33,15 @@ class SimulationRunner(Component):
             raise ValueError(f"Theta has {num_params} columns, but theta_names has {len(self.theta_names.value)}.")
         idx = {par: index for index, par in enumerate(self.theta_names.value)}
 
-        fs = 1000.0 / float(self.model.value.dt)   #TODO which formula we want here?
-        backend = (self.backend.value or "cpp").lower()
+        fs = 1000.0 / float(self.model.value.dt)   #TODO should we expose 'fs' as a parameter?
 
         # infer nn for broadcasting
-        print(self.model.value)
-        print(type(self.model.value.weights))
-        print(type(self.model.value.t_end))
-        print(type(self.model.value.same_initial_state))
-        nn = int(self.model.value.weights.shape[0])
+        nn = int(np.asarray(self.model.value.weights).shape[0])
         nodewise = {"C0", "C1", "C2", "C3"}        #TODO do we need to add more params here?
 
         model = self.model.value
 
-        if backend == "cpp":
+        if self.backend.value == "cpp":
             base = model._par
 
             def one(sim_i: int):
@@ -59,31 +59,32 @@ class SimulationRunner(Component):
                                           n_workers=1, verbose=False).values
                 return stat_vec[0]
 
-            num_procs = self.num_workers.value or 1
-            with Pool(processes=num_procs) as pool:
+            with Pool(processes=self.num_workers.value) as pool:
                 rows = pool.map(one, range(num_sim))
 
             x = np.vstack(rows)
 
-        elif backend == "cupy":
+        elif self.backend.value == "cupy":
             model.num_sim = num_sim
             for par, index in idx.items():
                 vals = theta_np[:, index]
                 if par in nodewise:
-                    model.setattr(par, np.tile(vals, (nn, 1)))  #TODO how do we want to populate these parameters?
+                    setattr(model, par, np.tile(vals, (nn, 1)))  #TODO how do we want to populate these parameters?
                 else:
-                    model.setattr(par, vals)
+                    setattr(model, par, vals)
             data = model.run()
             ts = data["x"]
             if ts.ndim != 3:
-                raise ValueError(f"{backend} expected x=(time, nodes, nsim); got {ts.shape}")
+                raise ValueError(f"{self.backend.value} expected x=(time, nodes, nsim); got {ts.shape}")
             ts = ts.transpose(2, 1, 0)
             #TODO: extract_features has multiple kwargs available - add all of them?
+            #TODO: multiple extract_features functions - do we want to expose a parameter for user to choose?
             stat_vec = vbi.extract_features(ts=ts, cfg=self.cfg.value, fs=fs,
-                                      n_workers=int(self.n_workers.value or 1),
+                                      n_workers=int(self.num_workers.value),
                                       verbose=False).values
             x = stat_vec  # (N, F)
         else:
-            raise ValueError(f"{backend} backend not supported.")
+            raise ValueError(f"{self.backend.value} backend not supported.")
 
         self.stat_vec.value = x
+        print(f"Extracted features: {self.stat_vec.value}")

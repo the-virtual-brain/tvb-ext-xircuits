@@ -10,7 +10,7 @@ class BatchRun(Component):
     par: InArg[dict]             # base params
     theta: InArg[torch.Tensor]   # (num_sim, num_params)
     theta_names: InArg[list]
-    cfg: InArg[object]
+    cfg: InArg[dict]
     n_workers: InArg[int]
 
     stat_vec: OutArg[np.ndarray]  # (N, F)

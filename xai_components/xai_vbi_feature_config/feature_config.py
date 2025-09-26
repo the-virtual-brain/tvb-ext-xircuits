@@ -6,7 +6,7 @@ class FeatureConfig(Component):
     names: InArg[list]
     json_path: InArg[str]
 
-    cfg: OutArg[any]
+    cfg: OutArg[dict]
 
     def execute(self, ctx):
         from vbi import get_features_by_domain, get_features_by_given_names

@@ -7,15 +7,22 @@ class ConfigInference(Component):
     prior_min: InArg[list]
     prior_max: InArg[list]
     num_sim: InArg[int]
-    seed: InArg[int]  #optional
+    seed: InArg[int]
     domain_cfg: InArg[list]
     names_cfg: InArg[list]
     json_path_cfg: InArg[str]
 
     prior: OutArg[utils.BoxUniform]
     theta:OutArg[torch.Tensor]
-    cfg: OutArg[any]
-    inference_obj: OutArg[any]
+    cfg: OutArg[dict]
+
+    def __init__(self):
+        super().__init__()
+        self.num_sim.value = 1
+        self.seed.value = None
+        self.domain_cfg.value = None
+        self.names_cfg.value = None
+        self.json_path_cfg.value = None
 
     def execute(self, ctx):
         from vbi import get_features_by_domain, get_features_by_given_names
@@ -27,13 +34,10 @@ class ConfigInference(Component):
 
         # Sample Prior
         obj = Inference()
-        seed = None if self.seed.value in (None, "") else int(self.seed.value)
-        self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), seed)
-        self.inference_obj.value = obj
+        self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), self.seed.value)
+        print(f"Theta: {self.theta.value}")
 
         # Feature Config
-        names = None if self.names_cfg in (None, "") else self.names_cfg.value
         cfg = get_features_by_domain(domain=self.domain_cfg.value, json_path=self.json_path_cfg.value)
-        if names:
-            cfg = get_features_by_given_names(cfg, names=names)
+        cfg = get_features_by_given_names(cfg, names=self.names_cfg.value)
         self.cfg.value = cfg
