@@ -9,7 +9,7 @@ from vbi.inference import Inference
 class TrainPosterior(Component):
     prior: InArg[utils.BoxUniform]
     theta: InArg[torch.Tensor]
-    stat_vec: InArg[np.ndarray]                        # OutArg from BatchRun
+    stat_vec: InArg[np.ndarray]
     method: InArg[str]
     device: InArg[str]
     density_estimator: InArg[str]
@@ -17,7 +17,6 @@ class TrainPosterior(Component):
     with_std: InArg[bool]
 
     posterior: OutArg[object]
-    scaler: OutArg[StandardScaler]
     X_scaled: OutArg[torch.Tensor]
 
     def __init__(self):
@@ -31,6 +30,7 @@ class TrainPosterior(Component):
     def execute(self, ctx):
         stat_vec_np = np.array(self.stat_vec.value)
 
+        #TODO leave the StandardScaler here or create a separate component for it?
         scaler = StandardScaler(
             with_mean=self.with_mean.value,
             with_std=self.with_std.value
@@ -45,6 +45,5 @@ class TrainPosterior(Component):
                               density_estimator=self.density_estimator.value)
 
         self.posterior.value = posterior
-        self.scaler.value = scaler
         self.X_scaled.value = stat_vec_st
 

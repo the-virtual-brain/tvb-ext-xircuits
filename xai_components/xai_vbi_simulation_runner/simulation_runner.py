@@ -7,7 +7,7 @@ from copy import deepcopy
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(Component):
     backend: InArg[str]
-    model: InArg[any]               # union between vbi models - there is no base class
+    model: InArg[any]               # union between vbi models
     theta: InArg[torch.Tensor]
     theta_names: InArg[list]
     cfg: InArg[dict]
@@ -33,16 +33,23 @@ class SimulationRunner(Component):
             raise ValueError(f"Theta has {num_params} columns, but theta_names has {len(self.theta_names.value)}.")
         idx = {par: index for index, par in enumerate(self.theta_names.value)}
 
-        fs = 1000.0 / float(self.model.value.dt)   #TODO should we expose 'fs' as a parameter?
+        #TODO should we expose the sampling frequency as a parameter(InArg[int, float]) and let the user choose the
+        #  value he wants?
+        fs = 1000.0 / float(self.model.value.dt)
 
         # infer nn for broadcasting
         nn = int(np.asarray(self.model.value.weights).shape[0])
-        nodewise = {"C0", "C1", "C2", "C3"}        #TODO do we need to add more params here?
+
+        #TODO How should we shape/broadcast special params (e.g., C0–C3)?
+        #  Current workaround: np.tile to (number_nodes, number_sim) for node-wise params (see lines 57, 77)
+        nodewise = {"C0", "C1", "C2", "C3"}  # temporary
 
         model = self.model.value
 
         if self.backend.value == "cpp":
-            base = model._par
+            #TODO Can we have a get_params() function on models?
+            # We need to read the user set params from Model components (e.g. JRSdeCupy) without using private _par
+            base = model._par  # temporary
 
             def one(sim_i: int):
                 par_i = deepcopy(base)
@@ -69,16 +76,21 @@ class SimulationRunner(Component):
             for par, index in idx.items():
                 vals = theta_np[:, index]
                 if par in nodewise:
-                    setattr(model, par, np.tile(vals, (nn, 1)))  #TODO how do we want to populate these parameters?
+                    value = np.tile(vals, (nn, 1))
+                    setattr(model, par, value)
+                    print(f"{par}: {value}")
                 else:
                     setattr(model, par, vals)
+                    print(f"{par}: {vals}")
             data = model.run()
             ts = data["x"]
             if ts.ndim != 3:
                 raise ValueError(f"{self.backend.value} expected x=(time, nodes, nsim); got {ts.shape}")
             ts = ts.transpose(2, 1, 0)
-            #TODO: extract_features has multiple kwargs available - add all of them?
-            #TODO: multiple extract_features functions - do we want to expose a parameter for user to choose?
+            #TODO: extract_features has multiple kwargs available, should expose all of them as InArgs
+            # or provide a single "extract_kwargs" dict?
+            #TODO: Should we support selecting extract_features_df() / extract_features_list() or keep only the default
+            # function?
             stat_vec = vbi.extract_features(ts=ts, cfg=self.cfg.value, fs=fs,
                                       n_workers=int(self.num_workers.value),
                                       verbose=False).values
