@@ -14,6 +14,18 @@ def is_on_hub() -> bool:
     """
     return bool(os.getenv('JUPYTERHUB_API_TOKEN'))
 
+def is_on_ebrains() -> bool:
+    """
+    Detect whether the extension is running at EBrains lab.
+    We check for clb_nb_utils module.
+    """
+    try:
+        from clb_nb_utils import oauth as clb_oauth
+        return callable(hasattr(clb_oauth, "get_token"))
+    except ImportError:
+        return False
+
+
 
 def load_settings() -> dict[str, str]:
     """
@@ -22,7 +34,7 @@ def load_settings() -> dict[str, str]:
     - Local: loads 'settings.local.conf'
     """
     config = configparser.ConfigParser()
-    filename = 'settings.hub.conf' if is_on_hub() else 'settings.local.conf'
+    filename = 'settings.hub.conf' if is_on_hub() and not is_on_ebrains() else 'settings.local.conf'
     config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'config', filename))
 
     if not os.path.exists(config_path):
