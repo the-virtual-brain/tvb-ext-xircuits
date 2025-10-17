@@ -21,7 +21,7 @@ def is_on_ebrains() -> bool:
     """
     try:
         from clb_nb_utils import oauth as clb_oauth
-        return callable(hasattr(clb_oauth, "get_token"))
+        return callable(getattr(clb_oauth, "get_token", None))
     except ImportError:
         return False
 
