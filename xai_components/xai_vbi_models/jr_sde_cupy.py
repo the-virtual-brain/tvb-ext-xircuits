@@ -34,6 +34,7 @@ class JRSdeCupy(Component):
     same_noise_per_sim: InArg[bool]
 
     model: OutArg[JR_sde]
+    time_series_key: OutArg[str]
 
     def execute(self, ctx):
         keys = ["G", "A", "B", "v", "r", "v0", "vmax", "C0", "C1", "C2", "C3", "a", "b", "mu", "noise_amp",
@@ -46,4 +47,5 @@ class JRSdeCupy(Component):
                 params[key] = param.value
 
         self.model.value = JR_sde(par=params)
+        self.time_series_key.value = "x"
 

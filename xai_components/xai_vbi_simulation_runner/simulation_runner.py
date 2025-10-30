@@ -3,15 +3,17 @@ import numpy as np
 import torch
 from multiprocessing import Pool
 from copy import deepcopy
+from typing import Literal
 
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(Component):
-    backend: InArg[str]
+    backend: InArg[Literal['cupy', 'cpp']]
     model: InArg[any]               # union between vbi models
     theta: InArg[torch.Tensor]
     theta_names: InArg[list]
     cfg: InArg[dict]
     num_workers: InArg[int]
+    time_series_key: InArg[str]
 
     stat_vec: OutArg[np.ndarray]    # (N, F)
 
@@ -45,6 +47,7 @@ class SimulationRunner(Component):
         nodewise = {"C0", "C1", "C2", "C3"}  # temporary
 
         model = self.model.value
+        x = self.time_series_key.value
 
         if self.backend.value == "cpp":
             #TODO Can we have a get_params() function on models?
@@ -61,7 +64,7 @@ class SimulationRunner(Component):
                         par_i[par] = val
                 model_class = model.__class__
                 data = model_class(par_i).run()
-                ts = data["x"]
+                ts = data[x]
                 stat_vec = vbi.extract_features(ts=[ts], cfg=self.cfg.value, fs=fs,
                                           n_workers=1, verbose=False).values
                 return stat_vec[0]
@@ -83,7 +86,7 @@ class SimulationRunner(Component):
                     setattr(model, par, vals)
                     print(f"{par}: {vals}")
             data = model.run()
-            ts = data["x"]
+            ts = data[x]
             if ts.ndim != 3:
                 raise ValueError(f"{self.backend.value} expected x=(time, nodes, nsim); got {ts.shape}")
             ts = ts.transpose(2, 1, 0)
