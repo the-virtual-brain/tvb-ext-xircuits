@@ -1,6 +1,9 @@
 from xai_components.base import xai_component, Component, InArg, OutArg
 import sbi.utils as utils
 import torch
+import os
+from settings import OUTPUT_DIR
+import json
 
 @xai_component(color='rgb(220, 5, 45)')
 class ConfigInference(Component):
@@ -37,6 +40,15 @@ class ConfigInference(Component):
         obj = Inference()
         self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), self.seed.value)
         print(f"Theta: {self.theta.value}")
+
+        # Store theta and priors for plotting
+        path = os.path.join(OUTPUT_DIR, "theta.pt")
+        torch.save(self.theta.value, path)
+
+        path = os.path.join(OUTPUT_DIR, "priors.json")
+        data = {"prior_min": self.prior_min.value, "prior_max": self.prior_max.value}
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f)
 
         # Feature Config
         cfg = get_features_by_domain(domain=self.domain_cfg.value, json_path=self.json_path_cfg.value)

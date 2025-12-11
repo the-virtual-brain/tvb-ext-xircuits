@@ -1,8 +1,8 @@
-from xai_components.base import Component, InArg, OutArg
+from xai_components.base import xai_component, Component, InArg, OutArg
 from vbi.models.cupy.mpr import MPR_sde
 from typing import Union, Literal
 
-
+@xai_component(color='rgb(101, 179, 46)')
 class MPRSdeCupy(Component):
     G: InArg[Union[float, list]]
     dt: InArg[float]

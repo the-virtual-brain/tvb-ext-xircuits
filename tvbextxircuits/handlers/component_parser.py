@@ -10,7 +10,7 @@ import platform
 from .config import get_config
 
 import xai_components
-from xai_components.base_tvb import ComponentWithWidget
+from xai_components.base_tvb import ComponentWithWidget, ComponentWithViewer
 from tvbextxircuits.logger.builder import get_logger
 
 LOGGER = get_logger(__name__)
@@ -102,7 +102,8 @@ def read_orig_code(node: ast.AST, lines):
 
 
 def component_has_widget_assigned(node):
-    if any(base_class.id == ComponentWithWidget.__name__ for base_class in node.bases):
+    if any(base_class.id in {ComponentWithWidget.__name__, ComponentWithViewer.__name__}
+           for base_class in node.bases):
         return True
 
     return False

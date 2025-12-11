@@ -13,8 +13,9 @@ import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 
+from settings import OUTPUT_DIR
 from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
-from xai_components.base_tvb import ComponentWithWidget
+from xai_components.base_tvb import ComponentWithWidget, ComponentWithViewer
 
 from xai_components.logger.builder import get_logger
 from pathlib import Path
@@ -92,12 +93,13 @@ class NotebookFactory(object):
     def get_notebook_for_component(component_name, component_id, component_path, component_inputs, xircuits_id):
         component_class = determine_component_class(component_name, component_path)
 
-        if not issubclass(component_class, ComponentWithWidget):
+        if not (issubclass(component_class, ComponentWithWidget) or issubclass(component_class, ComponentWithViewer)):
             return None
 
         if component_class.__name__.startswith('StoreResults'):
             return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
-
+        elif component_class.__name__.startswith('SamplePosterior'):
+            return SamplePosteriorNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
         return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs, xircuits_id).get_notebook()
 
     @staticmethod
@@ -250,6 +252,62 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
             else:
                 inputs_str += param_str.format(key, f"numpy.array([{val}])")
         return inputs_str + '}'
+
+
+class SamplePosteriorNotebookGenerator(NotebookGenerator):
+
+    def get_notebook(self):
+        title = f"""# Posterior Pairplot"""
+        self.add_markdown_cell(title)
+
+        intro = f"#### Run the cell below to plot marginals and pairwise marginals of the posterior samples.\n" \
+                f"Each of the diagonal plots can be interpreted as a 1D-marginal of the distribution that the samples " \
+                f"were drawn from. Each upper-diagonal plot can be interpreted as a 2D-marginal of the distribution."
+
+        self.add_markdown_cell(intro)
+        code = self.sample_posterior()
+        self.add_code_cell(code)
+
+        return self.notebook
+
+    def sample_posterior(self):
+        code = "from sbi.analysis import pairplot\n" \
+               "import matplotlib.pyplot as plt\n" \
+               "import torch\n" \
+               "\n" \
+               "limits = [[i, j] for i, j in zip({prior_min}, {prior_max})]\n" \
+               "samples = torch.load('{samples}', weights_only=True)\n" \
+               "theta = torch.load('{theta}', weights_only=True)\n" \
+               "theta_true = theta[0,:]\n" \
+               "fig, ax = pairplot(samples, limits=limits, figsize=(5, 5),\n" \
+               "                   points=theta_true, labels={labels},\n"\
+               "                   upper='kde', diag='kde',\n"\
+               "                   fig_kwargs=dict(\n"\
+               "                       points_offdiag=dict(marker='*', markersize=10),\n"\
+               "                       points_colors=['g']),\n" \
+               "                   diag_kwargs={{'mpl_kwargs': {{'color': 'r'}}}},\n"\
+               "                   upper_kwargs={{'mpl_kwargs': {{'cmap': 'Blues'}}}},)\n" \
+               "\n" \
+               "ax[0,0].tick_params(labelsize=14)\n" \
+               "ax[0,0].margins(y=0)\n" \
+               "plt.tight_layout()"
+
+        inputs = self._prepare_component_inputs()
+        return code.format(**inputs)
+
+    @staticmethod
+    def _prepare_component_inputs():
+        priors_path = os.path.join(OUTPUT_DIR, "priors.json")
+        with open(priors_path, 'r', encoding="utf-8") as f:
+            data = json.load(f)
+
+        return {
+            "prior_min": data.get("prior_min", []),
+            "prior_max": data.get("prior_max", []),
+            "labels": data.get("theta_names", []),
+            "samples": os.path.join(OUTPUT_DIR, "samples.pt"),
+            "theta": os.path.join(OUTPUT_DIR, "theta.pt"),
+        }
 
 
 def determine_component_class(component_name, component_path):

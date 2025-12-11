@@ -26,3 +26,9 @@ class ComponentWithWidget(TVBComponent):
     """
     Used to flag a component that has an associate widget to be displayed in Xircuits UI for interactive setup.
     """
+
+class ComponentWithViewer(Component):
+    """"
+    Marker for components that expose an 'Open Viewer' functionality, but are not from TVB world.
+    """
+    pass

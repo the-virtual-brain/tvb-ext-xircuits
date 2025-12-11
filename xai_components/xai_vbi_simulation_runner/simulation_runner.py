@@ -4,6 +4,30 @@ import torch
 from multiprocessing import Pool
 from copy import deepcopy
 from typing import Literal
+from settings import memory, OUTPUT_DIR
+import os
+import json
+
+
+def cpp_worker(task):
+    from vbi import extract_features
+
+    (model_cls, base, theta_row, idx, nodewise, nn, fs, cfg, ts_key) = task
+    par_i = deepcopy(base)
+    print(theta_row, idx, nodewise, nn, fs, cfg, ts_key)
+    for name, col in idx.items():
+        val = theta_row[col]
+        if name in nodewise:
+            par_i[name] = np.full(nn, val, dtype=float)
+        else:
+            par_i[name] = val
+    par_i.pop("dim", None)
+    print("Parameters of i: ", par_i)
+    data = model_cls(par_i).run()
+    ts = data[ts_key]
+    stat_vec = extract_features(ts=[ts], cfg=cfg, fs=fs,
+                              n_workers=1, verbose=False).values
+    return stat_vec[0]
 
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(Component):
@@ -23,8 +47,6 @@ class SimulationRunner(Component):
         self.num_workers.value = 1
 
     def execute(self, ctx):
-        import vbi
-
         # theta -> numpy
         th = self.theta.value
         theta_np = th.detach().cpu().numpy() if hasattr(th, "detach") else np.asarray(th)
@@ -47,46 +69,51 @@ class SimulationRunner(Component):
         nodewise = {"C0", "C1", "C2", "C3"}  # temporary
 
         model = self.model.value
-        x = self.time_series_key.value
+        ts_key = self.time_series_key.value
 
         if self.backend.value == "cpp":
             #TODO Can we have a get_params() function on models?
             # We need to read the user set params from Model components (e.g. JRSdeCupy) without using private _par
+            model_cls = model.__class__
             base = model._par  # temporary
 
-            def one(sim_i: int):
-                par_i = deepcopy(base)
-                for col, par in idx.items():
-                    val = theta_np[sim_i, par]
-                    if col in nodewise:
-                        par_i[par] = np.full(nn, val, dtype=float)
-                    else:
-                        par_i[par] = val
-                model_class = model.__class__
-                data = model_class(par_i).run()
-                ts = data[x]
-                stat_vec = vbi.extract_features(ts=[ts], cfg=self.cfg.value, fs=fs,
-                                          n_workers=1, verbose=False).values
-                return stat_vec[0]
+            tasks = []
+            for i in range(num_sim):
+                tasks.append((
+                    model_cls,
+                    base,
+                    theta_np[i, :],  # row for this sim
+                    idx,
+                    nodewise,
+                    nn,
+                    fs,
+                    self.cfg.value,
+                    ts_key
+                ))
 
             with Pool(processes=self.num_workers.value) as pool:
-                rows = pool.map(one, range(num_sim))
+                rows = pool.map(cpp_worker, tasks)
 
             x = np.vstack(rows)
 
         elif self.backend.value == "cupy":
-            model.num_sim = num_sim
+            base = deepcopy(model._par)
+            base["num_sim"] = num_sim
+
+            base["weights"] = np.array(base.get("weights"))
+            resolved_par = deepcopy(base)
+
             for par, index in idx.items():
                 vals = theta_np[:, index]
                 if par in nodewise:
-                    value = np.tile(vals, (nn, 1))
-                    setattr(model, par, value)
-                    print(f"{par}: {value}")
+                    resolved_par[par] = np.tile(vals, (nn, 1))
                 else:
-                    setattr(model, par, vals)
-                    print(f"{par}: {vals}")
-            data = model.run()
-            ts = data[x]
+                    resolved_par[par] = vals
+
+            model_cls = model.__class__
+            data = simulate_cupy(model_cls, resolved_par)
+
+            ts = data[ts_key]
             if ts.ndim != 3:
                 raise ValueError(f"{self.backend.value} expected x=(time, nodes, nsim); got {ts.shape}")
             ts = ts.transpose(2, 1, 0)
@@ -94,12 +121,42 @@ class SimulationRunner(Component):
             # or provide a single "extract_kwargs" dict?
             #TODO: Should we support selecting extract_features_df() / extract_features_list() or keep only the default
             # function?
-            stat_vec = vbi.extract_features(ts=ts, cfg=self.cfg.value, fs=fs,
-                                      n_workers=int(self.num_workers.value),
-                                      verbose=False).values
+            stat_vec = featurize(ts, self.cfg.value, fs, int(self.num_workers.value), False)
             x = stat_vec  # (N, F)
         else:
             raise ValueError(f"{self.backend.value} backend not supported.")
 
         self.stat_vec.value = x
+
+        # Store names of the inferred parameters for plotting
+        path = os.path.join(OUTPUT_DIR, "priors.json")
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        data["theta_names"] = self.theta_names.value
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f)
+
         print(f"Extracted features: {self.stat_vec.value}")
+
+
+@memory.cache
+def simulate_cupy(model_class, resolved_par: dict) -> dict:
+    """
+        Cache the simulation results for CUPY backend.
+        The cache key includes the model class and the model parameters
+    """
+    print(f"Resolved params: {resolved_par}")
+    model = model_class(resolved_par)
+    return model.run()
+
+@memory.cache(ignore=['n_workers', 'verbose'])
+def featurize(ts, cfg: dict, fs: float, n_workers: int, verbose: bool) -> np.ndarray:
+    """
+        Cache the extracted features result.
+        The cache key includes the timeseries data, feature configuration dict (cfg) and sampling frequency (fs)
+    """
+    from vbi import extract_features
+
+    res = extract_features(ts=ts, cfg=cfg, fs=fs, n_workers=n_workers, verbose=verbose)
+    return res.values
