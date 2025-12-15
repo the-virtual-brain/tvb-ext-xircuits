@@ -257,12 +257,12 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
 class SamplePosteriorNotebookGenerator(NotebookGenerator):
 
     def get_notebook(self):
-        title = f"""# Posterior Pairplot"""
+        title = "# Posterior Pairplot"
         self.add_markdown_cell(title)
 
-        intro = f"#### Run the cell below to plot marginals and pairwise marginals of the posterior samples.\n" \
-                f"Each of the diagonal plots can be interpreted as a 1D-marginal of the distribution that the samples " \
-                f"were drawn from. Each upper-diagonal plot can be interpreted as a 2D-marginal of the distribution."
+        intro = "#### Run the cell below to plot marginals and pairwise marginals of the posterior samples.\n" \
+                "Each of the diagonal plots can be interpreted as a 1D-marginal of the distribution that the samples " \
+                "were drawn from. Each upper-diagonal plot can be interpreted as a 2D-marginal of the distribution."
 
         self.add_markdown_cell(intro)
         code = self.sample_posterior()
