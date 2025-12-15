@@ -30,7 +30,6 @@ class TrainPosterior(Component):
     def execute(self, ctx):
         stat_vec_np = np.array(self.stat_vec.value)
 
-        #TODO leave the StandardScaler here or create a separate component for it?
         scaler = StandardScaler(
             with_mean=self.with_mean.value,
             with_std=self.with_std.value

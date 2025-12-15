@@ -301,12 +301,18 @@ class SamplePosteriorNotebookGenerator(NotebookGenerator):
         with open(priors_path, 'r', encoding="utf-8") as f:
             data = json.load(f)
 
+        samples = os.path.join(OUTPUT_DIR, "samples.pt").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(OUTPUT_DIR, "samples.pt")
+
+        theta = os.path.join(OUTPUT_DIR, "theta.pt").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(OUTPUT_DIR, "theta.pt")
+
         return {
             "prior_min": data.get("prior_min", []),
             "prior_max": data.get("prior_max", []),
             "labels": data.get("theta_names", []),
-            "samples": os.path.join(OUTPUT_DIR, "samples.pt"),
-            "theta": os.path.join(OUTPUT_DIR, "theta.pt"),
+            "samples": samples,
+            "theta": theta,
         }
 
 

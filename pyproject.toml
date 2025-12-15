@@ -66,6 +66,9 @@ full = [
     "tvb-gdist",
     "tvb-framework",
     "tvb-widgets>=1.0",
+    "vbi[inference]",
+    "torch",
+    "sbi",
 ]
 
 [tool.hatch.version]

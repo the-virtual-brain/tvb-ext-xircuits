@@ -57,23 +57,17 @@ class SimulationRunner(Component):
             raise ValueError(f"Theta has {num_params} columns, but theta_names has {len(self.theta_names.value)}.")
         idx = {par: index for index, par in enumerate(self.theta_names.value)}
 
-        #TODO should we expose the sampling frequency as a parameter(InArg[int, float]) and let the user choose the
-        #  value he wants?
         fs = 1000.0 / float(self.model.value.dt)
 
         # infer nn for broadcasting
         nn = int(np.asarray(self.model.value.weights).shape[0])
 
-        #TODO How should we shape/broadcast special params (e.g., C0–C3)?
-        #  Current workaround: np.tile to (number_nodes, number_sim) for node-wise params (see lines 57, 77)
         nodewise = {"C0", "C1", "C2", "C3"}  # temporary
 
         model = self.model.value
         ts_key = self.time_series_key.value
 
         if self.backend.value == "cpp":
-            #TODO Can we have a get_params() function on models?
-            # We need to read the user set params from Model components (e.g. JRSdeCupy) without using private _par
             model_cls = model.__class__
             base = model._par  # temporary
 
@@ -97,11 +91,10 @@ class SimulationRunner(Component):
             x = np.vstack(rows)
 
         elif self.backend.value == "cupy":
-            base = deepcopy(model._par)
-            base["num_sim"] = num_sim
+            resolved_par = deepcopy(model._par)
+            resolved_par["num_sim"] = num_sim
 
-            base["weights"] = np.array(base.get("weights"))
-            resolved_par = deepcopy(base)
+            resolved_par["weights"] = np.array(resolved_par.get("weights"))
 
             for par, index in idx.items():
                 vals = theta_np[:, index]
@@ -111,17 +104,13 @@ class SimulationRunner(Component):
                     resolved_par[par] = vals
 
             model_cls = model.__class__
-            data = simulate_cupy(model_cls, resolved_par)
+            data = simulate_cache(model_cls, resolved_par)
 
             ts = data[ts_key]
             if ts.ndim != 3:
                 raise ValueError(f"{self.backend.value} expected x=(time, nodes, nsim); got {ts.shape}")
             ts = ts.transpose(2, 1, 0)
-            #TODO: extract_features has multiple kwargs available, should expose all of them as InArgs
-            # or provide a single "extract_kwargs" dict?
-            #TODO: Should we support selecting extract_features_df() / extract_features_list() or keep only the default
-            # function?
-            stat_vec = featurize(ts, self.cfg.value, fs, int(self.num_workers.value), False)
+            stat_vec = featurize_cache(ts, self.cfg.value, fs, int(self.num_workers.value), False)
             x = stat_vec  # (N, F)
         else:
             raise ValueError(f"{self.backend.value} backend not supported.")
@@ -141,9 +130,9 @@ class SimulationRunner(Component):
 
 
 @memory.cache
-def simulate_cupy(model_class, resolved_par: dict) -> dict:
+def simulate_cache(model_class, resolved_par: dict) -> dict:
     """
-        Cache the simulation results for CUPY backend.
+        Cache the simulation results.
         The cache key includes the model class and the model parameters
     """
     print(f"Resolved params: {resolved_par}")
@@ -151,7 +140,7 @@ def simulate_cupy(model_class, resolved_par: dict) -> dict:
     return model.run()
 
 @memory.cache(ignore=['n_workers', 'verbose'])
-def featurize(ts, cfg: dict, fs: float, n_workers: int, verbose: bool) -> np.ndarray:
+def featurize_cache(ts, cfg: dict, fs: float, n_workers: int, verbose: bool) -> np.ndarray:
     """
         Cache the extracted features result.
         The cache key includes the timeseries data, feature configuration dict (cfg) and sampling frequency (fs)

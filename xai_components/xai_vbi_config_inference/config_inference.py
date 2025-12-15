@@ -32,7 +32,6 @@ class ConfigInference(Component):
         from vbi.inference import Inference
 
         # Make prior
-        #TODO is BoxUniform the appropriate prior here or we should let the user choose from a list/select?
         self.prior.value = utils.BoxUniform(low=torch.tensor(self.prior_min.value),
                                             high=torch.tensor(self.prior_max.value))
 
@@ -53,5 +52,4 @@ class ConfigInference(Component):
         # Feature Config
         cfg = get_features_by_domain(domain=self.domain_cfg.value, json_path=self.json_path_cfg.value)
         cfg = get_features_by_given_names(cfg, names=self.names_cfg.value)
-        #TODO should we expose a parameter (InArg) for the tag getter (get_features_by_tag) ?
         self.cfg.value = cfg

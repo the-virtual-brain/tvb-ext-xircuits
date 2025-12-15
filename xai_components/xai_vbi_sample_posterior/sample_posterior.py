@@ -33,3 +33,4 @@ class SamplePosterior(ComponentWithViewer):
 
         self.samples.value = samples
 
+        print(f"Sample Posterior: {self.samples.value}")

@@ -23,7 +23,6 @@ class JRSdeCpp(Component):
     noise_seed: InArg[int] #?type
     seed: InArg[int]
     dt: InArg[float]
-    dim: InArg[int]
     method: InArg[str]
     t_transition: InArg[float]
     t_end: InArg[float]
@@ -35,7 +34,7 @@ class JRSdeCpp(Component):
 
     def execute(self, ctx):
         keys = ["noise_seed", "seed", "G", "weights", "A", "B", "a", "b", "noise_mu", "noise_std", "vmax", "v0", "r",
-                "C0", "C1", "C2", "C3", "dt", "method", "t_transition", "t_end", "dim", "output", "RECORD_AVG",
+                "C0", "C1", "C2", "C3", "dt", "method", "t_transition", "t_end", "output", "RECORD_AVG",
                 "initial_state"]
         params = {}
         for key in keys:
