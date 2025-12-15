@@ -69,6 +69,7 @@ full = [
     "vbi[inference]",
     "torch",
     "sbi",
+    "joblib"
 ]
 
 [tool.hatch.version]
