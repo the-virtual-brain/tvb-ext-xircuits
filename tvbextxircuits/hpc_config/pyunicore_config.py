@@ -167,7 +167,7 @@ class PyunicoreSubmitter(object):
         LOGGER.info(f"You are running in dev mode, starting to install {local_package_name} on HPC {self.site}...")
         home_storage.rm(local_package_name)
         home_storage.upload(
-            input_file=f'dist/{local_package_name}',
+            file_name=f'dist/{local_package_name}',
             destination=f'{self.env_dir}/{local_package_name}')
         self.pip_libraries = self.pip_libraries.replace('tvb-ext-xircuits', local_package_name)
         job_description = {

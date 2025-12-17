@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from sklearn.preprocessing import StandardScaler
 import sbi.utils as utils
-from vbi.inference import Inference
+from vbi.sbi_inference import Inference
 
 @xai_component(color="rgb(220, 5, 45)")
 class TrainPosterior(Component):

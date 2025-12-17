@@ -13,7 +13,7 @@ import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 
-from settings import OUTPUT_DIR
+from xai_components.settings import OUTPUT_DIR
 from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
 from xai_components.base_tvb import ComponentWithWidget, ComponentWithViewer
 

@@ -1,8 +1,8 @@
 from xai_components.base import xai_component, InArg, OutArg
 import torch
-from vbi.inference import Inference
+from vbi.sbi_inference import Inference
 import os
-from settings import OUTPUT_DIR
+from xai_components.settings import OUTPUT_DIR
 from xai_components.base_tvb import ComponentWithViewer
 
 

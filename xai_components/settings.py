@@ -2,7 +2,7 @@ import os
 from joblib import Memory
 
 # Paths
-CACHE_DIR = os.path.join(os.path.expanduser('~'), '.cache', 'tvbextxircuits')
+CACHE_DIR = os.path.join(os.path.expanduser('~'), '.cache-xircuits')
 OUTPUT_DIR = os.path.join(os.path.expanduser('~'), 'output')
 
 os.makedirs(CACHE_DIR, exist_ok=True)

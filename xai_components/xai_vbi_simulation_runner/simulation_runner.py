@@ -4,7 +4,7 @@ import torch
 from multiprocessing import Pool
 from copy import deepcopy
 from typing import Literal
-from settings import memory, OUTPUT_DIR
+from xai_components.settings import memory, OUTPUT_DIR
 import os
 import json
 

@@ -2,7 +2,7 @@ from xai_components.base import xai_component, Component, InArg, OutArg
 import sbi.utils as utils
 import torch
 import os
-from settings import OUTPUT_DIR
+from xai_components.settings import OUTPUT_DIR
 import json
 
 @xai_component(color='rgb(220, 5, 45)')
