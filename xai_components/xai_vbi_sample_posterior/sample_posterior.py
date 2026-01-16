@@ -2,7 +2,6 @@ from xai_components.base import xai_component, InArg, OutArg
 import torch
 from vbi.sbi_inference import Inference
 import os
-from xai_components.settings import OUTPUT_DIR
 from xai_components.base_tvb import ComponentWithViewer
 
 
@@ -12,6 +11,7 @@ class SamplePosterior(ComponentWithViewer):
     X_scaled: InArg[any]
     num_samples: InArg[int]
     obs_idx: InArg[int]
+    output_dir: InArg[str]
 
     samples: OutArg[torch.Tensor]
 
@@ -28,7 +28,7 @@ class SamplePosterior(ComponentWithViewer):
         samples = obj.sample_posterior(x_idx_st, self.num_samples.value, self.posterior.value)
 
         # Store the resulted samples for plotting
-        path = os.path.join(OUTPUT_DIR, "samples.pt")
+        path = os.path.join(self.output_dir.value, "samples.pt")
         torch.save(samples, path)
 
         self.samples.value = samples

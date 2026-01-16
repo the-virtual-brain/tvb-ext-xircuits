@@ -221,9 +221,10 @@ class PyunicoreSubmitter(object):
             LOGGER.info(f"Successfully finished the environment setup.")
 
         LOGGER.info("Launching workflow...")
+        xircuits_filename = executable.replace('.py', '')
         job_description = {
             self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && "
-                                 f"python {executable} --is_hpc_launch=True",
+                                 f"python {executable} --is_hpc_launch=True --xircuits_filename='{xircuits_filename}'",
             self.PROJECT_KEY: self.project}
         job_workflow = client.new_job(job_description, inputs=inputs)
         LOGGER.info(f"Job is running at {self.site}."

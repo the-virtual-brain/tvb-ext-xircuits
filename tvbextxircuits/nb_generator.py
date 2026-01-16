@@ -13,7 +13,6 @@ import importlib
 from tvb.simulator.integrators import HeunDeterministic
 from tvb.simulator.models.oscillator import Generic2dOscillator
 
-from xai_components.settings import OUTPUT_DIR
 from tvbextxircuits.utils import get_base_dir_web, get_base_dir_kernel
 from xai_components.base_tvb import ComponentWithWidget, ComponentWithViewer
 
@@ -90,7 +89,7 @@ class ModelConfigLoader(object):
 class NotebookFactory(object):
 
     @staticmethod
-    def get_notebook_for_component(component_name, component_id, component_path, component_inputs, xircuits_id):
+    def get_notebook_for_component(component_name, component_id, component_path, component_inputs, xircuits_id, xircuits_filename):
         component_class = determine_component_class(component_name, component_path)
 
         if not (issubclass(component_class, ComponentWithWidget) or issubclass(component_class, ComponentWithViewer)):
@@ -99,8 +98,8 @@ class NotebookFactory(object):
         if component_class.__name__.startswith('StoreResults'):
             return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
         elif component_class.__name__.startswith('SamplePosterior'):
-            return SamplePosteriorNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
-        return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs, xircuits_id).get_notebook()
+            return SamplePosteriorNotebookGenerator(component_class, component_id, component_inputs, xircuits_filename = xircuits_filename).get_notebook()
+        return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs, xircuits_id = xircuits_id).get_notebook()
 
     @staticmethod
     def store(notebook, component_name, xircuits_id):
@@ -133,11 +132,12 @@ class NotebookFactory(object):
 
 class NotebookGenerator(object):
 
-    def __init__(self, component_class, component_id, component_inputs, xircuits_id=None):
+    def __init__(self, component_class, component_id, component_inputs, xircuits_id=None, xircuits_filename=None):
         self.component_class = component_class
         self.component_id = component_id
         self.component_inputs = component_inputs
         self.xircuits_id = xircuits_id
+        self.xircuits_filename = xircuits_filename
 
         if not os.path.exists(NOTEBOOKS_DIR):
             os.mkdir(NOTEBOOKS_DIR)
@@ -148,13 +148,16 @@ class NotebookGenerator(object):
         raise NotImplementedError
 
     def add_code_cell(self, code):
-        self._add_cell(nbformat.v4.new_code_cell(code, metadata={'editable': False, 'deletable': False}))
+        self._add_cell(nbformat.v4.new_code_cell(code, metadata={'editable': self.edit_cell(), 'deletable': False}))
 
     def add_markdown_cell(self, text):
         self._add_cell(nbformat.v4.new_markdown_cell(text))
 
     def _add_cell(self, cell):
         self.notebook['cells'].append(cell)
+
+    def edit_cell(self):
+        return False
 
 
 class TimeSeriesNotebookGenerator(NotebookGenerator):
@@ -262,7 +265,11 @@ class SamplePosteriorNotebookGenerator(NotebookGenerator):
 
         intro = "#### Run the cell below to plot marginals and pairwise marginals of the posterior samples.\n" \
                 "Each of the diagonal plots can be interpreted as a 1D-marginal of the distribution that the samples " \
-                "were drawn from. Each upper-diagonal plot can be interpreted as a 2D-marginal of the distribution."
+                "were drawn from. Each upper-diagonal plot can be interpreted as a 2D-marginal of the distribution.\n" \
+                "\n" \
+                "*In case of a remote run, please download the `output_hpc_<xircuits_filename>` folder from the job " \
+                "artifacts using tvb-ext-unicore extension and update the paths to `samples.pt` and `theta.pt` " \
+                "accordingly."
 
         self.add_markdown_cell(intro)
         code = self.sample_posterior()
@@ -276,8 +283,8 @@ class SamplePosteriorNotebookGenerator(NotebookGenerator):
                "import torch\n" \
                "\n" \
                "limits = [[i, j] for i, j in zip({prior_min}, {prior_max})]\n" \
-               "samples = torch.load('{samples}', weights_only=True)\n" \
-               "theta = torch.load('{theta}', weights_only=True)\n" \
+               "samples = torch.load('{samples_path}', weights_only=True)\n" \
+               "theta = torch.load('{theta_path}', weights_only=True)\n" \
                "theta_true = theta[0,:]\n" \
                "fig, ax = pairplot(samples, limits=limits, figsize=(5, 5),\n" \
                "                   points=theta_true, labels={labels},\n"\
@@ -295,25 +302,41 @@ class SamplePosteriorNotebookGenerator(NotebookGenerator):
         inputs = self._prepare_component_inputs()
         return code.format(**inputs)
 
-    @staticmethod
-    def _prepare_component_inputs():
-        priors_path = os.path.join(OUTPUT_DIR, "priors.json")
-        with open(priors_path, 'r', encoding="utf-8") as f:
-            data = json.load(f)
+    def _prepare_component_inputs(self):
+        base_root = os.path.join(get_base_dir_web(), "output")
+        output_dir = os.path.join(base_root, "output" + f"_{self.xircuits_filename}")
 
-        samples = os.path.join(OUTPUT_DIR, "samples.pt").replace("\\", "/") if IS_WINDOWS \
-            else os.path.join(OUTPUT_DIR, "samples.pt")
+        # Defaults in case file is missing or in case of a remote run
+        prior_min = []
+        prior_max = []
+        theta_names = []
 
-        theta = os.path.join(OUTPUT_DIR, "theta.pt").replace("\\", "/") if IS_WINDOWS \
-            else os.path.join(OUTPUT_DIR, "theta.pt")
+        priors_path = os.path.join(output_dir, "priors.json")
+        try:
+            with open(priors_path, 'r', encoding="utf-8") as f:
+                data = json.load(f)
+            prior_min = data['prior_min']
+            prior_max = data['prior_max']
+            theta_names = data['theta_names']
+        except (FileNotFoundError, OSError):
+            LOGGER.info(f"Could not load priors from {priors_path}")
+
+        samples = os.path.join(output_dir, "samples.pt").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(output_dir, "samples.pt")
+
+        theta = os.path.join(output_dir, "theta.pt").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(output_dir, "theta.pt")
 
         return {
-            "prior_min": data.get("prior_min", []),
-            "prior_max": data.get("prior_max", []),
-            "labels": data.get("theta_names", []),
-            "samples": samples,
-            "theta": theta,
+            "prior_min": prior_min,
+            "prior_max": prior_max,
+            "labels": theta_names,
+            "samples_path": samples,
+            "theta_path": theta,
         }
+
+    def edit_cell(self):
+        return True
 
 
 def determine_component_class(component_name, component_path):

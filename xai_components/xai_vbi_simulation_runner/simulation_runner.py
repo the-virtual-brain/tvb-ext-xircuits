@@ -4,7 +4,7 @@ import torch
 from multiprocessing import Pool
 from copy import deepcopy
 from typing import Literal
-from xai_components.settings import memory, OUTPUT_DIR
+from xai_components.settings import memory
 import os
 import json
 
@@ -38,6 +38,7 @@ class SimulationRunner(Component):
     cfg: InArg[dict]
     num_workers: InArg[int]
     time_series_key: InArg[str]
+    output_dir: InArg[str]
 
     stat_vec: OutArg[np.ndarray]    # (N, F)
 
@@ -118,7 +119,7 @@ class SimulationRunner(Component):
         self.stat_vec.value = x
 
         # Store names of the inferred parameters for plotting
-        path = os.path.join(OUTPUT_DIR, "priors.json")
+        path = os.path.join(self.output_dir.value, "priors.json")
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
