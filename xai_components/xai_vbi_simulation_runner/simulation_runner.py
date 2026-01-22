@@ -1,12 +1,14 @@
-from xai_components.base import xai_component, Component, InArg, OutArg
+from xai_components.base import xai_component, InArg, OutArg
 import numpy as np
 import torch
 from multiprocessing import Pool
 from copy import deepcopy
 from typing import Literal
+from xai_components.serialization import save_params_npz
 from xai_components.settings import memory
 import os
 import json
+from xai_components.base_tvb import ComponentWithViewer
 
 
 def cpp_worker(task):
@@ -30,7 +32,7 @@ def cpp_worker(task):
     return stat_vec[0]
 
 @xai_component(color='rgb(220, 5, 45)')
-class SimulationRunner(Component):
+class SimulationRunner(ComponentWithViewer):
     backend: InArg[Literal['cupy', 'cpp']]
     model: InArg[any]               # union between vbi models
     theta: InArg[torch.Tensor]
@@ -113,6 +115,12 @@ class SimulationRunner(Component):
             ts = ts.transpose(2, 1, 0)
             stat_vec = featurize_cache(ts, self.cfg.value, fs, int(self.num_workers.value), False)
             x = stat_vec  # (N, F)
+
+            # Store resolved parameters of the model for plotting time series
+            params_path = os.path.join(self.output_dir.value, "model_params.npz")
+            save_params_npz(resolved_par, params_path)
+            data_path = os.path.join(self.output_dir.value, "simulation_data.npz")
+            np.savez(data_path, t=data["t"], x=data[ts_key])
         else:
             raise ValueError(f"{self.backend.value} backend not supported.")
 

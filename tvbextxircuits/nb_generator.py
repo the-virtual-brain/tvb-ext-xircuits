@@ -98,7 +98,9 @@ class NotebookFactory(object):
         if component_class.__name__.startswith('StoreResults'):
             return TimeSeriesNotebookGenerator(component_class, component_id, component_inputs).get_notebook()
         elif component_class.__name__.startswith('SamplePosterior'):
-            return SamplePosteriorNotebookGenerator(component_class, component_id, component_inputs, xircuits_filename = xircuits_filename).get_notebook()
+            return SamplePosteriorVbiNotebookGenerator(component_class, component_id, component_inputs, xircuits_filename = xircuits_filename).get_notebook()
+        elif component_class.__name__.startswith('SimulationRunner'):
+            return TimeSeriesVbiNotebookGenerator(component_class, component_id, component_inputs, xircuits_filename = xircuits_filename).get_notebook()
         return PhasePlaneNotebookGenerator(component_class, component_id, component_inputs, xircuits_id = xircuits_id).get_notebook()
 
     @staticmethod
@@ -257,7 +259,7 @@ class PhasePlaneNotebookGenerator(NotebookGenerator):
         return inputs_str + '}'
 
 
-class SamplePosteriorNotebookGenerator(NotebookGenerator):
+class SamplePosteriorVbiNotebookGenerator(NotebookGenerator):
 
     def get_notebook(self):
         title = "# Posterior Pairplot"
@@ -338,6 +340,80 @@ class SamplePosteriorNotebookGenerator(NotebookGenerator):
     def edit_cell(self):
         return True
 
+class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
+
+    def get_notebook(self):
+        title = f"""# Time Series Viewer"""
+        self.add_markdown_cell(title)
+
+        intro = f"#### This notebook helps you visualize the time series produced by a simulation run.\n" \
+                "By modifying the code cell below, you can choose which cached simulation output to load and display.\n" \
+                "\n" \
+                "*Note: the plotting helper is included inline for now, it will be replaced in the future.\n"
+
+        self.add_markdown_cell(intro)
+        plot_funct = self.vbi_plot_funct()
+        self.add_code_cell(plot_funct)
+        code = self.plot_timeseries()
+        self.add_code_cell(code)
+
+        return self.notebook
+
+    @staticmethod
+    def vbi_plot_funct():
+        code = "from scipy import signal\n" \
+               "\n" \
+               "def plot_ts_pxx_jr(data, par, ax, method='welch', **kwargs):\n" \
+               "    tspan = data['t']\n" \
+               "    y = data['x']\n" \
+               "    ax[0].plot(tspan, y.T, label='y1 - y2', **kwargs)\n" \
+               "\n" \
+               "    if method == 'welch':\n" \
+               "        freq, pxx = signal.welch(y, 1000/par['dt'], nperseg=y.shape[1]//2)\n" \
+               "    else:\n" \
+               "        freq, pxx = fft_signal(y, tspan / 1000)\n" \
+               "    ax[1].plot(freq, pxx.T, **kwargs)\n" \
+               "    ax[1].set_xlim(0, 50)\n" \
+               "    ax[1].set_xlabel('frequency [Hz]')\n" \
+               "    ax[0].set_xlabel('time [ms]')\n" \
+               "    ax[0].set_ylabel('y1-y2')\n" \
+               "    ax[0].margins(x=0)\n" \
+               "    plt.tight_layout()\n"
+
+        return code
+
+    def plot_timeseries(self):
+        code = "import matplotlib.pyplot as plt\n" \
+               "import numpy as np\n" \
+               "from xai_components.serialization import *\n" \
+               "\n" \
+               "data = np.load('{data_path}')\n" \
+               "params = load_params_npz('{params_path}')\n" \
+               "ts0 = data['x'][:, :, 0].T\n" \
+               "data0 = {{'t': data['t'], 'x': ts0}}\n" \
+               "fig, ax = plt.subplots(1, 2, figsize=(10, 3))\n" \
+               "plot_ts_pxx_jr(data0, params, ax, alpha=0.6, lw=1)\n" \
+               "plt.tight_layout()\n"
+
+        inputs = self._prepare_component_inputs()
+        return code.format(**inputs)
+
+    def _prepare_component_inputs(self):
+        base_root = os.path.join(get_base_dir_web(), "output")
+        output_dir = os.path.join(base_root, "output" + f"_{self.xircuits_filename}")
+
+        params_path = os.path.join(output_dir, "model_params.npz").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(output_dir, "model_params.npz")
+
+        data_path = os.path.join(output_dir, "simulation_data.npz").replace("\\", "/") if IS_WINDOWS \
+            else os.path.join(output_dir, "simulation_data.npz")
+        return {
+            "params_path": params_path,
+            "data_path": data_path,
+        }
+
+    def edit_cell(self):
+        return True
 
 def determine_component_class(component_name, component_path):
     component_module = importlib.import_module(component_path.replace('/', '.')[:-3])
