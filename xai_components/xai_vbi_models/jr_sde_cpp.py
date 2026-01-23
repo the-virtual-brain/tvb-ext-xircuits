@@ -1,5 +1,4 @@
 from xai_components.base import xai_component, Component, InArg, OutArg
-from vbi.models.cpp.jansen_rit import JR_sde
 from typing import Union
 
 @xai_component(color='rgb(101, 179, 46)')
@@ -29,10 +28,12 @@ class JRSdeCpp(Component):
     output: InArg[str]
     RECORD_AVG: InArg[bool]
 
-    model: OutArg[JR_sde]
-    time_series_key: OutArg[str]
+    model: OutArg[any]
+    time_series_key: OutArg[dict]
 
     def execute(self, ctx):
+        from vbi.models.cpp.jansen_rit import JR_sde
+
         keys = ["noise_seed", "seed", "G", "weights", "A", "B", "a", "b", "noise_mu", "noise_std", "vmax", "v0", "r",
                 "C0", "C1", "C2", "C3", "dt", "method", "t_transition", "t_end", "output", "RECORD_AVG",
                 "initial_state"]
@@ -43,4 +44,4 @@ class JRSdeCpp(Component):
                 params[key] = param.value
 
         self.model.value = JR_sde(par=params)
-        self.time_series_key.value = "x"
+        self.time_series_key.value = {"t": "t", "x": "x"}

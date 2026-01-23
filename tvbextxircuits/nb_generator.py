@@ -320,7 +320,7 @@ class SamplePosteriorVbiNotebookGenerator(NotebookGenerator):
             prior_min = data['prior_min']
             prior_max = data['prior_max']
             theta_names = data['theta_names']
-        except (FileNotFoundError, OSError):
+        except OSError:
             LOGGER.info(f"Could not load priors from {priors_path}")
 
         samples = os.path.join(output_dir, "samples.pt").replace("\\", "/") if IS_WINDOWS \
@@ -343,10 +343,10 @@ class SamplePosteriorVbiNotebookGenerator(NotebookGenerator):
 class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
 
     def get_notebook(self):
-        title = f"""# Time Series Viewer"""
+        title = "# Time Series Viewer"
         self.add_markdown_cell(title)
 
-        intro = f"#### This notebook helps you visualize the time series produced by a simulation run.\n" \
+        intro = "#### This notebook helps you visualize the time series produced by a simulation run.\n" \
                 "By modifying the code cell below, you can choose which cached simulation output to load and display.\n" \
                 "\n" \
                 "*Note: the plotting helper is included inline for now, it will be replaced in the future.\n"

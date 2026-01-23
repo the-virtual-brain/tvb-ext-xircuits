@@ -39,7 +39,7 @@ class SimulationRunner(ComponentWithViewer):
     theta_names: InArg[list]
     cfg: InArg[dict]
     num_workers: InArg[int]
-    time_series_key: InArg[str]
+    time_series_key: InArg[dict]
     output_dir: InArg[str]
 
     stat_vec: OutArg[np.ndarray]    # (N, F)
@@ -68,7 +68,8 @@ class SimulationRunner(ComponentWithViewer):
         nodewise = {"C0", "C1", "C2", "C3"}  # temporary
 
         model = self.model.value
-        ts_key = self.time_series_key.value
+        ts_key = self.time_series_key.value['x']
+        t_key = self.time_series_key.value['t']
 
         if self.backend.value == "cpp":
             model_cls = model.__class__
@@ -120,7 +121,7 @@ class SimulationRunner(ComponentWithViewer):
             params_path = os.path.join(self.output_dir.value, "model_params.npz")
             save_params_npz(resolved_par, params_path)
             data_path = os.path.join(self.output_dir.value, "simulation_data.npz")
-            np.savez(data_path, t=data["t"], x=data[ts_key])
+            np.savez(data_path, t=data[t_key], x=data[ts_key])
         else:
             raise ValueError(f"{self.backend.value} backend not supported.")
 

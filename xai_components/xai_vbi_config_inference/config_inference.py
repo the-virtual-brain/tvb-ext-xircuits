@@ -3,7 +3,7 @@ import sbi.utils as utils
 import torch
 import os
 import json
-from tvbextxircuits.utils import *
+from tvbextxircuits.utils import get_base_dir_web
 
 @xai_component(color='rgb(220, 5, 45)')
 class ConfigInference(Component):

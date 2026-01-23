@@ -1,5 +1,4 @@
 from xai_components.base import xai_component, Component, InArg, OutArg
-from vbi.models.cupy.jansen_rit import JR_sde
 from typing import Union
 
 @xai_component(color='rgb(101, 179, 46)')
@@ -33,10 +32,12 @@ class JRSdeCupy(Component):
     same_initial_state: InArg[bool]
     same_noise_per_sim: InArg[bool]
 
-    model: OutArg[JR_sde]
-    time_series_key: OutArg[str]
+    model: OutArg[any]
+    time_series_key: OutArg[dict]
 
     def execute(self, ctx):
+        from vbi.models.cupy.jansen_rit import JR_sde
+        
         keys = ["G", "A", "B", "v", "r", "v0", "vmax", "C0", "C1", "C2", "C3", "a", "b", "mu", "noise_amp",
                   "decimate", "dt", "t_end", "t_cut", "engine", "method", "num_sim", "weights", "dtype", "seed",
                   "initial_state", "same_initial_state", "same_noise_per_sim"]
@@ -47,5 +48,5 @@ class JRSdeCupy(Component):
                 params[key] = param.value
 
         self.model.value = JR_sde(par=params)
-        self.time_series_key.value = "x"
+        self.time_series_key.value = {"t": "t", "x": "x"}
 

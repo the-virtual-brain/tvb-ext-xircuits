@@ -1,5 +1,4 @@
 from xai_components.base import xai_component, Component, InArg, OutArg
-from vbi.models.cupy.mpr import MPR_sde
 from typing import Union, Literal
 
 @xai_component(color='rgb(101, 179, 46)')
@@ -35,10 +34,16 @@ class MPRSdeCupy(Component):
     same_initial_state: InArg[bool]
     ts_type: InArg[Literal['raw', 'bold']]
 
-    model: OutArg[MPR_sde]
-    time_series_key: OutArg[str]
+    model: OutArg[any]
+    time_series_key: OutArg[dict]
+
+    def __init__(self):
+        super().__init__()
+        self.ts_type.value = 'raw'
 
     def execute(self, ctx) -> None:
+        from vbi.models.cupy.mpr import MPR_sde
+
         keys = ["G", "dt", "dt_bold", "J", "eta", "tau", "delta", "tr", "noise_amp", "same_noise_per_sim", "sti_apply",
                 "iapp", "t_start", "t_cut", "t_end", "num_nodes", "weights", "rv_decimate", "output", "RECORD_RV",
                 "RECORD_BOLD", "RECORD_AVG_r", "num_sim", "method", "engine", "seed", "dtype", "initial_state",
@@ -50,4 +55,5 @@ class MPRSdeCupy(Component):
                 params[key] = param.value
 
         self.model.value = MPR_sde(par=params)
-        self.time_series_key.value = "rv_d" if self.ts_type.value == 'raw' else "fmri_d"
+        self.time_series_key.value = {"t": "rv_t", "x": "rv_d"} if self.ts_type.value == 'raw' \
+                                                      else {"t": "fmri_t", "x": "fmri_d"}
