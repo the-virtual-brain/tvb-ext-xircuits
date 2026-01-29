@@ -352,14 +352,15 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
                 "*In case of a remote run, please download the `output_hpc_<xircuits_filename>` folder from the job " \
                 "artifacts using tvb-ext-unicore extension and update the paths to `simulation_data.npz` and " \
                 "`model_params.npz` accordingly.\n" \
-                "\n" \
-                "*The plotting helper is included inline for now, it will be replaced in the future.\n"
+                "\n"
 
         self.add_markdown_cell(intro)
         plot_funct = self.vbi_plot_funct()
         self.add_code_cell(plot_funct)
         code = self.plot_timeseries()
         self.add_code_cell(code)
+        self.add_code_cell(self.plot_from_batched_simulations())
+        self.add_code_cell(self.plot_single_simulation())
 
         return self.notebook
 
@@ -367,6 +368,7 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
     def vbi_plot_funct():
         code = "from scipy import signal\n" \
                "\n" \
+               "# The plotting helper is included inline for now, it will be replaced in the future.\n" \
                "def plot_ts_pxx_jr(data, par, ax, method='welch', **kwargs):\n" \
                "    tspan = data['t']\n" \
                "    y = data['x']\n" \
@@ -392,15 +394,28 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
                "from xai_components.serialization import *\n" \
                "\n" \
                "data = np.load('{data_path}')\n" \
-               "params = load_params_npz('{params_path}')\n" \
+               "params = load_params_npz('{params_path}')\n"
+
+        inputs = self._prepare_component_inputs()
+        return code.format(**inputs)
+
+    @staticmethod
+    def plot_from_batched_simulations():
+        code = "# Run this cell for CuPy backend: the saved file contains all simulations in one batch.\n" \
                "ts0 = data['x'][:, :, 0].T\n" \
                "data0 = {{'t': data['t'], 'x': ts0}}\n" \
                "fig, ax = plt.subplots(1, 2, figsize=(10, 3))\n" \
                "plot_ts_pxx_jr(data0, params, ax, alpha=0.6, lw=1)\n" \
                "plt.tight_layout()\n"
+        return code
 
-        inputs = self._prepare_component_inputs()
-        return code.format(**inputs)
+    @staticmethod
+    def plot_single_simulation():
+        code = "# Run this cell for C++/Numba backend: the saved file contains one simulation only.\n" \
+               "fig, ax = plt.subplots(1, 2, figsize=(10, 3))\n" \
+               "plot_ts_pxx_jr(data, params, ax, alpha=0.6, lw=1)\n" \
+               "plt.tight_layout()\n"
+        return code
 
     def _prepare_component_inputs(self):
         base_root = os.path.join(get_base_dir_web(), "output")
