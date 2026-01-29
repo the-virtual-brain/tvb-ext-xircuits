@@ -18,7 +18,7 @@ class ConfigInference(Component):
     prior: OutArg[utils.BoxUniform]
     theta:OutArg[torch.Tensor]
     cfg: OutArg[dict]
-    output_dir: InArg[str]
+    output_dir: OutArg[str]
 
     def __init__(self):
         super().__init__()
@@ -47,20 +47,25 @@ class ConfigInference(Component):
         self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), self.seed.value)
         print(f"Theta: {self.theta.value}")
 
-        # Store theta and priors for plotting
-        path = os.path.join(output_directory, "theta.pt")
-        torch.save(self.theta.value, path)
-
-        path = os.path.join(output_directory, "priors.json")
-        data = {"prior_min": self.prior_min.value, "prior_max": self.prior_max.value}
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f)
+        self.persists_artifacts(output_directory, self.theta.value, self.prior_min.value, self.prior_max.value)
 
         # Feature Config
         cfg = get_features_by_domain(domain=self.domain_cfg.value, json_path=self.json_path_cfg.value)
         cfg = get_features_by_given_names(cfg, names=self.names_cfg.value)
         self.cfg.value = cfg
         self.output_dir.value = output_directory
+
+    @staticmethod
+    def persists_artifacts(output_directory, theta, prior_min, prior_max):
+        # Store theta and priors for plotting
+        path = os.path.join(output_directory, "theta.pt")
+        torch.save(theta, path)
+
+        path = os.path.join(output_directory, "priors.json")
+        data = {"prior_min": prior_min, "prior_max": prior_max}
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f)
+
 
 def create_output_dir(is_hpc_launch: bool, xircuits_filename: str):
     if is_hpc_launch:

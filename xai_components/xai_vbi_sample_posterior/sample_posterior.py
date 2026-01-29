@@ -27,10 +27,14 @@ class SamplePosterior(ComponentWithViewer):
         obj = Inference()
         samples = obj.sample_posterior(x_idx_st, self.num_samples.value, self.posterior.value)
 
-        # Store the resulted samples for plotting
-        path = os.path.join(self.output_dir.value, "samples.pt")
-        torch.save(samples, path)
+        self.persists_artifacts(self.output_dir.value, samples)
 
         self.samples.value = samples
 
         print(f"Sample Posterior: {self.samples.value}")
+
+    @staticmethod
+    def persists_artifacts(output_dir, samples):
+        # Store the resulted samples for plotting
+        path = os.path.join(output_dir, "samples.pt")
+        torch.save(samples, path)
