@@ -349,7 +349,11 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
         intro = "#### This notebook helps you visualize the time series produced by a simulation run.\n" \
                 "By modifying the code cell below, you can choose which cached simulation output to load and display.\n" \
                 "\n" \
-                "*Note: the plotting helper is included inline for now, it will be replaced in the future.\n"
+                "*In case of a remote run, please download the `output_hpc_<xircuits_filename>` folder from the job " \
+                "artifacts using tvb-ext-unicore extension and update the paths to `simulation_data.npz` and " \
+                "`model_params.npz` accordingly.\n" \
+                "\n" \
+                "*The plotting helper is included inline for now, it will be replaced in the future.\n"
 
         self.add_markdown_cell(intro)
         plot_funct = self.vbi_plot_funct()

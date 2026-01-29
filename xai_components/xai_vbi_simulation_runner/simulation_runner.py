@@ -12,11 +12,10 @@ from xai_components.base_tvb import ComponentWithViewer
 
 
 def cpp_worker(task):
-    from vbi import extract_features
+    from vbi import extract_features_df
 
-    (model_cls, base, theta_row, idx, nodewise, nn, fs, cfg, ts_key) = task
+    (model_cls, base, theta_row, idx, nodewise, nn, fs, cfg, ts_key, t_key, return_data) = task
     par_i = deepcopy(base)
-    print(theta_row, idx, nodewise, nn, fs, cfg, ts_key)
     for name, col in idx.items():
         val = theta_row[col]
         if name in nodewise:
@@ -24,16 +23,19 @@ def cpp_worker(task):
         else:
             par_i[name] = val
     par_i.pop("dim", None)
-    print("Parameters of i: ", par_i)
     data = model_cls(par_i).run()
     ts = data[ts_key]
-    stat_vec = extract_features(ts=[ts], cfg=cfg, fs=fs,
+    stat_vec = extract_features_df(ts=[ts], cfg=cfg, fs=fs,
                               n_workers=1, verbose=False).values
-    return stat_vec[0]
+
+    if return_data:
+        return stat_vec[0], data[t_key], data[ts_key]
+    else:
+        return stat_vec[0], None, None
 
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(ComponentWithViewer):
-    backend: InArg[Literal['cupy', 'cpp']]
+    backend: InArg[Literal['cupy', 'cpp', 'numba']]
     model: InArg[any]               # union between vbi models
     theta: InArg[torch.Tensor]
     theta_names: InArg[list]
@@ -71,43 +73,43 @@ class SimulationRunner(ComponentWithViewer):
         ts_key = self.time_series_key.value['x']
         t_key = self.time_series_key.value['t']
 
-        if self.backend.value == "cpp":
-            model_cls = model.__class__
-            base = model._par  # temporary
+        model_cls = model.__class__
+        base_par = deepcopy(model._par) # temporary
+        base_par["weights"] = np.array(base_par.get("weights"), dtype=np.float64)
 
+        if self.backend.value in ("cpp", "numba"):
             tasks = []
             for i in range(num_sim):
                 tasks.append((
                     model_cls,
-                    base,
+                    base_par,
                     theta_np[i, :],  # row for this sim
                     idx,
                     nodewise,
                     nn,
                     fs,
                     self.cfg.value,
-                    ts_key
+                    ts_key, t_key,
+                    i == 0
                 ))
 
             with Pool(processes=self.num_workers.value) as pool:
-                rows = pool.map(cpp_worker, tasks)
+                results = pool.map(cpp_worker, tasks)
 
-            x = np.vstack(rows)
+            x = np.vstack([r[0] for r in results])
+
+            # Save data for timeseries viewer
+            resolved_par = self.build_resolved_par(base_par, theta_np, idx, nodewise, nn)
+            t0 = next((r[1] for r in results if r[1] is not None), None)
+            x0 = next((r[2] for r in results if r[2] is not None), None)
+
+            data = {ts_key: x0, t_key: t0}
 
         elif self.backend.value == "cupy":
-            resolved_par = deepcopy(model._par)
-            resolved_par["num_sim"] = num_sim
+            base_par["num_sim"] = num_sim
 
-            resolved_par["weights"] = np.array(resolved_par.get("weights"))
+            resolved_par = self.build_resolved_par(base_par, theta_np, idx, nodewise, nn)
 
-            for par, index in idx.items():
-                vals = theta_np[:, index]
-                if par in nodewise:
-                    resolved_par[par] = np.tile(vals, (nn, 1))
-                else:
-                    resolved_par[par] = vals
-
-            model_cls = model.__class__
             data = simulate_cache(model_cls, resolved_par)
 
             ts = data[ts_key]
@@ -116,27 +118,43 @@ class SimulationRunner(ComponentWithViewer):
             ts = ts.transpose(2, 1, 0)
             stat_vec = featurize_cache(ts, self.cfg.value, fs, int(self.num_workers.value), False)
             x = stat_vec  # (N, F)
-
-            # Store resolved parameters of the model for plotting time series
-            params_path = os.path.join(self.output_dir.value, "model_params.npz")
-            save_params_npz(resolved_par, params_path)
-            data_path = os.path.join(self.output_dir.value, "simulation_data.npz")
-            np.savez(data_path, t=data[t_key], x=data[ts_key])
         else:
             raise ValueError(f"{self.backend.value} backend not supported.")
 
         self.stat_vec.value = x
 
-        # Store names of the inferred parameters for plotting
-        path = os.path.join(self.output_dir.value, "priors.json")
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-        data["theta_names"] = self.theta_names.value
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f)
-
+        self.persists_artifacts(self.output_dir.value, resolved_par, data, t_key, ts_key, self.theta_names.value)
         print(f"Extracted features: {self.stat_vec.value}")
+
+    @staticmethod
+    def build_resolved_par(base_par, theta_np, idx, nodewise, nn):
+        for par, index in idx.items():
+            vals = theta_np[:, index]
+            if par in nodewise:
+                base_par[par] = np.tile(vals, (nn, 1))
+            else:
+                base_par[par] = vals
+
+        return base_par
+
+    @staticmethod
+    def persists_artifacts(output_dir, resolved_par, data, t_key, ts_key, theta_names):
+        # 1) model params
+        params_path = os.path.join(output_dir, "model_params.npz")
+        save_params_npz(resolved_par, params_path)
+
+        # 2) simulation data
+        data_path = os.path.join(output_dir, "simulation_data.npz")
+        np.savez(data_path, t=data[t_key], x=data[ts_key])
+
+        # 3) priors metadata
+        path = os.path.join(output_dir, "priors.json")
+        with open(path, "r", encoding="utf-8") as f:
+            priors_data = json.load(f)
+
+        priors_data["theta_names"] = theta_names
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(priors_data, f)
 
 
 @memory.cache
