@@ -1,5 +1,5 @@
 {
-  "description": "<div class=\"document\" id=\"traited-class-vbi-config-inference\">\n<h1 class=\"title\">Configuration Inference Class</h1>\n<p>Builds the configuration inputs required to run an inference workflow.</p>\n<p>It defines the <tt class=\"docutils literal\">priors</tt>, samples them to obtain the parameter distribution (<tt class=\"docutils literal\">theta</tt>) and assembles a <tt class=\"docutils literal\">feature dictionary</tt> used for later feature-extraction.</p>\n</div>\n",
+  "description": "<div class=\"document\" id=\"traited-class-vbi-config-inference\">\n<h1 class=\"title\">Configuration Inference</h1>\n<p>Builds the configuration inputs required to run an inference workflow.</p>\n<p>It defines the <tt class=\"docutils literal\">priors</tt>, samples them to obtain the parameter distribution (<tt class=\"docutils literal\">theta</tt>) and assembles a <tt class=\"docutils literal\">feature dictionary</tt> used for later feature-extraction.</p>\n</div>\n",
   "arguments": {
     "prior_min": "Lower bound of the prior parameters range (inclusive).\n",
     "prior_max": "Upper bound of the prior parameters range (exclusive).\n",

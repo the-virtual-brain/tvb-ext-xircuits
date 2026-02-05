@@ -1,0 +1,13 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-simulation-runner\">\n<h1 class=\"title\">Simulation Runner</h1>\n<p>Runs the selected VBI model for a batch of parameter samples (<code>theta</code>) using the chosen backend (<code>cpp</code>, <code>cupy</code> or <code>numba</code>). The component updates model parameters from <code>theta</code>, simulates the requested output signal (selected via <code>time_series_key</code>), and extracts summary features defined in <code>cfg</code>. The output is a feature matrix used for posterior training.</p>\n</div>\n",
+  "arguments": {
+    "backend": "Backend used to run the VBI model. Supported values: <code>cpp</code>, <code>cupy</code>, <code>numba</code>.\n",
+    "model": "The instantiated VBI model used for simulation (e.g., Jansen-Rit, MPR).\n",
+    "theta": "A tensor/array of parameter samples with shape <code>(N, D)</code>, where <code>N</code> is the number of samples/simulations and D is the dimension of the parameter space\n",
+    "theta_names": "List of parameter names (length <code>D</code>). Must match the column order of <code>theta</code>.\n",
+    "cfg": "Feature-extraction configuration dictionary used to compute summary statistics from the simulated time series.\n",
+    "num_workers": "Number of parallel workers. Used for running many independent simulations concurrently (for backends that do not batch simulations, e.g., cpp, numba).\n",
+    "time_series_key": "Dictionary specifying which outputs to read from the model result, e.g. <code>{'t': 'rv_t', 'x': 'rv_d'}</code>. Use this to choose the observed signal (RV, BOLD/fMRI, etc.) returned by the model.\n",
+    "output_dir": "Output folder path where model parameters and simulation data are saved (used by viewers/plots).\n"
+  }
+}

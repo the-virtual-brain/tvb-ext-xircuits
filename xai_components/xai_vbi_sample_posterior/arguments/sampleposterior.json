@@ -1,0 +1,10 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-simulation-runner\">\n<h1 class=\"title\">Sample Posterior</h1>\n<p>Samples parameter values from the trained posterior distribution, conditioned on a selected observed feature vector.</p>\n</div>\n",
+  "arguments": {
+    "posterior" : "A trained SBI posterior object returned by the training step. It must support sampling (e.g., provide a <code>sample()</code> method).\n",
+    "X_scaled": "Observed data point of shape <code>(1, n_features)</code> or <code>(n_features,)</code>. This is the target observation for which we want to infer parameters.\n",
+    "num_samples" : "Number of posterior samples to draw.\n",
+    "obs_idx" : "Row index used to select the observation from the standardized feature matrix. Default is <code>0</code>.\n",
+    "output_dir" : "Output folder path where resulted samples are saved (used by viewers/plots).\n"
+    }
+}

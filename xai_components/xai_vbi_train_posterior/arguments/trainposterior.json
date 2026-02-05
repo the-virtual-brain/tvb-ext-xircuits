@@ -1,0 +1,13 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-simulation-runner\">\n<h1 class=\"title\">Train Posterior</h1>\n<p>Trains a posterior distribution from parameter samples (<code>theta</code>) and their corresponding simulated features (<code>stat_vec</code>) using an SBI method (SNPE/SNLE/SNRE). Before training, the feature matrix is standardized with <code>StandardScaler</code> to improve numerical stability.</p>\n</div>\n",
+  "arguments": {
+    "prior" : "Prior distribution over the parameters.\n",
+    "theta": "A tensor/array of parameter samples with shape <code>(N, D)</code>, where <code>N</code> is the number of samples/simulations and D is the dimension of the parameter space.\n",
+    "stat_vec" : "The feature samples, where n is the number of samples/simulations and d is the dimension of the feature space.\n",
+    "method" : "Inference method to train. Supported values are <code>'SNPE'</code>, <code>'SNLE'</code>, <code>'SNRE'</code>. Default: <code>'SNPE'</code>.\n",
+    "device" : "Device used for training. Supported values are <code>'cpu'</code> and <code>'cuda'</code>. Default: <code>'cpu'</code>.\n",
+    "density_estimator" : "Neural density estimator used by the selected method. Supported values are <code>'maf'</code> and <code>'nsf'</code>. Default: <code>'maf'</code>.\n",
+    "with_mean" : "Controls StandardScaler centering. When <code>True</code>, it centers the data before scaling.\n",
+    "with_std" : "Controls StandardScaler scaling. When <code>True</code>, it scales the data to unit variance (or equivalently, unit standard deviation).\n"
+  }
+}
