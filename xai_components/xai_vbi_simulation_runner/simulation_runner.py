@@ -35,8 +35,8 @@ def cpp_worker(task):
 
 @xai_component(color='rgb(220, 5, 45)')
 class SimulationRunner(ComponentWithViewer):
-    backend: InArg[Literal['cupy', 'cpp', 'numba']]
-    model: InArg[any]               # union between vbi models
+    backend: InArg[Literal['cupy', 'cpp']]
+    model: InArg[any]
     theta: InArg[torch.Tensor]
     theta_names: InArg[list]
     cfg: InArg[dict]
@@ -77,7 +77,7 @@ class SimulationRunner(ComponentWithViewer):
         base_par = deepcopy(model._par) # temporary
         base_par["weights"] = np.array(base_par.get("weights"), dtype=np.float64)
 
-        if self.backend.value in ("cpp", "numba"):
+        if self.backend.value == "cpp":
             tasks = []
             for i in range(num_sim):
                 tasks.append((

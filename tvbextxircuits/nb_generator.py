@@ -403,7 +403,7 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
     def plot_from_batched_simulations():
         code = "# Run this cell for CuPy backend: the saved file contains all simulations in one batch.\n" \
                "ts0 = data['x'][:, :, 0].T\n" \
-               "data0 = {{'t': data['t'], 'x': ts0}}\n" \
+               "data0 = {'t': data['t'], 'x': ts0}\n" \
                "fig, ax = plt.subplots(1, 2, figsize=(10, 3))\n" \
                "plot_ts_pxx_jr(data0, params, ax, alpha=0.6, lw=1)\n" \
                "plt.tight_layout()\n"

@@ -3,7 +3,6 @@ import numpy as np
 import torch
 from sklearn.preprocessing import StandardScaler
 import sbi.utils as utils
-from vbi.sbi_inference import Inference
 
 @xai_component(color="rgb(220, 5, 45)")
 class TrainPosterior(Component):
@@ -28,6 +27,8 @@ class TrainPosterior(Component):
         self.density_estimator.value = "maf"
 
     def execute(self, ctx):
+        from vbi.sbi_inference import Inference
+        
         stat_vec_np = np.array(self.stat_vec.value)
 
         scaler = StandardScaler(

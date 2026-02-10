@@ -1,5 +1,5 @@
 from xai_components.base import xai_component, Component, InArg, OutArg
-from typing import Union, Literal
+from typing import Union
 
 @xai_component(color='rgb(101, 179, 46)')
 class MPRSdeCupy(Component):
@@ -32,14 +32,12 @@ class MPRSdeCupy(Component):
     dtype: InArg[str]
     initial_state: InArg[list]
     same_initial_state: InArg[bool]
-    ts_type: InArg[Literal['raw', 'bold']]
 
     model: OutArg[any]
     time_series_key: OutArg[dict]
 
     def __init__(self):
         super().__init__()
-        self.ts_type.value = 'raw'
 
     def execute(self, ctx) -> None:
         from vbi.models.cupy.mpr import MPR_sde
@@ -55,5 +53,5 @@ class MPRSdeCupy(Component):
                 params[key] = param.value
 
         self.model.value = MPR_sde(par=params)
-        self.time_series_key.value = {"t": "rv_t", "x": "rv_d"} if self.ts_type.value == 'raw' \
-                                                      else {"t": "fmri_t", "x": "fmri_d"}
+        self.time_series_key.value = {"t": "rv_t", "x": "rv_d"} if self.model.value.RECORD_RV \
+            else {"t": "fmri_t", "x": "fmri_d"}
