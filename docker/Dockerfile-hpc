@@ -15,7 +15,7 @@ ARG LAST_SHA=LATEST
 
 ARG JUPYTER=$ENV_BIN/jupyter
 
-WORKDIR tvb-ext-xircuits
+WORKDIR /home/tvb-ext-xircuits
 RUN git pull; \
     "$PIP" install -e .
 
