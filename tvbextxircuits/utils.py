@@ -1,4 +1,4 @@
-import json
+import json5
 from pathlib import Path
 
 from jupyter_core.paths import jupyter_config_dir
@@ -55,7 +55,7 @@ def get_user_settings():
     settings_path = os.path.join(data_dir, 'lab', 'user-settings', 'tvb-ext-xircuits', 'settings.jupyterlab-settings')
     if os.path.exists(settings_path):
         with open(settings_path, 'r', encoding='utf-8') as f:
-            settings = json.load(f)
+            settings = json5.load(f)
     else:
         settings = {}
 

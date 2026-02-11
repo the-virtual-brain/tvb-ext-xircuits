@@ -50,7 +50,8 @@ dependencies = [
     "importlib_resources",
     "asgiref",
     "dill",
-    "joblib"
+    "joblib",
+    "json5"
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 
