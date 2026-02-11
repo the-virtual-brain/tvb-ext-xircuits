@@ -1,0 +1,33 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-config-inference\">\n<h1 class=\"title\">Jansen-Rit model</h1>\n<p>The Jansen-Rit neural mass model [Jansen1995] has been widely used to simulate physiological signals from various recording methods like intracranial LFPs, and scalp MEG/EEG recordings.</p>\n<p>For example, it has been shown to recreate responses similar to evoked-related potentials after a series of impulse stimulations [David2003], [David_etal06], generating high-alpha and low-beta oscillations (with added recurrent inhibitory connections and spike-rate modulation) [Moran2007], and also seizure patterns similar to those seen in temporal lobe epilepsy [Wendling2001]. This biologically motivated model comprises of three main populations of neurons: excitatory pyramidal neurons, inhibitory interneurons, and excitatory interneurons. These populations interact with each other through synaptic connections, forming a feedback loop that produces oscillatory activity governed by a set of nonlinear ordinary differential equations [JansenRit], [David2003], [Kazemi2022].\n</p><table class=\"docutils citation\" frame=\"void\" id=\"vbi-j-1995\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Jansen1995]</td><td>Jansen, B. H., & Rit, V. G. (1995).<em> Electroencephalogram and visual evoked potential generation in a mathematical model of coupled cortical columns. Biological Cybernetics, 73(4), 357-366.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-d-2003\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[David2003]</td><td>David, O., & Friston, K. J. (2003).<em> A neural mass model for MEG/EEG: coupling and neuronal dynamics. NeuroImage, 20(3), 1743-1755. https://doi.org/10.1016/j.neuroimage.2003.07.015</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-d-etal06\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[David_etal06]</td><td>David, O., Kiebel, S. J., Harrison, L. M., Mattout, J., Kilner, J. M., & Friston, K. J. (2006).<em>  Dynamic causal modeling of evoked responses in EEG and MEG. NeuroImage, 30(4), 1255-1272. https://doi.org/10.1016/j.neuroimage.2005.10.045.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-m-2007\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Moran2007]</td><td>Moran, R. J., Kiebel, S. J., Stephan, K. E., Reilly, R. B., Daunizeau, J., & Friston, K. J. (2007).<em> A neural mass model of spectral responses in electrophysiology. NeuroImage, 37(3), 706-720. https://doi.org/10.1016/j.neuroimage.2007.05.032.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-w-2001\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Wendling2001]</td><td>Wendling, F., Bartolomei, F., Bellanger, J.-J., & Chauvel, P. (2001).<em> Interpretation of interdependencies in epileptic signals using a macroscopic physiological model of the EEG. Clinical Neurophysiology, 112(7), 1201-1218.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-jr\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[JansenRit]</td><td>Jansen, B. H., & Rit, V. G. (1995).<em> Electroencephalogram and visual evoked potential generation in a mathematical model of coupled cortical columns. Biological Cybernetics, 73, 357-366.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-k-2022\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Kazemi2022]</td><td>Kazemi, S., & Jamali, Y. (2022).<em> On the influence of input triggering on the dynamics of the Jansen-Rit oscillators network. arXiv preprint arXiv:2202.06634.</em></td></tr>\n</tbody>\n</table>\n</div>\n",
+  "arguments": {
+    "G" : "Scaling the strength of network connections.\n",
+    "A" : "Excitatory PSPA.\n",
+    "B" : "Inhibitory PSPA.\n",
+    "v" : "Potential at half of maximum firing rate.\n",
+    "r" : "Slope of sigmoid function at v:sub:`0`.\n",
+    "v0" : "Potential at half of maximum firing rate.\n",
+    "vmax" : "Maximum firing rate\n.",
+    "C0" : "Average numbers of synapses between EP.\n",
+    "C1" : "Average numbers of synapses between EP.\n",
+    "C2" : "Average numbers of synapses between IP.\n",
+    "C3" : "Average numbers of synapses between IP.\n",
+    "a" : "Time constant of excitatory PSP (a = 100 s^-1).\n",
+    "b" : "Time constant of inhibitory PSP (b = 50 s^-1).\n",
+    "mu" : "Mean of the noise.\n",
+    "noise_amp" : "Amplitude of the noise\n",
+    "decimate" : "Decimation factor for the output time series.\n",
+    "dt" : "Time step.\n",
+    "t_end" : "End time of simulation.\n",
+    "t_cut" : "Cut time of simulation.\n",
+    "engine" : "Supported values: 'cpu' or 'gpu'\n",
+    "method" : "'heun' or 'euler' method for integration.\n",
+    "num_sim" : "Number of simulations.\n",
+    "weights" : "Weight matrix of shape (`num_nodes`, `num_nodes`).\n",
+    "dtype" : "Data type to use for the simulation, `float` for `float64` or `f` for `float32`.\n",
+    "seed" : "Random seed for reproducibility.\n",
+    "initial_state" : "Initial state of the system of shape (`num_nodes`, `num_sim`).\n",
+    "same_initial_state" : "If True, all simulations have the same initial state. Default value: False.\n",
+    "same_noise_per_sim" : "If True, all simulations have the same noise. Default value: False.\n"
+  }
+}

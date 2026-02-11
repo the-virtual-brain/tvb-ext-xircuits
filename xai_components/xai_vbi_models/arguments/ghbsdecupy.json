@@ -1,0 +1,22 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-config-inference\">\n<h1 class=\"title\">Generic Hopfield model</h1>\n<p>The Hopfield neural network is a discrete time dynamical system composed\n    of multiple binary nodes, with a connectivity matrix built from a\n    predetermined set of patterns. The update, inspired from the spin-glass\n    model (used to describe magnetic properties of dilute alloys), is based on\n    a random scanning of every node. The existence of a fixed point dynamics\n    is guaranteed by a Lyapunov function. The Hopfield network is expected to\n    have those multiple patterns as attractors (multistable dynamical system).\n    When the initial conditions are close to one of the 'learned' patterns,\n    the dynamical system is expected to relax on the corresponding attractor.\n    A possible output of the system is the final attractive state (interpreted\n    as an associative memory).\n\n    Various extensions of the initial model have been proposed, among which a\n    noiseless and continuous version [Hopfield 1984] having a slightly\n    different Lyapunov function, but essentially the same dynamical\n    properties, with more straightforward physiological interpretation. A\n    continuous Hopfield neural network (with a sigmoid transfer function) can\n    indeed be interpreted as a network of neural masses with every node\n    corresponding to the mean field activity of a local brain region, with\n    many bridges with the Wilson Cowan model [WC_1972].</p>\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-hopf-1982\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Hopfield1982]</td><td>Hopfield, J. J.<em> *Neural networks and physical systems with emergent collective computational abilities*, Proc. Nat. Acad. Sci. (USA) 79, 2554-2558, 1982.</em></td></tr>\n</tbody>\n</table>\n\n<table class=\"docutils citation\" frame=\"void\" id=\"vbi-hopf-1984\" rules=\"none\">\n<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr><td class=\"label\">[Hopfield1984]</td><td>Hopfield, J. J.<em> *Neurons with graded response have collective computational properties like those of two-sate neurons*, Proc. Nat. Acad. Sci. (USA) 81, 3088-3092, 1984.</em></td></tr>\n</tbody>\n</table></div>\n",
+  "arguments": {
+    "G" : "Scaling the strength of network connections.\n",
+    "t_cut" : "Transient period to discard from the beginning of the simulation.\n",
+    "dt" : "Integration time step.\n",
+    "eta": "Bifurcation parameter that controls whether each node tends to stay noisy or show oscillations.\n",
+    "num_sim": "Number of simulations.\n",
+    "sigma": "Noise amplitude.\n",
+    "seed" : "Random seed for reproducibility.\n",
+    "decimate" : "Decimation factor for the output time series.\n",
+    "omega": "Oscillation frequency of each node.\n",
+    "t_end" : "End time of the simulation.\n",
+    "engine" : "Supported values: 'cpu' or 'gpu'\n",
+    "weights" : "Weight matrix of shape (`num_nodes`, `num_nodes`).\n",
+    "dtype" : "Data type to use for the simulation, `float` for `float64` or `f` for `float32`.\n",
+    "method" : "Numerical integration method. Supported values: <code>'heun'</code> or <code>'euler'</code>.\n",
+    "output": "Output directory.\n",
+    "initial_state" : "Initial state of the system of shape (`num_nodes`, `num_sim`).\n",
+    "same_initial_state" : "If True, same initial condition for all simulations\n"
+  }
+}
