@@ -50,6 +50,8 @@ dependencies = [
     "importlib_resources",
     "asgiref",
     "dill",
+    "joblib",
+    "json5"
 ]
 dynamic = ["version", "description", "authors", "urls", "keywords"]
 
@@ -66,6 +68,9 @@ full = [
     "tvb-gdist",
     "tvb-framework",
     "tvb-widgets>=1.0",
+    "vbi[inference]",
+    "torch",
+    "sbi"
 ]
 
 [tool.hatch.version]

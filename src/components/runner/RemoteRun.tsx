@@ -11,23 +11,28 @@ export function buildRemoteRunCommand(path: string, config: { formattedCommand: 
           '$XIRCUITS_PATH': path
       };
 
-      let command_str = command + " " + path + " " + config['run_config_name']
-            + " " + config['project']
-            + " " + config['stage_out']
-            + " " + config['filesystem']
-            + " " + config['envName']
-            + " " + config['python']
-            + " " + config['modules']
-            + " " + config['libraries'];
+      let args = [
+          ...command.trim().split(/\s+/),
+          path,
+          config['run_config_name'],
+          config['project'],
+          config['stage_out'],
+          config['filesystem'],
+          config['envName'],
+          config['python'],
+          config['modules'],
+          config['libraries']];
       Object.keys(envVariables).forEach(key => {
-          command_str = command_str.replace(new RegExp(`\\${key}`, 'g'), envVariables[key]);
+          args = args.map(arg =>
+            arg.replace(new RegExp(`\\${key}`, 'g'), envVariables[key])
+          );
       });
 
       let code_str = "\nfrom subprocess import Popen, PIPE\n\n";
-      code_str += `command_str= "${command_str}"\n`;
-      code_str += "p=Popen(command_str, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)\n";
+      code_str += `args= ${JSON.stringify(args)}\n`;
+      code_str += "p=Popen(args, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=False)\n";
       code_str += "print('Remote Execution Run Mode.\\n')\n";
-      code_str += `print(f'[COMMAND]\\n{command_str}\\n')\n`;
+      code_str += `print(f'[COMMAND]\\n{args}\\n')\n`;
 
       if (config.url) {
           code_str += `print('[URL]\\nPlease go to ${config.url} for more details\\n')\n`;

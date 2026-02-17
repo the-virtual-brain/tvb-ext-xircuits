@@ -1,0 +1,12 @@
+{
+  "description": "<div class=\"document\" id=\"traited-class-vbi-config-inference\">\n<h1 class=\"title\">Configuration Inference</h1>\n<p>Builds the configuration inputs required to run an inference workflow.</p>\n<p>It defines the <tt class=\"docutils literal\">priors</tt>, samples them to obtain the parameter distribution (<tt class=\"docutils literal\">theta</tt>) and assembles a <tt class=\"docutils literal\">feature dictionary</tt> used for later feature-extraction.</p>\n</div>\n",
+  "arguments": {
+    "prior_min": "Lower bound of the prior parameters range (inclusive).\n",
+    "prior_max": "Upper bound of the prior parameters range (exclusive).\n",
+    "num_sim": "Number of samples to draw from the prior distribution, used by the sample_posterior function.\n",
+    "seed": "Random seed for reproducible sampling. If None, no seed is set.\n",
+    "domain_cfg": "List of feature domains to extract. If None, all domains are returned. Valid domains are: 'hmm', 'spectral', 'connectivity', 'temporal', 'statistical', 'information', 'catch22'.\n",
+    "names_cfg": "Features names to extract. Can be a single string or a list/tuple. If None, returns the original cfg.\n",
+    "json_path_cfg": "Path to a JSON file defining features. If None, the default features.json bundled with the package is used.\n"
+  }
+}

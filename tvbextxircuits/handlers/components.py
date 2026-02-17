@@ -52,9 +52,10 @@ class ComponentsRouteHandler(APIHandler):
             component_path = input_data["path"]
             xircuits_id = input_data["xircuits_id"]
             component_inputs = input_data['component_inputs']
+            xircuits_filename = input_data['xircuits_filename']
 
             notebook_path = self._generate_widget_notebook(component, component_id, component_path, xircuits_id,
-                                                           component_inputs)
+                                                           component_inputs, xircuits_filename)
             data = {"widget": notebook_path}
             self.finish(json.dumps(data))
 
@@ -62,9 +63,9 @@ class ComponentsRouteHandler(APIHandler):
             data = {"error_msg": "Could not determine the component from POST params!"}
             self.finish(json.dumps(data))
 
-    def _generate_widget_notebook(self, component, component_id, component_path, xircuits_id, component_inputs):
+    def _generate_widget_notebook(self, component, component_id, component_path, xircuits_id, component_inputs, xircuits_filename):
         factory = NotebookFactory()
         notebook = factory.get_notebook_for_component(component, component_id, component_path, component_inputs,
-                                                      xircuits_id)
+                                                      xircuits_id, xircuits_filename)
         path = factory.store(notebook, component, xircuits_id)
         return path

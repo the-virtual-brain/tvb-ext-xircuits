@@ -1,6 +1,6 @@
 {
-  "title": "Base Directory Setting",
-  "description": "Setting to define the base directory.",
+  "title": "tvb-ext-xircuits",
+  "description": "tvb-ext-xircuits extension settings.",
   "type": "object",
   "properties": {
     "baseDirectoryWeb": {

@@ -693,17 +693,15 @@ export const BodyWidget: FC<BodyWidgetProps> = ({
 		// Run Mode
 		context.ready.then(async () => {
 			const workflow_path = context.path;
-			let model_path = workflow_path.split(".xircuits")[0] + ".py";
+			const model_path = workflow_path.split(".xircuits")[0] + ".py";
 			let code = startRunOutputStr();
 	
 			let result;
-
-			// Convert the model_path to be bash aware
-			model_path = `"${model_path}"`;
+	
 			if (runType == 'run') {
 				result = await handleLocalRunDialog();
 				if (result.status === 'ok') {
-				code += `%run ${model_path} ${result.args}`;
+				code += `%run "${model_path}" ${result.args}`;
 				commands.execute(commandIDs.executeToOutputPanel, { code });
 				}
 				else if (result.status === 'cancelled') {

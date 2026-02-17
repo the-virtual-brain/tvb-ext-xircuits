@@ -57,7 +57,7 @@ class CodeGenerator:
             self._generate_component_imports(),
             self._generate_flows(flow_name),
             self._generate_main(flow_name),
-            self._generate_trailer()
+            self._generate_trailer(flow_name)
         ))
 
         with open(filelike.name, 'w', encoding='utf-8') as f:
@@ -356,7 +356,7 @@ pprint.pprint(flow.%s.value)
                     node_queue.append(port.source)
         return nodes
 
-    def _generate_trailer(self):
+    def _generate_trailer(self, flow_name):
         code = """
 if __name__ == '__main__':
     args, _ = parser.parse_known_args()
@@ -364,12 +364,12 @@ if __name__ == '__main__':
     print("\\nFinished Executing")
         """
         body = ast.parse(code).body[0]
-        arg_parsing = self._generate_argument_parsing()
+        arg_parsing = self._generate_argument_parsing(flow_name=flow_name)
         arg_parsing.extend(body.body)
         body.body = arg_parsing
         return [body]
 
-    def _generate_argument_parsing(self):
+    def _generate_argument_parsing(self, flow_name):
         # Unfortunately, we don't have the information anywhere else and updating the file format isn't an option at the moment
         pattern = re.compile(r'^Argument \(.+?\): (.+)$')
 
@@ -381,9 +381,10 @@ if __name__ == '__main__':
             "any": "any"
         }
 
-        code = """
+        code = f"""
 parser = ArgumentParser()
 parser.add_argument('--is_hpc_launch', default=False, type=bool)  
+parser.add_argument('--xircuits_filename', default='{flow_name}', type=str)  
         """
         body = ast.parse(code).body
 

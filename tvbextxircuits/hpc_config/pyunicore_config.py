@@ -167,7 +167,7 @@ class PyunicoreSubmitter(object):
         LOGGER.info(f"You are running in dev mode, starting to install {local_package_name} on HPC {self.site}...")
         home_storage.rm(local_package_name)
         home_storage.upload(
-            input_file=f'dist/{local_package_name}',
+            file_name=f'dist/{local_package_name}',
             destination=f'{self.env_dir}/{local_package_name}')
         self.pip_libraries = self.pip_libraries.replace('tvb-ext-xircuits', local_package_name)
         job_description = {
@@ -221,9 +221,10 @@ class PyunicoreSubmitter(object):
             LOGGER.info(f"Successfully finished the environment setup.")
 
         LOGGER.info("Launching workflow...")
+        xircuits_filename = executable.replace('.py', '')
         job_description = {
             self.EXECUTABLE_KEY: f"{self._module_load_command} && {self._activate_command} && "
-                                 f"python {executable} --is_hpc_launch=True",
+                                 f"python {executable} --is_hpc_launch=True --xircuits_filename='{xircuits_filename}'",
             self.PROJECT_KEY: self.project}
         job_workflow = client.new_job(job_description, inputs=inputs)
         LOGGER.info(f"Job is running at {self.site}."

@@ -89,13 +89,15 @@ export function addNodeActionCommands(
                 })
                 return;
             }
-
+            let xircuits_filename = tracker.currentWidget.context.path;
+            xircuits_filename = xircuits_filename.split('/').pop().replace('.xircuits', '');
             const dataToSend = {
                 'component': node.name,
                 'component_id': node.options.id,
                 'component_inputs': gatherNodeInPortValues(node),
                 'path':  node.extras.path,
-                'xircuits_id': node.parent.parent.options.id
+                'xircuits_id': node.parent.parent.options.id,
+                'xircuits_filename': xircuits_filename
             };
 
             const response = await requestAPI<any>('components/', {

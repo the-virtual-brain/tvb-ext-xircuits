@@ -4,11 +4,9 @@ ARG ENV_BIN=/opt/conda/envs/tvb-run/bin
 ARG PIP=$ENV_BIN/pip
 
 USER root
-RUN cd tvb-root; \
-    cd tvb_bin; \
-    $PIP install -e .
-
-RUN $PIP install tvb-library==2.6
+WORKDIR /tvb-root/tvb_bin
+RUN "$PIP" install -e . && \
+    "$PIP" install tvb-library==2.6
 # RUN $PIP install tvb-ext-xircuits
 
 WORKDIR /home
@@ -17,9 +15,9 @@ ARG LAST_SHA=LATEST
 
 ARG JUPYTER=$ENV_BIN/jupyter
 
-RUN cd tvb-ext-xircuits; \
-    git pull; \
-    $PIP install -e .
+WORKDIR /home/tvb-ext-xircuits
+RUN git pull; \
+    "$PIP" install -e .
 
 #    $JUPYTER labextension develop . --overwrite; \
 #    $JUPYTER server extension enable xircuits
