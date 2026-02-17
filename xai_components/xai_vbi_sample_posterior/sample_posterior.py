@@ -3,6 +3,9 @@ import torch
 from vbi.sbi_inference import Inference
 import os
 from xai_components.base_tvb import ComponentWithViewer
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
 
 
 @xai_component(color="rgb(220, 5, 45)")
@@ -31,7 +34,7 @@ class SamplePosterior(ComponentWithViewer):
 
         self.samples.value = samples
 
-        print(f"Sample Posterior: {self.samples.value}")
+        LOGGER.info(f"Sample Posterior: {self.samples.value}")
 
     @staticmethod
     def persists_artifacts(output_dir, samples):

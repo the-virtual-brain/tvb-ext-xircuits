@@ -9,6 +9,9 @@ from xai_components.settings import memory
 import os
 import json
 from xai_components.base_tvb import ComponentWithViewer
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
 
 
 def cpp_worker(task):
@@ -22,7 +25,7 @@ def cpp_worker(task):
             par_i[name] = np.full(nn, val, dtype=float)
         else:
             par_i[name] = val
-    par_i.pop("dim", None)
+    par_i.pop("dim", None) # temporary
     data = model_cls(par_i).run()
     ts = data[ts_key]
     stat_vec = extract_features_df(ts=[ts], cfg=cfg, fs=fs,
@@ -124,7 +127,7 @@ class SimulationRunner(ComponentWithViewer):
         self.stat_vec.value = x
 
         self.persists_artifacts(self.output_dir.value, resolved_par, data, t_key, ts_key, self.theta_names.value)
-        print(f"Extracted features: {self.stat_vec.value}")
+        LOGGER.info(f"Extracted features: {self.stat_vec.value}")
 
     @staticmethod
     def build_resolved_par(base_par, theta_np, idx, nodewise, nn):
@@ -163,7 +166,7 @@ def simulate_cache(model_class, resolved_par: dict) -> dict:
         Cache the simulation results.
         The cache key includes the model class and the model parameters
     """
-    print(f"Resolved params: {resolved_par}")
+    LOGGER.info(f"Resolved params: {resolved_par}")
     model = model_class(resolved_par)
     return model.run()
 

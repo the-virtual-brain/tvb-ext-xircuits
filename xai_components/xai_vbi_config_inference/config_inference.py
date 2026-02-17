@@ -4,6 +4,9 @@ import torch
 import os
 import json
 from tvbextxircuits.utils import get_base_dir_web
+from tvbextxircuits.logger.builder import get_logger
+
+LOGGER = get_logger(__name__)
 
 @xai_component(color='rgb(220, 5, 45)')
 class ConfigInference(Component):
@@ -45,7 +48,7 @@ class ConfigInference(Component):
         # Sample Prior
         obj = Inference()
         self.theta.value = obj.sample_prior(self.prior.value, int(self.num_sim.value), self.seed.value)
-        print(f"Theta: {self.theta.value}")
+        LOGGER.info(f"Theta: {self.theta.value}")
 
         self.persists_artifacts(output_directory, self.theta.value, self.prior_min.value, self.prior_max.value)
 
