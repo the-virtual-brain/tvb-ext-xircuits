@@ -1,6 +1,5 @@
 from xai_components.base import xai_component, InArg, OutArg
 import numpy as np
-import torch
 from multiprocessing import Pool
 from copy import deepcopy
 from typing import Literal
@@ -40,7 +39,7 @@ def cpp_worker(task):
 class SimulationRunner(ComponentWithViewer):
     backend: InArg[Literal['cupy', 'cpp']]
     model: InArg[any]
-    theta: InArg[torch.Tensor]
+    theta: InArg[any]
     theta_names: InArg[list]
     cfg: InArg[dict]
     num_workers: InArg[int]

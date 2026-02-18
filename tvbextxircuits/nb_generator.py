@@ -92,7 +92,10 @@ class NotebookFactory(object):
     def get_notebook_for_component(component_name, component_id, component_path, component_inputs, xircuits_id, xircuits_filename):
         component_class = determine_component_class(component_name, component_path)
 
-        if not (issubclass(component_class, ComponentWithWidget) or issubclass(component_class, ComponentWithViewer)):
+        if component_class is None:
+            return None
+
+        if not issubclass(component_class, (ComponentWithWidget, ComponentWithViewer)):
             return None
 
         if component_class.__name__.startswith('StoreResults'):
@@ -435,6 +438,14 @@ class TimeSeriesVbiNotebookGenerator(NotebookGenerator):
         return True
 
 def determine_component_class(component_name, component_path):
-    component_module = importlib.import_module(component_path.replace('/', '.')[:-3])
-    component_class = getattr(component_module, component_name)
-    return component_class
+    try:
+        component_module = importlib.import_module(component_path.replace('/', '.')[:-3])
+        component_class = getattr(component_module, component_name)
+        return component_class
+    except ModuleNotFoundError as e:
+        LOGGER.error(f"Module not found while loading {component_path}: {e}")
+    except AttributeError:
+        LOGGER.error(f"Class {component_name} not found in module {component_path}.")
+
+    return None
+

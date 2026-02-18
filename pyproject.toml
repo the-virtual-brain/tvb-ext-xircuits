@@ -139,5 +139,6 @@ include = [
     "xai_components/",
     "tvbextxircuits/",
     "examples/",
+    "config/"
 ]
 artifacts = ["tvbextxircuits/labextension"]
