@@ -1,6 +1,4 @@
 from xai_components.base import xai_component, InArg, OutArg
-import torch
-from vbi.sbi_inference import Inference
 import os
 from xai_components.base_tvb import ComponentWithViewer
 from tvbextxircuits.logger.builder import get_logger
@@ -16,13 +14,14 @@ class SamplePosterior(ComponentWithViewer):
     obs_idx: InArg[int]
     output_dir: InArg[str]
 
-    samples: OutArg[torch.Tensor]
+    samples: OutArg[any]
 
     def __init__(self):
         super().__init__()
         self.obs_idx.value = 0
 
     def execute(self, ctx):
+        from vbi.sbi_inference import Inference
 
         x_idx_st = self.X_scaled.value[self.obs_idx.value,:]
 
@@ -38,6 +37,7 @@ class SamplePosterior(ComponentWithViewer):
 
     @staticmethod
     def persists_artifacts(output_dir, samples):
+        import torch
         # Store the resulted samples for plotting
         path = os.path.join(output_dir, "samples.pt")
         torch.save(samples, path)
