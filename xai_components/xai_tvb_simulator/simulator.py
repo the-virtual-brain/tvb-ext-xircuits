@@ -18,6 +18,36 @@ from xai_components.utils import print_component_summary, set_defaults, set_valu
 
 @xai_component(color='rgb(220, 5, 45)')
 class Simulator(TVBComponent):
+    """Xircuits component for running TVB brain network simulations.
+
+    This is the central simulation component that brings together all the
+    pieces needed for a full brain simulation: connectivity, neural mass
+    model, coupling function, integrator, and monitors. It configures
+    a TVB Simulator, runs the simulation, and produces time series output
+    for each monitor.
+
+    Inputs:
+        connectivity: Brain connectivity matrix defining the structural
+                      connections between brain regions (weights and tract lengths).
+        conduction_speed: Speed of signal propagation between regions in mm/ms.
+        coupling: Coupling function defining how connected regions influence
+                  each other during simulation.
+        surface: Optional cortical surface mesh for surface-based simulations.
+        stimulus: Optional spatiotemporal stimulation pattern applied during
+                  the simulation.
+        model: Neural mass model describing the local dynamics at each
+               brain region (e.g., Generic2dOscillator, Epileptor).
+        integrator: Numerical integration scheme used to solve the model
+                    equations (e.g., HeunDeterministic, EulerStochastic).
+        initial_conditions: Optional initial state values for the simulation.
+        monitors: List of monitors that define what data to record and at
+                  what sampling rate (e.g., TemporalAverage, Raw).
+        simulation_length: Total duration of the simulation in milliseconds.
+
+    Output:
+        time_series_list: List of TimeSeries objects, one for each monitor,
+                          containing the recorded simulation data.
+    """
     connectivity: InCompArg[Connectivity]
     conduction_speed: InArg[float]
     coupling: InArg[Coupling]
