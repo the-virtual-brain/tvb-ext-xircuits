@@ -73,6 +73,27 @@ To be able to see details info related to TVB components you must first run the 
 
 Notebooks generated can be found at `TVB_generated_notebooks/<xircuits_id>`
 
+## Troubleshooting for dev mode setup
+**Issue:** The terminal returns `zsh: command not found: tvbextxircuits` despite a successful installation.
+
+**Root Cause:** When installing with `uv` or other virtual environment tools, the executable binaries are located within the virtual environment's `bin` directory. If the environment is not activated, or if the local `bin` path is not added to your system's global `PATH` variable, the shell cannot locate the command.
+
+**Solutions:**
+
+* **Option A: Manual Activation (Recommended)**
+Always ensure your virtual environment is active before running the tool. This ensures all dependencies and scripts are correctly mapped.
+```zsh
+cd tvb-ext-xircuits
+source .venv/bin/activate
+tvbextxircuits
+```
+
+* **Option B: Direct Path Execution**
+If you want to launch the service quickly without full activation, call the binary directly using its relative path:
+```zsh
+./.venv/bin/tvbextxircuits
+```
+
 ##  Acknowledgments
 
 Copyright (c) 2022-2025 to Xircuits Team See: https://github.com/XpressAI/xircuits
