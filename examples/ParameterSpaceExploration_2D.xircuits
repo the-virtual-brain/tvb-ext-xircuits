@@ -1,0 +1,76 @@
+{
+  "graph": {
+    "cells": [
+      {
+        "type": "Start",
+        "position": { "x": 50, "y": 200 },
+        "size": { "width": 60, "height": 60 },
+        "id": "start-node"
+      },
+      {
+        "type": "xircuits.PSELinspaceRange",
+        "position": { "x": 200, "y": 100 },
+        "size": { "width": 200, "height": 100 },
+        "id": "pse-linspace-1",
+        "attrs": {
+          "params": {
+            "start": 0.0,
+            "stop": 2.0,
+            "num_points": 5
+          }
+        }
+      },
+      {
+        "type": "xircuits.PSEArangeRange",
+        "position": { "x": 200, "y": 250 },
+        "size": { "width": 200, "height": 100 },
+        "id": "pse-arange-1",
+        "attrs": {
+          "params": {
+            "start": 2.0,
+            "stop": 6.0,
+            "step": 1.0
+          }
+        }
+      },
+      {
+        "type": "xircuits.PSEParameterGrid",
+        "position": { "x": 500, "y": 175 },
+        "size": { "width": 200, "height": 100 },
+        "id": "pse-grid"
+      },
+      {
+        "type": "End",
+        "position": { "x": 800, "y": 200 },
+        "size": { "width": 60, "height": 60 },
+        "id": "end-node"
+      }
+    ],
+    "links": [
+      {
+        "type": "xircuits.Wire",
+        "source": { "id": "start-node" },
+        "target": { "id": "pse-linspace-1" },
+        "id": "link-1"
+      },
+      {
+        "type": "xircuits.Wire",
+        "source": { "id": "pse-linspace-1" },
+        "target": { "id": "pse-grid" },
+        "id": "link-2"
+      },
+      {
+        "type": "xircuits.Wire",
+        "source": { "id": "pse-arange-1" },
+        "target": { "id": "pse-grid" },
+        "id": "link-3"
+      },
+      {
+        "type": "xircuits.Wire",
+        "source": { "id": "pse-grid" },
+        "target": { "id": "end-node" },
+        "id": "link-4"
+      }
+    ]
+  }
+}
