@@ -26,18 +26,17 @@ def test_notebook_generator():
         notebook_generator.get_notebook()
 
 
-@pytest.mark.skip(reason="Skip the test until store functionality is tested on juwels")
 def test_widget_code_generator():
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('Simulator', 'sim_id',
                                                            'xai_components/xai_tvb_simulator/simulator.py', {},
-                                                           'xircuits_id')
+                                                           'xircuits_id', 'x.xircuits')
     assert notebook is None
 
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('ReducedWongWang', 'model_id',
                                                            'xai_components/xai_tvb_models/wong_wang.py', {},
-                                                           'xircuits_id')
+                                                           'xircuits_id', 'x.xircuits')
     assert notebook is not None
     assert "models.ReducedWongWang(**{})" in notebook.cells[2]['source']
     assert "w.export_filename = r'model_model_id'" in notebook.cells[2]['source']
@@ -49,7 +48,7 @@ def test_widget_code_generator():
     notebook_factory = NotebookFactory()
     notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
                                                            'xai_components/xai_storage/store_results.py', {},
-                                                           'xircuits_id')
+                                                           'xircuits_id', 'x.xircuits')
     assert notebook is not None
     assert 'TimeSeriesBrowser()' in notebook.cells[2]['source']
 
@@ -57,7 +56,7 @@ def test_widget_code_generator():
     notebook = notebook_factory.get_notebook_for_component('StoreResultsToDrive', 'store_id',
                                                            'xai_components/xai_storage/store_results.py',
                                                            {'collab_name': 'collab', 'folder_path': 'folder'},
-                                                           'xircuits_id')
+                                                           'xircuits_id', 'x.xircuits')
     assert notebook is not None
     assert "TimeSeriesBrowser('collab', 'folder')" in notebook.cells[2]['source']
 
