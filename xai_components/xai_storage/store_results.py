@@ -7,9 +7,9 @@
 
 import json
 from datetime import datetime
-import ebrains_drive
+import ebrains_storage
 import numpy
-from ebrains_drive.exceptions import DoesNotExist
+from ebrains_storage.exceptions import DoesNotExist
 from tvb_ext_bucket.ebrains_drive_wrapper import BucketWrapper
 from tvb_ext_bucket.exceptions import CollabAccessError
 
@@ -68,7 +68,7 @@ class StoreResultsToDrive(ComponentWithWidget):
         from tvbwidgets.core.auth import get_current_token
 
         bearer_token = get_current_token()
-        client = ebrains_drive.connect(token=bearer_token)
+        client = ebrains_storage.connect(token=bearer_token)
         return client
 
     @staticmethod
